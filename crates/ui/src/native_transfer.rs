@@ -798,6 +798,15 @@ impl Model {
     /// synthesized serial. The real AuxIo/Source/review/queue still execute.
     #[cfg(target_os = "linux")]
     pub(crate) fn fixture_drag(&mut self, file: Option<std::fs::File>) -> Result<(), String> {
+        self.fixture_drag_at(file, None)
+    }
+    /// Same fixture at a window point (a rail row); `None` = inside the body.
+    #[cfg(target_os = "linux")]
+    pub(crate) fn fixture_drag_at(
+        &mut self,
+        file: Option<std::fs::File>,
+        at: Option<(i32, i32)>,
+    ) -> Result<(), String> {
         if self.native_transfer.enabled
             || std::env::var_os("FILES_TEST_ISOLATE_INPUT").as_deref() != Some("1".as_ref())
             || std::env::var_os("FILES_TEST_HIDDEN_CONTEXT").as_deref() != Some("1".as_ref())
@@ -815,8 +824,8 @@ impl Model {
             tab: self.pane_owner().1,
             generation: self.generation,
             kind: if file.is_some() { 2 } else { 1 },
-            x: body.x + 8,
-            y: body.y + body.h - 8,
+            x: at.map_or(body.x + 8, |p| p.0),
+            y: at.map_or(body.y + body.h - 8, |p| p.1),
         };
         let is_drop = file.is_some();
         self.native_drag_with(
@@ -965,6 +974,20 @@ impl Model {
         receive: impl FnOnce(u64) -> Result<std::fs::File, String>,
         reject: impl FnOnce(u64),
     ) -> bool {
+        if std::env::var_os("FILES_DND_TRACE").is_some() {
+            eprintln!(
+                "FILES_DND_TRACE kind={} x={} y={} seq={} last={} owner=({},{}) pane=({},{})",
+                event.kind,
+                event.x,
+                event.y,
+                event.sequence,
+                self.native_transfer.last_drag,
+                self.pane_owner().0,
+                self.pane_owner().1,
+                event.pane,
+                event.tab
+            );
+        }
         if event.sequence == self.native_transfer.last_drag {
             return false;
         }

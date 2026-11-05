@@ -38,7 +38,7 @@ static void nap(int ms) {
 int main(int argc, char **argv) {
   if ((argc != 8 && argc != 9) || strncmp(argv[1], "wayland-", 8) || !strcmp(argv[1], "wayland-0") ||
       !strcmp(argv[1], "wayland-1")) {
-    fprintf(stderr, "usage: vpointer wayland-N W H x0 y0 x1 y1 [hoverMS|cN] (private nested socket only)\n");
+    fprintf(stderr, "usage: vpointer wayland-N W H x0 y0 x1 y1 [hoverMS|cN|dDwellMS] (private nested socket only)\n");
     return 2;
   }
   struct wl_display *display = wl_display_connect(argv[1]);
@@ -59,6 +59,27 @@ int main(int argc, char **argv) {
       zwlr_virtual_pointer_v1_button(p, now(), BTN_LEFT, WL_POINTER_BUTTON_STATE_RELEASED);
       FLUSH(60);
     }
+  } else if (argc == 9 && argv[8][0] == 'd') {
+    /* Drag and drop: press, move slowly (the source may start its drag only
+       after the first motions), then rest on the target before releasing. */
+    int dwell = atoi(argv[8] + 1);
+    zwlr_virtual_pointer_v1_button(p, now(), BTN_LEFT, WL_POINTER_BUTTON_STATE_PRESSED);
+    FLUSH(150);
+    for (int i = 1; i <= 8; i++) {
+      zwlr_virtual_pointer_v1_motion_absolute(p, now(), x0 + 3 * i, y0 + i, w, h);
+      FLUSH(60);
+    }
+    for (int i = 1; i <= 40; i++) {
+      zwlr_virtual_pointer_v1_motion_absolute(p, now(), x0 + 24 + (x1 - x0 - 24) * i / 40,
+                                              y0 + 8 + (y1 - y0 - 8) * i / 40, w, h);
+      FLUSH(40);
+    }
+    for (int i = 0; i < dwell / 100; i++) {
+      zwlr_virtual_pointer_v1_motion_absolute(p, now(), x1 + (i & 1), y1, w, h);
+      FLUSH(100);
+    }
+    zwlr_virtual_pointer_v1_button(p, now(), BTN_LEFT, WL_POINTER_BUTTON_STATE_RELEASED);
+    FLUSH(80);
   } else {
     for (int i = 0; argc == 9 && i < atoi(argv[8]) / 100; i++) {
       zwlr_virtual_pointer_v1_motion_absolute(p, now(), x0 + (i & 1), y0, w, h);

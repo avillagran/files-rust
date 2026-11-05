@@ -9,6 +9,8 @@ use std::path::{Path, PathBuf};
 pub enum Scope {
     Pane(u64),
     Column(u64),
+    /// A folder row of the places rail (place, bookmark, mounted device).
+    Place,
 }
 #[derive(Clone, Debug)]
 pub struct Target {
@@ -151,7 +153,23 @@ pub fn resolve(
     body: Rect,
     generation: u64,
 ) -> Result<Target, &'static str> {
-    if generation != m.generation || blocked(m) || !body.contains(x, y) {
+    if generation != m.generation || blocked(m) {
+        return Err("Destino del drop obsoleto o controles activos");
+    }
+    // The rail is drawn by the toolkit Sidebar beside the body: its folder
+    // rows (as painted now) are targets of their own.
+    if let Some((rect, path)) = m.rail_drops.iter().find(|(r, _)| r.contains(x, y)) {
+        return Ok(Target {
+            scope: Scope::Place,
+            path: path.clone(),
+            owner: m.pane_owner(),
+            revision: m.pane_revision,
+            generation,
+            rect: *rect,
+            entry: None,
+        });
+    }
+    if !body.contains(x, y) {
         return Err("Destino del drop obsoleto o controles activos");
     }
     let hit = m.hits.iter().rev().find(|h| h.rect.contains(x, y));
@@ -264,12 +282,28 @@ impl Target {
                             }
                     })
             }
+            Scope::Place => m.rail_drops.iter().any(|(_, p)| *p == self.path),
         }
     }
 }
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
+    #[test]
+    fn rail_folder_rows_are_drop_targets_while_painted() {
+        let mut m = Model::new("/fixture-rail-drop".into());
+        m.loaded = true;
+        let place = PathBuf::from("/fixture-rail-drop/Descargas");
+        m.rail_drops = vec![(Rect::new(0, 140, 52, 40), place.clone())];
+        let body = Rect::new(68, 94, 500, 300);
+        let t = resolve(&m, 20, 150, body, m.generation).unwrap();
+        assert!(matches!(t.scope, Scope::Place) && t.path == place && t.current(&m));
+        // Outside the rows and the body: refused, as before.
+        assert!(resolve(&m, 20, 300, body, m.generation).is_err());
+        // The row is gone (rail hidden or re-listed): the target is stale.
+        m.rail_drops.clear();
+        assert!(!t.current(&m));
+    }
     use files_core::listing::Kind;
     use std::{ffi::OsString, os::unix::ffi::OsStringExt};
     fn entry(name: &str, kind: Kind) -> Entry {

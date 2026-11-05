@@ -583,7 +583,14 @@ pub struct Model {
     pub wheel_scroll: crate::wheel_scroll::State,
     pub content_height: i32,
     pub group_ends: [usize; 5],
+    /// Rail expanded. With the toolkit Sidebar it mirrors the widget.
     pub rail: bool,
+    /// The toolkit Sidebar widget draws the rail rows (real window only).
+    pub sidebar_widget: bool,
+    /// Fixture request to pin (`true`) or release the Sidebar.
+    pub rail_request: Option<bool>,
+    /// Folder rows of the toolkit rail as painted (drop targets).
+    pub rail_drops: Vec<(crate::painter::Rect, PathBuf)>,
     pub inspector: bool,
     pub settings: bool,
     pub help: Option<crate::help_view::State>,
@@ -760,6 +767,9 @@ impl Model {
             content_height: 0,
             group_ends: [0; 5],
             rail: false,
+            sidebar_widget: false,
+            rail_request: None,
+            rail_drops: Vec::new(),
             inspector: true,
             settings: false,
             help: None,

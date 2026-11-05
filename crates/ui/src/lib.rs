@@ -88,6 +88,7 @@ mod owned_child;
 pub mod painter;
 mod path_edit;
 mod pdf_preview_job;
+mod places_sidebar;
 mod platform_wait;
 mod preview_link;
 mod preview_scene;
@@ -354,10 +355,13 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             let x = app::event_x();
             let y = app::event_y();
             let old = m.rail;
-            m.rail = ev != Event::Leave
-                && y >= 90
-                && y < crate::operation_bar::browser_height(m, h) - 32
-                && x < if m.rail { 170 } else { 52 };
+            // The toolkit Sidebar owns hover-expand when it is present.
+            if !m.sidebar_widget {
+                m.rail = ev != Event::Leave
+                    && y >= 90
+                    && y < crate::operation_bar::browser_height(m, h) - 32
+                    && x < if m.rail { 170 } else { 52 };
+            }
             let hover = m.hits.iter().rev().find_map(|hit| {
                 if hit.generation == m.generation && hit.rect.contains(x, y) {
                     if let Action::Entry(i) = hit.action {
@@ -1061,6 +1065,71 @@ pub fn run_since(start: Instant) -> bool {
     let mut actions_anchor = Frame::new(0, 0, 1, 1, "");
     settings_anchor.hide();
     actions_anchor.hide();
+    // Places rail: the toolkit Sidebar over the canvas strip (y 90 to the
+    // bottom of the browser). It is drawn after the canvas on every paint.
+    let rail_selected = fltk_omarchy::State::new(usize::MAX);
+    let rail_state = Rc::new(RefCell::new(places_sidebar::Rail::default()));
+    let mut sidebar = {
+        let run = |m: &Rc<RefCell<Model>>, canvas: &Frame, action: Option<Action>| {
+            if let Some(action) = action
+                && let Ok(mut state) = m.try_borrow_mut()
+            {
+                state.action(action);
+            }
+            let mut canvas = canvas.clone();
+            let _ = canvas.take_focus();
+            canvas.redraw();
+        };
+        let (m1, r1, c1) = (model.clone(), rail_state.clone(), canvas.clone());
+        let (m2, r2, c2) = (model.clone(), rail_state.clone(), canvas.clone());
+        fltk_omarchy::widgets::Sidebar::new(Vec::new(), &rail_selected)
+            .widths(places_sidebar::RAIL, places_sidebar::WIDE)
+            .on_activate(move |i| {
+                let action = r1.borrow().actions.get(i).cloned().flatten();
+                run(&m1, &c1, action);
+            })
+            .on_secondary(move |i| {
+                let action = r2.borrow().secondary.get(i).cloned().flatten();
+                run(&m2, &c2, action);
+            })
+            // Drops reach Files through its own native transfer (copy review);
+            // the FLTK DnD path of the toolkit stays out of it.
+            .accept_drop(|_| false)
+    };
+    // Right click, Menu or Shift+F10 on a row: its menu (open, new tab,
+    // remove bookmark, mount / unmount / eject, trash).
+    {
+        let menu_tree = sidebar.tree();
+        let (m3, r3, c3) = (model.clone(), rail_state.clone(), canvas.clone());
+        sidebar = sidebar.on_context(move |i, x, y| {
+            let entries = match m3.try_borrow() {
+                Ok(state) => places_sidebar::menu(&state, &r3.borrow(), i),
+                Err(_) => return,
+            };
+            if entries.is_empty() {
+                return;
+            }
+            let (items, picks): (Vec<_>, Vec<_>) = entries.into_iter().unzip();
+            let (m4, c4) = (m3.clone(), c3.clone());
+            eprintln!("FILES_TOOLKIT_SIDEBAR_MENU row={i} entries={}", picks.len());
+            menu_tree.open_menu(x, y, items, move |k| {
+                if let Some(pick) = picks.get(k).cloned() {
+                    eprintln!("FILES_TOOLKIT_SIDEBAR_PICK row={i} entry={k} pick={pick:?}");
+                    if let Ok(mut state) = m4.try_borrow_mut() {
+                        places_sidebar::apply(&mut state, pick);
+                    }
+                }
+                let mut canvas = c4.clone();
+                let _ = canvas.take_focus();
+                canvas.redraw();
+            });
+        });
+    }
+    sidebar.resize(0, 90, places_sidebar::RAIL, (size.1 - 122).max(0));
+    // Tab stays with the browser (it switches panes); the rail is pointer-driven.
+    sidebar.clear_visible_focus();
+    let fixture_sidebar = sidebar.clone();
+    let fixture_rail = rail_state.clone();
     win.end();
     win.resizable(&canvas);
     if trace {
@@ -1073,6 +1142,10 @@ pub fn run_since(start: Instant) -> bool {
     let m = model.clone();
     let mut painted = false;
     let scale_window = win.clone();
+    let rail_window = win.clone();
+    let mut rail_sidebar = sidebar.clone();
+    let rail_selected = rail_selected.clone();
+    let rail_state = rail_state.clone();
     canvas.draw(move |f| {
         if !painted && trace {
             eprintln!("FILES_PAINT_START_US={}", start.elapsed().as_micros());
@@ -1086,11 +1159,70 @@ pub fn run_since(start: Instant) -> bool {
         } else {
             crate::wheel_scroll::advance(&mut m, f);
             crate::trash_browser::advance(&mut m, f);
+            let covered = places_sidebar::covered(&m);
+            if let Some(pin) = m.rail_request.take() {
+                rail_sidebar.set_pinned(pin);
+            }
+            m.sidebar_widget = !covered;
+            if !covered {
+                m.rail = rail_sidebar.is_expanded();
+            }
             let previous_scroll = m.scroll;
             view::paint(&mut p, &mut m, f.w(), f.h());
             m.clamp_scroll(f.h() - 134);
             if previous_scroll != m.scroll {
                 view::paint(&mut p, &mut m, f.w(), f.h());
+            }
+            if covered {
+                m.rail_drops.clear();
+                if rail_sidebar.visible() {
+                    rail_sidebar.hide();
+                }
+            } else {
+                let rail = places_sidebar::rail(&m);
+                if rail.items != rail_state.borrow().items {
+                    rail_sidebar.set_items(rail.items.clone());
+                }
+                rail_selected.set_if_changed(rail.active);
+                *rail_state.borrow_mut() = rail;
+                let strip = (crate::operation_bar::browser_height(&m, f.h()) - 122).max(0);
+                // The width is the toolkit's (52 / 170). FLTK scales children
+                // with the window, so a resized window would distort it.
+                let w = if rail_sidebar.is_expanded() {
+                    places_sidebar::WIDE
+                } else {
+                    places_sidebar::RAIL
+                };
+                if (
+                    rail_sidebar.x(),
+                    rail_sidebar.y(),
+                    rail_sidebar.w(),
+                    rail_sidebar.h(),
+                ) != (0, 90, w, strip)
+                {
+                    rail_sidebar.resize(0, 90, w, strip);
+                }
+                if !rail_sidebar.visible() {
+                    rail_sidebar.show();
+                }
+                // Plain FLTK redraws damaged siblings independently: the
+                // canvas just painted the strip, so the rail goes on top now.
+                rail_window.draw_child(&mut *rail_sidebar);
+                let drops: Vec<_> = (0..rail_state.borrow().items.len())
+                    .filter_map(|i| {
+                        let dir = rail_state.borrow().drop_dir(i)?.to_path_buf();
+                        let (x, y, w, h) = rail_sidebar.item_rect(i)?;
+                        Some((painter::Rect::new(x, y, w, h), dir))
+                    })
+                    .collect();
+                m.rail_drops = drops;
+                // The drop highlight of a rail row goes over the widget.
+                if m.native_transfer
+                    .hover()
+                    .is_some_and(|t| matches!(t.scope, native_drop::Scope::Place))
+                {
+                    native_drop::paint(&mut p, &m);
+                }
             }
             drawn_size.set((f.w(), f.h()));
             drawn_revision.set(drawn_revision.get().wrapping_add(1));
@@ -1838,6 +1970,140 @@ pub fn run_since(start: Instant) -> bool {
                     }
                     "closed" => toolkit_menus.close(),
                     "close" => model.borrow_mut().closing = true,
+                    "sidebar-expand" => fixture_sidebar.expand(),
+                    "sidebar-collapse" => fixture_sidebar.collapse(),
+                    "sidebar-state" => {
+                        let rail = fixture_rail.borrow();
+                        let keys: Vec<&str> = rail.items.iter().map(|i| i.key.as_str()).collect();
+                        let state = model.borrow();
+                        eprintln!(
+                            "FILES_TOOLKIT_SIDEBAR expanded={} rail={} visible={} rect=({}, {}, {}, {}) active={} path={} scroll={:?} rows={:?} keys={}",
+                            fixture_sidebar.is_expanded(),
+                            state.rail,
+                            fixture_sidebar.visible(),
+                            fixture_sidebar.x(),
+                            fixture_sidebar.y(),
+                            fixture_sidebar.w(),
+                            fixture_sidebar.h(),
+                            rail.items.get(rail.active).map_or("-", |i| i.key.as_str()),
+                            state.path.display(),
+                            fixture_sidebar.scroll_position(),
+                            (0..rail.items.len())
+                                .map(|i| fixture_sidebar.item_rect(i))
+                                .collect::<Vec<_>>(),
+                            keys.join("|")
+                        );
+                    }
+                    t if t.starts_with("sidebar-context:") => {
+                        let key = &t["sidebar-context:".len()..];
+                        let index = fixture_rail
+                            .borrow()
+                            .items
+                            .iter()
+                            .position(|i| i.key == key);
+                        let rect = index.and_then(|i| fixture_sidebar.item_rect(i));
+                        if let Some((x, y, _, h)) = rect {
+                            fltk_omarchy::focus::right_click_at(&win, x + 20, y + h / 2);
+                        }
+                        eprintln!("FILES_TOOLKIT_SIDEBAR_CONTEXT key={key} rect={rect:?}");
+                    }
+                    t if t.starts_with("sidebar-drop:") || t.starts_with("sidebar-hover:") => {
+                        // The private-pipe DnD fixture (no Wayland offer) at a
+                        // rail row: a uri-list naming FILES_TEST_SIDEBAR_DROP.
+                        let (kind, key) = t.split_once(':').unwrap_or_default();
+                        let index = fixture_rail
+                            .borrow()
+                            .items
+                            .iter()
+                            .position(|i| i.key == key);
+                        let point = index
+                            .and_then(|i| fixture_sidebar.item_rect(i))
+                            .map(|(x, y, w, h)| (x + w / 2, y + h / 2));
+                        let result = (|| -> Result<(), String> {
+                            let point = point.ok_or("row not in view")?;
+                            if kind == "sidebar-hover" {
+                                return model.borrow_mut().fixture_drag_at(None, Some(point));
+                            }
+                            let source = std::path::PathBuf::from(
+                                std::env::var_os("FILES_TEST_SIDEBAR_DROP")
+                                    .ok_or("FILES_TEST_SIDEBAR_DROP missing")?,
+                            );
+                            let wire = files_core::file_transfer::encode(
+                                files_core::file_transfer::Format::UriList,
+                                files_core::file_transfer::Intent::Copy,
+                                &[source],
+                            )?;
+                            let mut fds = [0; 2];
+                            if unsafe { libc::pipe2(fds.as_mut_ptr(), libc::O_CLOEXEC) } != 0 {
+                                return Err(std::io::Error::last_os_error().to_string());
+                            }
+                            use std::{io::Write, os::fd::FromRawFd};
+                            let reader = unsafe { std::fs::File::from_raw_fd(fds[0]) };
+                            let mut writer = unsafe { std::fs::File::from_raw_fd(fds[1]) };
+                            let flags = unsafe { libc::fcntl(fds[0], libc::F_GETFL) };
+                            if flags < 0
+                                || unsafe {
+                                    libc::fcntl(fds[0], libc::F_SETFL, flags | libc::O_NONBLOCK)
+                                } < 0
+                            {
+                                return Err(std::io::Error::last_os_error().to_string());
+                            }
+                            writer.write_all(&wire).map_err(|e| e.to_string())?;
+                            drop(writer);
+                            model
+                                .borrow_mut()
+                                .fixture_drag_at(Some(reader), Some(point))
+                        })();
+                        let state = model.borrow();
+                        eprintln!(
+                            "FILES_TOOLKIT_SIDEBAR_DROP kind={kind} key={key} point={point:?} result={result:?} hover={:?}",
+                            state
+                                .native_transfer
+                                .hover()
+                                .map(|t| t.path.display().to_string())
+                        );
+                    }
+                    "sidebar-form" => {
+                        let state = model.borrow();
+                        eprintln!(
+                            "FILES_TOOLKIT_SIDEBAR_FORM open={} destination={} names={} message={:?}",
+                            state.copy_form.is_some(),
+                            state
+                                .copy_form
+                                .as_ref()
+                                .map_or("", |d| d.destination.as_str()),
+                            state.copy_form.as_ref().map_or(0, |d| d.names.len()),
+                            state.operation_message
+                        );
+                    }
+                    "sidebar-form-cancel" => model.borrow_mut().action(Action::CopyDialogCancel),
+                    "sidebar-confirm" => model.borrow_mut().action(Action::CopyStart),
+                    "sidebar-tabs" => {
+                        let state = model.borrow();
+                        eprintln!(
+                            "FILES_TOOLKIT_SIDEBAR_TABS count={} path={}",
+                            state.tabs.rows.len(),
+                            state.path.display()
+                        );
+                    }
+                    t if t.starts_with("sidebar-click:") || t.starts_with("sidebar-secondary:") => {
+                        let (kind, key) = t.split_once(':').unwrap_or_default();
+                        let index = fixture_rail
+                            .borrow()
+                            .items
+                            .iter()
+                            .position(|i| i.key == key);
+                        let rect = index.and_then(|i| fixture_sidebar.item_rect(i));
+                        if let Some((x, y, w, h)) = rect {
+                            let px = if kind == "sidebar-secondary" {
+                                x + w - 18
+                            } else {
+                                x + 20
+                            };
+                            fltk_omarchy::focus::click_at(&win, px, y + h / 2);
+                        }
+                        eprintln!("FILES_TOOLKIT_SIDEBAR_CLICK key={key} rect={rect:?}");
+                    }
                     _ => eprintln!("FILES_TOOLKIT_FIXTURE_INVALID"),
                 }
                 if text.trim().starts_with("trash-") {
@@ -1895,7 +2161,10 @@ pub fn run_since(start: Instant) -> bool {
                         state.action(Action::Corner(files_core::theme::Corners::Square));
                         state.settings = true;
                     }
-                    "rail" => state.rail = true,
+                    "rail" => {
+                        state.rail = true;
+                        state.rail_request = Some(true);
+                    }
                     "list" => state.action(Action::View(View::List)),
                     "spatial" | "spatial-drag" | "spatial-reopen" => {
                         state.action(Action::View(View::Spatial));

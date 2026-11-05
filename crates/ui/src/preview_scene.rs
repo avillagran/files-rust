@@ -130,6 +130,7 @@ fn floor_command(m: &mut Model, action: &str) -> Option<Result<(), String>> {
     }
     if action == "nf-rail" {
         m.rail = true;
+        m.rail_request = Some(true);
         return Some(Ok(()));
     }
     if action == "nf-bookmark-add" {

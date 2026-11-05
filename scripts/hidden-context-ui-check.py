@@ -33,7 +33,9 @@ with tempfile.TemporaryDirectory(prefix='hidden-context-',dir=BASE) as temp:
         for run in range(2):
             raw=base/f'capture-{run}.ppm';log=base/f'app-{run}.log';process=None;normal=False;seq=0
             try:
-                env={**os.environ,'FILES_CONFIG_DIR':str(config),'FILES_TEST_CAPTURE':str(raw),'FILES_TEST_PREVIEW':'1','FILES_TEST_HIDDEN_CONTEXT':'1','FILES_TEST_ISOLATE_INPUT':'1','FILES_TEST_FIXED_SIZE':'1','FILES_CLOSE_TRACE':'1'}
+                # Animations off: the marquee check compares whole frames and the
+                # toolkit Sidebar slides in device rows listed after the first paint.
+                env={**os.environ,'FILES_CONFIG_DIR':str(config),'FILES_TEST_CAPTURE':str(raw),'FILES_TEST_PREVIEW':'1','FILES_TEST_HIDDEN_CONTEXT':'1','FILES_TEST_ISOLATE_INPUT':'1','FILES_TEST_FIXED_SIZE':'1','FILES_CLOSE_TRACE':'1','OMARCHY_FLTK_ANIM':'off'}
                 with log.open('w') as output:
                     process=subprocess.Popen([str(ROOT/'target/release/files'),str(folder),'--ui-smoke','--ui-scene','hidden-context','--size','1000x560','--scale','1','--exit-after','120'],env=env,stderr=output,stdout=subprocess.DEVNULL,stdin=subprocess.DEVNULL,start_new_session=True)
                 def wait(check,reason,allow_exit=False):

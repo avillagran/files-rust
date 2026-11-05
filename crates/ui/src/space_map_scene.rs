@@ -180,10 +180,12 @@ pub fn command(m: &mut Model, action: &str, root: &Path, w: i32, h: i32) -> Resu
         "pane-next" => m.switch_dual(),
         "fixture-rail:on" => {
             m.rail = true;
+            m.rail_request = Some(true);
             m.hits.clear();
         }
         "fixture-rail:off" => {
             m.rail = false;
+            m.rail_request = Some(false);
             m.hits.clear();
         }
         "copy-start-paused" => m.action(Action::CopyStartPaused),

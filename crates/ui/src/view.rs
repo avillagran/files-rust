@@ -604,198 +604,209 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         c.lighter_background,
     );
     let trash_y = crate::operation_bar::browser_height(m, h) - 72;
-    p.clip(r(0, 90, rail - 1, (trash_y - 8 - 90).max(0)));
-    let rail_hits_start = m.hits.len();
-    let star = r(8, 98, rail - 16, 36);
-    p.text(
-        r(18, 98, 30, 36),
-        crate::fonts::icon("", "*"),
-        20,
-        c.accent,
-        true,
-        false,
-    );
-    if m.rail {
-        p.text(
-            r(48, 98, 110, 36),
-            "Favoritos",
-            12,
-            c.dark_foreground,
-            false,
-            false,
-        );
-    }
-    hit(m, star, Action::Bookmarks);
-    let mut y = 138;
-    for (i, place) in m.places.clone().iter().enumerate() {
-        let on = m.path == place.path;
-        let rect = r(8, y, rail - 16, 36);
-        if on {
-            p.rounded_rect(rect, 8 * rad, c.lighter_background);
-        }
-        rail_icon(
-            p,
-            18,
-            y + 10,
-            i,
-            if on { c.accent } else { c.dark_foreground },
-        );
-        if m.rail {
-            p.text(
-                r(48, y, 110, 36),
-                &place.label,
-                12,
-                if on { c.foreground } else { c.dark_foreground },
-                false,
-                false,
-            );
-        }
-        hit(m, rect, Action::Navigate(place.path.clone()));
-        y += 40;
-    }
-    // Bookmarks (Nautilus sidebar): up to eight, then devices.
-    let marks: Vec<(std::path::PathBuf, String)> = m
-        .bookmarks
-        .document
-        .rows
-        .iter()
-        .take(8)
-        .map(|e| (e.path.clone(), e.label.clone()))
-        .collect();
-    if !marks.is_empty() {
-        p.rect(r(14, y + 6, rail - 28, 1), c.lighter_background);
-        y += 18;
-    }
-    for (path, label) in marks {
-        let on = m.path == path;
-        let rect = r(8, y, rail - 16, 36);
-        if on {
-            p.rounded_rect(rect, 8 * rad, c.lighter_background);
-        }
-        p.text(
-            r(16, y + 6, 26, 26),
-            crate::fonts::icon("\u{f02e}", "B"),
-            16,
-            if on { c.accent } else { c.dark_foreground },
-            true,
-            false,
-        );
-        if m.rail {
-            p.text(
-                r(48, y, 108, 36),
-                &label,
-                12,
-                c.dark_foreground,
-                false,
-                false,
-            );
-        }
-        hit(m, rect, Action::Navigate(path));
-        y += 40;
-    }
-    let devices = m.devices.list.clone();
-    if !devices.is_empty() {
-        p.rect(r(14, y + 6, rail - 28, 1), c.lighter_background);
-        y += 18;
-    }
-    let busy = m.devices.busy_node().cloned();
-    for d in devices {
-        let on = d.mount.as_deref().is_some_and(|mp| m.path.starts_with(mp));
-        let rect = r(8, y, rail - 16, 36);
-        if on {
-            p.rounded_rect(rect, 8 * rad, c.lighter_background);
-        }
-        let mounted = d.mount.is_some();
-        let tint = if on {
-            c.accent
-        } else if mounted {
-            c.foreground
+    // With the toolkit Sidebar widget over this strip (the real window),
+    // only the hit targets stay: scenes and keyboard routing still use them,
+    // the pointer reaches the widget first. Headless paints draw the rows.
+    {
+        let mut hidden = NullPainter;
+        let p: &mut dyn Painter = if m.sidebar_widget {
+            &mut hidden
         } else {
-            c.dark_foreground
+            &mut *p
         };
+        p.clip(r(0, 90, rail - 1, (trash_y - 8 - 90).max(0)));
+        let rail_hits_start = m.hits.len();
+        let star = r(8, 98, rail - 16, 36);
         p.text(
-            r(16, y + 6, 26, 26),
-            crate::fonts::icon(if d.removable { "\u{f287}" } else { "\u{f0a0}" }, "D"),
-            16,
-            tint,
+            r(18, 98, 30, 36),
+            crate::fonts::icon("", "*"),
+            20,
+            c.accent,
             true,
             false,
         );
         if m.rail {
-            let detail = if busy.as_ref() == Some(&d.node) {
-                "…".to_string()
-            } else {
-                match (d.mount.is_some(), d.free) {
-                    (true, Some(free)) => format!("{} libres", files_core::format_size(free)),
-                    (true, None) => "montado".into(),
-                    (false, _) => "sin montar".into(),
-                }
-            };
-            p.text(r(48, y, 82, 20), &d.title(), 12, tint, false, false);
             p.text(
-                r(48, y + 18, 82, 16),
-                &detail,
-                9,
+                r(48, 98, 110, 36),
+                "Favoritos",
+                12,
                 c.dark_foreground,
                 false,
                 false,
             );
         }
-        hit(m, rect, Action::Device(d.node.clone(), None));
-        // Eject / unmount button for mounted devices (expanded sidebar).
-        if mounted && m.rail {
-            let eject = r(rail - 38, y + 6, 24, 24);
+        hit(m, star, Action::Bookmarks);
+        let mut y = 138;
+        for (i, place) in m.places.clone().iter().enumerate() {
+            let on = m.path == place.path;
+            let rect = r(8, y, rail - 16, 36);
+            if on {
+                p.rounded_rect(rect, 8 * rad, c.lighter_background);
+            }
+            rail_icon(
+                p,
+                18,
+                y + 10,
+                i,
+                if on { c.accent } else { c.dark_foreground },
+            );
+            if m.rail {
+                p.text(
+                    r(48, y, 110, 36),
+                    &place.label,
+                    12,
+                    if on { c.foreground } else { c.dark_foreground },
+                    false,
+                    false,
+                );
+            }
+            hit(m, rect, Action::Navigate(place.path.clone()));
+            y += 40;
+        }
+        // Bookmarks (Nautilus sidebar): up to eight, then devices.
+        let marks: Vec<(std::path::PathBuf, String)> = m
+            .bookmarks
+            .document
+            .rows
+            .iter()
+            .take(8)
+            .map(|e| (e.path.clone(), e.label.clone()))
+            .collect();
+        if !marks.is_empty() {
+            p.rect(r(14, y + 6, rail - 28, 1), c.lighter_background);
+            y += 18;
+        }
+        for (path, label) in marks {
+            let on = m.path == path;
+            let rect = r(8, y, rail - 16, 36);
+            if on {
+                p.rounded_rect(rect, 8 * rad, c.lighter_background);
+            }
             p.text(
-                eject,
-                crate::fonts::icon("\u{f052}", "^"),
-                13,
-                c.dark_foreground,
+                r(16, y + 6, 26, 26),
+                crate::fonts::icon("\u{f02e}", "B"),
+                16,
+                if on { c.accent } else { c.dark_foreground },
                 true,
                 false,
             );
-            hit(
-                m,
-                eject,
-                Action::Device(
-                    d.node.clone(),
-                    Some(if d.removable {
-                        files_core::devices::Op::Eject
-                    } else {
-                        files_core::devices::Op::Unmount
-                    }),
-                ),
-            );
+            if m.rail {
+                p.text(
+                    r(48, y, 108, 36),
+                    &label,
+                    12,
+                    c.dark_foreground,
+                    false,
+                    false,
+                );
+            }
+            hit(m, rect, Action::Navigate(path));
+            y += 40;
         }
-        y += 40;
-    }
-    p.unclip();
-    let rail_bottom = trash_y - 8;
-    for target in &mut m.hits[rail_hits_start..] {
-        let end = (target.rect.y + target.rect.h).min(rail_bottom);
-        target.rect.y = target.rect.y.max(90);
-        target.rect.h = (end - target.rect.y).max(0);
-    }
-    m.hits.retain(|hit| hit.rect.h > 0);
-    p.rect(r(14, trash_y - 5, rail - 28, 1), c.lighter_background);
-    p.text(
-        r(18, trash_y, 30, 36),
-        crate::fonts::icon("", "TR"),
-        20,
-        c.dark_foreground,
-        true,
-        false,
-    );
-    if m.rail {
+        let devices = m.devices.list.clone();
+        if !devices.is_empty() {
+            p.rect(r(14, y + 6, rail - 28, 1), c.lighter_background);
+            y += 18;
+        }
+        let busy = m.devices.busy_node().cloned();
+        for d in devices {
+            let on = d.mount.as_deref().is_some_and(|mp| m.path.starts_with(mp));
+            let rect = r(8, y, rail - 16, 36);
+            if on {
+                p.rounded_rect(rect, 8 * rad, c.lighter_background);
+            }
+            let mounted = d.mount.is_some();
+            let tint = if on {
+                c.accent
+            } else if mounted {
+                c.foreground
+            } else {
+                c.dark_foreground
+            };
+            p.text(
+                r(16, y + 6, 26, 26),
+                crate::fonts::icon(if d.removable { "\u{f287}" } else { "\u{f0a0}" }, "D"),
+                16,
+                tint,
+                true,
+                false,
+            );
+            if m.rail {
+                let detail = if busy.as_ref() == Some(&d.node) {
+                    "…".to_string()
+                } else {
+                    match (d.mount.is_some(), d.free) {
+                        (true, Some(free)) => format!("{} libres", files_core::format_size(free)),
+                        (true, None) => "montado".into(),
+                        (false, _) => "sin montar".into(),
+                    }
+                };
+                p.text(r(48, y, 82, 20), &d.title(), 12, tint, false, false);
+                p.text(
+                    r(48, y + 18, 82, 16),
+                    &detail,
+                    9,
+                    c.dark_foreground,
+                    false,
+                    false,
+                );
+            }
+            hit(m, rect, Action::Device(d.node.clone(), None));
+            // Eject / unmount button for mounted devices (expanded sidebar).
+            if mounted && m.rail {
+                let eject = r(rail - 38, y + 6, 24, 24);
+                p.text(
+                    eject,
+                    crate::fonts::icon("\u{f052}", "^"),
+                    13,
+                    c.dark_foreground,
+                    true,
+                    false,
+                );
+                hit(
+                    m,
+                    eject,
+                    Action::Device(
+                        d.node.clone(),
+                        Some(if d.removable {
+                            files_core::devices::Op::Eject
+                        } else {
+                            files_core::devices::Op::Unmount
+                        }),
+                    ),
+                );
+            }
+            y += 40;
+        }
+        p.unclip();
+        let rail_bottom = trash_y - 8;
+        for target in &mut m.hits[rail_hits_start..] {
+            let end = (target.rect.y + target.rect.h).min(rail_bottom);
+            target.rect.y = target.rect.y.max(90);
+            target.rect.h = (end - target.rect.y).max(0);
+        }
+        m.hits.retain(|hit| hit.rect.h > 0);
+        p.rect(r(14, trash_y - 5, rail - 28, 1), c.lighter_background);
         p.text(
-            r(48, trash_y, 110, 36),
-            "Papelera",
-            12,
+            r(18, trash_y, 30, 36),
+            crate::fonts::icon("", "TR"),
+            20,
             c.dark_foreground,
-            false,
+            true,
             false,
         );
+        if m.rail {
+            p.text(
+                r(48, trash_y, 110, 36),
+                "Papelera",
+                12,
+                c.dark_foreground,
+                false,
+                false,
+            );
+        }
+        hit(m, r(8, trash_y, rail - 16, 36), Action::OpenTrash);
     }
-    hit(m, r(8, trash_y, rail - 16, 36), Action::OpenTrash);
     let iw = if !m.dual.enabled && m.inspector && w >= 800 {
         240
     } else {
@@ -1928,6 +1939,17 @@ pub fn reveal_selection(m: &mut Model, w: i32, h: i32) {
 }
 
 // Glifos propios, sin cargar fuentes de iconos ni un atlas residente.
+/// Paints nothing: the rail rows when the toolkit Sidebar draws them.
+struct NullPainter;
+impl Painter for NullPainter {
+    fn rect(&mut self, _: Rect, _: Color) {}
+    fn rounded_rect(&mut self, _: Rect, _: i32, _: Color) {}
+    fn text(&mut self, _: Rect, _: &str, _: i32, _: Color, _: bool, _: bool) {}
+    fn image(&mut self, _: Rect, _: &crate::painter::Image<'_>) {}
+    fn clip(&mut self, _: Rect) {}
+    fn unclip(&mut self) {}
+}
+
 fn rail_icon(p: &mut dyn Painter, x: i32, y: i32, kind: usize, c: Color) {
     let glyph = match kind {
         0 => crate::fonts::icon("", "H"),
