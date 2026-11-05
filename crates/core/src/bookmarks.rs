@@ -177,9 +177,20 @@ pub fn encode(doc: &Document) -> io::Result<Vec<u8>> {
 #[derive(Clone, Debug)]
 pub enum Op {
     Read,
-    Add { path: PathBuf, label: String },
+    Add {
+        path: PathBuf,
+        label: String,
+    },
     Remove(Entry),
-    Rename { expected: Entry, label: String },
+    Rename {
+        expected: Entry,
+        label: String,
+    },
+    /// Move an entry to position `to` (clamped), keeping its id and label.
+    Move {
+        expected: Entry,
+        to: usize,
+    },
     Sync,
 }
 #[derive(Debug)]
@@ -313,7 +324,7 @@ pub fn apply(directory: &Path, op: &Op) -> io::Result<Updated> {
         Op::Add { path, label } if !path_valid(path) || !label_valid(label) => {
             return Err(invalid());
         }
-        Op::Remove(e) | Op::Rename { expected: e, .. }
+        Op::Remove(e) | Op::Rename { expected: e, .. } | Op::Move { expected: e, .. }
             if e.id == 0 || !path_valid(&e.path) || !label_valid(&e.label) =>
         {
             return Err(invalid());
@@ -396,6 +407,18 @@ pub fn apply(directory: &Path, op: &Op) -> io::Result<Updated> {
                 })?;
             item.label = label.clone();
             "Etiqueta actualizada"
+        }
+        Op::Move { expected, to } => {
+            let from = old
+                .document
+                .rows
+                .iter()
+                .position(|e| e == expected)
+                .ok_or_else(|| io::Error::other("El favorito cambió; recarga antes de moverlo"))?;
+            let entry = old.document.rows.remove(from);
+            let to = (*to).min(old.document.rows.len());
+            old.document.rows.insert(to, entry);
+            "Favorito movido"
         }
         Op::Sync => {
             File::open(directory)?.sync_all()?;
@@ -525,6 +548,54 @@ mod tests {
         let c = apply(&root, &add("/one")).unwrap();
         assert_eq!(c.document.rows[1].id, 3);
         assert!(apply(&root, &Op::Read).unwrap().document.rows[1].id == 3);
+        // Move keeps ids and labels, clamps the target and refuses stale entries.
+        let three = apply(&root, &add("/three")).unwrap();
+        let last = three.document.rows[2].clone();
+        let moved = apply(
+            &root,
+            &Op::Move {
+                expected: last.clone(),
+                to: 0,
+            },
+        )
+        .unwrap();
+        let order: Vec<_> = moved.document.rows.iter().map(|e| e.id).collect();
+        assert_eq!(
+            order,
+            [
+                last.id,
+                three.document.rows[0].id,
+                three.document.rows[1].id
+            ]
+        );
+        assert_eq!(moved.notice, "Favorito movido");
+        let back = apply(
+            &root,
+            &Op::Move {
+                expected: last.clone(),
+                to: 99,
+            },
+        )
+        .unwrap();
+        assert_eq!(back.document.rows.last().unwrap().id, last.id);
+        assert_eq!(
+            apply(&root, &Op::Read).unwrap().document.rows,
+            back.document.rows
+        );
+        let stale = Entry {
+            label: "otro".into(),
+            ..last
+        };
+        assert!(
+            apply(
+                &root,
+                &Op::Move {
+                    expected: stale,
+                    to: 0
+                }
+            )
+            .is_err()
+        );
         fs::remove_dir_all(root).unwrap();
     }
     #[test]

@@ -170,6 +170,30 @@ def main():
         s = state('trash-closed')
         assert s['visible'], s
 
+        # Bookmarks: add Descargas and Música from the Favoritos row menu
+        # (End + Enter = "Añadir esta carpeta a favoritos"), then drag Música
+        # above Descargas; the saved order follows.
+        def bookmark_here(place):
+            command(f'sidebar-click:{place}', f'FILES_TOOLKIT_SIDEBAR_CLICK key={place}')
+            wait(lambda: state('nav')['path'] == place.split(':', 1)[1], 'navigate ' + place)
+            command('sidebar-context:fav', 'FILES_TOOLKIT_SIDEBAR_MENU')
+            command('end'); picked = command('pick', 'FILES_TOOLKIT_SIDEBAR_PICK')
+            assert 'BookmarkAdd' in picked, picked
+            wait(lambda: f'mark:{place.split(":", 1)[1]}' in state('marks')['keys'], 'bookmark ' + place)
+        music = f'place:{home/"Music"}'
+        bookmark_here(downloads); bookmark_here(music)
+        mark_d, mark_m = f'mark:{home/"Downloads"}', f'mark:{home/"Music"}'
+        keys = state('marks-before')['keys']
+        assert keys.index(mark_d) < keys.index(mark_m), keys
+        capture('bookmarks-before')
+        moved = command(f'sidebar-drag:{mark_m}|{mark_d}', 'FILES_TOOLKIT_SIDEBAR_DRAG')
+        assert 'found=true' in moved and f'FILES_TOOLKIT_SIDEBAR_MOVE key={mark_m} index=0 requested=true' in log.read_text(), moved
+        time.sleep(.5)
+        keys = state('marks-after')['keys']
+        assert keys.index(mark_m) < keys.index(mark_d), keys
+        capture('bookmarks-after')
+        result['bookmark_reorder'] = {'moved': mark_m, 'before': mark_d, 'saved_order': [k for k in keys if k.startswith('mark:')]}
+
         command('sidebar-collapse')
         s = state('collapsed-again')
         assert not s['expanded'] and not s['rail'] and s['rect'][2] == 52, s

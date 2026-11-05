@@ -334,6 +334,39 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
     out
 }
 
+/// Moves the bookmark of `path` to position `to` among the bookmarks (the
+/// rail shows the first ones in document order, so its index is theirs).
+pub fn move_bookmark(m: &mut Model, path: &Path, to: usize) -> bool {
+    let entry = m
+        .bookmarks
+        .document
+        .rows
+        .iter()
+        .find(|e| e.path == path)
+        .cloned();
+    match entry {
+        Some(expected) if m.bookmarks.can_request() => {
+            let ok = m
+                .bookmarks
+                .request(files_core::bookmarks::Op::Move { expected, to });
+            if !ok {
+                m.bookmarks.notice = "Espera, reintenta u omite el intento anterior".into();
+            }
+            ok
+        }
+        Some(_) => {
+            m.bookmarks.notice = "Espera, reintenta u omite el intento anterior".into();
+            false
+        }
+        None => false,
+    }
+}
+
+/// The rail rows that may be dragged to reorder (bookmarks, among themselves).
+pub fn movable(key: &str, parent: &str) -> bool {
+    key.starts_with("mark:") && parent == "h:marks"
+}
+
 /// Runs a rail menu pick on the model.
 pub fn apply(m: &mut Model, pick: Pick) {
     match pick {
@@ -473,6 +506,15 @@ mod tests {
         for key in ["fav", "trash", "h:devices", "dev:/dev/sdy2"] {
             assert_eq!(rail.drop_dir(at(key)), None, "{key}");
         }
+    }
+
+    #[test]
+    fn only_bookmarks_move_and_only_among_themselves() {
+        assert!(movable("mark:/a", "h:marks"));
+        assert!(!movable("mark:/a", "h:devices"));
+        assert!(!movable("place:/home", ""));
+        assert!(!movable("dev:/dev/sdz1", "h:devices"));
+        assert!(!movable("trash", ""));
     }
 
     #[test]

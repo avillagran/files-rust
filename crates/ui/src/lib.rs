@@ -1125,6 +1125,31 @@ pub fn run_since(start: Instant) -> bool {
             });
         });
     }
+    // Bookmarks reorder by dragging, among themselves: the row moves at once
+    // and the new order is saved; a failed save is put back by the paint.
+    {
+        let tree = sidebar.tree();
+        let model_rows = tree.model();
+        let m5 = model.clone();
+        let mut c5 = canvas.clone();
+        let _ = tree
+            .reorder(fltk_omarchy::navtree::Reorder::Siblings)
+            .accept_move(|key, parent, _| places_sidebar::movable(key, parent))
+            .on_move(move |key, parent, index| {
+                if !places_sidebar::movable(key, parent) {
+                    return;
+                }
+                let path = std::path::PathBuf::from(&key["mark:".len()..]);
+                let moved = m5
+                    .try_borrow_mut()
+                    .is_ok_and(|mut state| places_sidebar::move_bookmark(&mut state, &path, index));
+                eprintln!("FILES_TOOLKIT_SIDEBAR_MOVE key={key} index={index} requested={moved}");
+                if moved {
+                    fltk_omarchy::navtree::move_item(&model_rows, key, parent, index);
+                }
+                c5.redraw();
+            });
+    }
     sidebar.resize(0, 90, places_sidebar::RAIL, (size.1 - 122).max(0));
     // Tab stays with the browser (it switches panes); the rail is pointer-driven.
     sidebar.clear_visible_focus();
@@ -1180,7 +1205,20 @@ pub fn run_since(start: Instant) -> bool {
                 }
             } else {
                 let rail = places_sidebar::rail(&m);
-                if rail.items != rail_state.borrow().items {
+                // A row moved by dragging that did not end up saved (or any
+                // other drift) is put back once no bookmark request runs.
+                let drifted = !m.bookmarks.busy() && {
+                    let mut shown = Vec::new();
+                    rail_sidebar
+                        .tree()
+                        .model()
+                        .for_each(|_, it| shown.push(it.key.clone()));
+                    shown
+                        .iter()
+                        .map(String::as_str)
+                        .ne(rail.items.iter().map(|i| i.key.as_str()))
+                };
+                if drifted || rail.items != rail_state.borrow().items {
                     rail_sidebar.set_items(rail.items.clone());
                 }
                 rail_selected.set_if_changed(rail.active);
@@ -2078,6 +2116,35 @@ pub fn run_since(start: Instant) -> bool {
                     }
                     "sidebar-form-cancel" => model.borrow_mut().action(Action::CopyDialogCancel),
                     "sidebar-confirm" => model.borrow_mut().action(Action::CopyStart),
+                    t if t.starts_with("sidebar-drag:") => {
+                        // Drag row `from` onto the upper part of row `to` (drop
+                        // before it), through the toolkit's mouse helpers.
+                        let (from, to) = t["sidebar-drag:".len()..]
+                            .split_once('|')
+                            .unwrap_or_default();
+                        let rect = |key: &str| {
+                            let index = fixture_rail
+                                .borrow()
+                                .items
+                                .iter()
+                                .position(|i| i.key == key);
+                            index.and_then(|i| fixture_sidebar.item_rect(i))
+                        };
+                        let tree = fixture_sidebar.tree();
+                        tree.reveal(to);
+                        tree.reveal(from);
+                        app::flush();
+                        if let (Some(a), Some(b)) = (rect(from), rect(to)) {
+                            let start = (a.0 + a.2 / 2, a.1 + a.3 / 2);
+                            let end = (b.0 + 60.min(b.2 - 4), b.1 + 4);
+                            fltk_omarchy::focus::mouse_drag(&win, start, end, false);
+                            fltk_omarchy::focus::mouse_up(&win, end.0, end.1);
+                        }
+                        eprintln!(
+                            "FILES_TOOLKIT_SIDEBAR_DRAG from={from} to={to} found={}",
+                            rect(from).is_some() && rect(to).is_some()
+                        );
+                    }
                     "sidebar-tabs" => {
                         let state = model.borrow();
                         eprintln!(

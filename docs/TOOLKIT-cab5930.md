@@ -64,6 +64,21 @@ the vendor.
 - Unmounted device: mount and open; mount.
 - Trash: open the trash.
 
+## Reordering bookmarks
+
+Bookmark rows can be dragged among themselves; nothing else moves. This uses
+`Sidebar::tree()` with `Reorder::Siblings` and `accept_move` restricted to
+`mark:` rows under the "Marcadores" header.
+
+- The row moves at once (`navtree::move_item` on the widget's model), and the
+  new position is saved with the new core operation
+  `bookmarks::Op::Move { expected, to }`. It is locked and written atomically
+  like the other bookmark operations, keeps ids and labels, clamps the
+  target, and refuses a stale entry.
+- If the save does not happen, the next paint finds the widget's order
+  different from the saved one (once no bookmark request is running) and
+  calls `set_items` to put it back.
+
 ## Drops
 
 Files receives drops through its own Wayland transfer layer, with a copy
@@ -96,6 +111,8 @@ review, not through FLTK DnD. So the Sidebar refuses the toolkit path
   - the trash browser hides the rail and closing it shows the rail again;
   - right click on Documentos, End + Enter: "Abrir en pestaña nueva" opens a
     second tab on Documentos;
+  - Descargas and Música added as bookmarks from the Favoritos row menu;
+    dragging Música above Descargas saves the new order ("Favorito movido");
   - a file dropped on Documentos (private-pipe fixture through Files' native
     transfer) opens the review with Documentos as destination, copies
     nothing until confirmed, then copies the exact bytes; the source stays
