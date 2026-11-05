@@ -183,7 +183,7 @@ def main():
     finally:
         if process is not None and process.poll() is None: stop_tree(process, None)
         if log.exists(): result['log'] = log.read_text()[-20000:]
-        for name, key in [('files', 'binary_sha256'), ('files-helper', 'helper_sha256')]:
+        for name, key in [('files', 'binary_sha256'), ('files-helper', 'helper_sha256'), ('files-html-helper', 'html_helper_sha256')]:
             path = ROOT/'target/release'/name
             if path.exists(): result[key] = hashlib.sha256(path.read_bytes()).hexdigest()
         report = OUT/f'toolkit-sidebar-ui-{time.time_ns()}.json'
