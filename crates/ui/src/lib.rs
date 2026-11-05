@@ -876,6 +876,55 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
     }
 }
 
+/// Recent files (XDG recently-used.xbel) as the toolkit's filter menu; the
+/// file is read off the UI thread, the menu opens when the list is ready.
+fn open_recent(win: &Window, model: &Rc<RefCell<Model>>, canvas: &Frame) {
+    let (tx, rx) = std::sync::mpsc::channel();
+    let dir = files_core::apps::data_home();
+    std::thread::spawn(move || {
+        let _ = tx.send(files_core::recent::read(&dir));
+    });
+    let (win, model, canvas) = (win.clone(), model.clone(), canvas.clone());
+    let started = Instant::now();
+    app::add_timeout3(0.02, move |handle| {
+        let notice = |text: &str| {
+            if let Ok(mut state) = model.try_borrow_mut() {
+                state.operation_message = Some(text.into());
+            }
+            canvas.clone().redraw();
+        };
+        match rx.try_recv() {
+            Ok(Ok(list)) if list.is_empty() => notice("No hay archivos recientes"),
+            Ok(Ok(list)) => {
+                eprintln!("FILES_TOOLKIT_RECENT count={}", list.len());
+                let items = places_sidebar::recent_items(&list);
+                let (m, c) = (model.clone(), canvas.clone());
+                fltk_omarchy::overlay::Menu::open(&win, "Recientes", items, move |i| {
+                    if let Some(r) = list.get(i)
+                        && let Ok(mut state) = m.try_borrow_mut()
+                    {
+                        let ok = places_sidebar::locate(&mut state, &r.path);
+                        eprintln!(
+                            "FILES_TOOLKIT_RECENT_PICK index={i} path={} located={ok}",
+                            r.path.display()
+                        );
+                    }
+                    let mut canvas = c.clone();
+                    let _ = canvas.take_focus();
+                    canvas.redraw();
+                });
+            }
+            Ok(Err(e)) => notice(&format!("No se pudieron leer los recientes: {e}")),
+            Err(std::sync::mpsc::TryRecvError::Empty)
+                if started.elapsed() < std::time::Duration::from_secs(5) =>
+            {
+                app::repeat_timeout3(0.02, handle)
+            }
+            Err(_) => notice("No se pudieron leer los recientes"),
+        }
+    });
+}
+
 pub fn run() -> bool {
     run_since(Instant::now())
 }
@@ -1080,11 +1129,20 @@ pub fn run_since(start: Instant) -> bool {
             let _ = canvas.take_focus();
             canvas.redraw();
         };
-        let (m1, r1, c1) = (model.clone(), rail_state.clone(), canvas.clone());
+        let (m1, r1, c1, w1) = (
+            model.clone(),
+            rail_state.clone(),
+            canvas.clone(),
+            win.clone(),
+        );
         let (m2, r2, c2) = (model.clone(), rail_state.clone(), canvas.clone());
         fltk_omarchy::widgets::Sidebar::new(Vec::new(), &rail_selected)
             .widths(places_sidebar::RAIL, places_sidebar::WIDE)
             .on_activate(move |i| {
+                if r1.borrow().kinds.get(i) == Some(&places_sidebar::Kind::Recent) {
+                    open_recent(&w1, &m1, &c1);
+                    return;
+                }
                 let action = r1.borrow().actions.get(i).cloned().flatten();
                 run(&m1, &c1, action);
             })
@@ -1100,7 +1158,12 @@ pub fn run_since(start: Instant) -> bool {
     // remove bookmark, mount / unmount / eject, trash).
     {
         let menu_tree = sidebar.tree();
-        let (m3, r3, c3) = (model.clone(), rail_state.clone(), canvas.clone());
+        let (m3, r3, c3, w3) = (
+            model.clone(),
+            rail_state.clone(),
+            canvas.clone(),
+            win.clone(),
+        );
         sidebar = sidebar.on_context(move |i, x, y| {
             let entries = match m3.try_borrow() {
                 Ok(state) => places_sidebar::menu(&state, &r3.borrow(), i),
@@ -1110,11 +1173,15 @@ pub fn run_since(start: Instant) -> bool {
                 return;
             }
             let (items, picks): (Vec<_>, Vec<_>) = entries.into_iter().unzip();
-            let (m4, c4) = (m3.clone(), c3.clone());
+            let (m4, c4, w4) = (m3.clone(), c3.clone(), w3.clone());
             eprintln!("FILES_TOOLKIT_SIDEBAR_MENU row={i} entries={}", picks.len());
             menu_tree.open_menu(x, y, items, move |k| {
                 if let Some(pick) = picks.get(k).cloned() {
                     eprintln!("FILES_TOOLKIT_SIDEBAR_PICK row={i} entry={k} pick={pick:?}");
+                    if matches!(pick, places_sidebar::Pick::OpenRecent) {
+                        open_recent(&w4, &m4, &c4);
+                        return;
+                    }
                     if let Ok(mut state) = m4.try_borrow_mut() {
                         places_sidebar::apply(&mut state, pick);
                     }
@@ -2039,7 +2106,11 @@ pub fn run_since(start: Instant) -> bool {
                             .items
                             .iter()
                             .position(|i| i.key == key);
-                        let rect = index.and_then(|i| fixture_sidebar.item_rect(i));
+                        let rect = {
+                            fixture_sidebar.tree().scroll_to(key);
+                            app::flush();
+                            index.and_then(|i| fixture_sidebar.item_rect(i))
+                        };
                         if let Some((x, y, _, h)) = rect {
                             fltk_omarchy::focus::right_click_at(&win, x + 20, y + h / 2);
                         }
@@ -2054,9 +2125,12 @@ pub fn run_since(start: Instant) -> bool {
                             .items
                             .iter()
                             .position(|i| i.key == key);
-                        let point = index
-                            .and_then(|i| fixture_sidebar.item_rect(i))
-                            .map(|(x, y, w, h)| (x + w / 2, y + h / 2));
+                        let point = {
+                            fixture_sidebar.tree().scroll_to(key);
+                            app::flush();
+                            index.and_then(|i| fixture_sidebar.item_rect(i))
+                        }
+                        .map(|(x, y, w, h)| (x + w / 2, y + h / 2));
                         let result = (|| -> Result<(), String> {
                             let point = point.ok_or("row not in view")?;
                             if kind == "sidebar-hover" {
@@ -2128,7 +2202,11 @@ pub fn run_since(start: Instant) -> bool {
                                 .items
                                 .iter()
                                 .position(|i| i.key == key);
-                            index.and_then(|i| fixture_sidebar.item_rect(i))
+                            {
+                                fixture_sidebar.tree().scroll_to(key);
+                                app::flush();
+                                index.and_then(|i| fixture_sidebar.item_rect(i))
+                            }
                         };
                         let tree = fixture_sidebar.tree();
                         tree.reveal(to);
@@ -2160,7 +2238,11 @@ pub fn run_since(start: Instant) -> bool {
                             .items
                             .iter()
                             .position(|i| i.key == key);
-                        let rect = index.and_then(|i| fixture_sidebar.item_rect(i));
+                        let rect = {
+                            fixture_sidebar.tree().scroll_to(key);
+                            app::flush();
+                            index.and_then(|i| fixture_sidebar.item_rect(i))
+                        };
                         if let Some((x, y, w, h)) = rect {
                             let px = if kind == "sidebar-secondary" {
                                 x + w - 18

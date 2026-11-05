@@ -64,6 +64,22 @@ the vendor.
 - Unmounted device: mount and open; mount.
 - Trash: open the trash.
 
+## Recent files
+
+A "Recientes" row under Favoritos opens the toolkit's filter menu
+(`overlay::Menu`) with the recently used files that desktop apps record in
+`$XDG_DATA_HOME/recently-used.xbel`. Picking one goes to its folder and
+selects it (`places_sidebar::locate`, the same path as search and checksum
+"locate").
+
+- `files_core::recent` reads the file off the UI thread: at most 8 MiB, only
+  local `file://` entries, URIs decoded with `file_transfer::decode`, one row
+  per path (the newest date wins), newest first, existing regular files only,
+  at most 40.
+- The menu opens when the list arrives (a 20 ms UI-thread poll, 5 s cap).
+  An empty list shows "No hay archivos recientes"; a read error says so.
+- The row's context menu offers "Abrir recientes".
+
 ## Reordering bookmarks
 
 Bookmark rows can be dragged among themselves; nothing else moves. This uses
@@ -111,6 +127,8 @@ review, not through FLTK DnD. So the Sidebar refuses the toolkit path
   - the trash browser hides the rail and closing it shows the rail again;
   - right click on Documentos, End + Enter: "Abrir en pestaña nueva" opens a
     second tab on Documentos;
+  - from Descargas, "Recientes" lists only the existing recent file (a deleted
+    one is skipped), and Enter goes to Documentos with that file selected;
   - Descargas and Música added as bookmarks from the Favoritos row menu;
     dragging Música above Descargas saves the new order ("Favorito movido");
   - a file dropped on Documentos (private-pipe fixture through Files' native

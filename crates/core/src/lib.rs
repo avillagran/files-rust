@@ -18,6 +18,7 @@ pub mod navigation_history;
 pub mod persistence;
 pub mod places;
 pub mod protocol;
+pub mod recent;
 pub mod relative_source;
 pub mod rename_plan;
 pub mod rename_transaction;

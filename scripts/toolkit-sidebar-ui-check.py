@@ -34,6 +34,12 @@ def main():
         (home/'Downloads'/'fixture-download.txt').write_text('fixture\n')
         directory = home/'files'; directory.mkdir(); (directory/'example.txt').write_text('fixture\n')
         config = base/'config'; config.mkdir()
+        report_file = home/'Documents'/'informe.txt'; report_file.write_text('reciente\n')
+        (base/'xdg-data').mkdir()
+        (base/'xdg-data'/'recently-used.xbel').write_text(
+            '<?xml version="1.0" encoding="UTF-8"?>\n<xbel version="1.0">\n'
+            f'<bookmark href="file://{report_file}" added="2026-11-05T20:00:00Z" modified="2026-11-05T21:00:00Z" visited="2026-11-05T21:00:00Z"></bookmark>\n'
+            f'<bookmark href="file://{home/"Documents"/"borrado.txt"}" modified="2026-11-05T22:00:00Z"></bookmark>\n</xbel>\n')
         source = base/'outside'; source.mkdir(); dropped = source/'dropped.txt'; dropped.write_bytes(b'dropped on the rail\n')
         pen = base/'mnt/PENDRIVE'; pen.mkdir(parents=True); (pen/'foto.jpg').write_bytes(b'x')
         devices = {'blockdevices': [
@@ -161,6 +167,19 @@ def main():
              (home/'Documents'/'dropped.txt').read_bytes() == b'dropped on the rail\n', 'copy into Documents')
         assert dropped.read_bytes() == b'dropped on the rail\n'
         result['drop'] = {'row': documents, 'destination': str(home/'Documents'), 'copied': True, 'source_intact': True}
+
+        # Recientes: the toolkit filter menu lists existing recent files only;
+        # Enter goes to the file's folder and selects it.
+        command(f'sidebar-click:{downloads}', f'FILES_TOOLKIT_SIDEBAR_CLICK key={downloads}')
+        wait(lambda: state('before-recent')['path'] == str(home/'Downloads'), 'leave Documentos first')
+        command('sidebar-click:recent', 'FILES_TOOLKIT_SIDEBAR_CLICK key=recent')
+        wait(lambda: 'FILES_TOOLKIT_RECENT count=1' in log.read_text(), 'recent menu with one file')
+        time.sleep(.15); capture('recent-menu')
+        command('pick', 'FILES_TOOLKIT_RECENT_PICK')
+        assert f'FILES_TOOLKIT_RECENT_PICK index=0 path={report_file} located=true' in log.read_text()
+        wait(lambda: state('recent')['path'] == str(home/'Documents'), 'located in Documentos')
+        capture('recent-located')
+        result['recent'] = {'listed': 1, 'missing_skipped': True, 'located': str(report_file)}
 
         command('sidebar-click:trash', 'FILES_TOOLKIT_SIDEBAR_CLICK key=trash')
         command('trash-state', 'FILES_TRASH_BROWSER open=true')

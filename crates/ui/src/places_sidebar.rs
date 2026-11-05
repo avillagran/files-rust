@@ -23,6 +23,10 @@ pub fn place_glyph(kind: usize) -> &'static str {
     }
 }
 
+pub fn recent_glyph() -> &'static str {
+    crate::fonts::icon("\u{f017}", "R")
+}
+
 pub fn star_glyph() -> &'static str {
     crate::fonts::icon("\u{f005}", "*")
 }
@@ -61,6 +65,8 @@ pub struct Rail {
 pub enum Kind {
     Header,
     Favorites,
+    /// Recently used files (XDG recently-used.xbel), opened as a menu.
+    Recent,
     Place(PathBuf),
     Bookmark(PathBuf),
     Device {
@@ -114,6 +120,12 @@ pub fn rail(m: &Model) -> Rail {
         Some(Action::Bookmarks),
         None,
         Kind::Favorites,
+    );
+    out.push(
+        SidebarItem::new(recent_glyph(), "Recientes").key("recent"),
+        None,
+        None,
+        Kind::Recent,
     );
     for (i, place) in m.places.iter().enumerate() {
         activate(&mut out, m.path == place.path);
@@ -229,6 +241,8 @@ pub enum Pick {
     Run(Vec<Action>),
     /// Remove the bookmark of this path (the saved entry, as the panel does).
     RemoveBookmark(PathBuf),
+    /// Open the recent files menu (the window does it).
+    OpenRecent,
 }
 
 impl std::fmt::Debug for Pick {
@@ -239,6 +253,7 @@ impl std::fmt::Debug for Pick {
                 write!(f, "Run({})", names.join(","))
             }
             Pick::RemoveBookmark(p) => write!(f, "RemoveBookmark({})", p.display()),
+            Pick::OpenRecent => write!(f, "OpenRecent"),
         }
     }
 }
@@ -279,6 +294,10 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
                 Pick::Run(vec![Action::BookmarkAdd]),
             ));
         }
+        Some(Kind::Recent) => out.push((
+            PopupItem::new(recent_glyph(), "Abrir recientes"),
+            Pick::OpenRecent,
+        )),
         Some(Kind::Place(p)) => {
             out.push((PopupItem::new(folder, "Abrir"), open(p)));
             out.push((PopupItem::new(plus, "Abrir en pestaña nueva"), tab(p)));
@@ -395,7 +414,50 @@ pub fn apply(m: &mut Model, pick: Pick) {
                 None => m.operation_message = Some("El favorito ya no existe".into()),
             }
         }
+        Pick::OpenRecent => {}
     }
+}
+
+/// Goes to the folder of `path` and selects it there (as the search and the
+/// checksum report do); false when the folder could not be opened.
+pub fn locate(m: &mut Model, path: &Path) -> bool {
+    let (Some(parent), Some(name)) = (path.parent(), path.file_name()) else {
+        return false;
+    };
+    let parent = parent.to_path_buf();
+    m.navigate(parent.clone());
+    if m.path != parent {
+        return false;
+    }
+    m.query.clear();
+    m.rebuild();
+    m.search_locate = Some((m.generation, name.to_os_string()));
+    true
+}
+
+/// Rows of the recent files menu: the name, then the folder (`~` for home)
+/// and the time as detail.
+pub fn recent_items(list: &[files_core::recent::Recent]) -> Vec<fltk_omarchy::overlay::MenuItem> {
+    let home = std::env::var_os("HOME").map(PathBuf::from);
+    list.iter()
+        .map(|r| {
+            let name = r
+                .path
+                .file_name()
+                .map(|n| n.to_string_lossy().into_owned())
+                .unwrap_or_default();
+            let folder = r.path.parent().map_or(String::new(), |p| {
+                match home.as_deref().and_then(|h| p.strip_prefix(h).ok()) {
+                    Some(rest) if rest.as_os_str().is_empty() => "~".into(),
+                    Some(rest) => format!("~/{}", rest.display()),
+                    None => p.display().to_string(),
+                }
+            });
+            fltk_omarchy::overlay::MenuItem::new(crate::fonts::icon("\u{f15b}", ""), &name).detail(
+                &format!("{folder} · {}", files_core::recent::short_time(&r.when)),
+            )
+        })
+        .collect()
 }
 
 /// True while a full-window or modal surface painted by the canvas covers
@@ -440,9 +502,16 @@ mod tests {
         let last = rail.items.len() - 1;
         assert!(rail.items[last].footer);
         assert!(matches!(rail.actions[last], Some(Action::OpenTrash)));
-        for (item, action) in rail.items.iter().zip(&rail.actions) {
-            assert_eq!(item.header, action.is_none(), "{}", item.label);
+        for ((item, action), kind) in rail.items.iter().zip(&rail.actions).zip(&rail.kinds) {
+            let window_only = matches!(kind, Kind::Recent);
+            assert_eq!(
+                item.header || window_only,
+                action.is_none(),
+                "{}",
+                item.label
+            );
         }
+        assert_eq!(rail.kinds[1], Kind::Recent);
         let mut keys: Vec<_> = rail.items.iter().map(|i| i.key.clone()).collect();
         keys.sort();
         keys.dedup();
@@ -526,7 +595,7 @@ mod tests {
         };
         m.path = first;
         let rail = rail(&m);
-        assert_eq!(rail.active, 1);
-        assert!(matches!(&rail.actions[1], Some(Action::Navigate(p)) if *p == m.path));
+        assert_eq!(rail.active, 2);
+        assert!(matches!(&rail.actions[2], Some(Action::Navigate(p)) if *p == m.path));
     }
 }
