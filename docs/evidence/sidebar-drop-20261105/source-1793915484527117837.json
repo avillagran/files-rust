@@ -1,0 +1,105 @@
+{
+  "functional_gate": "PASS",
+  "label": "source",
+  "binary_sha256": "1e0a12afa307a723611f73d936dfee073f5edfdea101cc5f108485d4f5b6fa40",
+  "method": "private nested Hyprland on a hidden special workspace; real Wayland DnD from a Files listing to another Files window's Sidebar row with the virtual pointer",
+  "checks": {
+    "drag": {
+      "from": [
+        171,
+        160
+      ],
+      "to": [
+        356,
+        255
+      ],
+      "row": "place:/home/node/.cache/files-test/sidebar-drop-6f54golr/home/Documents"
+    },
+    "target_log_tail": [
+      "FILES_TOOLKIT_SIDEBAR_FORM open=true destination=/home/node/.cache/files-test/sidebar-drop-6f54golr/home/Documents names=1 message=Some(\"Revisa origen y destino antes de pegar archivos del sistema\")"
+    ],
+    "logs": {
+      "source": [
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=220 seq=44 last=44 owner=(1,1) pane=(1,1)"
+      ],
+      "target": [
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=215 seq=18 last=18 owner=(1,1) pane=(1,1)"
+      ]
+    },
+    "review": {
+      "destination": "/home/node/.cache/files-test/sidebar-drop-6f54golr/home/Documents",
+      "names": 1
+    },
+    "copied": true,
+    "source_intact": true
+  },
+  "captures": [
+    "/home/node/Work/files/.claude/worktrees/agent-a47e2cfbd868661d4/docs/evidence/sidebar-drop-20261105/source-target-before-1793915487447784184.png",
+    "/home/node/Work/files/.claude/worktrees/agent-a47e2cfbd868661d4/docs/evidence/sidebar-drop-20261105/source-source-after-drag-1793915491798456598.png",
+    "/home/node/Work/files/.claude/worktrees/agent-a47e2cfbd868661d4/docs/evidence/sidebar-drop-20261105/source-target-review-1793915491932011440.png"
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "1459491"
+    ]
+  },
+  "nested_extent": [
+    800,
+    450
+  ],
+  "dispatch": [
+    "ok",
+    "ok",
+    "ok"
+  ],
+  "windows": {
+    "source": [
+      [
+        21,
+        21
+      ],
+      [
+        758,
+        408
+      ]
+    ],
+    "target": [
+      [
+        330,
+        40
+      ],
+      [
+        700,
+        440
+      ]
+    ]
+  },
+  "onto": "rail",
+  "nested_stopped": true
+}

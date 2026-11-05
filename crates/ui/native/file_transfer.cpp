@@ -19,6 +19,20 @@ static_assert(FL_API_VERSION == 10405 && FL_ABI_VERSION == 10400,
               "Review pinned transfer adapter");
 extern "C" int fl_files_set_dnd_delegate_v1(int (*)(Fl_Window *))
     __attribute__((weak));
+// Same layout as the patched FLTK TU (vendor/fltk-wayland-transfer).
+struct Files_Dnd_Forward_V2 {
+  void (*data_offer)(wl_data_offer *);
+  void (*mime)(wl_data_offer *, const char *);
+  void (*source_actions)(wl_data_offer *, uint32_t);
+  void (*action)(wl_data_offer *, uint32_t);
+  void (*enter)(uint32_t, wl_surface *, wl_fixed_t, wl_fixed_t,
+                wl_data_offer *);
+  void (*motion)(uint32_t, wl_fixed_t, wl_fixed_t);
+  void (*leave)();
+  void (*drop)();
+};
+extern "C" int fl_files_set_dnd_forward_v2(const Files_Dnd_Forward_V2 *)
+    __attribute__((weak));
 extern "C" int FILES_FLTK_DND_INPUT_SYMBOL();
 namespace {
 constexpr size_t WIRE = 1024 * 1024;
@@ -74,6 +88,15 @@ struct State {
   uint64_t drag_source = 0;
   bool reading_drag = false, drop_pending = false;
   uint32_t drag_serial = 0;
+  // Which device delivered the current drag enter: 1 = our own device,
+  // 2 = FLTK's device (forwarded by the v2 hook). Some compositors (Hyprland)
+  // deliver drags only to the first device of a client, which is FLTK's;
+  // wlroots delivers the same enter (same serial) to every device. The first
+  // device to report an enter serial owns that sequence; the other is inert.
+  int drag_path = 0;
+  // Offer metadata reported by FLTK's device before the forwarded enter.
+  wl_data_offer *forwarded_proxy = nullptr;
+  Offer forwarded;
   DragEvent context, hover, dropped;
   Clock::time_point drop_deadline;
   int status = 0;
@@ -91,9 +114,14 @@ int delegates_window(Fl_Window *window) {
          state.owned_window->widget() == window;
 }
 void unregister_dnd() {
+  if (fl_files_set_dnd_forward_v2)
+    fl_files_set_dnd_forward_v2(nullptr);
   if (fl_files_set_dnd_delegate_v1)
     fl_files_set_dnd_delegate_v1(nullptr);
+  state.forwarded_proxy = nullptr;
+  state.forwarded = {};
 }
+int register_dnd();
 uint64_t fresh() {
   if (state.next == UINT64_MAX) {
     state.status = -9;
@@ -132,6 +160,7 @@ void disable(int reason) {
   state.permit = {};
   state.drag_permit = {};
   state.selection = state.drag = state.reading = state.publication = 0;
+  state.drag_path = 0;
   state.drag_source = 0;
   if (state.device) {
     if (wl_data_device_get_version(state.device) >= 2)
@@ -225,8 +254,16 @@ void hover_at(int kind, wl_fixed_t x, wl_fixed_t y) {
   state.hover.x = wl_fixed_to_int(x) / scale;
   state.hover.y = wl_fixed_to_int(y) / scale;
 }
-void enter(void *, wl_data_device *, uint32_t serial, wl_surface *surface,
-           wl_fixed_t x, wl_fixed_t y, wl_data_offer *p) {
+// A second delivery of the SAME enter (same serial) through the other device.
+bool duplicate_enter(int path, uint32_t serial) {
+  return state.drag_path && state.drag_path != path &&
+         state.drag_serial == serial;
+}
+void enter_on(int path, uint32_t serial, wl_surface *surface, wl_fixed_t x,
+              wl_fixed_t y, wl_data_offer *p) {
+  if (duplicate_enter(path, serial))
+    return; // Its offer stays inert until the next collect_offers().
+  state.drag_path = path;
   state.drag = 0;
   bool own = state.owned_window && !state.owned_window->deleted() &&
              fl_files_set_dnd_delegate_v1 && !state.closing && !state.seat_lost;
@@ -248,19 +285,32 @@ void enter(void *, wl_data_device *, uint32_t serial, wl_surface *surface,
     state.drag = 0; // Late source_actions cannot revive a busy/rejected enter.
   }
 }
-void leave(void *, wl_data_device *) {
+void enter(void *, wl_data_device *, uint32_t serial, wl_surface *surface,
+           wl_fixed_t x, wl_fixed_t y, wl_data_offer *p) {
+  enter_on(1, serial, surface, x, y, p);
+}
+void leave_on(int path) {
+  if (path != state.drag_path)
+    return;
   state.drag = 0;
   state.hover.kind = 3;
   state.hover.sequence = fresh();
   collect_offers(); // A dropped/reading offer survives until explicit ACK.
 }
-void motion(void *, wl_data_device *, uint32_t, wl_fixed_t x, wl_fixed_t y) {
-  if (!state.drag || state.drop_pending || state.reading)
+void leave(void *, wl_data_device *) { leave_on(1); }
+void motion_on(int path, wl_fixed_t x, wl_fixed_t y) {
+  if (path != state.drag_path || !state.drag || state.drop_pending ||
+      state.reading)
     return;
   negotiate_drag();
   hover_at(1, x, y);
 }
-void drop(void *, wl_data_device *) {
+void motion(void *, wl_data_device *, uint32_t, wl_fixed_t x, wl_fixed_t y) {
+  motion_on(1, x, y);
+}
+void drop_on(int path) {
+  if (path != state.drag_path)
+    return;
   auto *o = offer(state.drag);
   if (!copy_offer(o) || state.reading || state.drop_pending) {
     state.drag = 0;
@@ -279,6 +329,83 @@ void drop(void *, wl_data_device *) {
   // No further negotiation is legal after drop. The drop_offer pin retains
   // our proxy independently of any later leave callback.
   state.drag = 0;
+}
+void drop(void *, wl_data_device *) { drop_on(1); }
+// Forwarded from FLTK's device. Metadata calls only record by pointer; the
+// proxy becomes ours exactly at forwarded_enter (see the vendor README).
+void forwarded_data_offer(wl_data_offer *p) {
+  state.forwarded_proxy = p;
+  state.forwarded = {};
+}
+Offer *adopted(wl_data_offer *p) {
+  for (auto &o : state.offers)
+    if (p && o.proxy == p)
+      return &o;
+  return nullptr;
+}
+void forwarded_mime(wl_data_offer *p, const char *name) {
+  if (p && p == state.forwarded_proxy)
+    mime(&state.forwarded, p, name);
+}
+void forwarded_source_actions(wl_data_offer *p, uint32_t actions) {
+  if (p && p == state.forwarded_proxy)
+    state.forwarded.actions = actions;
+  else if (auto *o = adopted(p))
+    source_actions(o, p, actions);
+}
+void forwarded_action(wl_data_offer *p, uint32_t action) {
+  // Hyprland reports the negotiated action already BEFORE the enter.
+  if (p && p == state.forwarded_proxy)
+    state.forwarded.action = action;
+  else if (auto *o = adopted(p))
+    offer_action(o, p, action);
+}
+void forwarded_enter(uint32_t serial, wl_surface *surface, wl_fixed_t x,
+                     wl_fixed_t y, wl_data_offer *p) {
+  // From here on WE own p (possibly null) and must destroy it exactly once.
+  Offer metadata = p && p == state.forwarded_proxy ? state.forwarded : Offer{};
+  if (p != state.forwarded_proxy)
+    metadata.invalid = true; // No recorded MIME list: never accept it.
+  state.forwarded_proxy = nullptr;
+  state.forwarded = {};
+  if (p) {
+    Offer *slot = nullptr;
+    for (auto &o : state.offers)
+      if (!o.proxy) {
+        slot = &o;
+        break;
+      }
+    if (!slot) {
+      wl_data_offer_destroy(p);
+      disable(-4);
+      return;
+    }
+    *slot = metadata;
+    slot->proxy = p;
+    slot->id = fresh();
+    if (!slot->id) {
+      wl_data_offer_destroy(p);
+      *slot = {};
+      return;
+    }
+  }
+  enter_on(2, serial, surface, x, y, p);
+}
+void forwarded_motion(uint32_t, wl_fixed_t x, wl_fixed_t y) {
+  motion_on(2, x, y);
+}
+void forwarded_leave() { leave_on(2); }
+void forwarded_drop() { drop_on(2); }
+const Files_Dnd_Forward_V2 forward = {
+    forwarded_data_offer, forwarded_mime,  forwarded_source_actions,
+    forwarded_action,     forwarded_enter, forwarded_motion,
+    forwarded_leave,      forwarded_drop};
+int register_dnd() {
+  if (!fl_files_set_dnd_delegate_v1)
+    return 0; // Custom/unpatched build: no external DnD capability.
+  if (fl_files_set_dnd_forward_v2)
+    fl_files_set_dnd_forward_v2(&forward);
+  return fl_files_set_dnd_delegate_v1(delegates_window);
 }
 void selection(void *, wl_data_device *, wl_data_offer *p) {
   state.selection = 0;
@@ -472,9 +599,7 @@ extern "C" int files_transfer_register_window(Fl_Window *window) {
     return 0;
   unregister_dnd();
   state.owned_window = std::move(tracker);
-  if (!fl_files_set_dnd_delegate_v1)
-    return 0; // Custom/unpatched build: no external DnD capability.
-  return fl_files_set_dnd_delegate_v1(delegates_window);
+  return register_dnd();
 }
 extern "C" int files_transfer_dnd_hook_ready() {
   return fl_files_set_dnd_delegate_v1 && state.owned_window &&
@@ -875,9 +1000,9 @@ extern "C" void files_transfer_cancel_io() {
   // Closing can be cancelled in Rust. Cancel the current delegated offer while
   // keeping future own-window drags suppressed until final shutdown/seat loss.
   unregister_dnd();
-  if (fl_files_set_dnd_delegate_v1 && state.owned_window &&
-      !state.owned_window->deleted() && !state.closing && !state.seat_lost)
-    fl_files_set_dnd_delegate_v1(delegates_window);
+  if (state.owned_window && !state.owned_window->deleted() && !state.closing &&
+      !state.seat_lost)
+    register_dnd();
   for (auto &send : state.sends)
     close_send(send);
   for (auto &source : state.sources)

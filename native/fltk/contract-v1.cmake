@@ -4,7 +4,7 @@ function(files_dnd_contract repo out_stamp out_source)
   file(READ "${vendor}/SOURCE.json" metadata)
   foreach(pair IN ITEMS "upstream/fl_wayland_clipboard_dnd.cxx;original_sha256"
       "fl_wayland_clipboard_dnd.cxx;modified_sha256" "COPYING;copying_sha256"
-      "files-dnd-delegate-v1.patch;patch_sha256")
+      "files-dnd-delegate-v2.patch;patch_sha256")
     list(GET pair 0 file)
     list(GET pair 1 key)
     file(SHA256 "${vendor}/${file}" actual)
@@ -18,10 +18,10 @@ function(files_dnd_contract repo out_stamp out_source)
       vendor/fltk-wayland-transfer/upstream/fl_wayland_clipboard_dnd.cxx
       vendor/fltk-wayland-transfer/fl_wayland_clipboard_dnd.cxx
       vendor/fltk-wayland-transfer/COPYING
-      vendor/fltk-wayland-transfer/files-dnd-delegate-v1.patch
+      vendor/fltk-wayland-transfer/files-dnd-delegate-v2.patch
       native/fltk/inject-v1.cmake native/fltk/contract-v1.cmake
-      native/fltk/guard-v1.cmake native/fltk/toolchain-v2.cmake
-      scripts/cmake-files-v2)
+      native/fltk/guard-v1.cmake native/fltk/toolchain-v3.cmake
+      scripts/cmake-files-v3)
     file(SHA256 "${repo}/${file}" sha)
     string(APPEND inputs "${file}=${sha}\n")
   endforeach()

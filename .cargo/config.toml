@@ -5,5 +5,5 @@ TMPDIR = { value = ".cargo/tmp", relative = true }
 # Pinned own-window DnD hook, applied only to a generated FLTK build source.
 # Bump BOTH versioned paths when patch/build inputs change (fltk-sys watches
 # CFLTK_TOOLCHAIN, not arbitrary files outside its registry directory).
-CMAKE = { value = "scripts/cmake-files-v2", relative = true }
-CFLTK_TOOLCHAIN = { value = "native/fltk/toolchain-v2.cmake", relative = true }
+CMAKE = { value = "scripts/cmake-files-v3", relative = true }
+CFLTK_TOOLCHAIN = { value = "native/fltk/toolchain-v3.cmake", relative = true }

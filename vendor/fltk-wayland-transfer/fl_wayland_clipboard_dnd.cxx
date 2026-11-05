@@ -280,8 +280,39 @@ int Fl_Wayland_Screen_Driver::dnd(int use_selection) {
 }
 
 
+// files opt-in v2: compositors such as Hyprland deliver drag-and-drop events
+// to only ONE wl_data_device per client (the first one created, which is this
+// FLTK device), so the application's own device never sees a drag over its
+// window. When the application registers these callbacks, a delegated
+// sequence is forwarded instead of swallowed. Offer metadata (data_offer,
+// MIME types, actions) is reported for every offer of this device WITHOUT a
+// transfer: the application only records it by pointer. Ownership of a drag
+// offer passes to the application at a delegated enter (it then accepts,
+// negotiates, reads, finishes and destroys it). FLTK keeps its own listener
+// on that proxy and never touches it again. Default windows and the
+// clipboard follow upstream unchanged.
+struct Files_Dnd_Forward_V2 {
+  void (*data_offer)(struct wl_data_offer *offer);
+  void (*mime)(struct wl_data_offer *offer, const char *mime_type);
+  void (*source_actions)(struct wl_data_offer *offer, uint32_t actions);
+  void (*action)(struct wl_data_offer *offer, uint32_t dnd_action);
+  void (*enter)(uint32_t serial, struct wl_surface *surface, wl_fixed_t x,
+                wl_fixed_t y, struct wl_data_offer *offer);
+  void (*motion)(uint32_t time, wl_fixed_t x, wl_fixed_t y);
+  void (*leave)(void);
+  void (*drop)(void);
+};
+static const Files_Dnd_Forward_V2 *files_dnd_forward_v2 = NULL;
+
+extern "C" int fl_files_set_dnd_forward_v2(const Files_Dnd_Forward_V2 *forward) {
+  files_dnd_forward_v2 = forward;
+  return 1;
+}
+
+
 static void data_offer_handle_offer(void *data, struct wl_data_offer *offer,
                                     const char *mime_type) {
+  if (files_dnd_forward_v2) files_dnd_forward_v2->mime(offer, mime_type);
   // runs when app becomes active and lists possible clipboard types
 //fprintf(stderr, "Clipboard offer=%p supports MIME type: %s\n", offer, mime_type);
   if (strcmp(mime_type, "image/png") == 0) {
@@ -310,6 +341,7 @@ static void data_offer_handle_offer(void *data, struct wl_data_offer *offer,
 
 static void data_offer_handle_source_actions(void *data, struct wl_data_offer *offer,
                                              uint32_t actions) {
+  if (files_dnd_forward_v2) files_dnd_forward_v2->source_actions(offer, actions);
   if (actions & WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY) {
     //printf("Drag supports the copy action\n");
   }
@@ -318,6 +350,7 @@ static void data_offer_handle_source_actions(void *data, struct wl_data_offer *o
 
 static void data_offer_handle_action(void *data, struct wl_data_offer *offer,
                                      uint32_t dnd_action) {
+  if (files_dnd_forward_v2) files_dnd_forward_v2->action(offer, dnd_action);
   switch (dnd_action) {
   case WL_DATA_DEVICE_MANAGER_DND_ACTION_MOVE:
     //printf("A move action would be performed if dropped\n");
@@ -346,6 +379,7 @@ static void data_device_handle_data_offer(void *data, struct wl_data_device *dat
   fl_selection_type[1] = NULL;
   fl_selection_offer_type = NULL;
   wl_data_offer_add_listener(offer, &data_offer_listener, NULL);
+  if (files_dnd_forward_v2) files_dnd_forward_v2->data_offer(offer);
 }
 
 
@@ -473,7 +507,8 @@ static void data_device_handle_enter(void *data, struct wl_data_device *data_dev
   Fl_Window *top = win ? win->top_window() : NULL;
   if (top && files_dnd_delegate_v1 && files_dnd_delegate_v1(top)) {
     // Do not set_actions/accept/roundtrip/read/finish on this FLTK offer.
-    // Its peer on the app-owned device negotiates and reads bounded bytes.
+    // v1: its peer on the app-owned device negotiates and reads bounded
+    // bytes. v2: the application receives this offer itself (see above).
     if (current_drag_offer && current_drag_offer != offer &&
         current_drag_offer != fl_selection_offer)
       wl_data_offer_destroy(current_drag_offer);
@@ -481,6 +516,11 @@ static void data_device_handle_enter(void *data, struct wl_data_device *data_dev
     fl_dnd_target_window = NULL;
     fl_dnd_target_surface = NULL;
     files_delegated_sequence = true;
+    if (files_dnd_forward_v2) {
+      // v2: the application now owns this proxy (it may be NULL).
+      files_dnd_forward_v2->enter(serial, surface, x, y, offer);
+      return;
+    }
     files_delegated_offer = offer;
     return;
   }
@@ -510,7 +550,10 @@ static void data_device_handle_enter(void *data, struct wl_data_device *data_dev
 
 static void data_device_handle_motion(void *data, struct wl_data_device *data_device,
                                       uint32_t time, wl_fixed_t x, wl_fixed_t y) {
-  if (files_delegated_sequence) return;
+  if (files_delegated_sequence) {
+    if (files_dnd_forward_v2) files_dnd_forward_v2->motion(time, x, y);
+    return;
+  }
   if (!current_drag_offer) return;
 //printf("data_device_handle_motion fl_dnd_target_window=%p\n", fl_dnd_target_window);
   int ret = 0;
@@ -541,6 +584,7 @@ static void data_device_handle_motion(void *data, struct wl_data_device *data_de
 static void data_device_handle_leave(void *data, struct wl_data_device *data_device) {
   if (files_delegated_sequence) {
     files_release_delegated_offer();
+    if (files_dnd_forward_v2) files_dnd_forward_v2->leave();
     return;
   }
   //printf("Drag left our surface\n");
@@ -551,6 +595,7 @@ static void data_device_handle_leave(void *data, struct wl_data_device *data_dev
 static void data_device_handle_drop(void *data, struct wl_data_device *data_device) {
   if (files_delegated_sequence) {
     files_release_delegated_offer();
+    if (files_dnd_forward_v2) files_dnd_forward_v2->drop();
     return;
   }
   if (!current_drag_offer) return;
