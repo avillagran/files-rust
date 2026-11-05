@@ -132,15 +132,17 @@ def main():
                 return [c for c in json.loads(hypr(['clients', '-j'], nested)) if c.get('pid') == p.pid]
             wait(lambda: client(a['process']) and client(b['process']), 'windows')
             report['nested_extent'] = extent
-            # Float both at a usable size: B over A's right side, A's first
-            # entry and B's rail both visible.
+            # A stays tiled and B floats over A's right side. Pressing on A
+            # focuses it, and Hyprland raises a focused FLOATING window: with
+            # both floating, A would cover the drop point and the drag would
+            # never leave A. A tiled window always stays below a floating one,
+            # so A's first entry (left of B) and B's rail are both visible.
             width = min(760, extent[0] - 340)
             height = min(560, extent[1] - 60)
-            for p, (x, y) in [(a['process'], (10, 10)), (b['process'], (330, 40))]:
-                addr = 'address:' + client(p)[0]['address']
-                for d in (['dispatch', 'setfloating', addr], ['dispatch', 'resizewindowpixel', f'exact {width} {height},{addr}'],
-                          ['dispatch', 'movewindowpixel', f'exact {x} {y},{addr}']):
-                    report.setdefault('dispatch', []).append(hypr(d, nested).strip())
+            addr = 'address:' + client(b['process'])[0]['address']
+            for d in (['dispatch', 'setfloating', addr], ['dispatch', 'resizewindowpixel', f'exact {width} {height},{addr}'],
+                      ['dispatch', 'movewindowpixel', f'exact 330 40,{addr}']):
+                report.setdefault('dispatch', []).append(hypr(d, nested).strip())
             hypr(['dispatch', 'focuswindow', 'address:' + client(b['process'])[0]['address']], nested)
             time.sleep(1.0)
             ca = client(a['process'])[0]

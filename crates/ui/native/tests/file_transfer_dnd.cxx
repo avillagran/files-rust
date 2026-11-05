@@ -121,6 +121,7 @@ int main() {
   state.drag = 3;
   state.hover.offer = 3;
   state.hover.kind = 1;
+  state.drag_path = 1; // This sequence was entered on our own device.
   drop(nullptr, nullptr);
   assert(state.drop_pending && state.drop_offer == 3 && state.drag == 0);
   int prior_accepts = accepts, prior_actions = actions;
@@ -182,7 +183,42 @@ int main() {
   finished(state.sources[0].get(), nullptr);
   assert(state.sources[0]->cancelled && files_transfer_outgoing_active() == 0);
   state.sources[0].reset();
+  // v2 forwarding from FLTK's device: metadata before the enter is recorded
+  // by pointer only; the proxy is adopted at the enter. Without an owned
+  // window it is rejected. The SAME enter (serial) on our own device is a
+  // duplicate and sends nothing; only the owning path's leave collects.
+  for (auto &o : state.offers)
+    o = {};
+  state.drag = state.reading = state.drop_offer = state.selection = 0;
+  state.drop_pending = false;
+  state.drag_path = 0;
+  auto *forwarded = reinterpret_cast<wl_data_offer *>(uintptr_t(0x555));
+  forwarded_data_offer(forwarded);
+  forwarded_mime(forwarded, URI);
+  forwarded_source_actions(forwarded, WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY);
+  forwarded_action(forwarded, WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY);
+  assert(state.forwarded.flags == 1 && state.forwarded.action == 1);
+  int before_accepts = accepts, before_destroys = destroys;
+  forwarded_enter(7, nullptr, 0, 0, forwarded);
+  auto *taken = adopted(forwarded);
+  assert(taken && taken->flags == 1 && taken->actions == 1 && taken->action == 1);
+  assert(!state.forwarded_proxy && state.drag_path == 2 && !state.drag);
+  assert(accepts == before_accepts + 1 && !last_mime && last_actions == 0);
+  auto *duplicate = reinterpret_cast<wl_data_offer *>(uintptr_t(0x666));
+  enter(nullptr, nullptr, 7, nullptr, 0, 0, duplicate);
+  assert(accepts == before_accepts + 1 && state.drag_path == 2);
+  leave(nullptr, nullptr); // Our own device does not own this sequence.
+  assert(adopted(forwarded) && destroys == before_destroys);
+  forwarded_leave();
+  assert(!adopted(forwarded) && destroys == before_destroys + 1);
+  // An enter whose MIME list was never reported can never be accepted.
+  auto *unknown = reinterpret_cast<wl_data_offer *>(uintptr_t(0x777));
+  forwarded_enter(8, nullptr, 0, 0, unknown);
+  assert(adopted(unknown) && adopted(unknown)->invalid && !copy_offer(adopted(unknown)));
+  forwarded_leave();
+  assert(!adopted(unknown) && destroys == before_destroys + 2);
   std::puts("{\"busy_late_actions\":\"PASS\",\"stale_drop_epoch\":\"PASS\","
             "\"reject_without_finish\":\"PASS\",\"accepted_copy_finish\":"
-            "\"PASS\",\"sender_copy_serial_and_cleanup\":\"PASS\",\"kde_offer_change_rejected\":\"PASS\",\"native_protocol\":\"UNVALIDATED\"}");
+            "\"PASS\",\"sender_copy_serial_and_cleanup\":\"PASS\",\"kde_offer_change_rejected\":\"PASS\","
+            "\"forwarded_adopt_and_dedup\":\"PASS\",\"native_protocol\":\"UNVALIDATED\"}");
 }
