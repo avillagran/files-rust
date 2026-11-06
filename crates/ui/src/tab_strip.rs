@@ -39,6 +39,15 @@ struct Request {
 fn interactive(m: &Model) -> bool {
     !crate::tab_gestures::blocked(m)
 }
+pub fn begin_intent(m: &mut Model) -> bool {
+    if !interactive(m) {
+        return false;
+    }
+    // Selecting an already-active key emits no State notification. Pointer
+    // and explicit keyboard focus still supersede pending session restore.
+    m.session.restore_allowed = false;
+    true
+}
 fn admit(m: &Model, request: &Request) -> bool {
     interactive(m)
         && request.stamp.owner == m.pane_owner()
@@ -343,6 +352,7 @@ impl Strip {
             .as_ref()
             .map(|menu| serde_json::json!([menu.owner.0, menu.id]))
             .unwrap_or_default();
+        state["restore_allowed"] = m.session.restore_allowed.into();
         let rows: Vec<_> = m
             .tabs
             .rows
@@ -369,6 +379,9 @@ impl Strip {
             }
         } else {
             match text {
+                "tab-widget-arm-intent" => {
+                    m.session.restore_allowed = true;
+                }
                 "tab-widget-seed-dual" => {
                     if !m.dual.enabled {
                         m.toggle_dual();
@@ -401,6 +414,23 @@ mod tests {
             key,
             kind,
         }
+    }
+    #[test]
+    fn same_selection_pointer_and_focus_intent_supersede_restore_without_navigation() {
+        let mut m = Model::new("/fixture-keyed-intent".into());
+        let owner = m.pane_owner();
+        let path = m.path.clone();
+        let generation = m.generation;
+        m.session.restore_allowed = true;
+        m.help = Some(Default::default());
+        assert!(!begin_intent(&mut m));
+        assert!(m.session.restore_allowed);
+        m.help = None;
+        assert!(begin_intent(&mut m));
+        assert!(!m.session.restore_allowed);
+        assert_eq!(m.pane_owner(), owner);
+        assert_eq!(m.path, path);
+        assert_eq!(m.generation, generation);
     }
     #[test]
     fn keyed_requests_reject_stale_generation_foreign_panes_and_removed_targets() {

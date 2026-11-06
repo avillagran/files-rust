@@ -198,6 +198,13 @@ def main():
         capture('seeded')
         rows = initial['widget']['rows']
         a, b, c = [next(r['key'] for r in rows if r['id'] == t['id']) for t in initial['tabs']]
+        send('tab-widget-arm-intent')
+        armed = settled('active-click-armed', lambda s: s['restore_allowed'])
+        pointer_event(row(armed, a)['body_rect'], 'c1')
+        intended = settled('active-click-intent', lambda s: not s['restore_allowed'])
+        retained(armed, intended)
+        assert intended['tabs'] == armed['tabs'], intended
+        report['checks'].append('primary click on active tab cancels pending restore without navigation')
         for part in ('body_rect', 'close_rect'):
             pointer_event(row(initial, b)[part], 'r')
             opened = settled('right-' + part, lambda s: s['context_open'])
@@ -222,8 +229,11 @@ def main():
         report['checks'].append('drop outside cancels reorder')
         key('-k', 'Escape')
         canvas = settled('browser-focus', lambda s: s['focus_browser'])
+        send('tab-widget-arm-intent')
+        canvas = settled('keyboard-focus-armed', lambda s: s['focus_browser'] and s['restore_allowed'])
         key('-M', 'ctrl', '-M', 'alt', '-k', 't', '-m', 'alt', '-m', 'ctrl')
-        focused = settled('keyboard-focus', lambda s: s['widget']['focus'] and s['widget']['keyboard_mode'])
+        focused = settled('keyboard-focus', lambda s: s['widget']['focus'] and s['widget']['keyboard_mode']
+                          and not s['restore_allowed'])
         retained(canvas, focused)
         retained(moved, focused)
         key('-M', 'alt', '-k', 'Right', '-m', 'alt')
@@ -288,8 +298,8 @@ def main():
         assert revealed['widget']['cursor'][1] == last
         report['checks'].append('keyboard focus reveals an overflowed tab without activation')
         key('-k', 'Home')
-        home_state = settled('overflow-home')
-        first = home_state['tabs'][0]['id']
+        first = overflow['tabs'][0]['id']
+        home_state = settled('overflow-home', lambda s: s['widget']['cursor'] == [s['pane_id'], first])
         first_row = next(r for r in home_state['widget']['rows'] if r['id'] == first)
         assert overflow['active'] == first == a[1], overflow
         rect = first_row['body_rect']

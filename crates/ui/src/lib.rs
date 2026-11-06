@@ -1458,10 +1458,9 @@ pub fn run_since(start: Instant) -> bool {
             && app::event_state().contains(Shortcut::Ctrl | Shortcut::Alt)
         {
             let key = m
-                .try_borrow()
+                .try_borrow_mut()
                 .ok()
-                .filter(|m| !tab_gestures::blocked(m))
-                .map(|m| m.pane_owner());
+                .and_then(|mut m| tab_strip::begin_intent(&mut m).then_some(m.pane_owner()));
             if let Some(key) = key {
                 event_tabs.widget.focus_key(&key);
             }
@@ -1620,8 +1619,8 @@ pub fn run_since(start: Instant) -> bool {
             if app::event_key() == Key::from_char('t')
                 && mods.contains(Shortcut::Ctrl | Shortcut::Alt)
                 && (!isolate_fixture_input || auxiliary_fixture.get())
-                && let Ok(m) = native_window_model.try_borrow()
-                && !tab_gestures::blocked(&m)
+                && let Ok(mut m) = native_window_model.try_borrow_mut()
+                && tab_strip::begin_intent(&mut m)
             {
                 auxiliary_tabs.widget.focus_key(&m.pane_owner());
                 return true;
@@ -1643,6 +1642,12 @@ pub fn run_since(start: Instant) -> bool {
         }
         if event == Event::Push {
             auxiliary_pressed = false;
+            if auxiliary_tabs.contains(app::event_x(), app::event_y())
+                && (!isolate_fixture_input || auxiliary_fixture.get())
+                && let Ok(mut m) = native_window_model.try_borrow_mut()
+            {
+                tab_strip::begin_intent(&mut m);
+            }
             let button = app::event_button();
             if button != 1 && button != 3 {
                 if auxiliary_tabs.contains(app::event_x(), app::event_y()) {
