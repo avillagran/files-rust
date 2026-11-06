@@ -156,6 +156,38 @@ mod tests {
         );
     }
     #[test]
+    fn same_location_refresh_preserves_the_complete_pending_external_selection() {
+        let f = Fixture::new();
+        let mut m = f.model();
+        m.external_locations(
+            &[group(f.0.join("A"), &["ordinary.txt", "missing.txt"])],
+            false,
+        )
+        .unwrap();
+        ready(&mut m);
+        // This is the point where the listing watcher can request a refresh:
+        // ordinary Snapshot restoration has found only one requested name,
+        // and the external all-or-nothing check has not run yet.
+        assert_eq!(selection(&m), [OsString::from("ordinary.txt")]);
+        let owner = m.pane_owner();
+        let generation = m.generation;
+        m.refresh_current();
+        assert_eq!(m.pane_owner(), owner);
+        assert_ne!(m.generation, generation);
+        assert_eq!(m.external_reveal.as_ref().unwrap().generation, m.generation);
+        assert_eq!(
+            m.external_reveal.as_ref().unwrap().names,
+            [
+                OsString::from("ordinary.txt"),
+                OsString::from("missing.txt")
+            ]
+        );
+        ready(&mut m);
+        assert!(Controller::finish_reveal(&mut m));
+        assert!(m.selection.is_empty() && m.selected.is_none() && m.anchor.is_none());
+        assert!(m.preserve_empty_selection && !m.error.is_empty());
+    }
+    #[test]
     fn stale_external_owner_or_generation_does_not_replace_current_selection() {
         let f = Fixture::new();
         let mut m = f.model();

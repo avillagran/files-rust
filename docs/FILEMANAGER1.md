@@ -93,6 +93,9 @@ the global hidden-file preference is unchanged. Item requests switch Columns
 or SpaceMap destinations to List when needed for exact selection. If a
 requested item disappears while the listing loads, Files clears the target
 selection and reports the failure rather than selecting a neighboring row.
+Same-location refreshes retain the complete pending name set, including when
+a watcher refresh follows a partially restored listing. They cannot silently
+turn an external request into a partial selection.
 
 A successful D-Bus reply acknowledges UI admission. Folder enumeration,
 painting and properties metadata may finish afterward. A service disconnect

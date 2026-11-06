@@ -940,7 +940,17 @@ impl Model {
         }
         self.refresh_deferred = false;
         self.reset_space_map();
-        self.generation = self.generation.wrapping_add(1);
+        let owner = self.pane_owner();
+        let next_generation = self.generation.wrapping_add(1);
+        if let Some(reveal) = &mut self.external_reveal
+            && reveal.owner == owner
+            && reveal.generation == self.generation
+        {
+            // A same-location refresh must retain the complete external name
+            // intent even if the just-finished listing restored only a subset.
+            reveal.generation = next_generation;
+        }
+        self.generation = next_generation;
         self.pane_revision = self.pane_revision.wrapping_add(1);
         self.worker.restart(self.path.clone());
         self.entries.clear();
