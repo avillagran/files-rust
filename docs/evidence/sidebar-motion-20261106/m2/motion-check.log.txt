@@ -1,0 +1,2 @@
+{"report": "/home/avillagran/.cache/files-m2-updates/motion-de480ce/source/docs/evidence/0.0.4/sidebar-motion-ui-1793996113287871746.json", "functional_gate": "PASS", "error": null}
+{"nested": {"socket": "wayland-2", "pid": ["3111342"]}, "stopped": true}

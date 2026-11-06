@@ -1,0 +1,6 @@
+XOpenIM() failed
+FILES_FONT=JetBrainsMono Nerd Font nerd=true
+FILES_GLASS mode=opaque opacity=1.00 overridden=true wayland=false
+FILES_FIRST_PAINT_US=36218
+FILES_UI_SMOKE_OK entries=1
+FILES_SIDEBAR_MOTION_REPORT {"aligned":true,"browser_x":[68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,95,118,137,152,163,172,178,182,184,186,186,186,186,186,186,186,159,136,117,102,91,82,76,72,70,68,68,68,68,68,68,68,95,118,137,152,132,116,103,92,84,78,74,71,69,68,68,68,68,68,68],"captures":["/home/node/Work/files/docs/evidence/0.0.4/sidebar-motion-1793995817807509517-shots/collapsed.png","/home/node/Work/files/docs/evidence/0.0.4/sidebar-motion-1793995817807509517-shots/expanding.png","/home/node/Work/files/docs/evidence/0.0.4/sidebar-motion-1793995817807509517-shots/expanded.png"],"collapse_frames":[31,47],"disabled_collapse":true,"disabled_expand":true

@@ -45,3 +45,28 @@ are taken from the widget after the frame is drawn.
 Resource/startup gates remain `NOT_MEASURED`. This change does not claim
 complete Nautilus/Finder parity; tab gestures, breadcrumb overflow and the
 remaining navigation matrix are tracked in the UI implementation plan.
+
+## Rendered states on NODE
+
+| Collapsed | Moving | Expanded |
+|---|---|---|
+| ![Collapsed rail](evidence/0.0.4/sidebar-motion-1793995959637706984-shots/collapsed.png) | ![Moving rail and listing](evidence/0.0.4/sidebar-motion-1793995959637706984-shots/expanding.png) | ![Expanded rail](evidence/0.0.4/sidebar-motion-1793995959637706984-shots/expanded.png) |
+
+The snapshots come from actual rendered frames, not a mockup. The report
+stores frame-by-frame geometry as well as the three pictures.
+
+## Validated delivery
+
+Source checkpoint `de480ce` is installed on NODE (`d5ea66b1cebb`) and native
+ARM M2 (`f55074e70716`). Both installed binaries pass the rendered motion
+fixture and the real private Wayland drag-and-drop check. The existing
+Sidebar scene passes on each architecture; narrow-name checks pass on NODE.
+The workspace has 1,653 passing tests and three ignored tests; Clippy and
+release checks pass. All five prior installed artifacts and their hashes
+are preserved and checked on both machines.
+
+Evidence is retained under `evidence/sidebar-motion-20261106` and the linked
+scene reports. Setup failures remain recorded: the first motion runner
+read a JSON line before its newline (fixed in the runner), and the first
+minimal ARM source export omitted the compile-time theme (completed from
+the same source checkpoint). Neither required weakening a functional gate.

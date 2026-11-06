@@ -7,17 +7,14 @@ not complete merely because the vendor builds.
 
 ## 1. Navigation and motion
 
-Sidebar geometry work is implemented and undergoing rendered-frame validation;
-see [SIDEBAR-MOTION.md](SIDEBAR-MOTION.md).
+Shared sampled Sidebar/browser geometry is delivered in `de480ce`; see
+[SIDEBAR-MOTION.md](SIDEBAR-MOTION.md). It uses the toolkit clock and motion
+gate rather than a separate timer. Frame validation covers intermediate
+widths, rapid reversal, resize, pinning, modal coverage and motion disabled;
+widget edges and browser/entry hit targets remain aligned.
 
-Audit Sidebar expansion and browser displacement together. Files currently
-uses the binary expanded state to choose 52/170 px during every paint;
-verify whether this overrides the toolkit's intermediate animation widths.
-Use the toolkit width State and motion gate where supported rather than
-adding a second animation timer. Check hover, pin, rapid reversal, window
-resize, modal coverage and animations disabled. Row hit targets must match
-what is painted throughout a transition. Preserve bookmark ordering and
-real Wayland drops.
+Continue auditing hover intent, focus changes and transitions between
+navigation surfaces. Preserve bookmark ordering and real Wayland drops.
 
 ## 2. Everyday navigation and selection
 

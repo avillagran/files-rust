@@ -1,0 +1,22 @@
+{
+  "functional_gate": "FAIL",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "method": "Private Files fixture handler, frozen toolkit clock, offscreen rendered frame geometry; no native input",
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "log_path": "/home/node/Work/files/docs/evidence/0.0.4/sidebar-motion-ui-1793995817807509517.txt",
+  "viewport": [
+    1000,
+    650
+  ],
+  "captures": [
+    "/home/node/Work/files/docs/evidence/0.0.4/sidebar-motion-1793995817807509517-shots/collapsed.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/sidebar-motion-1793995817807509517-shots/expanded.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/sidebar-motion-1793995817807509517-shots/expanding.png"
+  ],
+  "binary_sha256": "4947c35af39b30923ab921c8013a316f3e29ffb1b6d489516564042c336df02b",
+  "helper_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "error": "JSONDecodeError('Expecting value: line 1 column 193 (char 192)')",
+  "exit_code": -15
+}

@@ -1,0 +1,21 @@
+   Compiling fltk-sys v1.5.23
+   Compiling jpeg-decoder v0.3.2 (/home/avillagran/.cache/files-m2-updates/motion-de480ce/source/vendor/jpeg-decoder)
+   Compiling files-core v0.0.4 (/home/avillagran/.cache/files-m2-updates/motion-de480ce/source/crates/core)
+   Compiling files-helper v0.0.4 (/home/avillagran/.cache/files-m2-updates/motion-de480ce/source/crates/helper)
+   Compiling files-ui v0.0.4 (/home/avillagran/.cache/files-m2-updates/motion-de480ce/source/crates/ui)
+   Compiling fltk v1.5.23
+   Compiling lib-fltk-omarchy v0.0.10 (/home/avillagran/.cache/files-m2-updates/motion-de480ce/source/vendor/lib-fltk-omarchy)
+error: couldn't read `crates/ui/src/../../../themes/tokyo-night.toml`: No such file or directory (os error 2)
+    --> crates/ui/src/model.rs:2355:28
+     |
+2355 |             Palette::parse(include_str!("../../../themes/tokyo-night.toml"))
+     |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: couldn't read `crates/ui/src/../../../themes/tokyo-night.toml`: No such file or directory (os error 2)
+    --> crates/ui/src/lib.rs:3202:43
+     |
+3202 |         files_core::theme::Palette::parse(include_str!("../../../themes/tokyo-night.toml"))
+     |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: could not compile `files-ui` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

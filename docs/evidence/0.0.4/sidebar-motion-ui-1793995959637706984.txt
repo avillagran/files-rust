@@ -1,0 +1,12 @@
+XOpenIM() failed
+FILES_FONT=JetBrainsMono Nerd Font nerd=true
+FILES_GLASS mode=opaque opacity=1.00 overridden=true wayland=false
+FILES_FIRST_PAINT_US=29635
+FILES_UI_SMOKE_OK entries=1
+FILES_SIDEBAR_MOTION_REPORT {"aligned":true,"browser_x":[68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,95,118,137,152,163,172,178,182,184,186,186,186,186,186,186,186,159,136,117,102,91,82,76,72,70,68,68,68,68,68,68,68,95,118,137,152,132,116,103,92,84,78,74,71,69,68,68,68,68,68,68,68,68,68,68,68,68,68,68],"captures":["/home/node/Work/files/docs/evidence/0.0.4/sidebar-motion-1793995959637706984-shots/collapsed.png","/home/node/Work/files/docs/evidence/0.0.4/sidebar-motion-1793995959637706984-shots/expanding.png","/home/node/Work/files/docs/evidence/0.0.4/sidebar-motion-1793995959637706984-shots/expanded.png"],"collapse_frames":[31,47],"disabled_collapse":true,"disabled_expand":true,"entry_aligned":true,"entry_x":[68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,95,118,137,152,163,172,178,182,184,186,186,186,186,186,186,186,159,136,117,102,91,82,76,72,70,68,68,68,68,68,68,68,95,118,137,152,132,116,103,92,84,78,74,71,69,68,68,68,68,68,68,68,68,68,68,68,68,68,68],"expand_frames":[15,31],"findings":[],"intermediate":true,"modal_hidden":true,"modal_restored":true,"monotonic":true,"ok":true,"pinned":true,"rail_right":[52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,79,102,121,136,147,156,162,166,168,170,170,170,170,170,170,170,143,120,101,86,75,66,60,56,54,52,52,52,52,52,52,52,79,102,121,136,116,100,87,76,68,62,58,55,53,52,52,52,52,52,52,52,52,52,52,52,52,52,52],"resize_aligned":true,"settled":true}
+FILES_TOOLKIT_FIXTURE action=sidebar-motion-check
+FILES_TOOLKIT_FIXTURE action=close
+FILES_CLOSE_WAIT saves_ready=false mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false
+FILES_CLOSE_WAIT saves_ready=true mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false
+FILES_CLOSE_DRAINED
+FILES_GLASS_STATS glass_fills=0 opaque_fills=7445 regions_cleared=0 regions_restored=0
