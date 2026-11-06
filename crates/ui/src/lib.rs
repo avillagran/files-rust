@@ -6,6 +6,9 @@ mod audio_preview_job;
 mod aux_io;
 mod bookmarks_state;
 mod bookmarks_ui;
+mod breadcrumb_scene;
+mod breadcrumb_ui;
+mod breadcrumbs;
 mod capture_frame;
 mod checksum_job;
 mod checksum_ui;
@@ -654,6 +657,10 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             }
             if key == Key::F8 && !m.editing {
                 m.action(Action::Trash);
+                return true;
+            }
+            if key == Key::Down && app::event_state().intersects(Shortcut::Alt) && !m.editing {
+                m.action(Action::Breadcrumbs);
                 return true;
             }
             if app::event_state().intersects(Shortcut::Alt)
@@ -2163,6 +2170,29 @@ pub fn run_since(start: Instant) -> bool {
                     }
                     "closed" => toolkit_menus.close(),
                     "close" => model.borrow_mut().closing = true,
+                    "breadcrumb-state" => {
+                        let state = breadcrumb_scene::state(&model.borrow(), &canvas);
+                        eprintln!("FILES_BREADCRUMB_STATE {state}");
+                    }
+                    "breadcrumb-pick-last" => {
+                        for key in ["End", "Up", "Enter"] {
+                            fltk_omarchy::focus::press(key);
+                        }
+                    }
+                    "breadcrumb-pick-background" => {
+                        for key in ["End", "Right", "End", "Enter"] {
+                            fltk_omarchy::focus::press(key);
+                        }
+                    }
+                    "breadcrumb-key-open" => {
+                        fixture_dispatch.set(true);
+                        fltk_omarchy::focus::press("Alt+Down");
+                        fixture_dispatch.set(false);
+                    }
+                    t if t.starts_with("breadcrumb-") => {
+                        let result = breadcrumb_scene::command(&mut model.borrow_mut(), t);
+                        eprintln!("FILES_BREADCRUMB_COMMAND result={result:?}");
+                    }
                     "tab-gesture-state" => {
                         let state = tab_gesture_scene::state(&model.borrow());
                         eprintln!("FILES_TAB_GESTURE_STATE {state}");

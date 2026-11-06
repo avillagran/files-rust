@@ -90,6 +90,8 @@ pub enum Action {
     Tab(crate::tabs::Command),
     Entry(usize),
     Navigate(PathBuf),
+    Breadcrumbs,
+    BackgroundNavigate(PathBuf),
     View(View),
     Inspector,
     Sizes,
@@ -355,6 +357,8 @@ impl Action {
             Self::SearchSelect(..) => Some("Seleccionar resultado de búsqueda"),
             Self::ViewMenu(_, _) => Some("Cambiar vista"),
             Self::Omni => Some("Editar ruta, Ctrl+L"),
+            Self::Breadcrumbs => Some("Ancestros de la ruta, Alt+↓"),
+            Self::BackgroundNavigate(_) => Some("Abrir en pestaña de fondo"),
             Self::PathCommit => Some("Confirmar ruta, Enter"),
             Self::PathCancel => Some("Cancelar edición de ruta, Esc"),
             Self::SelectionMenu(_, _) => Some("Herramientas de selección"),
@@ -586,6 +590,7 @@ pub struct Model {
     pub content_height: i32,
     pub group_ends: [usize; 5],
     /// Rail expanded. With the toolkit Sidebar it mirrors the widget.
+    pub breadcrumbs: crate::breadcrumb_ui::State,
     pub rail: bool,
     /// The toolkit Sidebar widget draws the rail rows (real window only).
     pub sidebar_widget: bool,
@@ -791,6 +796,7 @@ impl Model {
             wheel_scroll: crate::wheel_scroll::State::default(),
             content_height: 0,
             group_ends: [0; 5],
+            breadcrumbs: Default::default(),
             rail: false,
             sidebar_widget: false,
             rail_width: None,
@@ -3031,6 +3037,10 @@ impl Model {
                     self.layout_changed();
                     self.save_layout();
                 }
+            }
+            Action::Breadcrumbs => crate::breadcrumb_ui::open(self),
+            Action::BackgroundNavigate(p) => {
+                crate::tab_gestures::middle(self, Some(Action::Navigate(p)))
             }
             Action::Navigate(p) => self.navigate(p),
             Action::View(v) => {

@@ -6,7 +6,9 @@ use files_core::{
     format_size, mime, relative_date, size_parts,
     theme::{Color, Corners, WindowMode},
 };
-use std::{path::PathBuf, time::SystemTime};
+#[cfg(test)]
+use std::path::PathBuf;
+use std::time::SystemTime;
 fn r(x: i32, y: i32, w: i32, h: i32) -> Rect {
     Rect::new(x, y, w, h)
 }
@@ -353,89 +355,18 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             Action::Omni
         },
     );
+    m.breadcrumbs.clear_geometry();
     p.clip(r(omni.x + 8, omni.y + 2, omni.w - 16, omni.h - 4));
     if m.editing {
         crate::path_edit::paint(p, m, r(omni.x + 8, omni.y + 2, omni.w - 16, omni.h - 4));
     } else if m.filter_edit.active || !m.query.is_empty() {
         crate::filter_edit::paint(p, m, r(omni.x + 8, omni.y + 2, omni.w - 16, omni.h - 4));
     } else {
-        let mut crumbs = Vec::new();
-        let home = files_core::theme::home();
-        let mut path = if m.path.starts_with(&home) {
-            home.clone()
-        } else {
-            PathBuf::from("/")
-        };
-        crumbs.push((
-            if path == home { "~".into() } else { "/".into() },
-            path.clone(),
-        ));
-        if let Ok(rest) = m.path.strip_prefix(&path) {
-            for part in rest.components() {
-                path.push(part);
-                crumbs.push((
-                    files_core::name_label::label(part.as_os_str()).into_owned(),
-                    path.clone(),
-                ));
-            }
-        }
-        // Mantener visibles los últimos segmentos de una ruta larga.
-        let mut widths = crumbs
-            .iter()
-            .map(|(s, _)| (s.chars().count() as i32 * 7 + 20).min(180))
-            .collect::<Vec<_>>();
-        while widths.iter().sum::<i32>() + (widths.len() as i32 - 1) * 14 > omni.w - 30
-            && crumbs.len() > 1
-        {
-            crumbs.remove(0);
-            widths.remove(0);
-        }
-        let mut x = omni.x + 12;
-        for (i, ((label, path), cw)) in crumbs.iter().zip(&widths).enumerate() {
-            let current = i == crumbs.len() - 1;
-            p.rounded_rect(
-                r(x, 17, *cw, 24),
-                7 * rad,
-                if current {
-                    c.accent
-                } else {
-                    c.lighter_background
-                },
-            );
-            p.text(
-                r(x + 8, 17, *cw - 16, 24),
-                label,
-                12,
-                if current {
-                    c.darker_background
-                } else {
-                    c.foreground
-                },
-                false,
-                false,
-            );
-            // Breadcrumbs are clipped visually; their hit target must end at
-            // that same clip, leaving the free header gap available for move.
-            let visible_width = (*cw).min(omni.x + omni.w - 8 - x).max(0);
-            if visible_width > 0 {
-                hit(
-                    m,
-                    r(x, 17, visible_width, 24),
-                    Action::Navigate(path.clone()),
-                );
-            }
-            x += cw + 14;
-        }
-        if x + 90 < omni.x + omni.w {
-            p.text(
-                r(x + 4, 11, omni.x + omni.w - x - 8, 36),
-                "escribe para filtrar",
-                12,
-                c.dark_foreground,
-                false,
-                false,
-            );
-        }
+        crate::breadcrumb_ui::paint(
+            p,
+            m,
+            r(omni.x + 12, omni.y + 2, (omni.w - 24).max(0), omni.h - 4),
+        );
     }
     p.unclip();
     if m.editing {

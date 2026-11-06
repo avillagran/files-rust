@@ -22,6 +22,10 @@ pub const ITEMS: &[(&str, &str)] = &[
         "Cerrar esa pestaña sin activarla primero",
     ),
     ("Ctrl+L", "Editar ruta: selecciona todo el campo"),
+    (
+        "Alt+↓ / … en ruta",
+        "Ancestros ocultos; abrir aquí o en pestaña de fondo",
+    ),
     (">comando / :lugar", "En ruta + Enter: buscar en catálogos"),
     (
         "←/→, Home/End, Shift",
