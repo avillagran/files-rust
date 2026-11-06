@@ -540,6 +540,10 @@ pub struct Model {
     /// Short navigation feedback belongs in the status bar, not over file rows.
     pub tab_feedback: Option<std::time::Instant>,
     pub operation_message: Option<String>,
+    pub operation_feedback: crate::operation_feedback::State,
+    /// The window adapter owns persistent cards; canvas fallback is retained
+    /// for model-only rendering and an unavailable native anchor.
+    pub toolkit_feedback: bool,
     pub operation_details: Vec<String>,
     pub notice_open: bool,
     pub trash_browser: Option<crate::trash_browser::Panel>,
@@ -754,6 +758,8 @@ impl Model {
             can_redo: false,
             tab_feedback: None,
             operation_message: None,
+            operation_feedback: Default::default(),
+            toolkit_feedback: false,
             operation_details: Vec::new(),
             notice_open: false,
             trash_browser: None,

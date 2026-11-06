@@ -331,6 +331,14 @@ pub const ITEMS: &[Spec] = &[
         Action::Undo(false)
     ),
     spec!(
+        "last-operation-result",
+        "Ver el último resultado de operación",
+        "",
+        "copia mover informe ultimo resultado operation report",
+        Root,
+        Action::CopyDetails
+    ),
+    spec!(
         "redo",
         "Rehacer renombrado disponible",
         "Ctrl+Shift+Z",
@@ -907,8 +915,16 @@ impl State {
         let busy = m.mutations.busy || m.mutation_applied || m.copy_busy();
         match s.id {
             "terminal" if m.open_job.is_some() => Some("Ya hay una apertura o terminal pendiente"),
-            "copy" | "move" | "rename" | "trash" | "properties" | "new-dir" | "new-file"
-            | "undo" | "redo"
+            "copy"
+            | "move"
+            | "rename"
+            | "trash"
+            | "properties"
+            | "new-dir"
+            | "new-file"
+            | "undo"
+            | "redo"
+            | "last-operation-result"
                 if busy
                     && !review
                     && !(crate::selection_tools::is_map(m)
@@ -923,7 +939,11 @@ impl State {
             "bookmark-add" if !m.bookmarks.can_request() => {
                 Some("Espera, reintenta u omite favoritos pendientes")
             }
-            "properties" if m.selection.len() > 1 => Some("Propiedades admite un elemento"),
+            "last-operation-result" if m.copy_last.is_none() => {
+                Some("No hay un resultado de operación retenido")
+            }
+            "last-operation-result" if m.delete.busy() => Some("Espera la operación en curso"),
+            "properties" if m.selection.len() > 32 => Some("Propiedades admite hasta 32 objetos"),
             "sizes-one"
                 if !m
                     .selected

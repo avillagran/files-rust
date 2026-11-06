@@ -710,6 +710,8 @@ impl Model {
                     self.notice_open =
                         (error && !clean_close_cancel) || cleanup || recovery || report.truncated;
                     self.copy_last = Some(outcome); // Exactly one full result, never an unbounded history.
+                    self.operation_feedback
+                        .publish_copy(id, self.operation_message.as_deref().unwrap_or_default());
                     if self.notice_open {
                         self.copy.hold_queue(true);
                         self.closing = false;
@@ -761,6 +763,14 @@ impl Model {
         ));
     }
     pub fn show_copy_details(&mut self) {
+        if self.closing
+            || self.copy_busy()
+            || self.mutations.busy
+            || self.mutation_applied
+            || self.delete.busy()
+        {
+            return;
+        }
         if let Some(outcome) = &self.copy_last {
             self.copy_notice_id = Some(outcome.id);
             let report = crate::copy_report::describe(outcome);
@@ -777,6 +787,10 @@ impl Model {
             self.copy_report_truncated = report.truncated;
             self.notice_scroll = 0;
             self.notice_open = true;
+            self.operation_feedback.publish_copy(
+                outcome.id,
+                self.operation_message.as_deref().unwrap_or_default(),
+            );
         }
     }
     pub fn notice_copy_outcome(&self) -> Option<&crate::copy_job::Outcome> {
@@ -977,7 +991,11 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             "Vaciar pendientes",
             Action::CopyClearPending,
         );
-    } else if m.copy_last.is_some() && !m.notice_open && m.rename_dialog.is_none() {
+    } else if !m.toolkit_feedback
+        && m.copy_last.is_some()
+        && !m.notice_open
+        && m.rename_dialog.is_none()
+    {
         button(
             p,
             m,

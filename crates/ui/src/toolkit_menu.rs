@@ -270,6 +270,17 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
             (row("  Deshacer", "Ctrl+Z", false), Action::Undo(false)),
             (row("  Rehacer", "Ctrl+Shift+Z", false), Action::Undo(true)),
             (
+                {
+                    let item = row("  Último resultado de operación", "", false);
+                    if m.copy_last.is_some() {
+                        item
+                    } else {
+                        item.disabled()
+                    }
+                },
+                Action::CopyDetails,
+            ),
+            (
                 row("  Pegar en files", "Ctrl+V", false),
                 Action::ClipboardPaste,
             ),

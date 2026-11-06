@@ -90,6 +90,8 @@ mod open_job;
 mod open_scene;
 mod open_with_ui;
 mod operation_bar;
+mod operation_feedback;
+mod operation_notices;
 mod owned_child;
 pub mod painter;
 mod path_edit;
@@ -1335,6 +1337,9 @@ pub fn run_since(start: Instant) -> bool {
     let fixture_sidebar = sidebar.clone();
     let fixture_rail = rail_state.clone();
     let tab_strip = tab_strip::Strip::new(size.0, isolate_fixture_input, fixture_dispatch.clone());
+    let mut operation_notices = operation_notices::Manager::default();
+    let notice_input = operation_notices.inbox();
+    model.borrow_mut().toolkit_feedback = true;
     win.end();
     win.resizable(&canvas);
     if trace {
@@ -1479,6 +1484,7 @@ pub fn run_since(start: Instant) -> bool {
     let mut grabbing = None;
     let mut deferred_click = None;
     let event_tabs = tab_strip.clone();
+    let event_notices = notice_input.clone();
     canvas.handle(move |f, e| {
         let release_click = if e == Event::Released {
             deferred_click.take()
@@ -1518,6 +1524,18 @@ pub fn run_since(start: Instant) -> bool {
             return true;
         }
 
+        if matches!(e, Event::KeyDown | Event::Shortcut)
+            && app::event_key() == Key::from_char('n')
+            && app::event_state().contains(Shortcut::Ctrl | Shortcut::Alt)
+        {
+            let allowed = m
+                .try_borrow()
+                .is_ok_and(|m| operation_notices::context(&m).visible);
+            if allowed {
+                event_notices.focus();
+            }
+            return true;
+        }
         if matches!(e, Event::KeyDown | Event::Shortcut)
             && app::event_key() == Key::from_char('t')
             && app::event_state().contains(Shortcut::Ctrl | Shortcut::Alt)
@@ -1664,6 +1682,7 @@ pub fn run_since(start: Instant) -> bool {
         (sidebar.clone(), fixture_rail.clone(), canvas.clone());
     let auxiliary_fixture = fixture_dispatch.clone();
     let auxiliary_tabs = tab_strip.clone();
+    let auxiliary_notices = notice_input.clone();
     let mut auxiliary_pressed = false;
     // FLTK groups otherwise dispatch children before our handler. Intercept
     // auxiliary buttons before the canvas or Sidebar treats them as primary.
@@ -1672,6 +1691,18 @@ pub fn run_since(start: Instant) -> bool {
         native_transfer::window_event(&native_window_model, window, event);
         if matches!(event, Event::KeyDown | Event::Shortcut) {
             let mods = app::event_state();
+            if app::event_key() == Key::from_char('n')
+                && mods.contains(Shortcut::Ctrl | Shortcut::Alt)
+                && (!isolate_fixture_input || auxiliary_fixture.get())
+            {
+                let allowed = native_window_model
+                    .try_borrow()
+                    .is_ok_and(|m| operation_notices::context(&m).visible);
+                if allowed {
+                    auxiliary_notices.focus();
+                }
+                return true;
+            }
             if app::event_key() == Key::F10
                 && mods.contains(Shortcut::Ctrl | Shortcut::Shift)
                 && (!isolate_fixture_input || auxiliary_fixture.get())
@@ -1707,6 +1738,12 @@ pub fn run_since(start: Instant) -> bool {
         }
         if event == Event::Push {
             auxiliary_pressed = false;
+            if app::event_button() != 1
+                && auxiliary_notices.contains(app::event_x(), app::event_y())
+            {
+                auxiliary_pressed = true;
+                return true;
+            }
             if auxiliary_tabs.contains(app::event_x(), app::event_y())
                 && (!isolate_fixture_input || auxiliary_fixture.get())
                 && let Ok(mut m) = native_window_model.try_borrow_mut()
@@ -1929,6 +1966,7 @@ pub fn run_since(start: Instant) -> bool {
             break;
         }
         fltk_omarchy::task::drain();
+        let feedback_dirty = operation_notices.drain(&model);
         let desired_corners = omarchy_theme::corners(model.borrow().corners);
         if fltk_omarchy::theme::corners() != desired_corners {
             fltk_omarchy::theme::set_corners(desired_corners);
@@ -1960,7 +1998,15 @@ pub fn run_since(start: Instant) -> bool {
         }
         m.set_media_visible(win.shown() && win.visible_r());
         let strip_dirty = tab_strip.drain(&mut m);
-        let mut dirty = m.pump() || changed || strip_dirty;
+        let mut dirty = m.pump() || changed || strip_dirty || feedback_dirty;
+        {
+            let Model {
+                operation_feedback,
+                operation_message,
+                ..
+            } = &mut *m;
+            dirty |= operation_feedback.observe_info(operation_message.as_deref());
+        }
         let external = file_manager.pump(&mut m);
         dirty |= external.dirty || file_manager_ui::Controller::finish_reveal(&mut m);
         if let Some(error) = &external.fatal {
@@ -2104,6 +2150,8 @@ pub fn run_since(start: Instant) -> bool {
                 eprintln!("FILES_CLOSE_DRAINED");
             }
             clean_hidden = true;
+            drop(m);
+            operation_notices.close();
             win.hide();
             continue;
         }
@@ -2166,7 +2214,18 @@ pub fn run_since(start: Instant) -> bool {
                     .filter(|e| files_core::visibility::accepts(&e.name, m.hidden_visible()))
                     .all(|e| e.stat_attempted))
             && (m.view != View::Spatial || m.layout_ready);
+        let feedback_snapshot = if win.shown() {
+            m.operation_feedback
+                .snapshot(operation_notices::context(&m))
+        } else {
+            None
+        };
         drop(m);
+        let feedback_managed = operation_notices.sync(feedback_snapshot, &canvas);
+        if model.borrow().toolkit_feedback != feedback_managed {
+            model.borrow_mut().toolkit_feedback = feedback_managed;
+            canvas.redraw();
+        }
         if external.present && !model.borrow().closing {
             waiting_for_external = false;
             win.show();
@@ -2184,6 +2243,42 @@ pub fn run_since(start: Instant) -> bool {
             if let Ok(text) = std::fs::read_to_string(&command) {
                 let _ = std::fs::remove_file(command);
                 match text.trim() {
+                    "operation-notice-state" => {
+                        let value = operation_notices.fixture(&model.borrow(), &canvas);
+                        eprintln!("FILES_OPERATION_NOTICE_STATE {value}");
+                    }
+                    "operation-notice-fixture-rename" | "operation-notice-fixture-copy" => {
+                        let result = operation_notices::fixture_form(
+                            &mut model.borrow_mut(),
+                            text.trim().ends_with("rename"),
+                        );
+                        eprintln!("FILES_OPERATION_NOTICE_SETUP {result:?}");
+                        canvas.redraw();
+                    }
+                    "operation-notice-info" => {
+                        model.borrow_mut().operation_message = Some(
+                            "Información de la operación; el navegador conserva el foco".into(),
+                        );
+                    }
+                    "operation-notice-replace" => {
+                        model.borrow_mut().operation_message =
+                            Some("Resultado actualizado; sólo hay un aviso activo".into());
+                    }
+                    "operation-notice-clear" => {
+                        model.borrow_mut().operation_message = None;
+                    }
+                    "operation-notice-protect" => model.borrow_mut().action(Action::Help),
+                    "operation-notice-unprotect" => {
+                        model.borrow_mut().help = None;
+                    }
+                    "operation-notice-clock-freeze" => fltk_omarchy::anim::clock::freeze(),
+                    "operation-notice-clock-resume" => fltk_omarchy::anim::clock::resume(),
+                    text if text.starts_with("operation-notice-clock-step:") => {
+                        if let Ok(ms) = text[28..].parse::<u64>() {
+                            fltk_omarchy::anim::clock::advance(Duration::from_millis(ms.min(1000)));
+                        }
+                        win.redraw();
+                    }
                     "file-manager-state" => {
                         let value = file_manager.marker(&model.borrow());
                         eprintln!("FILES_FILE_MANAGER_STATE {value}");
@@ -3475,6 +3570,7 @@ pub fn run_since(start: Instant) -> bool {
         }
     }
     file_manager.stop();
+    operation_notices.close();
     if runtime_failed {
         // A real display/poll failure must not terminate an in-flight rollback.
         // No replacement jobs or UI waits are started while draining.

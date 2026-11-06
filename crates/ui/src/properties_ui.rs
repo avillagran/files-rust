@@ -96,7 +96,6 @@ impl Model {
         d.objects = objects;
         d.object_index = index;
         self.session.restore_allowed = false;
-        self.operation_message = None;
         self.preview.close();
         self.rename_dialog = None;
         self.settings = false;
@@ -414,6 +413,7 @@ mod batch_tests {
         let mut m = Model::new(f.root.clone());
         wait(&mut m, false);
         m.selection = (0..m.entries.len()).collect();
+        m.operation_message = Some("Previous operation result".into());
         let before = (m.path.clone(), m.selection.clone(), m.generation);
         let expected: Vec<_> = m
             .order
@@ -427,6 +427,10 @@ mod batch_tests {
         assert_eq!((m.path.clone(), m.selection.clone(), m.generation), before);
         m.close_properties();
         assert!(m.properties_dialog.is_none());
+        assert_eq!(
+            m.operation_message.as_deref(),
+            Some("Previous operation result")
+        );
     }
     #[test]
     #[cfg(target_os = "linux")]

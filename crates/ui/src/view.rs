@@ -1097,6 +1097,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             ("  Crear carpeta · F7", Action::NewEntry(true)),
             ("  Deshacer · Ctrl+Z", Action::Undo(false)),
             ("  Rehacer · Ctrl+Shift+Z", Action::Undo(true)),
+            ("  Último resultado de operación", Action::CopyDetails),
             ("  Pegar en files · Ctrl+V", Action::ClipboardPaste),
         ];
         let available = (h - sy - 40).max(1);
@@ -1146,6 +1147,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                     Action::ClipboardCut => "  Cortar (files)",
                     Action::ClipboardPaste => "  Pegar (files)",
                     Action::RecoveryCatalog => "  Recuperar mov.",
+                    Action::CopyDetails => "  Último informe",
                     Action::Trash => "  Papelera · Supr",
                     Action::NewEntry(false) => "  Crear archivo",
                     Action::NewEntry(true) => "  Crear carpeta",
@@ -2769,7 +2771,12 @@ mod inspector_tabs_tests {
                         && hit.rect.x + hit.rect.w <= panel.x + panel.w
                 })
                 .collect::<Vec<_>>();
-            assert_eq!(buttons.len(), 23);
+            assert_eq!(buttons.len(), 24);
+            assert!(
+                buttons
+                    .iter()
+                    .any(|h| matches!(h.action, Action::CopyDetails))
+            );
             assert!(
                 buttons
                     .iter()

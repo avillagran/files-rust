@@ -235,6 +235,11 @@ impl Model {
                     self.can_undo = outcome.undo;
                     self.can_redo = outcome.redo;
                     self.operation_message = Some(outcome.message);
+                    self.operation_feedback.publish_mutation(
+                        id,
+                        self.operation_message.as_deref().unwrap_or_default(),
+                        outcome.success,
+                    );
                     self.operation_details = outcome.details;
                     self.notice_scroll = 0;
                     self.notice_pan = 0;
@@ -519,7 +524,8 @@ fn button(p: &mut dyn Painter, m: &mut Model, r: Rect, label: &str, action: Acti
 }
 /// Compact notices occupy their own browser space, above the optional MC bar.
 pub fn compact_notice_visible(m: &Model) -> bool {
-    !m.closing
+    !m.toolkit_feedback
+        && !m.closing
         && !m.recovery_catalog.open
         && !m.notice_open
         && !m.actions_menu

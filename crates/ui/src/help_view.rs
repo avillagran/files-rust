@@ -13,6 +13,14 @@ pub const ITEMS: &[(&str, &str)] = &[
     ("Ctrl+T / Ctrl+W", "Nueva pestaña / cerrar activa"),
     ("Ctrl+Tab / Ctrl+Shift+Tab", "Pestaña siguiente / anterior"),
     ("Ctrl+Shift+T", "Reabrir pestaña cerrada"),
+    (
+        "Ctrl+Alt+N / Escape",
+        "Enfocar aviso de operación / cerrar aviso",
+    ),
+    (
+        "← → / Enter en aviso",
+        "Elegir / ejecutar una acción del aviso",
+    ),
     ("Ctrl+Shift+F10", "Acciones de la pestaña activa"),
     ("Arrastrar pestaña", "Reordenar sin activarla"),
     (
