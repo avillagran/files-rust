@@ -530,6 +530,8 @@ pub struct Model {
     pub mutation_applied: bool,
     pub can_undo: bool,
     pub can_redo: bool,
+    /// Short navigation feedback belongs in the status bar, not over file rows.
+    pub tab_feedback: Option<std::time::Instant>,
     pub operation_message: Option<String>,
     pub operation_details: Vec<String>,
     pub notice_open: bool,
@@ -734,6 +736,7 @@ impl Model {
             mutation_applied: false,
             can_undo: false,
             can_redo: false,
+            tab_feedback: None,
             operation_message: None,
             operation_details: Vec::new(),
             notice_open: false,

@@ -2308,3 +2308,232 @@ fn trash_catalog_ignores_closed_or_reloaded_requests_and_blocks_file_actions() {
     assert!(m.trash_browser.is_none());
     assert!(!m.receive_trash_catalog(current, Ok(Default::default())));
 }
+
+#[cfg(unix)]
+#[test]
+fn background_folder_tab_keeps_active_browser_and_raw_name_exact() {
+    use files_core::listing::Kind;
+    use std::os::unix::ffi::OsStringExt;
+    let mut f = Fixture::new();
+    let m = &mut f.m;
+    let raw = std::ffi::OsString::from_vec(b"folder-\xff".to_vec());
+    m.entries = vec![
+        named("one.txt", Kind::File),
+        named("folder", Kind::Directory),
+    ];
+    m.entries[1].name = raw.clone();
+    m.order = vec![1, 0];
+    m.loaded = true;
+    m.query = "retained filter".into();
+    m.selection = [0].into_iter().collect();
+    m.selected = Some(0);
+    m.anchor = Some(0);
+    m.scroll = 57;
+    let path = m.path.clone();
+    let active = m.tabs.active;
+    let generation = m.generation;
+    m.history
+        .visit(&path, &path.join("history-target"))
+        .unwrap();
+    let history_bytes = m.history.retained_bytes();
+    let history_paths = (m.history.paths().0.clone(), m.history.paths().1.clone());
+    let id = m.background_folder_tab(&Action::Entry(1)).unwrap().unwrap();
+    assert_ne!(id, active);
+    assert_eq!(m.tabs.active, active);
+    assert_eq!(m.path, path);
+    assert_eq!(m.generation, generation);
+    assert_eq!(m.history.retained_bytes(), history_bytes);
+    assert_eq!(m.history.paths(), (&history_paths.0, &history_paths.1));
+    assert_eq!(m.query, "retained filter");
+    assert_eq!(m.selection, [0].into_iter().collect());
+    assert_eq!((m.selected, m.anchor, m.scroll), (Some(0), Some(0), 57));
+    assert_eq!(m.order, [1, 0]);
+    let tab = m.tabs.rows.iter().find(|t| t.id == id).unwrap();
+    assert_eq!(tab.path, path.join(&raw));
+    let saved = tab.saved.as_ref().unwrap();
+    assert!(saved.query.is_empty());
+    assert!(!saved.history.can_back() && !saved.history.can_forward());
+    assert_eq!(saved.scroll, 0);
+    assert_eq!(m.background_folder_tab(&Action::Entry(0)).unwrap(), None);
+    m.order = vec![0];
+    assert_eq!(m.background_folder_tab(&Action::Entry(1)).unwrap(), None);
+    assert_eq!(m.background_folder_tab(&Action::Entry(99)).unwrap(), None);
+    assert_eq!(m.tabs.rows.len(), 2);
+}
+
+#[test]
+fn background_folder_tab_stays_in_clicked_dual_pane_without_focus_or_selection_change() {
+    use files_core::listing::Kind;
+    let mut f = Fixture::new();
+    let m = &mut f.m;
+    m.toggle_dual();
+    let owner = m.pane_owner();
+    let path = m.path.clone();
+    let generation = m.generation;
+    m.selection = [4].into_iter().collect();
+    m.selected = Some(4);
+    m.anchor = Some(4);
+    let other = m.dual.other.as_mut().unwrap();
+    other.path = f.root.join("inactive");
+    other.entries = vec![named("folder", Kind::Directory)];
+    other.order = vec![0];
+    other.selected = Some(0);
+    other.selection = [0].into_iter().collect();
+    other.anchor = Some(0);
+    other.query = "other filter".into();
+    let other_id = other.id;
+    let revision = other.revision;
+    let other_active = other.tabs.active;
+    let target = other.path.join("folder");
+    let action = Action::PaneEntry(other_id, revision, 0);
+    let id = m.background_folder_tab(&action).unwrap().unwrap();
+    assert_eq!(m.pane_owner(), owner);
+    assert_eq!(m.path, path);
+    assert_eq!(m.generation, generation);
+    assert_eq!(m.tabs.rows.len(), 1);
+    assert_eq!((m.selected, m.anchor), (Some(4), Some(4)));
+    assert_eq!(m.selection, [4].into_iter().collect());
+    let other = m.dual.other.as_ref().unwrap();
+    assert_eq!(other.tabs.active, other_active);
+    assert_eq!(other.tabs.rows.len(), 2);
+    assert_eq!(other.tabs.rows.last().unwrap().id, id);
+    assert_eq!(other.tabs.rows.last().unwrap().path, target);
+    assert_eq!((other.selected, other.anchor), (Some(0), Some(0)));
+    assert_eq!(other.selection, [0].into_iter().collect());
+    assert_eq!(other.query, "other filter");
+    assert_eq!(
+        m.background_folder_tab(&Action::PaneEntry(other_id, revision + 1, 0))
+            .unwrap(),
+        None
+    );
+    for _ in 2..crate::tabs::MAX_TABS {
+        m.background_folder_tab(&action).unwrap().unwrap();
+    }
+    assert!(
+        m.background_folder_tab(&action)
+            .unwrap_err()
+            .contains("ocho")
+    );
+    let other = m.dual.other.as_ref().unwrap();
+    assert_eq!(other.tabs.rows.len(), crate::tabs::MAX_TABS);
+    assert_eq!(m.pane_owner(), owner);
+}
+
+#[test]
+fn background_folder_tab_uses_column_owner_and_rejects_stale_or_hidden_entries() {
+    use crate::columns::{Column, Data};
+    use files_core::listing::Kind;
+    let mut f = Fixture::new();
+    let m = &mut f.m;
+    m.view = crate::model::View::Columns;
+    m.entries = vec![named("active-child", Kind::Directory)];
+    m.order = vec![0];
+    let path = m.path.clone();
+    let cached = path.join("cached");
+    m.columns.columns = vec![
+        Column {
+            id: 21,
+            watch_id: 21,
+            path: path.clone(),
+            data: Data::default(),
+        },
+        Column {
+            id: 22,
+            watch_id: 22,
+            path: cached.clone(),
+            data: {
+                let mut data = Data::default();
+                data.entries = vec![named("cached-child", Kind::Directory)];
+                data.order = vec![0];
+                data
+            },
+        },
+    ];
+    m.columns.active = 0;
+    let active = m.tabs.active;
+    let a = m
+        .background_folder_tab(&Action::ColumnEntry(21, 0))
+        .unwrap()
+        .unwrap();
+    let b = m
+        .background_folder_tab(&Action::ColumnEntry(22, 0))
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        m.tabs.rows.iter().find(|t| t.id == a).unwrap().path,
+        path.join("active-child")
+    );
+    assert_eq!(
+        m.tabs.rows.iter().find(|t| t.id == b).unwrap().path,
+        cached.join("cached-child")
+    );
+    assert_eq!(m.path, path);
+    assert_eq!(m.tabs.active, active);
+    assert_eq!(m.columns.active, 0);
+    assert_eq!(
+        m.background_folder_tab(&Action::ColumnEntry(999, 0))
+            .unwrap(),
+        None
+    );
+    m.columns.columns[1].data.order.clear();
+    assert_eq!(
+        m.background_folder_tab(&Action::ColumnEntry(22, 0))
+            .unwrap(),
+        None
+    );
+    m.columns.columns[0].path = cached;
+    assert_eq!(
+        m.background_folder_tab(&Action::ColumnEntry(21, 0))
+            .unwrap(),
+        None
+    );
+    assert_eq!(m.tabs.rows.len(), 3);
+}
+
+#[test]
+fn background_folder_tab_keeps_admission_atomic_across_pane_groups_and_edits() {
+    use files_core::listing::Kind;
+    let mut f = Fixture::new();
+    let m = &mut f.m;
+    m.entries = vec![named("folder", Kind::Directory)];
+    m.order = vec![0];
+    m.editing = true;
+    assert!(m.background_folder_tab(&Action::Entry(0)).is_err());
+    assert_eq!(m.tabs.rows.len(), 1);
+    m.editing = false;
+    m.toggle_dual();
+    let other = m.dual.other.as_mut().unwrap();
+    other.entries = vec![named("other-folder", Kind::Directory)];
+    other.order = vec![0];
+    let action = Action::PaneEntry(other.id, other.revision, 0);
+    m.background_tab(&f.root, None).unwrap();
+    m.tabs
+        .rows
+        .last_mut()
+        .unwrap()
+        .saved
+        .as_mut()
+        .unwrap()
+        .charge = crate::tabs::STORED_LIMIT;
+    let active = m.tabs.active;
+    assert!(
+        m.background_folder_tab(&action)
+            .unwrap_err()
+            .contains("presupuesto")
+    );
+    assert_eq!(m.dual.other.as_ref().unwrap().tabs.rows.len(), 1);
+    assert_eq!(m.tabs.active, active);
+    m.tabs
+        .rows
+        .last_mut()
+        .unwrap()
+        .saved
+        .as_mut()
+        .unwrap()
+        .charge = 8192;
+    let id = m.background_folder_tab(&action).unwrap().unwrap();
+    assert_eq!(
+        id, 2,
+        "failed admission must not consume the clicked pane's next ID"
+    );
+}

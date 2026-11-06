@@ -148,6 +148,8 @@ pub fn status(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         error.into()
     } else if !m.error.is_empty() {
         m.error.clone()
+    } else if m.tab_feedback.is_some() {
+        "Pestaña creada".into()
     } else if let Some(message) = m.launch_notice {
         message.into()
     } else if let Some(status) = m.folder_views.status() {

@@ -102,10 +102,7 @@ impl Model {
         self.background_tabs(std::iter::once((path, focus)))
             .map(|ids| ids[0])
     }
-    pub(crate) fn background_tabs<'a>(
-        &mut self,
-        targets: impl Iterator<Item = (&'a std::path::Path, Option<&'a std::ffi::OsStr>)> + Clone,
-    ) -> Result<Vec<u64>, &'static str> {
+    fn background_tab_admission(&self) -> Result<(), &'static str> {
         if self.closing
             || self.mutations.busy
             || self.mutation_applied
@@ -117,78 +114,103 @@ impl Model {
         {
             return Err("Termina la edición u operación antes de abrir otra pestaña");
         }
-        let count = targets.clone().count();
-        if count == 0 {
-            return Err("No quedan resultados marcados; vuelve a elegir");
-        }
-        if count > tabs::MAX_TABS.saturating_sub(self.tabs.rows.len()) {
-            return Err(
-                "Máximo ocho pestañas; el lote no cabe, reduce las marcas o cierra pestañas",
-            );
-        }
-        let history = files_core::navigation_history::History::default();
-        let mut total = 0usize;
-        for (path, focus) in targets.clone() {
-            files_core::navigation_history::validate(path)?;
-            if focus.is_some_and(|n| {
-                n.is_empty()
-                    || n == "."
-                    || n == ".."
-                    || n.as_encoded_bytes().iter().any(|b| matches!(b, 0 | b'/'))
-            }) {
-                return Err("Nombre enfocado inválido para la pestaña");
+        Ok(())
+    }
+
+    pub(crate) fn background_tabs<'a>(
+        &mut self,
+        targets: impl Iterator<Item = (&'a std::path::Path, Option<&'a std::ffi::OsStr>)> + Clone,
+    ) -> Result<Vec<u64>, &'static str> {
+        self.background_tab_admission()?;
+        let reserved = self.dual.other_stored();
+        publish_background_tabs(
+            &mut self.tabs,
+            targets,
+            BackgroundStyle {
+                view: self.view,
+                sort: self.sort,
+                descending: self.descending,
+                grid_zoom: self.grid_zoom,
+            },
+            reserved,
+        )
+    }
+
+    /// Resolve only a current visible folder; no stat, selection or pane switch.
+    /// Background tabs belong to the pane whose folder was clicked.
+    pub(crate) fn background_folder_tab(
+        &mut self,
+        action: &Action,
+    ) -> Result<Option<u64>, &'static str> {
+        let folder = |path: &std::path::Path,
+                      entries: &[files_core::listing::Entry],
+                      order: &[usize],
+                      i: usize| {
+            let e = entries.get(i)?;
+            (order.contains(&i) && e.is_dir()).then(|| path.join(&e.name))
+        };
+        let mut inactive = false;
+        let path = match action {
+            Action::Navigate(path) => Some(path.clone()),
+            Action::Entry(i) => folder(&self.path, &self.entries, &self.order, *i),
+            Action::PaneEntry(id, revision, i) if self.dual.enabled => {
+                if *id == self.dual.active_id && *revision == self.pane_revision {
+                    folder(&self.path, &self.entries, &self.order, *i)
+                } else if let Some(other) = self.dual.other.as_ref()
+                    && other.id == *id
+                    && other.revision == *revision
+                {
+                    inactive = true;
+                    folder(&other.path, &other.entries, &other.order, *i)
+                } else {
+                    None
+                }
             }
-            let charge =
-                Snapshot::estimate(focus.into_iter(), focus, focus, tabs::SELECTION_LIMIT)?
-                    + history.retained_bytes()
-                    + path.as_os_str().len()
-                    + 8192;
-            total = total
-                .checked_add(charge)
-                .ok_or("Presupuesto de pestañas agotado")?;
+            Action::ColumnEntry(id, i)
+                if self.view == crate::model::View::Columns && !self.dual.enabled =>
+            {
+                self.columns
+                    .columns
+                    .iter()
+                    .enumerate()
+                    .find(|(_, c)| c.id == *id)
+                    .and_then(|(index, c)| {
+                        if index == self.columns.active {
+                            (c.path == self.path)
+                                .then(|| folder(&self.path, &self.entries, &self.order, *i))
+                                .flatten()
+                        } else {
+                            folder(&c.path, &c.data.entries, &c.data.order, *i)
+                        }
+                    })
+            }
+            _ => None,
+        };
+        let Some(path) = path else { return Ok(None) };
+        if !inactive {
+            return self
+                .background_tabs(std::iter::once((path.as_path(), None)))
+                .map(|ids| Some(ids[0]));
         }
-        self.tabs
-            .admit_with_reserved(total, 0, self.dual.other_stored())?;
-        // Construct every bounded snapshot before publishing any new tab/ID.
-        let prepared = targets
-            .map(|(path, focus)| {
-                let selection = Snapshot::capture_with_anchor(
-                    focus.into_iter(),
-                    focus,
-                    focus,
-                    tabs::SELECTION_LIMIT,
-                )?;
-                let charge = selection.retained_bytes()
-                    + history.retained_bytes()
-                    + path.as_os_str().len()
-                    + 8192;
-                Ok(Saved {
-                    path: path.to_path_buf(),
-                    history: Default::default(),
-                    selection,
-                    view: self.view,
-                    sort: self.sort,
-                    descending: self.descending,
-                    query: String::new(),
-                    scroll: 0,
-                    grid_zoom: self.grid_zoom,
-                    pan_x: 0.,
-                    charge,
-                })
-            })
-            .collect::<Result<Vec<_>, &'static str>>()?;
-        let mut ids = Vec::with_capacity(count);
-        for saved in prepared {
-            let id = self.tabs.fresh_id();
-            let path = saved.path.clone();
-            self.tabs.rows.push(Tab {
-                id,
-                path,
-                saved: Some(saved),
-            });
-            ids.push(id);
-        }
-        Ok(ids)
+        self.background_tab_admission()?;
+        let reserved = self.tabs.stored_bytes().saturating_add(
+            self.dual
+                .other_stored()
+                .saturating_sub(self.dual.other.as_ref().unwrap().tabs.stored_bytes()),
+        );
+        let other = self.dual.other.as_mut().unwrap();
+        publish_background_tabs(
+            &mut other.tabs,
+            std::iter::once((path.as_path(), None)),
+            BackgroundStyle {
+                view: self.view,
+                sort: other.sort,
+                descending: other.descending,
+                grid_zoom: self.grid_zoom,
+            },
+            reserved,
+        )
+        .map(|ids| Some(ids[0]))
     }
     pub fn tab_command(&mut self, command: Command) {
         if self.closing {
@@ -355,6 +377,94 @@ impl Model {
         };
         self.restore_tab(incoming);
     }
+}
+/// The same admission/publication path is used for active and inactive panes.
+struct BackgroundStyle {
+    view: crate::model::View,
+    sort: files_core::listing::Sort,
+    descending: bool,
+    grid_zoom: f32,
+}
+fn publish_background_tabs<'a>(
+    tabs: &mut tabs::Tabs,
+    targets: impl Iterator<Item = (&'a std::path::Path, Option<&'a std::ffi::OsStr>)> + Clone,
+    style: BackgroundStyle,
+    reserved: usize,
+) -> Result<Vec<u64>, &'static str> {
+    let BackgroundStyle {
+        view,
+        sort,
+        descending,
+        grid_zoom,
+    } = style;
+    let count = targets.clone().count();
+    if count == 0 {
+        return Err("No quedan resultados marcados; vuelve a elegir");
+    }
+    if count > tabs::MAX_TABS.saturating_sub(tabs.rows.len()) {
+        return Err("Máximo ocho pestañas; el lote no cabe, reduce las marcas o cierra pestañas");
+    }
+    let history = files_core::navigation_history::History::default();
+    let mut total = 0usize;
+    for (path, focus) in targets.clone() {
+        files_core::navigation_history::validate(path)?;
+        if focus.is_some_and(|n| {
+            n.is_empty()
+                || n == "."
+                || n == ".."
+                || n.as_encoded_bytes().iter().any(|b| matches!(b, 0 | b'/'))
+        }) {
+            return Err("Nombre enfocado inválido para la pestaña");
+        }
+        let charge = Snapshot::estimate(focus.into_iter(), focus, focus, tabs::SELECTION_LIMIT)?
+            + history.retained_bytes()
+            + path.as_os_str().len()
+            + 8192;
+        total = total
+            .checked_add(charge)
+            .ok_or("Presupuesto de pestañas agotado")?;
+    }
+    tabs.admit_with_reserved(total, 0, reserved)?;
+    // Construct every bounded snapshot before publishing any new tab/ID.
+    let prepared = targets
+        .map(|(path, focus)| {
+            let selection = Snapshot::capture_with_anchor(
+                focus.into_iter(),
+                focus,
+                focus,
+                tabs::SELECTION_LIMIT,
+            )?;
+            let charge = selection.retained_bytes()
+                + history.retained_bytes()
+                + path.as_os_str().len()
+                + 8192;
+            Ok(Saved {
+                path: path.to_path_buf(),
+                history: Default::default(),
+                selection,
+                view,
+                sort,
+                descending,
+                query: String::new(),
+                scroll: 0,
+                grid_zoom,
+                pan_x: 0.,
+                charge,
+            })
+        })
+        .collect::<Result<Vec<_>, &'static str>>()?;
+    let mut ids = Vec::with_capacity(count);
+    for saved in prepared {
+        let id = tabs.fresh_id();
+        let path = saved.path.clone();
+        tabs.rows.push(Tab {
+            id,
+            path,
+            saved: Some(saved),
+        });
+        ids.push(id);
+    }
+    Ok(ids)
 }
 /// Horizontal strip never enters the draggable header. Stable IDs, clipped label
 /// targets and independent24px close targets; reveal active tab at narrow widths.

@@ -136,6 +136,8 @@ mod space_map_state;
 mod space_map_view;
 mod spatial_view;
 mod status_tips;
+mod tab_gesture_scene;
+mod tab_gestures;
 mod tabs;
 mod tabs_scene;
 mod tabs_ui;
@@ -1542,8 +1544,58 @@ pub fn run_since(start: Instant) -> bool {
         handled
     });
     let native_window_model = model.clone();
+    let (aux_sidebar, aux_rail, mut aux_canvas) =
+        (sidebar.clone(), fixture_rail.clone(), canvas.clone());
+    let auxiliary_fixture = fixture_dispatch.clone();
+    let mut auxiliary_pressed = false;
+    // FLTK groups otherwise dispatch children before our handler. Intercept
+    // auxiliary buttons before the canvas or Sidebar treats them as primary.
+    win.super_handle_first(false);
     win.handle(move |window, event| {
         native_transfer::window_event(&native_window_model, window, event);
+        if event == Event::Push {
+            auxiliary_pressed = false;
+            let button = app::event_button();
+            if button != 1 && button != 3 {
+                auxiliary_pressed = true;
+                if isolate_fixture_input && !auxiliary_fixture.get() {
+                    return true;
+                }
+                if button == 2
+                    && let Ok(mut m) = native_window_model.try_borrow_mut()
+                {
+                    let (x, y) = (app::event_x(), app::event_y());
+                    let target = if aux_sidebar.visible()
+                        && x >= aux_sidebar.x()
+                        && x < aux_sidebar.x() + aux_sidebar.w()
+                        && y >= aux_sidebar.y()
+                        && y < aux_sidebar.y() + aux_sidebar.h()
+                    {
+                        let rail = aux_rail.borrow();
+                        (0..rail.items.len()).find_map(|i| {
+                            let (rx, ry, rw, rh) = aux_sidebar.item_rect(i)?;
+                            if x >= rx && x < rx + rw && y >= ry && y < ry + rh {
+                                rail.drop_dir(i).map(|p| Action::Navigate(p.to_path_buf()))
+                            } else {
+                                None
+                            }
+                        })
+                    } else {
+                        tab_gestures::hit(&m, x, y)
+                    };
+                    tab_gestures::middle(&mut m, target);
+                    aux_canvas.redraw();
+                }
+                // No auxiliary button may trigger a primary/destructive action.
+                return true;
+            }
+        }
+        if auxiliary_pressed && matches!(event, Event::Drag | Event::Released) {
+            if event == Event::Released {
+                auxiliary_pressed = false;
+            }
+            return true;
+        }
         false
     });
     let close_requested = Rc::new(Cell::new(false));
@@ -1721,6 +1773,12 @@ pub fn run_since(start: Instant) -> bool {
         }
         m.set_media_visible(win.shown() && win.visible_r());
         let mut dirty = m.pump() || changed;
+        if m.tab_feedback
+            .is_some_and(|at| at.elapsed() >= Duration::from_secs(3))
+        {
+            m.tab_feedback = None;
+            dirty = true;
+        }
         if m.window_mode != applied_window_mode {
             applied_window_mode = m.window_mode;
             window_chrome::apply(&mut win, applied_window_mode);
@@ -2105,6 +2163,19 @@ pub fn run_since(start: Instant) -> bool {
                     }
                     "closed" => toolkit_menus.close(),
                     "close" => model.borrow_mut().closing = true,
+                    "tab-gesture-state" => {
+                        let state = tab_gesture_scene::state(&model.borrow());
+                        eprintln!("FILES_TAB_GESTURE_STATE {state}");
+                    }
+                    t if t.starts_with("tab-gesture:") => {
+                        let result = tab_gesture_scene::command(
+                            &mut model.borrow_mut(),
+                            &t[12..],
+                            canvas.w(),
+                            canvas.h(),
+                        );
+                        eprintln!("FILES_TAB_GESTURE_COMMAND result={result:?}");
+                    }
                     "sidebar-motion-check" => {
                         let report =
                             sidebar_motion_scene::run(&win, &canvas, &fixture_sidebar, &model);
