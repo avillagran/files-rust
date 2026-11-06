@@ -212,6 +212,115 @@ impl Model {
         )
         .map(|ids| Some(ids[0]))
     }
+    /// Preflight the whole context action before moving any snapshots or IDs.
+    fn close_tab_set(&mut self, target: u64, right_only: bool) {
+        let Some(at) = self.tabs.index(target) else {
+            return;
+        };
+        let closing = self
+            .tabs
+            .rows
+            .iter()
+            .enumerate()
+            .filter(|(i, tab)| {
+                if right_only {
+                    *i > at
+                } else {
+                    tab.id != target
+                }
+            })
+            .map(|(_, tab)| tab.id)
+            .collect::<Vec<_>>();
+        if closing.is_empty() {
+            return;
+        }
+        // Both commands always retain the clicked tab, including a lone tab.
+        let closes_active = closing.contains(&self.tabs.active);
+        let evicted = (self.tabs.closed.len() + closing.len()).saturating_sub(tabs::MAX_TABS);
+        let mut released = self
+            .tabs
+            .closed
+            .iter()
+            .take(evicted)
+            .try_fold(0usize, |sum, saved| sum.checked_add(saved.charge));
+        if self
+            .tabs
+            .rows
+            .iter()
+            .any(|tab| tab.id != self.tabs.active && tab.saved.is_none())
+        {
+            self.error = "Pestañas: falta el estado de una pestaña inactiva".into();
+            return;
+        }
+        if closes_active {
+            let incoming = self.tabs.rows[at]
+                .saved
+                .as_ref()
+                .expect("inactive retained tab")
+                .charge;
+            released = released.and_then(|sum| sum.checked_add(incoming));
+        }
+        let outgoing_charge = if closes_active {
+            self.tab_charge()
+        } else {
+            Ok(0)
+        };
+        let charge = match outgoing_charge.and_then(|charge| {
+            let released = released.ok_or("Presupuesto de pestañas agotado")?;
+            self.tabs
+                .admit_with_reserved(charge, released, self.dual.other_stored())?;
+            Ok(charge)
+        }) {
+            Ok(charge) => charge,
+            Err(error) => {
+                self.error = error.into();
+                return;
+            }
+        };
+        let mut outgoing = if closes_active {
+            if !self.save_layout() {
+                return;
+            }
+            match self.capture_tab(charge) {
+                Ok(saved) => Some(saved),
+                Err(error) => {
+                    self.error = error.into();
+                    return;
+                }
+            }
+        } else {
+            None
+        };
+        let incoming = if closes_active {
+            Some(
+                self.tabs.rows[at]
+                    .saved
+                    .take()
+                    .expect("retained tab snapshot"),
+            )
+        } else {
+            None
+        };
+        let rows = std::mem::take(&mut self.tabs.rows);
+        for tab in rows {
+            if closing.contains(&tab.id) {
+                let saved = if tab.id == self.tabs.active {
+                    outgoing.take().expect("active outgoing snapshot")
+                } else {
+                    tab.saved.expect("inactive outgoing snapshot")
+                };
+                self.tabs.push_closed(saved);
+            } else {
+                self.tabs.rows.push(tab);
+            }
+        }
+        if let Some(incoming) = incoming {
+            self.tabs.active = target;
+            self.restore_tab(incoming);
+        }
+        self.tabs.first = self.tabs.first.min(self.tabs.rows.len() - 1);
+        self.hits.clear();
+    }
     pub fn tab_command(&mut self, command: Command) {
         if self.closing {
             return;
@@ -228,6 +337,23 @@ impl Model {
         {
             self.error = "Termina o cancela la edición u operación antes de cambiar pestaña".into();
             return;
+        }
+        match command {
+            Command::Move { id, before } => {
+                if self.tabs.move_before(id, before) {
+                    self.hits.clear();
+                }
+                return;
+            }
+            Command::CloseOthers(id) => {
+                self.close_tab_set(id, false);
+                return;
+            }
+            Command::CloseRight(id) => {
+                self.close_tab_set(id, true);
+                return;
+            }
+            _ => {}
         }
         let command = if let Command::Cycle(delta) = command {
             let i = self.tabs.index(self.tabs.active).expect("active tab");
@@ -373,7 +499,10 @@ impl Model {
                 self.tabs.active = next;
                 saved
             }
-            Command::Cycle(_) => unreachable!(),
+            Command::Cycle(_)
+            | Command::Move { .. }
+            | Command::CloseOthers(_)
+            | Command::CloseRight(_) => unreachable!(),
         };
         self.restore_tab(incoming);
     }
@@ -603,6 +732,240 @@ mod tests {
     fn select(m: &mut Model, name: &str, toggle: bool) {
         let i = m.entries.iter().position(|e| e.name == name).unwrap();
         m.select_entry(i, toggle, false);
+    }
+    fn tab_ids(m: &Model) -> Vec<u64> {
+        m.tabs.rows.iter().map(|tab| tab.id).collect()
+    }
+    #[test]
+    fn reorder_uses_stable_insertion_without_switching_or_recharging_tabs() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        select(&mut m, "same.txt", false);
+        select(&mut m, "other.txt", true);
+        m.query = "same|other".into();
+        m.scroll = 37;
+        let active = m.tabs.active;
+        let generation = m.generation;
+        let selection = m.selection.clone();
+        let selected = m.selected;
+        let anchor = m.anchor;
+        let history = (m.history.paths().0.clone(), m.history.paths().1.clone());
+        let path = m.path.clone();
+        let b = m.background_tab(&f.0.join("B"), None).unwrap();
+        let c = m.background_tab(&f.0.join("A"), None).unwrap();
+        let stored = m.tabs.stored_bytes();
+        m.tab_command(Command::Move {
+            id: c,
+            before: Some(active),
+        });
+        assert_eq!(tab_ids(&m), [c, active, b]);
+        m.tab_command(Command::Move {
+            id: c,
+            before: None,
+        });
+        assert_eq!(tab_ids(&m), [active, b, c]);
+        for (id, before) in [
+            (active, Some(active)),
+            (b, Some(c)),
+            (99, None),
+            (b, Some(99)),
+        ] {
+            m.tab_command(Command::Move { id, before });
+            assert_eq!(tab_ids(&m), [active, b, c]);
+        }
+        assert_eq!(m.tabs.active, active);
+        assert_eq!(m.generation, generation);
+        assert_eq!(m.path, path);
+        assert_eq!(m.query, "same|other");
+        assert_eq!(m.scroll, 37);
+        assert_eq!(m.selection, selection);
+        assert_eq!(m.selected, selected);
+        assert_eq!(m.anchor, anchor);
+        assert_eq!(m.history.paths(), (&history.0, &history.1));
+        assert_eq!(m.tabs.stored_bytes(), stored);
+        assert!(m.tabs.closed.is_empty());
+        m.editing = true;
+        m.tab_command(Command::Move {
+            id: c,
+            before: Some(active),
+        });
+        assert_eq!(tab_ids(&m), [active, b, c]);
+    }
+    #[test]
+    fn background_context_closures_preserve_active_browser_and_never_close_last_tab() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        select(&mut m, "same.txt", false);
+        let active = m.tabs.active;
+        let generation = m.generation;
+        let selection = m.selection.clone();
+        let selected = m.selected;
+        let anchor = m.anchor;
+        let path = m.path.clone();
+        let b = m.background_tab(&f.0.join("B"), None).unwrap();
+        let c = m.background_tab(&f.0.join("A"), None).unwrap();
+        m.tab_command(Command::CloseRight(b));
+        assert_eq!(tab_ids(&m), [active, b]);
+        assert!(m.tabs.index(c).is_none());
+        assert_eq!(m.tabs.active, active);
+        assert_eq!(m.generation, generation);
+        assert_eq!(m.path, path);
+        assert_eq!(m.selection, selection);
+        assert_eq!(m.selected, selected);
+        assert_eq!(m.anchor, anchor);
+        m.tab_command(Command::CloseOthers(active));
+        assert_eq!(tab_ids(&m), [active]);
+        assert_eq!(m.tabs.closed.len(), 2);
+        for command in [
+            Command::CloseOthers(active),
+            Command::CloseRight(active),
+            Command::CloseOthers(999),
+            Command::CloseRight(999),
+        ] {
+            m.tab_command(command);
+            assert_eq!(tab_ids(&m), [active]);
+            assert!(!m.closing);
+        }
+    }
+    #[test]
+    fn context_closing_active_preflights_all_tabs_before_switching_to_clicked_survivor() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        let a = m.tabs.active;
+        let b = m.background_tab(&f.0.join("B"), None).unwrap();
+        let c = m.background_tab(&f.0.join("A"), None).unwrap();
+        let path = m.path.clone();
+        let generation = m.generation;
+        m.query = "x".repeat(4097);
+        m.tab_command(Command::CloseOthers(b));
+        assert_eq!(tab_ids(&m), [a, b, c]);
+        assert_eq!(m.tabs.active, a);
+        assert_eq!(m.path, path);
+        assert_eq!(m.generation, generation);
+        assert!(m.tabs.closed.is_empty());
+        m.query.clear();
+        m.error.clear();
+        m.tab_command(Command::CloseOthers(b));
+        assert_eq!(tab_ids(&m), [b]);
+        assert_eq!(m.tabs.active, b);
+        assert!(!m.closing);
+        wait(&mut m);
+        assert_eq!(m.path, f.0.join("B"));
+        assert_eq!(m.tabs.closed.len(), 2);
+        m.tab_command(Command::Reopen);
+        wait(&mut m);
+        assert_eq!(m.path, f.0.join("A"));
+    }
+    fn add_closed_history(m: &mut Model, path: &std::path::Path, count: usize) {
+        for i in 0..count {
+            let id = m.background_tab(path, None).unwrap();
+            m.tab_command(Command::Close(id));
+            m.tabs.closed.last_mut().unwrap().query = format!("closed-{i}");
+        }
+    }
+    #[test]
+    fn batch_context_close_reserves_final_budget_without_partially_removing_tabs() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        let a = m.tabs.active;
+        let b = m.background_tab(&f.0.join("B"), None).unwrap();
+        let c = m.background_tab(&f.0.join("A"), None).unwrap();
+        add_closed_history(&mut m, &f.0.join("B"), 3);
+        let live = m
+            .tabs
+            .rows
+            .iter()
+            .filter_map(|t| t.saved.as_ref())
+            .map(|s| s.charge)
+            .sum::<usize>();
+        m.tabs.closed[0].charge = tabs::SNAPSHOT_LIMIT;
+        m.tabs.closed[1].charge = tabs::SNAPSHOT_LIMIT;
+        m.tabs.closed[2].charge = tabs::SNAPSHOT_LIMIT - live - 1;
+        assert_eq!(m.tabs.stored_bytes(), tabs::STORED_LIMIT - 1);
+        let closed = m
+            .tabs
+            .closed
+            .iter()
+            .map(|s| (s.query.clone(), s.charge))
+            .collect::<Vec<_>>();
+        let generation = m.generation;
+        let path = m.path.clone();
+        m.query = "x".repeat(4096);
+        m.tab_command(Command::CloseOthers(b));
+        assert!(m.error.contains("presupuesto"));
+        assert_eq!(tab_ids(&m), [a, b, c]);
+        assert_eq!(m.tabs.active, a);
+        assert_eq!(m.path, path);
+        assert_eq!(m.generation, generation);
+        assert_eq!(
+            m.tabs
+                .closed
+                .iter()
+                .map(|s| (s.query.clone(), s.charge))
+                .collect::<Vec<_>>(),
+            closed
+        );
+    }
+    #[test]
+    fn batch_context_close_accounts_for_all_closed_history_evictions() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        let a = m.tabs.active;
+        let b = m.background_tab(&f.0.join("B"), None).unwrap();
+        let c = m.background_tab(&f.0.join("A"), None).unwrap();
+        add_closed_history(&mut m, &f.0.join("B"), tabs::MAX_TABS);
+        let live = m
+            .tabs
+            .rows
+            .iter()
+            .filter_map(|t| t.saved.as_ref())
+            .map(|s| s.charge)
+            .sum::<usize>();
+        let tail = m
+            .tabs
+            .closed
+            .iter()
+            .skip(3)
+            .map(|s| s.charge)
+            .sum::<usize>();
+        m.tabs.closed[0].charge = tabs::SNAPSHOT_LIMIT;
+        m.tabs.closed[1].charge = tabs::SNAPSHOT_LIMIT;
+        m.tabs.closed[2].charge = tabs::SNAPSHOT_LIMIT - live - tail;
+        assert_eq!(m.tabs.stored_bytes(), tabs::STORED_LIMIT);
+        m.tab_command(Command::CloseOthers(b));
+        assert_eq!(tab_ids(&m), [b]);
+        assert_eq!(m.tabs.active, b);
+        assert!(m.tabs.index(a).is_none() && m.tabs.index(c).is_none());
+        assert_eq!(m.tabs.closed.len(), tabs::MAX_TABS);
+        assert_eq!(m.tabs.closed[0].query, "closed-2");
+        assert!(m.tabs.stored_bytes() <= tabs::STORED_LIMIT);
+        wait(&mut m);
+        assert_eq!(m.path, f.0.join("B"));
+    }
+    #[test]
+    fn close_right_uses_visual_order_and_switches_only_if_active_is_removed() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        let a = m.tabs.active;
+        let b = m.background_tab(&f.0.join("B"), None).unwrap();
+        let c = m.background_tab(&f.0.join("A"), None).unwrap();
+        m.tab_command(Command::Move {
+            id: a,
+            before: None,
+        });
+        assert_eq!(tab_ids(&m), [b, c, a]);
+        m.tab_command(Command::CloseRight(b));
+        assert_eq!(tab_ids(&m), [b]);
+        assert_eq!(m.tabs.active, b);
+        assert_eq!(m.tabs.closed.len(), 2);
+        wait(&mut m);
+        assert_eq!(m.path, f.0.join("B"));
     }
     #[test]
     fn switches_before_first_batch_keep_names_query_sort_anchor_and_global_hidden() {

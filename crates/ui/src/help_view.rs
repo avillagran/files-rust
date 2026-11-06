@@ -13,6 +13,11 @@ pub const ITEMS: &[(&str, &str)] = &[
     ("Ctrl+T / Ctrl+W", "Nueva pestaña / cerrar activa"),
     ("Ctrl+Tab / Ctrl+Shift+Tab", "Pestaña siguiente / anterior"),
     ("Ctrl+Shift+T", "Reabrir pestaña cerrada"),
+    ("Ctrl+Shift+F10", "Acciones de la pestaña activa"),
+    (
+        "Ctrl+Shift+RePág/AvPág",
+        "Mover la pestaña activa a izquierda/derecha",
+    ),
     (
         "Clic central en carpeta",
         "Abrir en pestaña de fondo sin cambiar selección",

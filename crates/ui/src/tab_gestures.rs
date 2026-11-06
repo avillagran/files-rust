@@ -5,7 +5,8 @@ use crate::{
 };
 
 pub fn blocked(m: &Model) -> bool {
-    m.breadcrumbs.open
+    m.tab_context.is_some()
+        || m.breadcrumbs.open
         || crate::places_sidebar::covered(m)
         || m.settings
         || m.actions_menu

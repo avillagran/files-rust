@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Owned selection tools fixture; no resource sampling."""
+import argparse
 import hashlib
 import json
 import os
@@ -11,19 +12,35 @@ import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parent.parent
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--binary', type=Path, default=ROOT / 'target/release/files')
+args = parser.parse_args()
+binary = args.binary.resolve()
 OUT = ROOT / 'docs/evidence/keyboard-nav'
 OUT.mkdir(parents=True, exist_ok=True)
 BASE = Path.home() / '.cache/files-test'
 BASE.mkdir(parents=True, exist_ok=True)
 report = dict(functional_gate='IN_PROGRESS', resource_gate='NOT_MEASURED', startup_gate='NOT_MEASURED',
               method='owned filesystem fixture; production actions/painted hit targets and real FLTK framebuffer; no OS input',
-              states=[], captures=[])
+              binary_path=str(binary), states=[], captures=[])
 process = None
 normal = False
 with tempfile.TemporaryDirectory(prefix='usability-', dir=BASE) as temp:
     base = Path(temp)
     source = base / 'Documents'
     source.mkdir()
+    home = base / 'home'
+    home.mkdir()
+    for name in ['Downloads', 'Documents', 'Pictures', 'Music', 'Videos']:
+        (home / name).mkdir()
+    xdg_config = base / 'xdg-config'
+    xdg_data = base / 'xdg-data'
+    xdg_config.mkdir()
+    xdg_data.mkdir()
+    devices = base / 'devices.json'
+    devices.write_text('{"blockdevices": []}\n')
+    shell = base / 'shell.toml'
+    shell.write_text('[font]\nbase-size = 14\n')
     config = base / 'config'
     config.mkdir()
     (config / 'config.toml').write_text('show_hidden=false\nfixture_note="preserve"\n')
@@ -57,7 +74,7 @@ with tempfile.TemporaryDirectory(prefix='usability-', dir=BASE) as temp:
     def state(after=0, predicate=lambda s: True):
         def current():
             rows = []
-            for line in log.read_text()[after:].splitlines():
+            for line in log.read_text(errors='replace')[after:].split('\n')[:-1]:
                 if line.startswith('FILES_HIDDEN_STATE '):
                     s = json.loads(line[len('FILES_HIDDEN_STATE '):])
                     if s['seq'] == seq and predicate(s):
@@ -69,12 +86,17 @@ with tempfile.TemporaryDirectory(prefix='usability-', dir=BASE) as temp:
 
     def command(action):
         global seq
-        offset = len(log.read_text())
+        offset = len(log.read_text(errors='replace'))
         pending = raw.with_suffix('.pending')
         pending.write_text(action)
         pending.replace(raw.with_suffix('.command'))
-        match = wait(lambda: re.search(r'^FILES_SPACE_COMMAND seq=(\d+) action=' + re.escape(action) + r'$', log.read_text()[offset:], re.M),
-                     'command not acknowledged: ' + action, action == 'callback')
+        def acknowledged():
+            for line in log.read_text(errors='replace')[offset:].split('\n')[:-1]:
+                match = re.fullmatch(r'FILES_SPACE_COMMAND seq=(\d+) action=' + re.escape(action), line)
+                if match:
+                    return match
+            return None
+        match = wait(acknowledged, 'command not acknowledged: ' + action, action == 'callback')
         seq = int(match[1])
         return offset
 
@@ -97,16 +119,19 @@ with tempfile.TemporaryDirectory(prefix='usability-', dir=BASE) as temp:
             return (w, h) if len(parts[3]) == w * h * 3 else None
         dims = wait(full, 'incomplete framebuffer')
         target = OUT / (label + '-' + str(time.time_ns()) + '.png')
-        subprocess.run(['magick', str(raw), str(target)], check=True, timeout=15)
+        subprocess.run(['magick', str(raw), str(target)], env=env, check=True, timeout=15)
         report['captures'].append(dict(path=str(target), dimensions=dims))
         return dims
 
     try:
-        env = {**os.environ, 'FILES_CONFIG_DIR': str(config), 'FILES_TEST_CAPTURE': str(raw),
+        env = {**os.environ, 'HOME': str(home), 'XDG_CONFIG_HOME': str(xdg_config),
+               'XDG_DATA_HOME': str(xdg_data), 'TMPDIR': str(base), 'MAGICK_TEMPORARY_PATH': str(base),
+               'FILES_TEST_DEVICES_JSON': str(devices), 'OMARCHY_FLTK_USER_SHELL': str(shell),
+               'OMARCHY_FLTK_ANIM': 'off', 'FILES_CONFIG_DIR': str(config), 'FILES_TEST_CAPTURE': str(raw),
                'FILES_TEST_HIDDEN_CONTEXT': '1', 'FILES_TEST_ISOLATE_INPUT': '1',
                'FILES_TEST_FIXED_SIZE': '1', 'FILES_CLOSE_TRACE': '1', 'FILES_TEST_DUAL_B':str(destination)}
         with log.open('w') as output:
-            process = subprocess.Popen([str(ROOT / 'target/release/files'), str(source), '--ui-smoke',
+            process = subprocess.Popen([str(binary), str(source), '--ui-smoke',
                                         '--ui-scene', 'hidden-context', '--size', '1000x650', '--scale', '1', '--exit-after', '90'],
                                        env=env, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=output, start_new_session=True)
         def selected(s):return {bytes.fromhex(n) for n in s['selection']}
@@ -145,22 +170,43 @@ with tempfile.TemporaryDirectory(prefix='usability-', dir=BASE) as temp:
         act('fixture-short',lambda s:s['width']==800 and s['height']==440);s=act('nav:ctrl:end',focused_visible);assert selected(s)=={b'folder-00',b'folder-01'}
         capture('dual-focused-end-small-window')
         s=act('map',lambda s:s['map'] and s['map']['state']=='ready');assert s['map']['complete']
-        s=act('nav:plain:home');assert len(selected(s))==1
-        first=s['selected'];s=act('nav:ctrlshift:end');assert len(selected(s))==1 and s['selected']!=first
-        capture('treemap-distinct-single-selection')
+        s=act('nav:plain:home',focused_visible)
+        nav=s['map']['navigation_raw']
+        assert len(nav)>=3 and len(nav)==len(set(nav)), nav
+        assert s['selected']==s['anchor']==nav[0]
+        assert selected(s)=={bytes.fromhex(nav[0])}
+        prior=selected(s)
+        s=act('nav:ctrlshift:end',focused_visible)
+        assert s['map']['navigation_raw']==nav
+        assert s['selected']==nav[-1] and s['anchor']==nav[0]
+        assert selected(s)==prior|{bytes.fromhex(n) for n in nav}
+        assert nav[-1] in {row['raw'] for row in s['map']['row_hits']}
+        capture('treemap-additive-range-and-reveal')
+        # A mark outside a newly extended range survives Ctrl+Shift navigation.
+        s=act('nav:plain:end',focused_visible)
+        assert selected(s)=={bytes.fromhex(nav[-1])}
+        s=act('nav:ctrl:home',focused_visible)
+        assert s['selected']==s['anchor']==nav[0]
+        assert selected(s)=={bytes.fromhex(nav[-1])}
+        s=act('nav:ctrlshift:down',focused_visible)
+        assert s['map']['navigation_raw']==nav
+        assert s['selected']==nav[1] and s['anchor']==nav[0]
+        assert selected(s)=={bytes.fromhex(n) for n in [nav[-1],nav[0],nav[1]]}
+        assert nav[1] in {row['raw'] for row in s['map']['row_hits']}
+        capture('treemap-additive-range-retains-distant-mark')
         command('callback')
         wait(lambda: process.poll() is not None, 'normal close absent', True)
-        text = log.read_text()
+        text = log.read_text(errors='replace')
         assert process.returncode == 0 and 'FILES_CLOSE_DRAINED' in text
         for name, digest in before.items():
             assert hashlib.sha256((source / name).read_bytes()).hexdigest() == digest
-        report.update(functional_gate='PASS', scope='Home/End/Page/Shift ranges/Ctrl independent focus/additive ranges, exact raw copy review, empty focus and editing guard, Groups visual age order and folder boundary, Columns parent/child, Grid and dual-pane owner isolation, 800x440 and callback drain; shared production navigation handlers, no native OS key input/resource/startup claim')
+        report.update(functional_gate='PASS', scope='Home/End/Page/Shift ranges/Ctrl independent focus/additive ranges, exact raw copy review, empty focus and editing guard, Groups visual age order and folder boundary, Columns parent/child, Grid and dual-pane owner isolation, 800x440, SpaceMap full/additive ranges with stable anchor and reveal, and callback drain; shared production navigation handlers, no native OS key input/resource/startup claim')
         normal = True
     except BaseException as error:
         report.update(functional_gate='FAIL', error=repr(error))
         raise
     finally:
-        report['log'] = log.read_text() if log.exists() else ''
+        report['log'] = log.read_text(errors='replace') if log.exists() else ''
         if process is not None and process.poll() is None:
             os.killpg(process.pid, signal.SIGTERM)
             try:
@@ -170,7 +216,7 @@ with tempfile.TemporaryDirectory(prefix='usability-', dir=BASE) as temp:
                 process.wait()
         report['normal_exit'] = normal
         for key, name in [('binary_sha256', 'files'), ('helper_sha256', 'files-helper'), ('html_helper_sha256', 'files-html-helper')]:
-            report[key] = hashlib.sha256((ROOT / 'target/release' / name).read_bytes()).hexdigest()
+            report[key] = hashlib.sha256((binary if name == 'files' else binary.parent / name).read_bytes()).hexdigest()
         target = OUT / ('keyboard-nav-ui-' + str(time.time_ns()) + '.json')
         with target.open('x') as output:
             json.dump(report, output, ensure_ascii=False, indent=2)

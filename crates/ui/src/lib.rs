@@ -139,6 +139,8 @@ mod space_map_state;
 mod space_map_view;
 mod spatial_view;
 mod status_tips;
+mod tab_context;
+mod tab_context_scene;
 mod tab_gesture_scene;
 mod tab_gestures;
 mod tabs;
@@ -691,6 +693,21 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             }
             if ctrl && key == Key::from_char('r') {
                 m.action(Action::Refresh);
+                return true;
+            }
+            if key == Key::F10 && ctrl && app::event_state().intersects(Shortcut::Shift) {
+                tab_context::keyboard(m);
+                return true;
+            }
+            if ctrl
+                && app::event_state().intersects(Shortcut::Shift)
+                && matches!(key, Key::PageUp | Key::PageDown)
+            {
+                if let Some(command) =
+                    tab_context::move_command(m, m.tabs.active, key == Key::PageDown)
+                {
+                    m.action(Action::Tab(command));
+                }
                 return true;
             }
             if key == Key::Menu || key == Key::F10 && app::event_state().intersects(Shortcut::Shift)
@@ -1449,6 +1466,10 @@ pub fn run_since(start: Instant) -> bool {
             return true;
         }
         if e == Event::Push && app::event_button() == 3 {
+            if tab_context::pointer(&mut state, app::event_x(), app::event_y()) {
+                f.redraw();
+                return true;
+            }
             if state.context_menu.is_some() {
                 crate::context_menu::dismiss(&mut state);
             } else {
@@ -2192,6 +2213,46 @@ pub fn run_since(start: Instant) -> bool {
                     t if t.starts_with("breadcrumb-") => {
                         let result = breadcrumb_scene::command(&mut model.borrow_mut(), t);
                         eprintln!("FILES_BREADCRUMB_COMMAND result={result:?}");
+                    }
+                    "tab-context-state" => {
+                        let state = tab_context_scene::state(&model.borrow(), &canvas);
+                        eprintln!("FILES_TAB_CONTEXT_STATE {state}");
+                    }
+                    "tab-context-key-open" | "tab-context-key-left" | "tab-context-key-right" => {
+                        fixture_dispatch.set(true);
+                        let key = match text.trim() {
+                            "tab-context-key-left" => "Ctrl+Shift+PageUp",
+                            "tab-context-key-right" => "Ctrl+Shift+PageDown",
+                            _ => "Ctrl+Shift+F10",
+                        };
+                        fltk_omarchy::focus::press(key);
+                        fixture_dispatch.set(false);
+                    }
+                    "tab-context-move-left"
+                    | "tab-context-close-right"
+                    | "tab-context-close-others" => {
+                        let downs = match text.trim() {
+                            "tab-context-move-left" => {
+                                let m = model.borrow();
+                                2 + usize::from(
+                                    m.tab_context
+                                        .as_ref()
+                                        .and_then(|t| m.tabs.index(t.id))
+                                        .is_some_and(|i| i + 1 < m.tabs.rows.len()),
+                                )
+                            }
+                            "tab-context-close-right" => 2,
+                            _ => 1,
+                        };
+                        fltk_omarchy::focus::press("Home");
+                        for _ in 0..downs {
+                            fltk_omarchy::focus::press("Down");
+                        }
+                        fltk_omarchy::focus::press("Enter");
+                    }
+                    t if t.starts_with("tab-context-") => {
+                        let result = tab_context_scene::command(&mut model.borrow_mut(), t);
+                        eprintln!("FILES_TAB_CONTEXT_COMMAND result={result:?}");
                     }
                     "tab-gesture-state" => {
                         let state = tab_gesture_scene::state(&model.borrow());

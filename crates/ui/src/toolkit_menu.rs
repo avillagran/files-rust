@@ -53,6 +53,7 @@ enum Kind {
     Actions,
     Context,
     Breadcrumbs,
+    Tabs,
 }
 struct Active {
     /// Flat context-menu index chosen in any submenu (`on_pick` runs before
@@ -273,7 +274,7 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
                 Action::ClipboardPaste,
             ),
         ],
-        Kind::Context | Kind::Breadcrumbs => unreachable!(),
+        Kind::Context | Kind::Breadcrumbs | Kind::Tabs => unreachable!(),
     };
     entries
         .into_iter()
@@ -308,7 +309,8 @@ impl Manager {
                     && m.size_panel.is_none();
                 let valid = valid
                     && m.trash_browser.is_none()
-                    && (active.kind != Kind::Breadcrumbs || crate::breadcrumb_ui::available(m));
+                    && (active.kind != Kind::Breadcrumbs || crate::breadcrumb_ui::available(m))
+                    && (active.kind != Kind::Tabs || crate::tab_context::available(m));
                 if let Dismiss::Picked(index) = reason
                     && valid
                 {
@@ -327,8 +329,12 @@ impl Manager {
                             }
                             crate::context_menu::activate(m, flat);
                         }
-                    } else if active.kind == Kind::Breadcrumbs {
-                        m.breadcrumbs.open = false;
+                    } else if matches!(active.kind, Kind::Breadcrumbs | Kind::Tabs) {
+                        if active.kind == Kind::Breadcrumbs {
+                            m.breadcrumbs.open = false;
+                        } else {
+                            m.tab_context = None;
+                        }
                         if let Some(Some(action)) = active
                             .picked
                             .borrow_mut()
@@ -347,6 +353,7 @@ impl Manager {
                     Kind::Actions => m.actions_menu = false,
                     Kind::Context => m.context_menu = None,
                     Kind::Breadcrumbs => m.breadcrumbs.open = false,
+                    Kind::Tabs => m.tab_context = None,
                 }
                 m.hits.clear();
                 let focus_returned = fltk::app::focus()
@@ -365,6 +372,7 @@ impl Manager {
                 Kind::Actions => m.actions_menu,
                 Kind::Context => m.context_menu.is_some(),
                 Kind::Breadcrumbs => m.breadcrumbs.open && crate::breadcrumb_ui::available(m),
+                Kind::Tabs => crate::tab_context::available(m),
             };
             if !requested
                 || m.closing
@@ -375,7 +383,13 @@ impl Manager {
             }
             return dirty;
         }
-        let kind = if m.breadcrumbs.open {
+        let kind = if m.tab_context.is_some() {
+            if !crate::tab_context::available(m) {
+                m.tab_context = None;
+                return true;
+            }
+            Kind::Tabs
+        } else if m.breadcrumbs.open {
             Kind::Breadcrumbs
         } else if m.context_menu.is_some() {
             Kind::Context
@@ -390,6 +404,10 @@ impl Manager {
             let menu = m.context_menu.as_ref().expect("context menu");
             let items = context_items(menu);
             (items, Vec::new(), Some(menu.anchor))
+        } else if kind == Kind::Tabs {
+            let anchor = m.tab_context.as_ref().expect("tab context").anchor;
+            let (items, actions) = crate::tab_context::menu(m);
+            (items, actions, Some(anchor))
         } else if kind == Kind::Breadcrumbs {
             let Some(rect) = m.breadcrumbs.overflow else {
                 m.breadcrumbs.open = false;
@@ -401,7 +419,7 @@ impl Manager {
             let (items, actions) = toolbar(m, kind);
             (items, actions, None)
         };
-        let anchor_rect = if matches!(kind, Kind::Context | Kind::Breadcrumbs) {
+        let anchor_rect = if matches!(kind, Kind::Context | Kind::Breadcrumbs | Kind::Tabs) {
             None
         } else {
             m.hits.iter().rev().find_map(|hit| {
@@ -412,13 +430,14 @@ impl Manager {
                 (matches && hit.generation == m.generation).then_some(hit.rect)
             })
         };
-        if !matches!(kind, Kind::Context | Kind::Breadcrumbs) && anchor_rect.is_none() {
+        if !matches!(kind, Kind::Context | Kind::Breadcrumbs | Kind::Tabs) && anchor_rect.is_none()
+        {
             return dirty;
         }
         let queue = self.dismissed.clone();
         let picked: Rc<RefCell<Option<String>>> = Rc::default();
         let pick = picked.clone();
-        if kind == Kind::Breadcrumbs {
+        if matches!(kind, Kind::Breadcrumbs | Kind::Tabs) {
             let _ = canvas.clone().take_focus();
         }
         let handle = if let Some((x, y)) = position {

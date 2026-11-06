@@ -22,7 +22,8 @@ impl State {
     }
 }
 pub fn available(m: &Model) -> bool {
-    !crate::places_sidebar::covered(m)
+    m.tab_context.is_none()
+        && !crate::places_sidebar::covered(m)
         && !m.editing
         && !m.filter_edit.active
         && m.query.is_empty()

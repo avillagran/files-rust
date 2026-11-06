@@ -40,6 +40,9 @@ pub enum Command {
     New,
     Select(u64),
     Close(u64),
+    Move { id: u64, before: Option<u64> },
+    CloseOthers(u64),
+    CloseRight(u64),
     Cycle(i32),
     Reopen,
 }
@@ -91,6 +94,25 @@ impl Tabs {
     }
     pub fn index(&self, id: u64) -> Option<usize> {
         self.rows.iter().position(|t| t.id == id)
+    }
+    /// Stable insertion within this pane. Unknown targets and self-moves are inert.
+    pub fn move_before(&mut self, id: u64, before: Option<u64>) -> bool {
+        let Some(from) = self.index(id) else {
+            return false;
+        };
+        if before == Some(id) || before.is_some_and(|key| self.index(key).is_none()) {
+            return false;
+        }
+        let target = before
+            .and_then(|key| self.index(key))
+            .unwrap_or(self.rows.len());
+        let to = target - usize::from(target > from);
+        if to == from {
+            return false;
+        }
+        let tab = self.rows.remove(from);
+        self.rows.insert(to, tab);
+        true
     }
     pub fn fresh_id(&mut self) -> u64 {
         self.next = self.next.checked_add(1).expect("tab ID exhausted");
