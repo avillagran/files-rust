@@ -231,15 +231,13 @@ fn list(
     if order.is_empty() {
         p.text(
             Rect::new(area.x + 12, body.y + 12, area.w - 24, 56),
-            if !loaded {
-                "Cargando…"
-            } else if !error.is_empty() {
-                error
-            } else {
-                "Sin elementos"
-            },
+            crate::view::empty_browser_message(loaded, error, query),
             12,
-            palette.dark_foreground,
+            if error.is_empty() {
+                palette.dark_foreground
+            } else {
+                palette.red
+            },
             true,
             false,
         );

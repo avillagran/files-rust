@@ -198,15 +198,13 @@ fn column(
     if list.order.is_empty() {
         p.text(
             Rect::new(rect.x + 12, rows.y + 10, rect.w - 24, 40),
-            if !list.loaded {
-                "Cargando…"
-            } else if !list.error.is_empty() {
-                list.error
-            } else {
-                "Sin elementos"
-            },
+            crate::view::empty_browser_message(list.loaded, list.error, list.query),
             12,
-            palette.dark_foreground,
+            if list.error.is_empty() {
+                palette.dark_foreground
+            } else {
+                palette.red
+            },
             true,
             false,
         );

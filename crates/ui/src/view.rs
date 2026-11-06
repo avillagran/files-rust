@@ -281,6 +281,18 @@ pub fn omni_right(w: i32) -> i32 {
         144
     }
 }
+/// Empty-listing text is shared; each browser surface owns its placement.
+pub(crate) fn empty_browser_message<'a>(loaded: bool, error: &'a str, query: &str) -> &'a str {
+    if !error.is_empty() {
+        error
+    } else if !loaded {
+        "Leyendo carpeta…"
+    } else if !query.is_empty() {
+        "Sin coincidencias"
+    } else {
+        "Carpeta vacía"
+    }
+}
 pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     m.listing_sync.width = w;
     if m.search_reveal {
@@ -873,16 +885,16 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             y += count as i32 * 38 + 10;
         }
     }
-    if m.order.is_empty() && m.view != View::SpaceMap {
+    if m.order.is_empty() && !m.dual.enabled && !matches!(m.view, View::Columns | View::SpaceMap) {
         p.text(
             r(left, top + 80, width, 30),
-            if m.loaded {
-                "No hay elementos"
-            } else {
-                "Leyendo carpeta…"
-            },
+            empty_browser_message(m.loaded, &m.error, &m.query),
             15,
-            c.dark_foreground,
+            if m.error.is_empty() {
+                c.dark_foreground
+            } else {
+                c.red
+            },
             false,
             false,
         );
@@ -1910,6 +1922,162 @@ mod inspector_tabs_tests {
         fn image(&mut self, _: Rect, _: &crate::painter::Image<'_>) {}
         fn clip(&mut self, _: Rect) {}
         fn unclip(&mut self) {}
+    }
+    fn empty_labels(p: &Recorder) -> Vec<(Rect, &str)> {
+        p.text
+            .iter()
+            .filter(|(_, text)| {
+                matches!(
+                    text.as_str(),
+                    "Carpeta vacía"
+                        | "Sin coincidencias"
+                        | "Leyendo carpeta…"
+                        | "Listing fixture error"
+                        | "No hay elementos"
+                        | "Sin elementos"
+                        | "Cargando…"
+                )
+            })
+            // Status/footer error summaries are separate from the empty body.
+            .filter(|(rect, _)| rect.y >= 94 && rect.y < 294)
+            .map(|(rect, text)| (*rect, text.as_str()))
+            .collect()
+    }
+    fn sample_file() -> files_core::listing::Entry {
+        files_core::listing::Entry {
+            name: "one.txt".into(),
+            kind: files_core::listing::Kind::File,
+            metadata: None,
+            stat_attempted: true,
+        }
+    }
+    #[test]
+    fn empty_listing_messages_distinguish_loading_errors_filters_and_folders() {
+        let mut m = Model::new("/fixture-empty-listing".into());
+        m.worker.suspend();
+        for view in [View::Groups, View::List, View::Grid, View::Spatial] {
+            m.view = view;
+            for (loaded, error, query, expected) in [
+                (false, "", "", "Leyendo carpeta…"),
+                (false, "", "missing", "Leyendo carpeta…"),
+                (true, "", "", "Carpeta vacía"),
+                (true, "", "missing", "Sin coincidencias"),
+                (true, "Listing fixture error", "", "Listing fixture error"),
+                (
+                    false,
+                    "Listing fixture error",
+                    "missing",
+                    "Listing fixture error",
+                ),
+            ] {
+                m.loaded = loaded;
+                m.error = error.into();
+                m.query = query.into();
+                let mut p = Recorder::default();
+                paint(&mut p, &mut m, 1000, 650);
+                let labels = empty_labels(&p);
+                assert_eq!(labels.len(), 1, "one body message per single browser");
+                assert_eq!(labels[0].1, expected);
+                assert!(m.visible.is_empty());
+                assert!(!m.hits.iter().any(|h| matches!(h.action, Action::Entry(_))));
+            }
+        }
+    }
+    #[test]
+    fn empty_dual_pane_message_stays_inside_its_owner_with_the_other_pane_populated() {
+        let mut m = Model::new("/fixture-empty-dual".into());
+        m.toggle_dual();
+        m.worker.suspend();
+        m.dual
+            .other
+            .as_mut()
+            .unwrap()
+            .worker
+            .as_mut()
+            .unwrap()
+            .suspend();
+        m.loaded = true;
+        for (w, h) in [(440, 440), (1000, 650)] {
+            for right_active in [false, true] {
+                m.dual.right_active = right_active;
+                for active_empty in [false, true] {
+                    m.entries = if active_empty {
+                        vec![]
+                    } else {
+                        vec![sample_file()]
+                    };
+                    m.order = if active_empty { vec![] } else { vec![0] };
+                    let other = m.dual.other.as_mut().unwrap();
+                    other.loaded = true;
+                    other.entries = if active_empty {
+                        vec![sample_file()]
+                    } else {
+                        vec![]
+                    };
+                    other.order = if active_empty { vec![0] } else { vec![] };
+                    let mut p = Recorder::default();
+                    paint(&mut p, &mut m, w, h);
+                    let labels = empty_labels(&p);
+                    assert_eq!(labels.len(), 1, "no global message over either pane");
+                    assert_eq!(labels[0].1, "Carpeta vacía");
+                    let (active, other) = crate::dual_view::areas(&m, m.listing_rect);
+                    let owner = if active_empty { active } else { other };
+                    let rect = labels[0].0;
+                    assert!(rect.x >= owner.x && rect.x + rect.w <= owner.x + owner.w);
+                    assert!(rect.y >= owner.y && rect.y + rect.h <= owner.y + owner.h);
+                    assert!(p.text.iter().any(|(_, text)| text == "one.txt"));
+                    assert_eq!(
+                        m.hits
+                            .iter()
+                            .filter(|h| matches!(h.action, Action::PaneEntry(..)))
+                            .count(),
+                        1
+                    );
+                }
+            }
+        }
+    }
+    #[test]
+    fn empty_columns_message_is_not_repainted_across_populated_columns() {
+        let mut m = Model::new("/fixture-empty-columns".into());
+        m.worker.suspend();
+        m.view = View::Columns;
+        m.loaded = true;
+        m.columns.columns = (0..2)
+            .map(|i| crate::columns::Column {
+                id: i + 1,
+                watch_id: i + 1,
+                path: format!("/fixture-empty-columns/{i}").into(),
+                data: crate::columns::Data::default(),
+            })
+            .collect();
+        for active in [0, 1] {
+            m.columns.active = active;
+            for column in &mut m.columns.columns {
+                column.data.loaded = true;
+                column.data.entries = vec![sample_file()];
+                column.data.order = vec![0];
+            }
+            for (loaded, error, query, expected) in [
+                (false, "", "", "Leyendo carpeta…"),
+                (true, "", "", "Carpeta vacía"),
+                (true, "", "missing", "Sin coincidencias"),
+                (false, "Listing fixture error", "", "Listing fixture error"),
+            ] {
+                m.loaded = loaded;
+                m.error = error.into();
+                m.query = query.into();
+                let mut p = Recorder::default();
+                paint(&mut p, &mut m, 1000, 650);
+                let labels = empty_labels(&p);
+                assert_eq!(labels.len(), 1, "Columns owns its sole empty body message");
+                assert_eq!(labels[0].1, expected);
+                let left = m.listing_rect.x + active as i32 * crate::columns_view::WIDTH;
+                assert!(labels[0].0.x >= left);
+                assert!(labels[0].0.x + labels[0].0.w <= left + crate::columns_view::WIDTH);
+                assert!(p.text.iter().any(|(_, text)| text == "one.txt"));
+            }
+        }
     }
     #[test]
     fn sampled_sidebar_width_keeps_listing_hits_and_operation_layout_aligned() {
