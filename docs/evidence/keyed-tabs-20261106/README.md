@@ -76,4 +76,6 @@ and backup chain remain recorded.
 Reports preserve original absolute machine paths. Machine `docs/evidence/`
 files are mirrored at their relative paths; native run directories are under
 `native/`. All payloads and clipboard/compositor activity belong to private
-fixtures. Running and failed private evidence was retained.
+fixtures. Native `.log` traces are mirrored with `.txt` suffixes so the
+repository's log ignore rule does not omit them. Running and failed private
+evidence was retained.
