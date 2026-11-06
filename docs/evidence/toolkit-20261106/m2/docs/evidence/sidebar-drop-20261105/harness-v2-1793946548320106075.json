@@ -1,0 +1,23 @@
+{
+  "functional_gate": "FAIL",
+  "label": "harness-v2",
+  "binary_sha256": "f93ca0fe9e67a4f785ae83a63539f4f25545273072724d5e03006a929accbd4d",
+  "method": "private nested Hyprland on a hidden special workspace; real Wayland DnD from a Files listing to another Files window's Sidebar row with the virtual pointer",
+  "checks": {},
+  "captures": [],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "2938316"
+    ]
+  },
+  "dispatch": [
+    "ok",
+    "ok"
+  ],
+  "error": "AssertionError('private output too narrow for two windows')",
+  "nested_stopped": true
+}

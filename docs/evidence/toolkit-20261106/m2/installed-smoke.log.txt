@@ -1,0 +1,2 @@
+docs/evidence/0.0.4/installed-smoke-1793946411054235436.json PASS
+{"nested": {"socket": "wayland-2", "pid": ["2910786"]}, "stopped": true}

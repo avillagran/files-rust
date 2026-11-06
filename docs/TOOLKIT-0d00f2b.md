@@ -37,3 +37,28 @@ performance gates remain `NOT_MEASURED`; functional checks do not establish
 resource compliance. NODE and native ARM M2 artifacts must each pass their
 private fixture check before installation; installation preserves the five
 previous artifacts and verifies replacement hashes.
+
+## Validated checkpoint 8454476
+
+- Workspace: 1,652 passing tests, three ignored; Clippy and release build pass.
+- NODE: Sidebar (including 19 testkit elements), menus and keyboard checks
+  pass. Installed app SHA-256 starts `62942cf838ae`; installed private-data
+  launch/render/close check passes.
+- M2: native aarch64 build, Sidebar scene and installed private-data smoke
+  pass. Installed app SHA-256 starts `f93ca0fe9e67`. The native HTML helper
+  was reused after its recipe and stamp were verified.
+- Both installations back up all five prior artifacts and verify hashes.
+- Initial environment failures are retained: shared temporary-directory
+  permissions, an early UI check against the prior binary, and the relocated
+  M2 CMake cache. Private TMPDIR, a finished release build and fresh CMake
+  configuration resolve those setup failures, respectively. No toolkit patch
+  or filesystem safety relaxation was needed.
+
+Real Wayland drag-and-drop also passes on NODE and M2 with the same app
+binaries: two private fixture windows, Sidebar destination, copy review and
+byte verification. The harness now checks dispatcher replies and supports
+both Lua and legacy Hyprland dispatchers inside the private compositor.
+An initial M2 failure used rejected legacy commands; an intermediate
+output-width assumption was rejected on both machines and removed. Failed
+reports remain alongside the final passing reports. No parent desktop
+window is driven by the corrected harness.

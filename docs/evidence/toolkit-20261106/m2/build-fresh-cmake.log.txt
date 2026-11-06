@@ -1,0 +1,7 @@
+   Compiling fltk-sys v1.5.23
+   Compiling files-helper v0.0.4 (/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/crates/helper)
+   Compiling files-ui v0.0.4 (/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/crates/ui)
+   Compiling fltk v1.5.23
+   Compiling lib-fltk-omarchy v0.0.10 (/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/vendor/lib-fltk-omarchy)
+   Compiling files-app v0.0.4 (/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/crates/app)
+    Finished `release` profile [optimized] target(s) in 1m 22s

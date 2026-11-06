@@ -1,0 +1,693 @@
+{
+  "functional_gate": "PASS",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "method": "Files window framebuffer + toolkit Sidebar expand / focus::click_at fixture; no native input",
+  "captures": [
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-collapsed-1793946387946742232.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-expanded-1793946388434286020.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-downloads-1793946388951879520.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-device-1793946389469951690.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-context-menu-1793946389725727284.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-drop-hover-1793946389942547620.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-drop-review-1793946390099079490.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-recent-menu-1793946390798819563.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-recent-located-1793946391287384772.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-bookmarks-before-1793946394220325928.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-bookmarks-after-1793946395175050399.png"
+  ],
+  "states": {
+    "start": {
+      "expanded": false,
+      "rail": false,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        52,
+        528
+      ],
+      "active": "-",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/files",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "expanded": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        528
+      ],
+      "active": "-",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/files",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "downloads": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        528
+      ],
+      "active": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "device": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        528
+      ],
+      "active": "dev:/dev/sdz1",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/mnt/PENDRIVE",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "before-recent": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        480
+      ],
+      "active": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "recent": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        480
+      ],
+      "active": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "trash": {
+      "expanded": true,
+      "rail": true,
+      "visible": false,
+      "rect": [
+        0,
+        90,
+        170,
+        480
+      ],
+      "active": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "trash-closed": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        480
+      ],
+      "active": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "nav": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        480
+      ],
+      "active": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:marks",
+        "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "marks": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        480
+      ],
+      "active": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:marks",
+        "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "marks-before": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        480
+      ],
+      "active": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:marks",
+        "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "marks-after": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        480
+      ],
+      "active": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:marks",
+        "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "collapsed-again": {
+      "expanded": false,
+      "rail": false,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        52,
+        480
+      ],
+      "active": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "path": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos",
+        "h:marks",
+        "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+        "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    }
+  },
+  "toolkit_tree": {
+    "elements": [
+      {
+        "depth": 0,
+        "kind": "Window",
+        "name": "files",
+        "path": "",
+        "rect": [
+          0,
+          0,
+          1000,
+          650
+        ],
+        "visible": true
+      },
+      {
+        "depth": 1,
+        "focused": true,
+        "kind": "Widget",
+        "path": "0",
+        "rect": [
+          0,
+          0,
+          1000,
+          650
+        ],
+        "visible": true
+      },
+      {
+        "depth": 1,
+        "kind": "Widget",
+        "path": "1",
+        "rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "visible": false
+      },
+      {
+        "depth": 1,
+        "kind": "Widget",
+        "path": "2",
+        "rect": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "visible": false
+      },
+      {
+        "depth": 1,
+        "kind": "TabList",
+        "name": "Sidebar",
+        "path": "3",
+        "rect": [
+          0,
+          90,
+          170,
+          528
+        ],
+        "visible": true
+      },
+      {
+        "depth": 2,
+        "key": 1,
+        "kind": "Tab",
+        "name": "Favoritos",
+        "path": "3#1",
+        "rect": [
+          0,
+          99,
+          170,
+          51
+        ],
+        "visible": true
+      },
+      {
+        "depth": 2,
+        "key": 2,
+        "kind": "Tab",
+        "name": "Recientes",
+        "path": "3#2",
+        "rect": [
+          0,
+          150,
+          170,
+          51
+        ],
+        "visible": true
+      },
+      {
+        "depth": 2,
+        "key": 3,
+        "kind": "Tab",
+        "name": "Inicio",
+        "path": "3#3",
+        "rect": [
+          0,
+          201,
+          170,
+          51
+        ],
+        "visible": true
+      },
+      {
+        "depth": 2,
+        "key": 4,
+        "kind": "Tab",
+        "name": "Descargas",
+        "path": "3#4",
+        "rect": [
+          0,
+          252,
+          170,
+          51
+        ],
+        "selected": true,
+        "visible": true
+      },
+      {
+        "depth": 2,
+        "key": 5,
+        "kind": "Tab",
+        "name": "Documentos",
+        "path": "3#5",
+        "rect": [
+          0,
+          303,
+          170,
+          51
+        ],
+        "visible": true
+      },
+      {
+        "depth": 2,
+        "key": 6,
+        "kind": "Tab",
+        "name": "Im\u00e1genes",
+        "path": "3#6",
+        "rect": [
+          0,
+          354,
+          170,
+          51
+        ],
+        "visible": true
+      },
+      {
+        "depth": 2,
+        "key": 7,
+        "kind": "Tab",
+        "name": "M\u00fasica",
+        "path": "3#7",
+        "rect": [
+          0,
+          405,
+          170,
+          51
+        ],
+        "visible": true
+      },
+      {
+        "depth": 2,
+        "key": 8,
+        "kind": "Tab",
+        "name": "V\u00eddeos",
+        "path": "3#8",
+        "rect": [
+          0,
+          456,
+          170,
+          51
+        ],
+        "visible": true
+      },
+      {
+        "depth": 2,
+        "key": 9,
+        "kind": "Heading",
+        "name": "Dispositivos",
+        "path": "3#9",
+        "rect": [
+          0,
+          507,
+          170,
+          35
+        ],
+        "visible": true
+      },
+      {
+        "depth": 2,
+        "key": 10,
+        "kind": "Tab",
+        "name": "PENDRIVE",
+        "path": "3#10",
+        "rect": [
+          0,
+          542,
+          170,
+          80
+        ],
+        "visible": true
+      },
+      {
+        "depth": 3,
+        "key": 1000,
+        "kind": "Button",
+        "name": "Expulsar",
+        "path": "3#10#1000",
+        "rect": [
+          127,
+          566,
+          32,
+          32
+        ],
+        "visible": true
+      },
+      {
+        "depth": 3,
+        "key": 999,
+        "kind": "ProgressIndicator",
+        "name": "9.3 GB libres",
+        "path": "3#10#999",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "value": "0.70",
+        "visible": false
+      },
+      {
+        "depth": 2,
+        "key": 11,
+        "kind": "Tab",
+        "name": "DATOS",
+        "path": "3#11",
+        "rect": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "visible": false
+      },
+      {
+        "depth": 2,
+        "key": 12,
+        "kind": "Tab",
+        "name": "Papelera",
+        "path": "3#12",
+        "rect": [
+          0,
+          558,
+          170,
+          51
+        ],
+        "visible": true
+      }
+    ],
+    "size": [
+      1000,
+      650
+    ],
+    "window": "files"
+  },
+  "udisks_calls": [
+    "unmount -b /dev/sdz1 --no-user-interaction",
+    "power-off -b /dev/sdz --no-user-interaction"
+  ],
+  "context_menu": {
+    "row": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+    "picked": "Abrir en pesta\u00f1a nueva",
+    "tabs": 2
+  },
+  "drop": {
+    "row": "place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+    "destination": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents",
+    "copied": true,
+    "source_intact": true
+  },
+  "recent": {
+    "listed": 1,
+    "missing_skipped": true,
+    "located": "/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents/informe.txt"
+  },
+  "bookmark_reorder": {
+    "moved": "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+    "before": "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads",
+    "saved_order": [
+      "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music",
+      "mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads"
+    ]
+  },
+  "normal_exit": true,
+  "viewport": [
+    1000,
+    650
+  ],
+  "log": "toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR_CLICK key=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads rect=Some((0, 201, 170, 51))\nFILES_TOOLKIT_FIXTURE action=sidebar-click:place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads scroll=(51, 182) rows=[None, Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 35)), Some((0, 491, 170, 80)), None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads scroll=(51, 182) rows=[None, Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 35)), Some((0, 491, 170, 80)), None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR_MENU row=0 entries=2\nFILES_TOOLKIT_SIDEBAR_CONTEXT key=fav rect=Some((0, 99, 170, 51))\nFILES_TOOLKIT_FIXTURE action=sidebar-context:fav\nFILES_TOOLKIT_FIXTURE action=end\nFILES_TOOLKIT_SIDEBAR_PICK row=0 entry=1 pick=Run(BookmarkAdd)\nFILES_TOOLKIT_FIXTURE action=pick\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads scroll=(0, 268) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), None, None, None, None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads scroll=(0, 268) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), None, None, None, None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR_CLICK key=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music rect=Some((0, 405, 170, 51))\nFILES_TOOLKIT_FIXTURE action=sidebar-click:place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music scroll=(0, 268) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), None, None, None, None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music scroll=(0, 268) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), None, None, None, None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR_MENU row=0 entries=2\nFILES_TOOLKIT_SIDEBAR_CONTEXT key=fav rect=Some((0, 99, 170, 51))\nFILES_TOOLKIT_FIXTURE action=sidebar-context:fav\nFILES_TOOLKIT_FIXTURE action=end\nFILES_TOOLKIT_SIDEBAR_PICK row=0 entry=1 pick=Run(BookmarkAdd)\nFILES_TOOLKIT_FIXTURE action=pick\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music scroll=(0, 319) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), None, None, None, None, None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music scroll=(0, 319) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), None, None, None, None, None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music scroll=(0, 319) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), None, None, None, None, None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music scroll=(0, 319) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), None, None, None, None, None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_CAPTURE_OK id=0 redraw=false before=112 paint=112 width=1000 height=650\nFILES_TOOLKIT_SIDEBAR_MOVE key=mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music index=0 requested=true\nFILES_TOOLKIT_SIDEBAR_DRAG from=mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music to=mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads found=true\nFILES_TOOLKIT_FIXTURE action=sidebar-drag:mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music scroll=(134, 319) rows=[None, None, Some((0, 67, 170, 51)), Some((0, 118, 170, 51)), Some((0, 169, 170, 51)), Some((0, 220, 170, 51)), Some((0, 271, 170, 51)), Some((0, 322, 170, 51)), Some((0, 373, 170, 35)), Some((0, 408, 170, 51)), Some((0, 459, 170, 51)), None, None, None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music scroll=(134, 319) rows=[None, None, Some((0, 67, 170, 51)), Some((0, 118, 170, 51)), Some((0, 169, 170, 51)), Some((0, 220, 170, 51)), Some((0, 271, 170, 51)), Some((0, 322, 170, 51)), Some((0, 373, 170, 35)), Some((0, 408, 170, 51)), Some((0, 459, 170, 51)), None, None, None, Some((0, 510, 170, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_CAPTURE_OK id=0 redraw=false before=118 paint=118 width=1000 height=650\nFILES_TOOLKIT_FIXTURE action=sidebar-collapse\nFILES_TOOLKIT_SIDEBAR expanded=false rail=false visible=true rect=(0, 90, 52, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music scroll=(134, 271) rows=[None, None, Some((0, 67, 52, 51)), Some((0, 118, 52, 51)), Some((0, 169, 52, 51)), Some((0, 220, 52, 51)), Some((0, 271, 52, 51)), Some((0, 322, 52, 51)), Some((0, 373, 52, 35)), Some((0, 408, 52, 51)), Some((0, 459, 52, 51)), None, None, None, Some((0, 510, 52, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=false rail=false visible=true rect=(0, 90, 52, 480) active=place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music path=/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music scroll=(134, 271) rows=[None, None, Some((0, 67, 52, 51)), Some((0, 118, 52, 51)), Some((0, 169, 52, 51)), Some((0, 220, 52, 51)), Some((0, 271, 52, 51)), Some((0, 322, 52, 51)), Some((0, 373, 52, 35)), Some((0, 408, 52, 51)), Some((0, 459, 52, 51)), None, None, None, Some((0, 510, 52, 51))] keys=fav|recent|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Documents|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Pictures|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|place:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Videos|h:marks|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Music|mark:/home/avillagran/.cache/files-test/toolkit-sidebar-mnqtkc6r/home/Downloads|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_FIXTURE action=close\nFILES_CLOSE_WAIT saves_ready=false mutations_drained=true copy_closed=false preview_drained=true du_drained=true space_drained=true notice=false\nFILES_CLOSE_WAIT saves_ready=true mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false\nFILES_CLOSE_DRAINED\nFILES_GLASS_STATS glass_fills=0 opaque_fills=7334 regions_cleared=0 regions_restored=0\n",
+  "binary_sha256": "f93ca0fe9e67a4f785ae83a63539f4f25545273072724d5e03006a929accbd4d",
+  "helper_sha256": "e5401c541f6ca42ca9eb3415d8277df5c6bfb114835913cbe48d2bd9245b942c",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4"
+}

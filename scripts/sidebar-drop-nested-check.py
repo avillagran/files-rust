@@ -60,6 +60,13 @@ def main():
             socket, signature, nested_pid = start_nested(tmp, report)
             assert socket != report['parent_socket'], 'refusing the session socket'
             nested = {**os.environ, 'WAYLAND_DISPLAY': socket, 'HYPRLAND_INSTANCE_SIGNATURE': signature}
+            def dispatch(legacy, lua, env):
+                reply = hypr(['dispatch', lua], env).strip()
+                if 'ok' not in reply.lower():
+                    reply = hypr(['dispatch', *legacy], env).strip()
+                report.setdefault('dispatch', []).append(reply)
+                assert reply.lower() == 'ok', reply
+
             monitor = json.loads(hypr(['monitors', '-j'], nested))[0]
             extent = (round(monitor['width'] / monitor['scale']), round(monitor['height'] / monitor['scale']))
             home = tmp / 'home'
@@ -140,10 +147,13 @@ def main():
             width = min(760, extent[0] - 340)
             height = min(560, extent[1] - 60)
             addr = 'address:' + client(b['process'])[0]['address']
-            for d in (['dispatch', 'setfloating', addr], ['dispatch', 'resizewindowpixel', f'exact {width} {height},{addr}'],
-                      ['dispatch', 'movewindowpixel', f'exact 330 40,{addr}']):
-                report.setdefault('dispatch', []).append(hypr(d, nested).strip())
-            hypr(['dispatch', 'focuswindow', 'address:' + client(b['process'])[0]['address']], nested)
+            quoted = json.dumps(addr)
+            dispatch(['setfloating', addr], f'hl.dsp.window.float({{action="on", window={quoted}}})', nested)
+            dispatch(['resizewindowpixel', f'exact {width} {height},{addr}'],
+                     f'hl.dsp.window.resize({{x={width}, y={height}, relative=false, window={quoted}}})', nested)
+            dispatch(['movewindowpixel', f'exact 330 40,{addr}'],
+                     f'hl.dsp.window.move({{x=330, y=40, relative=false, window={quoted}}})', nested)
+            dispatch(['focuswindow', addr], f'hl.dsp.focus({{window={quoted}}})', nested)
             time.sleep(1.0)
             ca = client(a['process'])[0]
             cb = client(b['process'])[0]

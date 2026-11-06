@@ -1,0 +1,73 @@
+{
+  "functional_gate": "FAIL",
+  "label": "source",
+  "binary_sha256": "f93ca0fe9e67a4f785ae83a63539f4f25545273072724d5e03006a929accbd4d",
+  "method": "private nested Hyprland on a hidden special workspace; real Wayland DnD from a Files listing to another Files window's Sidebar row with the virtual pointer",
+  "checks": {
+    "drag": {
+      "from": [
+        456,
+        214
+      ],
+      "to": [
+        47,
+        324
+      ],
+      "row": "place:/home/avillagran/.cache/files-test/sidebar-drop-othp906s/home/Documents"
+    },
+    "target_log_tail": [
+      "FILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=None"
+    ],
+    "logs": {
+      "source": [],
+      "target": []
+    }
+  },
+  "captures": [
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/sidebar-drop-20261105/source-target-before-1793946453764816705.png",
+    "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/sidebar-drop-20261105/source-source-after-drag-1793946458117838624.png"
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "2918934"
+    ]
+  },
+  "nested_extent": [
+    600,
+    414
+  ],
+  "dispatch": [
+    "error: 3 [string \"return hl.dispatch(setfloating address:0xaaab...\"]:1: ')' expected near 'address'\n\n → Note: dispatch in lua is a shorthand for hl.dispatch(...), your syntax might need to be updated.",
+    "error: 3 [string \"return hl.dispatch(resizewindowpixel exact 26...\"]:1: ')' expected near 'exact'\n\n → Note: dispatch in lua is a shorthand for hl.dispatch(...), your syntax might need to be updated.",
+    "error: 3 [string \"return hl.dispatch(movewindowpixel exact 330 ...\"]:1: ')' expected near 'exact'\n\n → Note: dispatch in lua is a shorthand for hl.dispatch(...), your syntax might need to be updated."
+  ],
+  "windows": {
+    "source": [
+      [
+        306,
+        75
+      ],
+      [
+        273,
+        318
+      ]
+    ],
+    "target": [
+      [
+        21,
+        75
+      ],
+      [
+        273,
+        318
+      ]
+    ]
+  },
+  "onto": "rail",
+  "error": "AssertionError('no copy review in the target window')",
+  "nested_stopped": true
+}

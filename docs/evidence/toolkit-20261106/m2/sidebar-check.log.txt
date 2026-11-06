@@ -1,0 +1,2 @@
+{"report": "/home/avillagran/.cache/files-m2-updates/toolkit-8454476/source/docs/evidence/0.0.4/toolkit-sidebar-ui-1793946395642985978.json", "functional_gate": "PASS", "error": null}
+{"nested": {"socket": "wayland-2", "pid": ["2903363"]}, "stopped": true}

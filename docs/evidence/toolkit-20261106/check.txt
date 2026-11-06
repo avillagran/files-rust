@@ -1,0 +1,6 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Checking lib-fltk-omarchy v0.0.10 (/home/node/Work/files/vendor/lib-fltk-omarchy)
+    Checking files-core v0.0.4 (/home/node/Work/files/crates/core)
+    Checking files-helper v0.0.4 (/home/node/Work/files/crates/helper)
+    Checking files-app v0.0.4 (/home/node/Work/files/crates/app)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.40s

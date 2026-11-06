@@ -1,0 +1,7 @@
+{
+  "binary_sha256": "f93ca0fe9e67a4f785ae83a63539f4f25545273072724d5e03006a929accbd4d",
+  "exit": 0,
+  "log": "FILES_FONT=JetBrainsMono Nerd Font nerd=true\nFILES_GLASS mode=opaque opacity=1.00 overridden=true wayland=true\nFILES_UI_SMOKE_OK entries=1\nFILES_FIRST_PAINT_US=718665\nFILES_GLASS_STATS glass_fills=0 opaque_fills=320 regions_cleared=0 regions_restored=0\n",
+  "functional_gate": "PASS",
+  "scope": "installed binary launch/render/close with private fixture data"
+}
