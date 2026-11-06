@@ -1,0 +1,28 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Checking files-core v0.0.4 (/home/node/Work/files/crates/core)
+error: failed to run custom build command for `files-ui v0.0.4 (/home/node/Work/files/crates/ui)`
+
+Caused by:
+  process didn't exit successfully: `/home/node/Work/files/target/debug/build/files-ui-dfb3dfb5990c9604/build-script-build` (exit status: 101)
+  --- stdout
+  cargo:rerun-if-changed=native/window_gestures.cpp
+  cargo:rerun-if-changed=native/file_transfer.cpp
+  cargo:rerun-if-env-changed=FILES_FLTK_SOURCE_DIR
+  cargo:rerun-if-env-changed=FILES_FLTK_CONFIG_DIR
+  cargo:rerun-if-changed=/home/node/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.23/cfltk/fltk
+  cargo:rerun-if-changed=/home/node/Work/files/target/debug/build/fltk-sys-bc2f8cbcd76a7de4/out/build/fltk
+  cargo:rerun-if-changed=/home/node/Work/files/vendor/fltk-wayland-transfer
+  cargo:rerun-if-changed=/home/node/Work/files/native/fltk
+  cargo:rerun-if-changed=/home/node/Work/files/scripts/cmake-files-v3
+
+  --- stderr
+  mise ERROR No version is set for shim: cmake
+  Set a global default version with one of the following:
+  mise use -g cmake@3.31.12
+  mise ERROR Version: 2026.11.0 linux-x64 (2026-11-03)
+  mise ERROR Run with --verbose or MISE_VERBOSE=1 for more information
+
+  thread 'main' (3123185) panicked at crates/ui/build.rs:132:5:
+  Pinned FLTK DnD input guard failed
+  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: build failed, waiting for other jobs to finish...

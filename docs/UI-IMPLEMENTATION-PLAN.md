@@ -111,3 +111,20 @@ Continue native platform acceptance beyond NODE/M2 Linux, screen-reader and
 language integration, tear-off and modal focus consistency across all views.
 Rendered motion snapshots and mapped native input have distinct scopes;
 resource/startup acceptance remains separate.
+
+## Next toolkit adoption: persistent feedback
+
+The committed upstream `0f68089` supplies persistent `overlay::Notice` cards
+with stable action IDs, per-window stacks, focus restoration and app-owned
+dismissal/action outcomes. It is reviewed but not part of Files' `a029d45`
+vendor export yet. Adopt it as a separate delivery for actionable operation
+feedback, preserving the current mutation/review controllers and admission
+guards. Callbacks must enqueue app requests outside model borrows; no retry
+or mutation should happen merely because a card appears. Keep the visible
+queue bounded and verify native keyboard/pointer, narrow layouts, motion
+and closure on NODE and M2. Optional GPU/accessibility features remain off
+until their own acceptance work is completed.
+
+The requested public window-presentation/activation-token API remains a
+separate toolkit integration. Do not export its uncommitted platform work
+or claim that `show()` consumes a caller's startup ID.

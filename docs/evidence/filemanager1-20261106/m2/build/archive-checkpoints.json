@@ -1,0 +1,11 @@
+{
+  "source_base_checkpoint": "0c9a59cdbd7e98710e8599b68b565121c1b168f1",
+  "source_base_archive_sha256": "bd9c0f441a31a77d7e73ca230d68ee10a10878a6afc5366524a1c36293969134",
+  "source_base_archive_bytes": 22620160,
+  "source_base_files": 941,
+  "tool_overlay_checkpoint": "8107d365c9b2ebac9c6602327c16f93e796504d7",
+  "fix_checkpoint": "cbc83a919d78cee9b92159b6e0836118db541950",
+  "fix_archive_sha256": "44f7b5904bd76e730a2efd57199e225bcea92064cc1cfbc4713f60efb03554ed",
+  "fix_archive_files": 3,
+  "current_projected_source_files": 943
+}

@@ -1,0 +1,8379 @@
+{
+  "functional_gate": "PASS",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "requested_size": "1000x650",
+  "animations": "on",
+  "binary_sha256": "95600f0976a77c4aecd007807291fe5cceea2811bec2a0b92b920b93b2f1d17e",
+  "fixture_dir": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4",
+  "checks": [
+    "primary click on active tab cancels pending restore without navigation",
+    "right body_rect targets inactive key without activation",
+    "right close_rect targets inactive key without activation",
+    "drag reorders inactive stable key while preserving browser state",
+    "drop outside cancels reorder",
+    "native strip focus, global active context, cursor context, reorder and Escape preserve browser state",
+    "middle body and close remove inactive keys without activation",
+    "primary click selects the intended stable key",
+    "Enter selects the keyboard cursor key",
+    "keyboard focus reveals an overflowed tab without activation",
+    "Home reveals already-active first tab after focusing the overflowed last tab",
+    "Ctrl+Tab changes the active tab once from browser focus",
+    "Tab switches panes and Down selects in the focused browser; context uses compound pane and local tab identity"
+  ],
+  "states": [
+    {
+      "label": "initial",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          62,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": null,
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "initial",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          62,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": null,
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "initial",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          62,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": null,
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "seeded",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": null,
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "active-click-armed",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": true,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": null,
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "active-click-intent",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "right-body_rect",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": true,
+      "context_tab": [
+        1,
+        2
+      ],
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          2
+        ],
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "escape",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          2
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "right-close_rect",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": true,
+      "context_tab": [
+        1,
+        2
+      ],
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          2
+        ],
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "escape",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          2
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "drag",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          2
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "drop-outside",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          2
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "browser-focus",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          2
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-focus-armed",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": true,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          2
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-focus",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-cursor",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          424,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          3
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "global-active-context",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": true,
+      "context_tab": [
+        1,
+        1
+      ],
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          97,
+          120,
+          395,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          3
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "global-context-dismissed",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          154,
+          120,
+          338,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          3
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-reorder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          182,
+          120,
+          310,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          3
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-context",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": true,
+      "context_tab": [
+        1,
+        3
+      ],
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          3
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-context-dismissed",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          3
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-return-browser",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          3
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 2,
+            "key": [
+              1,
+              2
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "middle-body",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 1,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          144,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          90,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          3
+        ],
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 3,
+            "key": [
+              1,
+              3
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "middle-close",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          62,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": null,
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "reseed",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": null,
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "primary-selection",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 3,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          4
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "primary-selection",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 4,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          4
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-select-focus",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 4,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          5
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-select",
+      "active": 5,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 5,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          5
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-select",
+      "active": 5,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 5,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          5
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-select",
+      "active": 5,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 5,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          5
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "keyboard-select",
+      "active": 5,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 6,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          5
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "first-active",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 7,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "first-active",
+      "active": 1,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 8,
+      "loaded": false,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": true,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {},
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "first-active",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 8,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          226,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          172,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              90,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              144,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              172,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              226,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "overflow",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 8,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "overflow-revealed",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 8,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-close-button-last": [
+          409,
+          58,
+          26,
+          32
+        ],
+        "tab-last": [
+          215,
+          58,
+          194,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          10
+        ],
+        "focus": true,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": [
+              41,
+              58,
+              146,
+              32
+            ],
+            "close_rect": [
+              187,
+              58,
+              26,
+              32
+            ],
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": [
+              215,
+              58,
+              194,
+              32
+            ],
+            "close_rect": [
+              409,
+              58,
+              26,
+              32
+            ],
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "overflow-home",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": false,
+      "generation": 8,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": true,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "global-tab-browser",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 8,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "global-tab-once",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 9,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "global-tab-once",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 9,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "global-tab-once",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 9,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "global-tab-once",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 10,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          186,
+          120,
+          306,
+          38
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "dual",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 10,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          189,
+          158,
+          143,
+          34
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "dual",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 10,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          189,
+          158,
+          143,
+          34
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "dual",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 10,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          189,
+          158,
+          143,
+          34
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "dual-browser",
+      "active": 4,
+      "anchor_raw": null,
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 10,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "targets": {
+        "file": [
+          189,
+          158,
+          143,
+          34
+        ],
+        "tab-first": [
+          41,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list",
+      "widget": {
+        "cursor": [
+          1,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              41,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              95,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              1,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+          },
+          {
+            "body_rect": [
+              123,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              177,
+              58,
+              26,
+              32
+            ],
+            "id": 4,
+            "key": [
+              1,
+              4
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          },
+          {
+            "body_rect": [
+              205,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              259,
+              58,
+              26,
+              32
+            ],
+            "id": 5,
+            "key": [
+              1,
+              5
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+          },
+          {
+            "body_rect": [
+              287,
+              58,
+              148,
+              32
+            ],
+            "close_rect": null,
+            "id": 6,
+            "key": [
+              1,
+              6
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 7,
+            "key": [
+              1,
+              7
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 8,
+            "key": [
+              1,
+              8
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 9,
+            "key": [
+              1,
+              9
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+          },
+          {
+            "body_rect": null,
+            "close_rect": null,
+            "id": 10,
+            "key": [
+              1,
+              10
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "other-pane",
+      "active": 1,
+      "anchor_raw": null,
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 11,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "pane_id": 2,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          346,
+          158,
+          143,
+          34
+        ],
+        "tab-close-button-last": [
+          62,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list",
+      "widget": {
+        "cursor": null,
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              2,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "other-pane-down",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 11,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "pane_id": 2,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          346,
+          158,
+          143,
+          34
+        ],
+        "tab-close-button-last": [
+          62,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list",
+      "widget": {
+        "cursor": null,
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              2,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "dual-context",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": true,
+      "context_tab": [
+        2,
+        1
+      ],
+      "error": "",
+      "focus_browser": false,
+      "generation": 11,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "pane_id": 2,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          346,
+          158,
+          143,
+          34
+        ],
+        "tab-close-button-last": [
+          62,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list",
+      "widget": {
+        "cursor": [
+          2,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": false,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              2,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    },
+    {
+      "label": "dual-dismiss",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "context_tab": null,
+      "error": "",
+      "focus_browser": true,
+      "generation": 11,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/C"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-01"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-02"
+        },
+        {
+          "id": 8,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-03"
+        },
+        {
+          "id": 9,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-04"
+        },
+        {
+          "id": 10,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/extra-long-tab-label-05"
+        }
+      ],
+      "pane_id": 2,
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B",
+      "refreshing": false,
+      "restore_allowed": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          346,
+          158,
+          143,
+          34
+        ],
+        "tab-close-button-last": [
+          62,
+          58,
+          26,
+          32
+        ],
+        "tab-first": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-last": [
+          8,
+          58,
+          54,
+          32
+        ],
+        "tab-new-button": [
+          474,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list",
+      "widget": {
+        "cursor": [
+          2,
+          1
+        ],
+        "focus": false,
+        "keyboard_mode": true,
+        "rect": [
+          8,
+          58,
+          460,
+          32
+        ],
+        "rows": [
+          {
+            "body_rect": [
+              8,
+              58,
+              54,
+              32
+            ],
+            "close_rect": [
+              62,
+              58,
+              26,
+              32
+            ],
+            "id": 1,
+            "key": [
+              2,
+              1
+            ],
+            "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/home/B"
+          }
+        ],
+        "visible": true
+      }
+    }
+  ],
+  "input": [
+    {
+      "mode": "c1",
+      "from": [
+        56,
+        95
+      ],
+      "to": [
+        56,
+        95
+      ],
+      "extent": [
+        550,
+        367
+      ]
+    },
+    {
+      "mode": "r",
+      "from": [
+        138,
+        95
+      ],
+      "to": [
+        138,
+        95
+      ],
+      "extent": [
+        550,
+        367
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Escape"
+      ]
+    },
+    {
+      "mode": "r",
+      "from": [
+        178,
+        95
+      ],
+      "to": [
+        178,
+        95
+      ],
+      "extent": [
+        550,
+        367
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Escape"
+      ]
+    },
+    {
+      "mode": "0",
+      "from": [
+        138,
+        95
+      ],
+      "to": [
+        243,
+        95
+      ],
+      "extent": [
+        550,
+        367
+      ]
+    },
+    {
+      "mode": "0",
+      "from": [
+        220,
+        95
+      ],
+      "to": [
+        30,
+        180
+      ],
+      "extent": [
+        550,
+        367
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Escape"
+      ]
+    },
+    {
+      "keyboard": [
+        "-M",
+        "ctrl",
+        "-M",
+        "alt",
+        "-k",
+        "t",
+        "-m",
+        "alt",
+        "-m",
+        "ctrl"
+      ]
+    },
+    {
+      "keyboard": [
+        "-M",
+        "alt",
+        "-k",
+        "Right",
+        "-m",
+        "alt"
+      ]
+    },
+    {
+      "keyboard": [
+        "-M",
+        "ctrl",
+        "-M",
+        "shift",
+        "-k",
+        "F10",
+        "-m",
+        "shift",
+        "-m",
+        "ctrl"
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Escape"
+      ]
+    },
+    {
+      "keyboard": [
+        "-M",
+        "ctrl",
+        "-M",
+        "shift",
+        "-k",
+        "Right",
+        "-m",
+        "shift",
+        "-m",
+        "ctrl"
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Menu"
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Escape"
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Escape"
+      ]
+    },
+    {
+      "mode": "m",
+      "from": [
+        138,
+        95
+      ],
+      "to": [
+        138,
+        95
+      ],
+      "extent": [
+        550,
+        367
+      ]
+    },
+    {
+      "mode": "m",
+      "from": [
+        178,
+        95
+      ],
+      "to": [
+        178,
+        95
+      ],
+      "extent": [
+        550,
+        367
+      ]
+    },
+    {
+      "mode": "c1",
+      "from": [
+        138,
+        95
+      ],
+      "to": [
+        138,
+        95
+      ],
+      "extent": [
+        550,
+        367
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Return"
+      ]
+    },
+    {
+      "mode": "c1",
+      "from": [
+        56,
+        95
+      ],
+      "to": [
+        56,
+        95
+      ],
+      "extent": [
+        550,
+        367
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Home"
+      ]
+    },
+    {
+      "keyboard": [
+        "-M",
+        "ctrl",
+        "-k",
+        "Tab",
+        "-m",
+        "ctrl"
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Tab"
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Down"
+      ]
+    },
+    {
+      "mode": "r",
+      "from": [
+        56,
+        95
+      ],
+      "to": [
+        56,
+        95
+      ],
+      "extent": [
+        550,
+        367
+      ]
+    },
+    {
+      "keyboard": [
+        "-k",
+        "Escape"
+      ]
+    }
+  ],
+  "helper_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "3600419"
+    ]
+  },
+  "captures": [
+    {
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/seeded.png",
+      "framebuffer_pixels": [
+        508,
+        325
+      ],
+      "client_logical_at": [
+        21,
+        21
+      ],
+      "client_logical_size": [
+        508,
+        325
+      ]
+    },
+    {
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/right-body_rect.png",
+      "framebuffer_pixels": [
+        508,
+        325
+      ],
+      "client_logical_at": [
+        21,
+        21
+      ],
+      "client_logical_size": [
+        508,
+        325
+      ]
+    },
+    {
+      "path": "/home/node/.cache/files-test/keyed-tabs-native-hrcen4c4/right-close_rect.png",
+      "framebuffer_pixels": [
+        508,
+        325
+      ],
+      "client_logical_at": [
+        21,
+        21
+      ],
+      "client_logical_size": [
+        508,
+        325
+      ]
+    }
+  ],
+  "fixture_intact": true,
+  "normal_exit": true,
+  "nested_stopped": true
+}

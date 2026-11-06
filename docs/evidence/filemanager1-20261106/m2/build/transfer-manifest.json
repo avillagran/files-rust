@@ -1,0 +1,163 @@
+{
+  "source_machine": "M2 (aarch64)",
+  "copied_content": "Build and source provenance only; no executables or private fixture data. Original M2 .log files retained; NODE copies use .txt.",
+  "files": [
+    {
+      "path": "0c9a59c/build-manifest.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/0c9a59c/build-manifest.json",
+      "bytes": 3416,
+      "sha256": "ec39bbf52747f664513a6a1cd0013a2221830b3b4fd1f897070d3a05bcfae5d7"
+    },
+    {
+      "path": "0c9a59c/build.txt",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/0c9a59c/build.log",
+      "bytes": 3053,
+      "sha256": "e51d09f5bc462a170c5b0ce53bf13a3065753eb1130ca2e4549f47ed5254b824"
+    },
+    {
+      "path": "0c9a59c/source-checkpoint.txt",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/0c9a59c/source-checkpoint.txt",
+      "bytes": 41,
+      "sha256": "48d35ca85b6dee6deb93f4325b6914bf15059ad1574e0b4c300f35c2a3ac8ecd"
+    },
+    {
+      "path": "0c9a59c/readelf-dynamic.txt",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/0c9a59c/readelf-dynamic.txt",
+      "bytes": 2690,
+      "sha256": "776e47e5f6e163ae75e326fafbc186918de71a181d30cab43c014be8fba8091a"
+    },
+    {
+      "path": "0c9a59c/harness-overlay-8107d36.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/0c9a59c/harness-overlay-8107d36.json",
+      "bytes": 375,
+      "sha256": "9280454dcf5b66ac4a98c14cbcd93b566400f0e733f034cff7d59e70fed4003b"
+    },
+    {
+      "path": "0c9a59c/html-reuse-verification.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/0c9a59c/html-reuse-verification.json",
+      "bytes": 316,
+      "sha256": "4382333616a38799ba202520760f9a3b971fb0cd5f301d30cf9ecbeea970c405"
+    },
+    {
+      "path": "0c9a59c/inherited-cache-manifest.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/0c9a59c/inherited-cache-manifest.json",
+      "bytes": 2445,
+      "sha256": "f74a27d1b4e5f1c791502b2d99c107a8ff305b2ef05334d2dd980dc8ac04480e"
+    },
+    {
+      "path": "0c9a59c/files-html-helper.build.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/0c9a59c/files-html-helper.build.json",
+      "bytes": 1118,
+      "sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838"
+    },
+    {
+      "path": "0c9a59c/source-manifest-0c9a59c.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/0c9a59c/source-manifest-0c9a59c.json",
+      "bytes": 164156,
+      "sha256": "d63749684ceb73a354ffdd9302aa3ff9d6f586158aedf36489e2ffdec624056b"
+    },
+    {
+      "path": "0c9a59c/architecture.txt",
+      "origin": "read-only file/readelf/uname/rustc/pkg-config on M2 candidate /home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/0c9a59c",
+      "bytes": 3903,
+      "sha256": "3fa55f88f0d42ce68d3a9cb60df138600de9f10ca627db1043464b84cc502192"
+    },
+    {
+      "path": "cbc83a9/build-manifest.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/build-manifest.json",
+      "bytes": 4131,
+      "sha256": "5538af57be536cc0dbafc5776dfe434d7120f61f952b259550de25efc6cd52c5"
+    },
+    {
+      "path": "cbc83a9/build.txt",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/build.log",
+      "bytes": 283,
+      "sha256": "f533a4db00f69e33a3a2bc2a005375eebca2ab864608beda028c5ed8976623e9"
+    },
+    {
+      "path": "cbc83a9/source-checkpoint.txt",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/source-checkpoint.txt",
+      "bytes": 41,
+      "sha256": "cecc31295a4063152defbea7055f407f67ae53c2668a3216149c3de3a6249488"
+    },
+    {
+      "path": "cbc83a9/readelf-dynamic.txt",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/readelf-dynamic.txt",
+      "bytes": 2690,
+      "sha256": "fdae888dacd025d616e87d3fd5f3c3de6b56500a77242159c264aa78c70e4fd8"
+    },
+    {
+      "path": "cbc83a9/harness-overlay-8107d36.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/harness-overlay-8107d36.json",
+      "bytes": 375,
+      "sha256": "9280454dcf5b66ac4a98c14cbcd93b566400f0e733f034cff7d59e70fed4003b"
+    },
+    {
+      "path": "cbc83a9/html-reuse-verification.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/html-reuse-verification.json",
+      "bytes": 316,
+      "sha256": "4382333616a38799ba202520760f9a3b971fb0cd5f301d30cf9ecbeea970c405"
+    },
+    {
+      "path": "cbc83a9/inherited-cache-manifest.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/inherited-cache-manifest.json",
+      "bytes": 2445,
+      "sha256": "f74a27d1b4e5f1c791502b2d99c107a8ff305b2ef05334d2dd980dc8ac04480e"
+    },
+    {
+      "path": "cbc83a9/files-html-helper.build.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/files-html-helper.build.json",
+      "bytes": 1118,
+      "sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838"
+    },
+    {
+      "path": "cbc83a9/source-manifest-cbc83a9.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/source-manifest-cbc83a9.json",
+      "bytes": 165810,
+      "sha256": "6f3685fcf35a3e227fe64d2a54feb6f4d6ad4a30edd360d678a7a48d75466df2"
+    },
+    {
+      "path": "cbc83a9/fix-overlay-cbc83a9.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/fix-overlay-cbc83a9.json",
+      "bytes": 805,
+      "sha256": "412773f3fb3c63b7f4175a476e71a5b02f79bde74a25dda19cb40dc649c063b5"
+    },
+    {
+      "path": "cbc83a9/SOURCE_CHECKPOINT",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9/SOURCE_CHECKPOINT",
+      "bytes": 41,
+      "sha256": "cecc31295a4063152defbea7055f407f67ae53c2668a3216149c3de3a6249488"
+    },
+    {
+      "path": "cbc83a9/architecture.txt",
+      "origin": "read-only file/readelf/uname/rustc/pkg-config on M2 candidate /home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/candidates/cbc83a9",
+      "bytes": 3903,
+      "sha256": "90acf3a247dcb85c8dfce759d3b19631715693cde41a8595b1a8c7cc42c1d80b"
+    },
+    {
+      "path": "SOURCE_CHECKPOINT",
+      "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/SOURCE_CHECKPOINT",
+      "bytes": 41,
+      "sha256": "cecc31295a4063152defbea7055f407f67ae53c2668a3216149c3de3a6249488"
+    },
+    {
+      "path": "archive-checkpoints.json",
+      "origin": "M2 source base and fix manifests",
+      "bytes": 540,
+      "sha256": "e7e37faac2c636ad1dd3d6134483f9f87447ed73bed0f0515e5770722f99b729"
+    }
+  ],
+  "copied_file_count": 24,
+  "copied_bytes": 364052,
+  "checkpoints": {
+    "source_base_checkpoint": "0c9a59cdbd7e98710e8599b68b565121c1b168f1",
+    "source_base_archive_sha256": "bd9c0f441a31a77d7e73ca230d68ee10a10878a6afc5366524a1c36293969134",
+    "source_base_archive_bytes": 22620160,
+    "source_base_files": 941,
+    "tool_overlay_checkpoint": "8107d365c9b2ebac9c6602327c16f93e796504d7",
+    "fix_checkpoint": "cbc83a919d78cee9b92159b6e0836118db541950",
+    "fix_archive_sha256": "44f7b5904bd76e730a2efd57199e225bcea92064cc1cfbc4713f60efb03554ed",
+    "fix_archive_files": 3,
+    "current_projected_source_files": 943
+  }
+}

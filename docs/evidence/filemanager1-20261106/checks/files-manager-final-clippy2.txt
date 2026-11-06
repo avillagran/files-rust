@@ -1,0 +1,62 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Checking files-core v0.0.4 (/home/node/Work/files/crates/core)
+    Checking files-helper v0.0.4 (/home/node/Work/files/crates/helper)
+error: using `chunks_exact` with a constant chunk size
+  --> crates/helper/src/file_manager_preflight.rs:54:14
+   |
+54 |             .chunks_exact(2)
+   |              ^^^^^^^^^^^^^^^ help: consider using `as_chunks` instead: `as_chunks::<2>().0.iter()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#chunks_exact_to_as_chunks
+   = note: `-D clippy::chunks-exact-to-as-chunks` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::chunks_exact_to_as_chunks)]`
+
+error: could not compile `files-helper` (bin "files-helper") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `files-helper` (bin "files-helper" test) due to 1 previous error
+error: this `if` statement can be collapsed
+   --> crates/ui/src/file_manager_ui.rs:144:9
+    |
+144 | /         if let Some(Status::Unavailable(error)) = self.server.as_ref().map(Server::status) {
+145 | |             if self.required && self.fresh {
+146 | |                 effects.fatal = Some(error);
+147 | |                 return effects;
+148 | |             }
+149 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+144 ~         if let Some(Status::Unavailable(error)) = self.server.as_ref().map(Server::status)
+145 ~             && self.required && self.fresh {
+146 |                 effects.fatal = Some(error);
+147 |                 return effects;
+148 ~             }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/ui/src/properties_ui.rs:116:9
+    |
+116 | /         if let Err(error) = self.start_properties(objects, index) {
+117 | |             if let Some(d) = &mut self.properties_dialog {
+118 | |                 d.stale = true;
+119 | |                 d.message = error;
+120 | |             }
+121 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+116 ~         if let Err(error) = self.start_properties(objects, index)
+117 ~             && let Some(d) = &mut self.properties_dialog {
+118 |                 d.stale = true;
+119 |                 d.message = error;
+120 ~             }
+    |
+
+error: could not compile `files-ui` (lib) due to 2 previous errors
+error: could not compile `files-ui` (lib test) due to 2 previous errors

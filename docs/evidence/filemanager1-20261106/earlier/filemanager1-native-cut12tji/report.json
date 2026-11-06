@@ -1,0 +1,42 @@
+{
+  "functional_gate": "FAIL",
+  "binary": "/home/node/Work/files/target/release/files",
+  "checks": [],
+  "states": [],
+  "fixture_dir": "/home/node/.cache/files-test/filemanager1-native-cut12tji",
+  "bus_address": "unix:path=/tmp/dbus-hk7ysfhfA4,guid=a85fc954035732f7d0a022d66aee571d",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "files_sha256": "f8b19ea9716f4b6b13c9c66f7c4e6d2e52359912b301e27beb86596685854195",
+  "files-helper_sha256": "aa88c6d5a7302dccb95652d4e4ed4248effa19fcf5e294a9219ba1b022a11213",
+  "files-html-helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "3260834"
+    ]
+  },
+  "calls": [
+    {
+      "method": "org.freedesktop.DBus.GetNameOwner",
+      "args": [
+        "org.freedesktop.FileManager1"
+      ],
+      "code": 0,
+      "stdout": "(':1.12',)\n",
+      "stderr": ""
+    },
+    {
+      "method": "org.freedesktop.DBus.GetConnectionUnixProcessID",
+      "args": [
+        ":1.12"
+      ],
+      "code": 0,
+      "stdout": "(uint32 3261105,)\n",
+      "stderr": ""
+    }
+  ],
+  "error": "AssertionError()",
+  "nested_stopped": true
+}

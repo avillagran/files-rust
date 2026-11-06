@@ -1,0 +1,41 @@
+{
+  "checkpoint": "8107d365c9b2ebac9c6602327c16f93e796504d7",
+  "html_helper": "reused staged, recipe verified",
+  "validation_report": "/home/node/.cache/files-test/filemanager1-native-fvboibk9/report.json",
+  "scope": "per-user authorized installation; all staged then individual atomic replacements; no running windows controlled",
+  "backup": "/home/node/.cache/files-test/installed-backups/1794005856014495773",
+  "files": [
+    {
+      "name": "files",
+      "old_sha256": "5336f0624f4e155145e933f40819353124859ad0fa6fbd4c8b3857d3d572170d",
+      "release_sha256": "56024b52d2bd532cbac8748c8a9679341fa4c28b886a98e297e464ceba75f53e",
+      "installed_sha256": "56024b52d2bd532cbac8748c8a9679341fa4c28b886a98e297e464ceba75f53e"
+    },
+    {
+      "name": "files-helper",
+      "old_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+      "release_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241",
+      "installed_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241"
+    },
+    {
+      "name": "files-html-helper",
+      "old_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+      "release_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+      "installed_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "old_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "release_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "installed_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b"
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "old_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd",
+      "release_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd",
+      "installed_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd"
+    }
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED"
+}

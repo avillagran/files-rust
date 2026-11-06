@@ -1,0 +1,254 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+   Compiling files-core v0.0.4 (/home/node/Work/files/crates/core)
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+warning: constant `PENDING` is never used
+  --> crates/ui/src/file_manager_bus.rs:22:7
+   |
+22 | const PENDING: usize = 8;
+   |       ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `ADMISSION` is never used
+  --> crates/ui/src/file_manager_bus.rs:24:7
+   |
+24 | const ADMISSION: Duration = Duration::from_secs(5);
+   |       ^^^^^^^^^
+
+warning: enum `Status` is never used
+  --> crates/ui/src/file_manager_bus.rs:27:10
+   |
+27 | pub enum Status {
+   |          ^^^^^^
+
+warning: struct `Event` is never constructed
+  --> crates/ui/src/file_manager_bus.rs:32:12
+   |
+32 | pub struct Event {
+   |            ^^^^^
+
+warning: struct `Envelope` is never constructed
+  --> crates/ui/src/file_manager_bus.rs:36:8
+   |
+36 | struct Envelope {
+   |        ^^^^^^^^
+
+warning: struct `Ack` is never constructed
+  --> crates/ui/src/file_manager_bus.rs:41:8
+   |
+41 | struct Ack {
+   |        ^^^
+
+warning: struct `Server` is never constructed
+  --> crates/ui/src/file_manager_bus.rs:45:12
+   |
+45 | pub struct Server {
+   |            ^^^^^^
+
+warning: associated items `start`, `status`, `poll`, `complete`, `stop`, and `drained` are never used
+   --> crates/ui/src/file_manager_bus.rs:54:12
+    |
+ 53 | impl Server {
+    | ----------- associated items in this implementation
+ 54 |     pub fn start(required: bool) -> Result<Self, String> {
+    |            ^^^^^
+...
+109 |     pub fn status(&self) -> Status {
+    |            ^^^^^^
+...
+115 |     pub fn poll(&self) -> Option<Event> {
+    |            ^^^^
+...
+123 |     pub fn complete(&self, id: u64, result: Result<(), String>) -> bool {
+    |            ^^^^^^^^
+...
+126 |     pub fn stop(&self) {
+    |            ^^^^
+...
+129 |     pub fn drained(&self) -> bool {
+    |            ^^^^^^^
+
+warning: struct `Bus` is never constructed
+   --> crates/ui/src/file_manager_bus.rs:169:8
+    |
+169 | struct Bus(*mut c_void);
+    |        ^^^
+
+warning: struct `Call` is never constructed
+   --> crates/ui/src/file_manager_bus.rs:179:8
+    |
+179 | struct Call(*mut c_void);
+    |        ^^^^
+
+warning: methods `request` and `reply` are never used
+   --> crates/ui/src/file_manager_bus.rs:190:8
+    |
+189 | impl Call {
+    | --------- methods in this implementation
+190 |     fn request(&self) -> Result<Request, String> {
+    |        ^^^^^^^
+...
+230 |     fn reply(mut self, bus: &Bus, error: Option<(&str, &str)>) -> Result<(), String> {
+    |        ^^^^^
+
+warning: struct `Pending` is never constructed
+   --> crates/ui/src/file_manager_bus.rs:264:8
+    |
+264 | struct Pending {
+    |        ^^^^^^^
+
+warning: function `serve` is never used
+   --> crates/ui/src/file_manager_bus.rs:277:4
+    |
+277 | fn serve(
+    |    ^^^^^
+
+warning: function `files_fm_open` is never used
+   --> crates/ui/src/file_manager_bus.rs:146:8
+    |
+146 |     fn files_fm_open(address: *const c_char, reason: *mut c_char, capacity: usize) -> *mut c_void;
+    |        ^^^^^^^^^^^^^
+
+warning: function `files_fm_close` is never used
+   --> crates/ui/src/file_manager_bus.rs:147:8
+    |
+147 |     fn files_fm_close(bus: *mut c_void);
+    |        ^^^^^^^^^^^^^^
+
+warning: function `files_fm_next` is never used
+   --> crates/ui/src/file_manager_bus.rs:148:8
+    |
+148 |     fn files_fm_next(
+    |        ^^^^^^^^^^^^^
+
+warning: function `files_fm_method` is never used
+   --> crates/ui/src/file_manager_bus.rs:155:8
+    |
+155 |     fn files_fm_method(call: *const c_void) -> c_int;
+    |        ^^^^^^^^^^^^^^^
+
+warning: function `files_fm_count` is never used
+   --> crates/ui/src/file_manager_bus.rs:156:8
+    |
+156 |     fn files_fm_count(call: *const c_void) -> usize;
+    |        ^^^^^^^^^^^^^^
+
+warning: function `files_fm_uri` is never used
+   --> crates/ui/src/file_manager_bus.rs:157:8
+    |
+157 |     fn files_fm_uri(call: *const c_void, index: usize) -> *const c_char;
+    |        ^^^^^^^^^^^^
+
+warning: function `files_fm_startup` is never used
+   --> crates/ui/src/file_manager_bus.rs:158:8
+    |
+158 |     fn files_fm_startup(call: *const c_void) -> *const c_char;
+    |        ^^^^^^^^^^^^^^^^
+
+warning: function `files_fm_reply` is never used
+   --> crates/ui/src/file_manager_bus.rs:159:8
+    |
+159 |     fn files_fm_reply(
+    |        ^^^^^^^^^^^^^^
+
+warning: function `files_fm_free_call` is never used
+   --> crates/ui/src/file_manager_bus.rs:165:8
+    |
+165 |     fn files_fm_free_call(call: *mut c_void);
+    |        ^^^^^^^^^^^^^^^^^^
+
+warning: constant `MAX_REQUEST` is never used
+  --> crates/ui/src/file_manager_preflight.rs:14:7
+   |
+14 | const MAX_REQUEST: usize = 256 * 1024;
+   |       ^^^^^^^^^^^
+
+warning: constant `MAX_RESPONSE` is never used
+  --> crates/ui/src/file_manager_preflight.rs:15:7
+   |
+15 | const MAX_RESPONSE: usize = 4096;
+   |       ^^^^^^^^^^^^
+
+warning: function `encode` is never used
+  --> crates/ui/src/file_manager_preflight.rs:17:4
+   |
+17 | fn encode(request: &Request) -> Result<Vec<u8>, String> {
+   |    ^^^^^^
+
+warning: function `check_wire` is never used
+  --> crates/ui/src/file_manager_preflight.rs:87:4
+   |
+87 | fn check_wire(request: &[u8], stop: &AtomicBool) -> Result<(), String> {
+   |    ^^^^^^^^^^
+
+warning: struct `Job` is never constructed
+   --> crates/ui/src/file_manager_preflight.rs:115:12
+    |
+115 | pub struct Job {
+    |            ^^^
+
+warning: associated items `start`, `poll`, `cancel`, `finished`, and `drained` are never used
+   --> crates/ui/src/file_manager_preflight.rs:122:12
+    |
+121 | impl Job {
+    | -------- associated items in this implementation
+122 |     pub fn start(request: &Request) -> Result<Self, String> {
+    |            ^^^^^
+...
+143 |     pub fn poll(&mut self) -> Option<Result<(), String>> {
+    |            ^^^^
+...
+146 |     pub fn cancel(&self) {
+    |            ^^^^^^
+...
+149 |     pub fn finished(&self) -> bool {
+    |            ^^^^^^^^
+...
+152 |     pub fn drained(&self) -> bool {
+    |            ^^^^^^^
+
+warning: method `check_new_ids` is never used
+   --> crates/ui/src/tabs.rs:122:19
+    |
+ 50 | impl Tabs {
+    | --------- method in this implementation
+...
+122 |     pub(crate) fn check_new_ids(&self, count: usize) -> Result<(), &'static str> {
+    |                   ^^^^^^^^^^^^^
+
+warning: method `external_locations` is never used
+   --> crates/ui/src/tabs_ui.rs:143:19
+    |
+  8 | impl Model {
+    | ---------- method in this implementation
+...
+143 |     pub(crate) fn external_locations(
+    |                   ^^^^^^^^^^^^^^^^^^
+
+warning: `files-ui` (lib test) generated 30 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 40.48s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 16 tests
+test properties_dialog::tests::loading_cannot_apply_and_tab_reveals_last_permission_at_small_height ... ok
+test properties_dialog::tests::batch_navigation_is_bounded_and_keeps_stale_unapplied_edits ... ok
+test properties_job::tests::diagnostics_are_utf8_bounded_without_cloning_full_error_and_warning_count_is_fixed ... ok
+test properties_job::tests::cancelled_inspection_does_not_return_a_snapshot ... ok
+test properties_dialog::tests::wrapping_keeps_all_utf8_scalars_and_each_measured_line_fits ... ok
+test properties_job::tests::linux::confirmed_commit_with_no_observation_keeps_changed_true_and_drops_snapshot ... ok
+test properties_job::tests::linux::failed_stale_apply_retains_old_snapshot_requires_reload_and_keeps_external_mode ... ok
+test properties_job::tests::linux::successful_apply_updates_observation_for_subsequent_own_edit ... ok
+test properties_job::tests::linux::replaced_inode_returns_old_snapshot_without_altering_replacement ... ok
+test properties_dialog::tests::batch_navigation_header_fits_minimum_width_without_changing_permission_focus ... ok
+test map_actions::tests::queued_copy_allows_another_review_but_blocks_rename_and_properties ... ok
+test properties_dialog::tests::raw_paths_are_complete_cached_and_minimum_permission_targets_do_not_overlap ... ok
+test properties_ui::batch_tests::batch_properties_rejects_invalid_whole_requests_before_allocating_or_opening ... ok
+test properties_worker_tests::property_reads_and_failed_changes_preserve_history_but_confirmed_chmod_clears_it ... ok
+test properties_ui::batch_tests::root_observation_is_read_only_and_allows_browsing_to_an_owned_batch_object ... ok
+test properties_ui::batch_tests::batch_properties_reads_each_object_without_navigation_and_preserves_edits ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 834 filtered out; finished in 0.06s
+

@@ -1,0 +1,15 @@
+    Checking files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+error[E0502]: cannot borrow `*m` as immutable because it is also borrowed as mutable
+   --> crates/ui/src/context_menu.rs:633:25
+    |
+626 |             let Some(column) = m.columns.columns.iter_mut().find(|c| c.id == id) else {
+    |                                ----------------- mutable borrow occurs here
+...
+633 |                 .filter(|e| crate::columns::accepts(e, m.hidden_visible(), &column.data.query))
+    |                         ^^^                            -                    ----------------- mutable borrow later captured here by closure
+    |                         |                              |
+    |                         |                              second borrow occurs due to use of `*m` in closure
+    |                         immutable borrow occurs here
+
+For more information about this error, try `rustc --explain E0502`.
+error: could not compile `files-ui` (lib) due to 1 previous error

@@ -1,0 +1,7 @@
+FILES_FONT=JetBrainsMono Nerd Font nerd=true
+Mostrar en carpeta: FileManager1 is already owned by another application
+FILES_FILE_MANAGER_STATUS unavailable: FileManager1 is already owned by another application
+FILES_CLOSE_WAIT saves_ready=false mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false
+FILES_CLOSE_WAIT saves_ready=true mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false
+FILES_CLOSE_DRAINED
+FILES_FAILURE_DRAINED mutations=true copy=true preview=true thumbnails=true readonly_pending=false du=true space=true preview_exit_allowed=true preview_readonly_pending=false

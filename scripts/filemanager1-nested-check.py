@@ -230,10 +230,17 @@ def main():
         assert len(window) == 1
         address = window[0]['address']
         if args.size == '1000x650':
-            for dispatch in (['togglefloating', 'address:' + address],
-                             ['resizewindowpixel', 'exact 1000 650,address:' + address]):
-                result = harness.hypr(['dispatch', *dispatch], nested).strip()
-                assert result.lower() == 'ok', (dispatch, result)
+            target = 'address:' + address
+            quoted = json.dumps(target)
+            for legacy, lua in (
+                (['setfloating', target], f'hl.dsp.window.float({{action="on", window={quoted}}})'),
+                (['resizewindowpixel', f'exact 1000 650,{target}'],
+                 f'hl.dsp.window.resize({{x=1000, y=650, relative=false, window={quoted}}})'),
+            ):
+                result = harness.hypr(['dispatch', lua], nested).strip()
+                if result.lower() != 'ok':
+                    result = harness.hypr(['dispatch', *legacy], nested).strip()
+                assert result.lower() == 'ok', (legacy, result)
             wait(lambda: clients(process.pid) and clients(process.pid)[0]['size'] == [1000, 650], 'window geometry')
         report['window_size'] = clients(process.pid)[0]['size']
         first = settled('same-parent', lambda s: set(s.get('selection_raw', [])) == {name_hex(p) for p in fixtures[:2]})

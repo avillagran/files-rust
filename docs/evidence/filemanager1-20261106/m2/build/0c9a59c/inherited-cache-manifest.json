@@ -1,0 +1,37 @@
+{
+  "from": "/home/avillagran/.cache/files-m2-updates/keyed-e47cf81/source/target",
+  "preserved_fltk": [
+    {
+      "from": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/build/fltk-sys-02c567f0211f4d66",
+      "preserved_at": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/inherited-fltk-cache/build/fltk-sys-02c567f0211f4d66"
+    },
+    {
+      "from": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/build/fltk-sys-8f560fc71503f2ac",
+      "preserved_at": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/inherited-fltk-cache/build/fltk-sys-8f560fc71503f2ac"
+    },
+    {
+      "from": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/build/fltk-sys-d52782e831d51884",
+      "preserved_at": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/inherited-fltk-cache/build/fltk-sys-d52782e831d51884"
+    },
+    {
+      "from": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/.fingerprint/fltk-sys-02c567f0211f4d66",
+      "preserved_at": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/inherited-fltk-cache/.fingerprint/fltk-sys-02c567f0211f4d66"
+    },
+    {
+      "from": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/.fingerprint/fltk-sys-8f560fc71503f2ac",
+      "preserved_at": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/inherited-fltk-cache/.fingerprint/fltk-sys-8f560fc71503f2ac"
+    },
+    {
+      "from": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/.fingerprint/fltk-sys-93ceacc90b0f9e8a",
+      "preserved_at": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/inherited-fltk-cache/.fingerprint/fltk-sys-93ceacc90b0f9e8a"
+    },
+    {
+      "from": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/.fingerprint/fltk-sys-ad0e9fb117da5276",
+      "preserved_at": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/inherited-fltk-cache/.fingerprint/fltk-sys-ad0e9fb117da5276"
+    },
+    {
+      "from": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/.fingerprint/fltk-sys-d52782e831d51884",
+      "preserved_at": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/inherited-fltk-cache/.fingerprint/fltk-sys-d52782e831d51884"
+    }
+  ]
+}

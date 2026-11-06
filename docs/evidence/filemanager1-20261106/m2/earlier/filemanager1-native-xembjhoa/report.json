@@ -1,0 +1,109 @@
+{
+  "functional_gate": "FAIL",
+  "binary": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/files",
+  "checks": [
+    "invalid URI, overload, interface and signature produce no window"
+  ],
+  "states": [],
+  "fixture_dir": "/home/avillagran/.cache/files-test/filemanager1-native-xembjhoa",
+  "bus_address": "unix:path=/home/avillagran/.cache/files-test/filemanager1-bus-hy_wfg4h/dbus-i6tv4lnosU,guid=f0575c1a2740040d321ddfd86aee5ca7",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "75ea16c6bacc7f24e237e475eac1b6baa7b0396a1039e7de6439710aa9bbb5b1",
+  "helper_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "570278"
+    ]
+  },
+  "calls": [
+    {
+      "method": "org.freedesktop.DBus.GetNameOwner",
+      "args": [
+        "org.freedesktop.FileManager1"
+      ],
+      "code": 0,
+      "stdout": "(':1.1',)\n",
+      "stderr": ""
+    },
+    {
+      "method": "org.freedesktop.DBus.GetConnectionUnixProcessID",
+      "args": [
+        ":1.1"
+      ],
+      "code": 0,
+      "stdout": "(uint32 570513,)\n",
+      "stderr": ""
+    },
+    {
+      "method": "org.freedesktop.FileManager1.ShowItems",
+      "args": [
+        "[\"https://example.invalid/a\"]",
+        ""
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Expected one bounded local file:// URI\n(According to introspection data, you need to pass 'ass')\n"
+    },
+    {
+      "method": "org.freedesktop.FileManager1.ShowItems",
+      "args": [
+        "[\"file://remote-host/path\"]",
+        ""
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Remote file URI authorities are not supported\n(According to introspection data, you need to pass 'ass')\n"
+    },
+    {
+      "method": "org.freedesktop.FileManager1.ShowItems",
+      "args": [
+        "[\"file:///bad%XX\"]",
+        ""
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Expected one bounded local file:// URI\n(According to introspection data, you need to pass 'ass')\n"
+    },
+    {
+      "method": "org.freedesktop.FileManager1.ShowItems",
+      "args": [
+        "[\"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\"]",
+        ""
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: GDBus.Error:org.freedesktop.DBus.Error.LimitsExceeded: FileManager1 request exceeds URI or text limits\n"
+    },
+    {
+      "method": "org.example.Invalid.ShowItems",
+      "args": [
+        "[]",
+        ""
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Unknown FileManager1 method\n"
+    },
+    {
+      "method": "org.freedesktop.FileManager1.ShowItems",
+      "args": [
+        "[\"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/first.txt\", \"file:///home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/home/A/second.txt\"]",
+        ""
+      ],
+      "code": 0,
+      "stdout": "()\n",
+      "stderr": ""
+    }
+  ],
+  "bad_signature": {
+    "code": 1,
+    "stdout": "",
+    "stderr": "Error org.freedesktop.DBus.Error.InvalidArgs: Expected URI string array and startup ID, without file descriptors\n"
+  },
+  "error": "AssertionError((['togglefloating', 'address:0xaaab7a4aacb0'], 'error: 3 [string \"return hl.dispatch(togglefloating address:0xa...\"]:1: \\')\\' expected near \\'address\\'\\n\\n \u2192 Note: dispatch in lua is a shorthand for hl.dispatch(...), your syntax might need to be updated.'))",
+  "nested_stopped": true
+}

@@ -1,0 +1,14 @@
+{
+  "cause": "new model fixture used real AuxIo persistence",
+  "changed_field": "show_hidden",
+  "restored_value": false,
+  "previous_default_evidence": "full workspace passed before new toggling fixture; failures then showed hidden rows",
+  "before_sha256": "558476fec0b7cd6d6d6e5dc3e2d1747e5721d55078db0b35c8265241e7e0cd8b",
+  "restored_sha256": "36383052a1f04ccb6fe5f122e2e67f03fb87aeaf9fe93e9581ff4f31e6d8fe9e",
+  "backup": "/home/node/.cache/files-test/filemanager-config-incident-pktx0940/config-before-restore.toml",
+  "final_restoration": "prior config directory absent; moved only two test-created files and their directory to incident backup",
+  "prior_snapshot": "/mnt/avd/@devbackup/snapshots/2026-11-06_1904/home/.config/files (absent)",
+  "directory_birth": "2026-11-06 19:48:59 -0300, same as test PID3371748 temporary file",
+  "retained_test_directory": "/home/node/.cache/files-test/filemanager-config-incident-pktx0940/test-created-config-directory",
+  "live_config_directory_absent": true
+}

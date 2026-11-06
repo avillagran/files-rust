@@ -1,0 +1,76 @@
+{
+  "source_checkpoint": "cbc83a919d78cee9b92159b6e0836118db541950",
+  "harness_overlay": "8107d365c9b2ebac9c6602327c16f93e796504d7",
+  "architecture": "aarch64",
+  "command": [
+    "cargo",
+    "build",
+    "--locked",
+    "--release",
+    "-p",
+    "files-app",
+    "-p",
+    "files-helper",
+    "-j",
+    "2"
+  ],
+  "started_unix": 1794006068.7627246,
+  "environment": {
+    "TMPDIR": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/private/tmp",
+    "FILES_CONFIG_DIR": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/private/config",
+    "XDG_DATA_HOME": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/private/data",
+    "XDG_CONFIG_HOME": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/private/config",
+    "XDG_RUNTIME_DIR": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/private/runtime",
+    "CARGO_BUILD_JOBS": "2",
+    "CMAKE_BUILD_PARALLEL_LEVEL": "2",
+    "NUM_JOBS": "2",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "finished_unix": 1794006139.1733325,
+  "exit_code": 0,
+  "artifacts": [
+    {
+      "name": "files",
+      "path": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/files",
+      "sha256": "75ea16c6bacc7f24e237e475eac1b6baa7b0396a1039e7de6439710aa9bbb5b1",
+      "bytes": 9061728,
+      "file": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/files: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 3.7.0, BuildID[sha1]=87a7c917fc96ba5b64607126fc9061fda3266083, stripped"
+    },
+    {
+      "name": "files-helper",
+      "path": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/files-helper",
+      "sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+      "bytes": 2026808,
+      "file": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/files-helper: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 3.7.0, BuildID[sha1]=e9556d580d13005df483f1044e7ab115d50bfad9, stripped"
+    },
+    {
+      "name": "files-html-helper",
+      "path": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/files-html-helper",
+      "sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "bytes": 2239568,
+      "file": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/files-html-helper: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=bef9f2f6e1e8fd32028cacf71fe187e5ba293c59, for GNU/Linux 3.7.0, not stripped"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "path": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/files-html-helper.LICENSES",
+      "sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "bytes": 1193
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "path": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release/files-html-helper.build.json",
+      "sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "bytes": 1118
+    }
+  ],
+  "source_provenance": {
+    "base_checkpoint": "0c9a59cdbd7e98710e8599b68b565121c1b168f1",
+    "base_archive_sha256": "bd9c0f441a31a77d7e73ca230d68ee10a10878a6afc5366524a1c36293969134",
+    "harness_overlay_checkpoint": "8107d365c9b2ebac9c6602327c16f93e796504d7",
+    "harness_overlay_file_sha256": "9a43cccd1ce39a735e48c8837203bfdf81e76dec52b7cda12169dd8bc1d55f0d",
+    "fix_overlay_checkpoint": "cbc83a919d78cee9b92159b6e0836118db541950",
+    "fix_overlay_archive_sha256": "44f7b5904bd76e730a2efd57199e225bcea92064cc1cfbc4713f60efb03554ed",
+    "projected_source_files_verified": 943,
+    "active_source_manifest": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source-manifest-cbc83a9.json"
+  }
+}

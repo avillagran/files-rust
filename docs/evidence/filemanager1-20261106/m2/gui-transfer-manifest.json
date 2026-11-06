@@ -1,0 +1,490 @@
+{
+  "files": [
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-heyl53ob/duplicate.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-heyl53ob/duplicate.txt",
+      "bytes": 692,
+      "sha256": "ff71a36eb6e59c6e01178e51b96c46e7a71e2fcd2a13f59eae9e69ee61fb05e1"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-heyl53ob/multiple-properties.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-heyl53ob/multiple-properties.png",
+      "bytes": 48701,
+      "sha256": "cd26160fdf85b3a1306f8e59e183ae7ad213699635a9a80dcfdfc722c47e51fc"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-heyl53ob/multiple-selection.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-heyl53ob/multiple-selection.png",
+      "bytes": 36747,
+      "sha256": "9c9340ce9e5cfd77f10dc685d06072fe156bcd92108aebf496d92b35e0ee7e31"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-heyl53ob/nested.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-heyl53ob/nested.txt",
+      "bytes": 3171,
+      "sha256": "a5425b9c41386464511a67c9e6fd371f6ec04d6d87eb37536eef56119c42dde2"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-heyl53ob/properties.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-heyl53ob/properties.txt",
+      "bytes": 3032,
+      "sha256": "8156d09ea5de7c33b51e9e4ae902231868cbe80552b1e5bd0abda120fa1d8f90"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-heyl53ob/report.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-heyl53ob/report.json",
+      "bytes": 74367,
+      "sha256": "420ebdfe58e89f45dbcdb5366aeee92cb68b3dd9d64e0bcd94297a8229463f72"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-heyl53ob/select.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-heyl53ob/select.txt",
+      "bytes": 1444,
+      "sha256": "3f4dc007955f9463074f18f0db29884bb7ff49cf3c4903ca9cb1b82244dcf7dc"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-heyl53ob/service.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-heyl53ob/service.txt",
+      "bytes": 31409,
+      "sha256": "e603cd9a034f0a7954fab3191eb4d732982f2ceebed4003478246e508fd7cfed"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-heyl53ob/show-folders.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-heyl53ob/show-folders.txt",
+      "bytes": 1456,
+      "sha256": "f1479f2c6e22a642debb1ec6f6c02ae6dddd71feb2aced93dde5814aa6931e94"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-6qok08ap/duplicate.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-6qok08ap/duplicate.txt",
+      "bytes": 692,
+      "sha256": "ff71a36eb6e59c6e01178e51b96c46e7a71e2fcd2a13f59eae9e69ee61fb05e1"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-6qok08ap/multiple-properties.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-6qok08ap/multiple-properties.png",
+      "bytes": 48997,
+      "sha256": "f0c903ee9848368777f07e37eeabae324e680d6fdb05c9156a5e9188a003d33b"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-6qok08ap/multiple-selection.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-6qok08ap/multiple-selection.png",
+      "bytes": 36747,
+      "sha256": "56b1e6ae484eacc5f42ef2daa7093bcde7ac674baa3cc0060bc25e91396dbb37"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-6qok08ap/nested.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-6qok08ap/nested.txt",
+      "bytes": 3172,
+      "sha256": "b8e789778e3cb04904e123f3341ade90814505ad1fd1847b506ea04ad40740df"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-6qok08ap/properties.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-6qok08ap/properties.txt",
+      "bytes": 3029,
+      "sha256": "df7dd6c0437d5c3cdcceb14360da508bbd44922496f7ef689988d142db60b7a6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-6qok08ap/report.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-6qok08ap/report.json",
+      "bytes": 75495,
+      "sha256": "4078f22abdd13e5221d3301aa169c981059aacc6e840980de824a98d31324914"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-6qok08ap/select.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-6qok08ap/select.txt",
+      "bytes": 1444,
+      "sha256": "b326d1115b228f96066a4c8f5b2cc9e710b54bfd5c69cd5376e99722e2d20fbc"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-6qok08ap/service.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-6qok08ap/service.txt",
+      "bytes": 32293,
+      "sha256": "23c4ae659f0c9071ba371f46ae163ad26b57d86e949f951bb1704488e47c458a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-6qok08ap/show-folders.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/filemanager1-native-6qok08ap/show-folders.txt",
+      "bytes": 1456,
+      "sha256": "d09a2365a6b97cefb4a1f426e64e5a576e8fc23c4f7aeb52324e31e4fce40037"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-3intmkje/app.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/keyed-tabs-native-3intmkje/app.txt",
+      "bytes": 101002,
+      "sha256": "f043aa4a7e02424631146ec22242568ab27bc3ec76672086a25c9a69fdd62b88"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-3intmkje/nested.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/keyed-tabs-native-3intmkje/nested.txt",
+      "bytes": 25917,
+      "sha256": "1db253bb3a58c6c187191c99b5dc8ae3bfc182b8ae708d4aaa262e050fa021c0"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-3intmkje/report.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/keyed-tabs-native-3intmkje/report.json",
+      "bytes": 202390,
+      "sha256": "eaf6bf647c3e625965be09ece4d1823ced01c1df95c5ba1746d361fd30f8ee8e"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-3intmkje/right-body_rect.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/keyed-tabs-native-3intmkje/right-body_rect.png",
+      "bytes": 27734,
+      "sha256": "8bc7e0f47a92efeb74854e9193bb88d598f5dc5ee19a76ecdbd940950a7d8347"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-3intmkje/right-close_rect.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/keyed-tabs-native-3intmkje/right-close_rect.png",
+      "bytes": 28113,
+      "sha256": "288db0a8345ab6f3071251165e10f44deb21eb8b4b983f4f8f4cd37a3cc7438f"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-3intmkje/seeded.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/keyed-tabs-native-3intmkje/seeded.png",
+      "bytes": 22537,
+      "sha256": "5d0421ec523671a92a12b483181d88e317294fa099675126d2253831d68e6f79"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-lfexyzw1/duplicate.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/filemanager1-native-lfexyzw1/duplicate.txt",
+      "bytes": 692,
+      "sha256": "ff71a36eb6e59c6e01178e51b96c46e7a71e2fcd2a13f59eae9e69ee61fb05e1"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-lfexyzw1/multiple-properties.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/filemanager1-native-lfexyzw1/multiple-properties.png",
+      "bytes": 48808,
+      "sha256": "f8096dc42acf428a515ed2250bd98e243859c9f67c99ec4d35f2c193c078b575"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-lfexyzw1/multiple-selection.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/filemanager1-native-lfexyzw1/multiple-selection.png",
+      "bytes": 36747,
+      "sha256": "9005bba67436667a5aac7669afe6067d8d6ad715bfee8479a7d7f8255ee9e148"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-lfexyzw1/nested.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/filemanager1-native-lfexyzw1/nested.txt",
+      "bytes": 3173,
+      "sha256": "3b991aeb94403a13938fd3002c296c3a1d8472dd9a555627b171d6c2ff8ce6cf"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-lfexyzw1/properties.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/filemanager1-native-lfexyzw1/properties.txt",
+      "bytes": 3038,
+      "sha256": "27043c3107aebedd1c3a7a80ba67551b6f9e43ff69e04cf8cdf41aa5c9579193"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-lfexyzw1/report.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/filemanager1-native-lfexyzw1/report.json",
+      "bytes": 75485,
+      "sha256": "f6b593a47aa6afd8bda2f7bcb0cb7776daa8b3e62cb24fae7702ed095c5f4d5e"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-lfexyzw1/select.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/filemanager1-native-lfexyzw1/select.txt",
+      "bytes": 1444,
+      "sha256": "22316ba6a81cca77015b269a96305117f32916db81d3f809137a0db098c9af22"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-lfexyzw1/service.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/filemanager1-native-lfexyzw1/service.txt",
+      "bytes": 32329,
+      "sha256": "778306173eee2a059d640401b721e567bc8afd4d72d0af587ce539d4055df263"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-lfexyzw1/show-folders.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/filemanager1-native-lfexyzw1/show-folders.txt",
+      "bytes": 1456,
+      "sha256": "83dc34a67c58b9abd87e25d81403ad2418403a473748d4ddbf6d36eb83c328ce"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-8nfqakic/app.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/keyed-tabs-native-8nfqakic/app.txt",
+      "bytes": 101072,
+      "sha256": "6a01ab67fb90621e78ef9510aaf90ea0b790f576768d57963b2b951b2503b3ca"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-8nfqakic/nested.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/keyed-tabs-native-8nfqakic/nested.txt",
+      "bytes": 25916,
+      "sha256": "bdfad8c1b2347ae9d652b05313f78dc1779eac202e075cd17c54542976bca238"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-8nfqakic/report.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/keyed-tabs-native-8nfqakic/report.json",
+      "bytes": 202426,
+      "sha256": "88309fad555b8a1f83d8d0bdda7660ff0db1f351b635f8df3015a998732b59d0"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-8nfqakic/right-body_rect.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/keyed-tabs-native-8nfqakic/right-body_rect.png",
+      "bytes": 27734,
+      "sha256": "ac7de8bdebd3453a038c703b5689d0ecd0b5f1fbe1cefda3cdd781b7070e71b3"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-8nfqakic/right-close_rect.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/keyed-tabs-native-8nfqakic/right-close_rect.png",
+      "bytes": 28113,
+      "sha256": "6dc5431639b1508c53ad78c5b005c21f695647eb717f3a65b835166205b387c4"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-8nfqakic/seeded.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/keyed-tabs-native-8nfqakic/seeded.png",
+      "bytes": 22537,
+      "sha256": "48a0e30276415dcbf0354dc784c9c6ec1ce9a0bc9f2609cb827e9d019cc0c4a2"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/nested.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/earlier/filemanager1-native-xembjhoa/nested.txt",
+      "bytes": 3173,
+      "sha256": "248325aebb26091f2e25fc9e835a52ccd54d45559fad38585748d5bd868f2d91"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/report.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/earlier/filemanager1-native-xembjhoa/report.json",
+      "bytes": 6907,
+      "sha256": "bab01984af7de8c41e3b4a8b28ac87f8ffeedf3aedbe51628345159b1fe3ba23"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-xembjhoa/service.log",
+      "destination": "docs/evidence/filemanager1-20261106/m2/earlier/filemanager1-native-xembjhoa/service.txt",
+      "bytes": 199,
+      "sha256": "7b8538ff8dbc3bb1080a85335f312d16413698df1a987151368f6222b39ce0b4"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/keyboard-nav-ui-1794006261315371494.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/keyboard-nav-ui-1794006261315371494.json",
+      "bytes": 2914288,
+      "sha256": "d3e039dd50d313250cfe65b0821dabc003f75597ceb8fbeb8a1c787e5168d257"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/groups-visual-last-and-reveal-1794006257010157648.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/groups-visual-last-and-reveal-1794006257010157648.png",
+      "bytes": 60897,
+      "sha256": "d356617d7825d6a849890c08943ce0534ac6a3b46e54ff622e2bce25e5ccd5eb"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/treemap-additive-range-and-reveal-1794006260940778013.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/treemap-additive-range-and-reveal-1794006260940778013.png",
+      "bytes": 37732,
+      "sha256": "394ee065a94ca1d853b3019a8d390369ce66a5c6b944ec34856a963a2df307b1"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/treemap-additive-range-retains-distant-mark-1794006261162974339.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/treemap-additive-range-retains-distant-mark-1794006261162974339.png",
+      "bytes": 38791,
+      "sha256": "4139876caba31922e7d5cbeb6b39f890771c3753affdbb338f2fbe7f43e65fbf"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/list-page-range-1794006256408041982.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/list-page-range-1794006256408041982.png",
+      "bytes": 55753,
+      "sha256": "4d5837e1aa2e64e6617b7a61c01b785d35dcd992cd1a7437b3ef948d266148be"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/groups-visual-range-1794006257093655260.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/groups-visual-range-1794006257093655260.png",
+      "bytes": 45299,
+      "sha256": "de15eca4f7f9df299b1183e9fc6b464a3ed2ffb60fe4568c6ab428db5d2e0ad8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/keyboard-range-copy-review-1794006256601253834.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/keyboard-range-copy-review-1794006256601253834.png",
+      "bytes": 47474,
+      "sha256": "03901e7cfbafaf4337f9e8594100ee22f5b3578423e95c0eb9da550e9e1ccaef"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/columns-keyboard-range-1794006258585648068.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/columns-keyboard-range-1794006258585648068.png",
+      "bytes": 47792,
+      "sha256": "a5853ab8dfd482be6dbe83d5ed2486b53a7da97ce312b70d0333c8fbc762245b"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/dual-focused-end-small-window-1794006260688997044.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/dual-focused-end-small-window-1794006260688997044.png",
+      "bytes": 31896,
+      "sha256": "743507a4e73997bd711a46eb48f829f5993abe674e8d6c427a78ee298de87a10"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/list-end-range-1794006256127356290.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/list-end-range-1794006256127356290.png",
+      "bytes": 58727,
+      "sha256": "b3882f06fc9930916dfbd0e9f65b2fc657313568e52bb8c14a814259a2f3c32f"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/grid-independent-focus-1794006259782504696.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/grid-independent-focus-1794006259782504696.png",
+      "bytes": 39606,
+      "sha256": "eaa77f9920bd5a5371e854b235aade5effbc65804c3daede2b0e5ec2d8852fec"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/keyboard-nav/ctrl-focus-and-additive-range-1794006256255479119.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/keyboard-nav/ctrl-focus-and-additive-range-1794006256255479119.png",
+      "bytes": 46751,
+      "sha256": "855cf2c7a03258860e44fc81dbe0d23bf51c10ef7f2da533101823c84199fb38"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794006248482741612.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/tab-strip-motion-ui-1794006248482741612.json",
+      "bytes": 11720,
+      "sha256": "6cc0c2f4e0530b91675572b9664bfe4a42604b5b391ef30c7a90fc595a0b579c"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794006248482741612.txt",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/0.0.4/tab-strip-motion-ui-1794006248482741612.txt",
+      "bytes": 10831,
+      "sha256": "fbb7767964f309d6c5cec927ed2379df4f36094a5086188756eced25c82febcc"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006248482741612-shots/reverse-48.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794006248482741612-shots/reverse-48.png",
+      "bytes": 1950863,
+      "sha256": "1e3f978ca8a3cb38d6095e4e1cc8fb8b2f0a33b05f919578ca5b02c3499567ab"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006248482741612-shots/first-settled.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794006248482741612-shots/first-settled.png",
+      "bytes": 1950863,
+      "sha256": "dbe377a5763f6d358407f9514e3f46ab3eb435dcb2219dbe216be94c86b538b5"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006248482741612-shots/forward-input.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794006248482741612-shots/forward-input.png",
+      "bytes": 1950863,
+      "sha256": "e0a9315937b8d8257e5e5c5c514584d8b9a91b2fd1cac1e0d31ffc3c253c2a1c"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006248482741612-shots/disabled-last.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794006248482741612-shots/disabled-last.png",
+      "bytes": 1950863,
+      "sha256": "cd2707a07d58b23096330bb31ee001fb5fc71f38b4a03baf16e4e23facfcf964"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006248482741612-shots/forward-64.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794006248482741612-shots/forward-64.png",
+      "bytes": 1950863,
+      "sha256": "16319e6a304a52d45579de6d85ab66cf9fd7cfbcd9b926c9df88c2b3e5dd906b"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006248482741612-shots/last-settled.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794006248482741612-shots/last-settled.png",
+      "bytes": 1950863,
+      "sha256": "cd2707a07d58b23096330bb31ee001fb5fc71f38b4a03baf16e4e23facfcf964"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006248482741612-shots/reversed-input.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794006248482741612-shots/reversed-input.png",
+      "bytes": 1950863,
+      "sha256": "6cda5ff9306b764f6d00d3ad06df7585e4cab0aa954297c58a5af0b6a67956b6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006248482741612-shots/reversed-settled.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794006248482741612-shots/reversed-settled.png",
+      "bytes": 1950863,
+      "sha256": "cd2707a07d58b23096330bb31ee001fb5fc71f38b4a03baf16e4e23facfcf964"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/sidebar-drop-20261105/arm-cbc-1794006285928872205.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/arm-cbc-1794006285928872205.json",
+      "bytes": 4099,
+      "sha256": "a7c89c5393986cbac3ad09b7d403b69f24c1b0560bd8d1aebc7bf1b3163c0473"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/sidebar-drop-20261105/arm-cbc-source-after-drag-1794006293743527732.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/sidebar-drop-20261105/arm-cbc-source-after-drag-1794006293743527732.png",
+      "bytes": 24179,
+      "sha256": "a1a6079652dbc80ffd4cc70a1fead7f4a7c412cea8ce18271feea7126d0cdc83"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/sidebar-drop-20261105/arm-cbc-target-before-1794006289391310938.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/sidebar-drop-20261105/arm-cbc-target-before-1794006289391310938.png",
+      "bytes": 14125,
+      "sha256": "a41b3b4fb59e3b50f55e8173c279a466e71dd2d2f2cc740d0466529e9dc2d373"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/sidebar-drop-20261105/arm-cbc-target-review-1794006293914516893.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/sidebar-drop-20261105/arm-cbc-target-review-1794006293914516893.png",
+      "bytes": 29017,
+      "sha256": "77be70193f91766c462347d64f40f6aeb28d8fe1b673dda73b6cc7eeaa8c848e"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/preview-copy-20261105/arm-cbc-1794006266546517534.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/arm-cbc-1794006266546517534.json",
+      "bytes": 1705,
+      "sha256": "73c24d803682257203622774745bb20fa1fa0862f363a5c2568fd70dcd813526"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/preview-copy-20261105/arm-cbc-empty-selection-notice-1794006272410499183.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/preview-copy-20261105/arm-cbc-empty-selection-notice-1794006272410499183.png",
+      "bytes": 22153,
+      "sha256": "a452a6c0a3da58d30f757d57095555d9bc2d8006459abf47e0ca7b53e49ba7f8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/preview-copy-20261105/arm-cbc-copied-notice-1794006276873412091.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/source/captures/preview-copy-20261105/arm-cbc-copied-notice-1794006276873412091.png",
+      "bytes": 22264,
+      "sha256": "ee7d288e7b6d36978b31a355ce71a108721bcc9b70147674469b218e323f5de7"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794006353504697998.json",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/tab-strip-motion-ui-1794006353504697998.json",
+      "bytes": 11665,
+      "sha256": "4bb353a248804041af173196c7caa933f827f63597950f169b29819fae818160"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006353504697998-shots/disabled-last.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794006353504697998-shots/disabled-last.png",
+      "bytes": 1950863,
+      "sha256": "355f6e179c3a129b71656ff7d7bacfab6f150d8437ec2c0659d1365cf9c806bb"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006353504697998-shots/reverse-48.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794006353504697998-shots/reverse-48.png",
+      "bytes": 1950863,
+      "sha256": "3244e9c756105da220f6a32180815ddfc9b70ba6e83f8fdb9d3cadf587518184"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794006353504697998.txt",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/captures/0.0.4/tab-strip-motion-ui-1794006353504697998.txt",
+      "bytes": 9823,
+      "sha256": "59db7248a402f3404fc7e93d996f867be5f4e9808ee5900355251db638f2177d"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006353504697998-shots/first-settled.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794006353504697998-shots/first-settled.png",
+      "bytes": 1950863,
+      "sha256": "9e3bb8727d4e3b9bc2eeb58457b5f96382f1a9c69bdb1329ea063d010f6f4c69"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006353504697998-shots/forward-64.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794006353504697998-shots/forward-64.png",
+      "bytes": 1950863,
+      "sha256": "56c4d2aeb6974c8e1c07001b0488048c5bb49183114cc73dfbf27841d5b623c7"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006353504697998-shots/reversed-settled.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794006353504697998-shots/reversed-settled.png",
+      "bytes": 1950863,
+      "sha256": "355f6e179c3a129b71656ff7d7bacfab6f150d8437ec2c0659d1365cf9c806bb"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006353504697998-shots/reversed-input.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794006353504697998-shots/reversed-input.png",
+      "bytes": 1950863,
+      "sha256": "aafea28e15640380a513b7e4869517d9b4d17d041c1379403526d518ebe05ed9"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006353504697998-shots/forward-input.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794006353504697998-shots/forward-input.png",
+      "bytes": 1950863,
+      "sha256": "05a591ef881534f280b2fd8167b7033a37a1df0a0520e817bad9131ba029f5e3"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/docs/evidence/0.0.4/tab-strip-motion-1794006353504697998-shots/last-settled.png",
+      "destination": "docs/evidence/filemanager1-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794006353504697998-shots/last-settled.png",
+      "bytes": 1950863,
+      "sha256": "355f6e179c3a129b71656ff7d7bacfab6f150d8437ec2c0659d1365cf9c806bb"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "functional_gate": "FAIL",
+  "binary": "/home/node/Work/files/target/release/files",
+  "checks": [
+    "invalid URI, overload, interface and signature produce no window"
+  ],
+  "states": [],
+  "fixture_dir": "/home/node/.cache/files-test/filemanager1-native-2lairtg9",
+  "bus_address": "unix:path=/home/node/.cache/files-test/filemanager1-bus-i95u3s5i/dbus-GLYN0YfBXX,guid=7582598d2c3ff0deef9b51056aee5a80",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "2a9009a31f2e8aee8c5885ef36e528e4132c3bd83322b624f58715bf6e4fedf4",
+  "helper_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "3460995"
+    ]
+  },
+  "calls": [
+    {
+      "method": "org.freedesktop.DBus.GetNameOwner",
+      "args": [
+        "org.freedesktop.FileManager1"
+      ],
+      "code": 0,
+      "stdout": "(':1.1',)\n",
+      "stderr": ""
+    },
+    {
+      "method": "org.freedesktop.DBus.GetConnectionUnixProcessID",
+      "args": [
+        ":1.1"
+      ],
+      "code": 0,
+      "stdout": "(uint32 3461063,)\n",
+      "stderr": ""
+    },
+    {
+      "method": "org.freedesktop.FileManager1.ShowItems",
+      "args": [
+        "[\"https://example.invalid/a\"]",
+        ""
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Expected one bounded local file:// URI\n(According to introspection data, you need to pass 'ass')\n"
+    },
+    {
+      "method": "org.freedesktop.FileManager1.ShowItems",
+      "args": [
+        "[\"file://remote-host/path\"]",
+        ""
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Remote file URI authorities are not supported\n(According to introspection data, you need to pass 'ass')\n"
+    },
+    {
+      "method": "org.freedesktop.FileManager1.ShowItems",
+      "args": [
+        "[\"file:///bad%XX\"]",
+        ""
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Expected one bounded local file:// URI\n(According to introspection data, you need to pass 'ass')\n"
+    },
+    {
+      "method": "org.freedesktop.FileManager1.ShowItems",
+      "args": [
+        "[\"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\"]",
+        ""
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: GDBus.Error:org.freedesktop.DBus.Error.LimitsExceeded: FileManager1 request exceeds URI or text limits\n"
+    },
+    {
+      "method": "org.example.Invalid.ShowItems",
+      "args": [
+        "[]",
+        ""
+      ],
+      "code": 1,
+      "stdout": "",
+      "stderr": "Error: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: Unknown FileManager1 method\n"
+    },
+    {
+      "method": "org.freedesktop.FileManager1.ShowItems",
+      "args": [
+        "[\"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/first.txt\", \"file:///home/node/.cache/files-test/filemanager1-native-2lairtg9/home/A/second.txt\"]",
+        ""
+      ],
+      "code": 0,
+      "stdout": "()\n",
+      "stderr": ""
+    }
+  ],
+  "bad_signature": {
+    "code": 1,
+    "stdout": "",
+    "stderr": "Error org.freedesktop.DBus.Error.InvalidArgs: Expected URI string array and startup ID, without file descriptors\n"
+  },
+  "error": "AssertionError('window geometry')",
+  "nested_stopped": true
+}

@@ -1,0 +1,23 @@
+{
+  "source_base_checkpoint": "0c9a59cdbd7e98710e8599b68b565121c1b168f1",
+  "harness_overlay_checkpoint": "8107d365c9b2ebac9c6602327c16f93e796504d7",
+  "source_checkpoint": "cbc83a919d78cee9b92159b6e0836118db541950",
+  "archive_sha256": "44f7b5904bd76e730a2efd57199e225bcea92064cc1cfbc4713f60efb03554ed",
+  "files": [
+    {
+      "path": "crates/ui/src/file_manager_ui.rs",
+      "sha256": "edbaa6fa0dbcff8718efa645789eba432867965c3ac2a0441d6cc591148a62bb",
+      "bytes": 24406
+    },
+    {
+      "path": "crates/ui/src/model.rs",
+      "sha256": "2c858ec4ba535d8f2eec563b5a2396aa2392167ee91de3297964ad4929c0a376",
+      "bytes": 126743
+    },
+    {
+      "path": "docs/FILEMANAGER1.md",
+      "sha256": "9d683543a039b1c751dc4e484bb138afd6eb27f07b478ee009cf81a021bbae5e",
+      "bytes": 8291
+    }
+  ]
+}

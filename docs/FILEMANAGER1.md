@@ -157,3 +157,25 @@ handling and native macOS/Windows acceptance remain open. Functional evidence
 for each delivery is recorded separately; this implementation does not close
 the project's `NOT_MEASURED` resource/startup gates or establish complete
 Nautilus/Finder parity.
+
+
+## Validated installation — 2026-11-06
+
+Source checkpoints `0c9a59c` and `cbc83a9`, with the private native driver
+introduced in `8107d36`, passed 1,710 workspace tests (730 core, 113 helper,
+867 UI; 3 ignored), Clippy, formatting and native release builds. NODE and
+native ARM M2 each passed six source acceptance scopes: FileManager1/CLI,
+keyed tabs, rendered motion, keyboard selection, preview copying and real
+reviewed Sidebar transfers. Installed FileManager1, tabs and motion checks
+also passed on both machines.
+
+| Machine | Installed app SHA-256 |
+|---|---|
+| NODE x86_64 | `95600f0976a77c4aecd007807291fe5cceea2811bec2a0b92b920b93b2f1d17e` |
+| M2 native ARM Linux | `75ea16c6bacc7f24e237e475eac1b6baa7b0396a1039e7de6439710aa9bbb5b1` |
+
+All five installed artifacts and their backups were hashed. Each unchanged
+native HTML helper was reused after recipe verification. No default service
+activation or folder association was registered. Reports, screenshots,
+intermediate failures, the watch-race correction and the resolved test
+persistence incident are in [the evidence bundle](evidence/filemanager1-20261106/README.md).

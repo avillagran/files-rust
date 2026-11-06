@@ -1,0 +1,15 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.52s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 7 tests
+test file_manager_ui::tests::raw_cli_parent_components_are_preserved_for_kernel_symlink_resolution ... ok
+test file_manager_ui::tests::protected_cli_admission_starts_no_worker_or_bus_owner ... ok
+test file_manager_ui::tests::transient_hidden_reveal_survives_tab_restoration_without_changing_preferences ... ok
+test file_manager_ui::tests::stale_external_owner_or_generation_does_not_replace_current_selection ... ok
+test file_manager_ui::tests::explicit_visibility_or_filter_change_cannot_restore_an_invisible_requested_mark ... ok
+test file_manager_ui::tests::missing_exact_external_name_clears_all_marks_and_never_selects_a_neighbor ... ok
+test file_manager_ui::tests::pending_external_reveal_follows_its_dual_pane_and_rebinds_generation_on_return ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 859 filtered out; finished in 0.03s
+

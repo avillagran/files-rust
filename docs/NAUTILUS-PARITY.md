@@ -8,7 +8,7 @@ help and, from version 49.0, `help-overlay.ui` (shortcuts),
 `nautilus-preferences-dialog.ui` and `freedesktop-dbus-interfaces.xml`.
 The original matrix was checked against code at `6348af9`. The dated
 2026-11-06 reconciliation below updates the entries supported by newer
-code and retained evidence through `e47cf81`; unchanged rows
+code and retained evidence through `cbc83a9`; unchanged rows
 retain their earlier scope and are not a fresh full-parity audit.
 
 States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use.
