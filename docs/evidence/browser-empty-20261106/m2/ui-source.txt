@@ -1,0 +1,2 @@
+{"report": "/home/avillagran/.cache/files-m2-updates/empty-acdc119/source/docs/evidence/0.0.4/empty-state-ui-1794000668385546993.json", "functional_gate": "PASS", "error": null}
+{"nested": {"socket": "wayland-2", "pid": ["3876857"]}, "stopped": true}

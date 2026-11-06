@@ -1,0 +1,32 @@
+{
+  "gate": "PASS",
+  "receipt": "/home/avillagran/.cache/files-m2-updates/empty-acdc119/source/docs/evidence/0.0.4/installed-checkpoint-1794000694195537015.json",
+  "architecture": "/home/avillagran/.local/bin/files: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=af1871bafb106d7432c826487d54bbce5eae6112, for GNU/Linux 3.7.0, stripped",
+  "artifacts": [
+    {
+      "name": "files",
+      "installed_sha256": "b8aa4a481b971bd2c51d570e59ae476ab8e470a14c31ce96823dd93239bf5907",
+      "backup_sha256": "3c419230f12d9506efcf52b4fe3499c955ac27de7597b27d47ceea174b6c538d"
+    },
+    {
+      "name": "files-helper",
+      "installed_sha256": "e5401c541f6ca42ca9eb3415d8277df5c6bfb114835913cbe48d2bd9245b942c",
+      "backup_sha256": "e5401c541f6ca42ca9eb3415d8277df5c6bfb114835913cbe48d2bd9245b942c"
+    },
+    {
+      "name": "files-html-helper",
+      "installed_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "backup_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "installed_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "backup_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b"
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "installed_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "backup_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838"
+    }
+  ]
+}

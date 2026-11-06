@@ -1,0 +1,2 @@
+/home/avillagran/.cache/files-m2-updates/empty-acdc119/source/docs/evidence/keyboard-nav/keyboard-nav-ui-1794000704266712301.json
+{"nested": {"socket": "wayland-2", "pid": ["3882192"]}, "stopped": true}

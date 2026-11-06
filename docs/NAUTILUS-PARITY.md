@@ -277,3 +277,13 @@ Ctrl+Shift+PageUp/PageDown moves the active tab while preserving its browser.
 The application controllers can receive the toolkit keyed strip's future
 callbacks; drag reordering and the widget migration remain pending.
 See [TAB-CONTEXT.md](TAB-CONTEXT.md) for scoped evidence and limitations.
+
+### 2026-11-06 — Pane-owned empty states
+
+`acdc119` removes the global empty-state overlay from dual pane and Columns,
+so an empty active pane no longer paints over a populated neighbor. Each
+surface distinguishes pending loading, an explicit error, a folder with no
+entries and an active filter with no matches. Private scenes verify either
+empty-pane position at normal/minimum sizes and preserved sibling selection
+on NODE and native ARM M2. See
+[BROWSER-EMPTY-STATES.md](BROWSER-EMPTY-STATES.md).

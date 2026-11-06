@@ -23,10 +23,11 @@ mutation guards remain in force. Closed snapshots use the normal reopen
 history.
 
 The model/controller is also the intended endpoint for the toolkit's keyed
-TabBar context and reorder requests. Files does not export uncommitted
-upstream work or duplicate the toolkit's indicator animation while that API
-is being validated. Drag reordering and the native widget migration remain
-open; these menu/keyboard actions are independently usable now.
+TabBar context and reorder requests. Upstream subsequently committed that
+API in `89632dc`; Files has reviewed it and still vendors `0d00f2b` pending
+its separate integration and acceptance. Drag reordering and the native
+widget migration remain open; these menu/keyboard actions are independently
+usable now. The app does not duplicate the toolkit's indicator animation.
 
 ## Verification
 

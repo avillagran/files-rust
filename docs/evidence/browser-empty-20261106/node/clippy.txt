@@ -1,0 +1,4 @@
+    Blocking waiting for file lock on build directory
+    Checking files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Checking files-app v0.0.4 (/home/node/Work/files/crates/app)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 26.79s

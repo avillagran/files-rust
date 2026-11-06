@@ -43,6 +43,11 @@ operation feedback. Adopt toolkit controls where they replace duplicated
 behavior without losing keyboard or mutation safety. Verify narrow windows,
 long names and scaling. Do not add unrelated preview engines.
 
+Empty browser ownership is delivered in `acdc119`: the global fallback no
+longer overlays a populated neighboring pane or duplicates Columns messages.
+Loading, errors, empty folders and no-match filters have distinct scoped
+states. See [BROWSER-EMPTY-STATES.md](BROWSER-EMPTY-STATES.md).
+
 ## 4. Language and accessibility
 
 Use toolkit i18n and accessible descriptions systematically. Language
@@ -79,3 +84,24 @@ right-button safety and pane ownership. Coordinate missing APIs upstream
 before replacing the current strip. Wider keyboard/accessibility acceptance
 and other usability work can proceed independently of the tab-strip API
 request. The app-owned stable-ID controllers are ready for that integration.
+
+## Keyed strip review at 89632dc
+
+Upstream `89632dc` now supplies composite-key tabs, close/context/reorder
+requests, an independent keyboard cursor and authoritative hit geometry.
+Its private native X11 reports establish toolkit behavior; they do not
+validate Files integration, Wayland or M2. Files still vendors `0d00f2b`.
+
+Adopt the committed tree separately, with optional GPU/effects disabled.
+An app adapter should queue requests outside drawing and synchronous State
+notifications, validate pane/generation/key ownership, and restore the app's
+accepted selection after rejected admission. Export hit geometry after
+widget drawing/reveal. Delegate strip auxiliary events past the current
+window interceptor so middle-close is handled once. Preserve the native
+window bridge and existing context/snapshot controllers.
+
+Acceptance must cover right/middle focus preservation, drag and keyboard
+reorder, stale keys, scroll/reveal, cancelled gestures and inactive panes.
+Check native input on NODE/M2 as well as handler/framebuffer scenes. Focus
+router changes require regression coverage for canvas arrows, dual-pane Tab,
+global cycling and dialogs before the widget replaces the current strip.

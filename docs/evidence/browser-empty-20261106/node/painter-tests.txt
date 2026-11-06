@@ -1,0 +1,11 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.45s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 3 tests
+test view::inspector_tabs_tests::empty_columns_message_is_not_repainted_across_populated_columns ... ok
+test view::inspector_tabs_tests::empty_dual_pane_message_stays_inside_its_owner_with_the_other_pane_populated ... ok
+test view::inspector_tabs_tests::empty_listing_messages_distinguish_loading_errors_filters_and_folders ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 837 filtered out; finished in 0.00s
+
