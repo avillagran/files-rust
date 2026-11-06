@@ -26,9 +26,9 @@ checks inclusive/additive SpaceMap ranges against the current contract.
 Background folder tabs and middle-close gestures are delivered in `c52b96b`;
 see [TAB-GESTURES.md](TAB-GESTURES.md). Stable menu/keyboard reordering and
 inactive-tab context actions are delivered in `1c2cdee`; see
-[TAB-CONTEXT.md](TAB-CONTEXT.md). Drag reordering and migration to the toolkit
-strip remain open. The toolkit thread has the stable-key/context/reorder
-requirements and the right-button activation finding.
+[TAB-CONTEXT.md](TAB-CONTEXT.md). The keyed toolkit strip and drag reordering
+are implemented in `a0f1fff`/`e47cf81`; see [KEYED-TABS.md](KEYED-TABS.md).
+Tear-off and broader platform/accessibility acceptance remain open.
 
 Reconcile the existing Nautilus parity matrix with current implementation;
 several entries predate Sidebar, recent files and AccessKit in the toolkit.
@@ -73,35 +73,34 @@ it does not replace the operation, interoperability or platform requirements.
 The upstream review found native dialogs/portal support (`4eef3bd`) and
 retained CPU/GPU scene surfaces (`c3c46ab` through `f02aacc`). These are
 committed upstream capabilities, not adopted Files functionality. The
-vendor remains the verified `0d00f2b` checkpoint during this delivery.
+vendor now includes them through exact `a029d45`, but they are not enabled
+as Files features merely by exporting that source.
 
 Adopt dialogs through explicit user actions and preserve existing path,
 mutation-review and close/cancel contracts. Review scene-backed motion
 separately; do not silently enable GPU/effects or remove resource gates.
-The toolkit TabBar already has an animated indicator, overflow, keyboard
-cycling and middle-close, but migration must preserve stable tab identities,
-right-button safety and pane ownership. Coordinate missing APIs upstream
-before replacing the current strip. Wider keyboard/accessibility acceptance
-and other usability work can proceed independently of the tab-strip API
-request. The app-owned stable-ID controllers are ready for that integration.
+The keyed strip adoption below connects the existing tab controllers rather
+than replacing their snapshot or mutation contracts. Wider accessibility and
+other usability work remains independent of the strip.
 
-## Keyed strip review at 89632dc
+## Keyed strip adoption at a029d45
 
 Upstream `89632dc` now supplies composite-key tabs, close/context/reorder
 requests, an independent keyboard cursor and authoritative hit geometry.
-Its private native X11 reports establish toolkit behavior; they do not
-validate Files integration, Wayland or M2. Files still vendors `0d00f2b`.
+The follow-up `a029d45` fixes reveal when activating an already-selected key
+after independent cursor scrolling. Files exports that committed tree
+exactly, with optional GPU/effects disabled. Its own acceptance is recorded
+in [KEYED-TABS.md](KEYED-TABS.md), separately from upstream X11 evidence.
 
-Adopt the committed tree separately, with optional GPU/effects disabled.
-An app adapter should queue requests outside drawing and synchronous State
-notifications, validate pane/generation/key ownership, and restore the app's
-accepted selection after rejected admission. Export hit geometry after
-widget drawing/reveal. Delegate strip auxiliary events past the current
-window interceptor so middle-close is handled once. Preserve the native
-window bridge and existing context/snapshot controllers.
+The adapter queues requests outside drawing and synchronous State
+notifications, validates pane/generation/key ownership, and restores accepted
+selection after rejected admission. It exports actual widget hit geometry,
+delegates strip auxiliary events once, preserves the native window bridge
+and cancels late startup restoration even for unchanged selection/focus.
+A background-owning Group clears transparent controls on every child frame;
+the toolkit supplies indicator motion and its reduced-motion policy.
 
-Acceptance must cover right/middle focus preservation, drag and keyboard
-reorder, stale keys, scroll/reveal, cancelled gestures and inactive panes.
-Check native input on NODE/M2 as well as handler/framebuffer scenes. Focus
-router changes require regression coverage for canvas arrows, dual-pane Tab,
-global cycling and dialogs before the widget replaces the current strip.
+Continue native platform acceptance beyond NODE/M2 Linux, screen-reader and
+language integration, tear-off and modal focus consistency across all views.
+Rendered motion snapshots and mapped native input have distinct scopes;
+resource/startup acceptance remains separate.

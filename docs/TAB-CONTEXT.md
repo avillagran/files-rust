@@ -22,12 +22,11 @@ evictions and the other pane before removing any tabs. Existing edits and
 mutation guards remain in force. Closed snapshots use the normal reopen
 history.
 
-The model/controller is also the intended endpoint for the toolkit's keyed
-TabBar context and reorder requests. Upstream subsequently committed that
-API in `89632dc`; Files has reviewed it and still vendors `0d00f2b` pending
-its separate integration and acceptance. Drag reordering and the native
-widget migration remain open; these menu/keyboard actions are independently
-usable now. The app does not duplicate the toolkit's indicator animation.
+The model/controller also receives the toolkit keyed TabBar's context and
+reorder requests in `a0f1fff`/`e47cf81`. The exact `a029d45` export includes
+the original `89632dc` API and its repeated-activation reveal fix. Drag
+reordering and the widget's indicator animation are now connected; see
+[KEYED-TABS.md](KEYED-TABS.md). The app does not duplicate that animation.
 
 ## Verification
 

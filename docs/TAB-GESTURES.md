@@ -49,7 +49,7 @@ mutation surfaces block the gesture. F1 documents both middle-click actions.
   or `nested-run.py`; native checks create their own hidden compositor.
 
 This is an incremental usability delivery, not full tab or Finder parity.
-Tab reordering/tear-off, complete shortcut customization and native macOS
+Tear-off, complete shortcut customization and native macOS
 validation remain separate work. Resource/startup gates remain unmeasured.
 
 ## Validated delivery c52b96b

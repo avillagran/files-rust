@@ -8,7 +8,7 @@ help and, from version 49.0, `help-overlay.ui` (shortcuts),
 `nautilus-preferences-dialog.ui` and `freedesktop-dbus-interfaces.xml`.
 The original matrix was checked against code at `6348af9`. The dated
 2026-11-06 reconciliation below updates the entries supported by newer
-code and retained evidence through `1c2cdee`; unchanged rows
+code and retained evidence through `e47cf81`; unchanged rows
 retain their earlier scope and are not a fresh full-parity audit.
 
 States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use.
@@ -18,7 +18,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 1 | List/grid, zoom Ctrl±/0 | partial | zoom only in grid | P2 |
 | 2 | Configurable columns and sort by type/owner/permissions/dates | partial | block 5: sort by type; configurable columns and owner/permissions/creation missing | P2 |
 | 3 | Expandable folders in list | no | — (Columns/Miller as an alternative) | P3 |
-| 4 | Tabs, per-tab history | yes | background/middle-close in c52b96b; inactive-tab context, batch closure and keyboard/menu reorder in 1c2cdee; drag reorder/tear-off pending | P2 |
+| 4 | Tabs, per-tab history | yes | keyed toolkit strip, drag/keyboard/menu reorder and native context/close in a0f1fff/e47cf81; tear-off and native macOS acceptance pending | P2 |
 | 5 | Path bar + Ctrl+L, `/` and `~` | yes | hidden ancestors, Alt+Down and background destinations verified in 74d205f | — |
 | 6 | Type to filter | yes | — | — |
 | 7 | Hidden files Ctrl+H | yes | — | — |
@@ -116,11 +116,13 @@ Functional reports do not close the resource/startup gates, which remain
 1. Continue navigation-surface focus and hover acceptance. Sidebar/browser
    motion, reversal, pinning, resize and disabled motion are delivered in
    `de480ce`; see [SIDEBAR-MOTION.md](SIDEBAR-MOTION.md).
-2. Integrate the toolkit keyed strip after its API is committed and validated.
+2. Extend tab/platform acceptance and consider tear-off.
    Middle folder/background and middle-close gestures are delivered in
    `c52b96b`, including native NODE/M2 input evidence; stable menu/keyboard
-   reorder and inactive-tab context follow in `1c2cdee`. Drag reorder,
-   tear-off and broader modifier/platform acceptance remain open.
+   reorder and inactive-tab context follow in `1c2cdee`. The keyed strip,
+   drag reorder, independent cursor and toolkit motion follow in
+   `a0f1fff`/`e47cf81`; see [KEYED-TABS.md](KEYED-TABS.md).
+   Tear-off and broader modifier/platform acceptance remain open.
 3. Extend cross-view keyboard/accessibility acceptance. Hidden breadcrumb
    ancestors, exact path identity, background destinations and focus return
    are delivered in `74d205f`; see
@@ -287,3 +289,13 @@ entries and an active filter with no matches. Private scenes verify either
 empty-pane position at normal/minimum sizes and preserved sibling selection
 on NODE and native ARM M2. See
 [BROWSER-EMPTY-STATES.md](BROWSER-EMPTY-STATES.md).
+
+### 2026-11-06 — Keyed toolkit tabs and motion
+
+`a0f1fff`/`e47cf81` connect exact toolkit `a029d45` to Files' stable tab and
+snapshot controllers. Native right/middle gestures, drag/cursor reorder,
+focus return, Home/overflow, compound pane keys and unchanged-selection
+startup intent pass on installed NODE and ARM M2. The shared indicator has
+intermediate/reversal/reduced-motion rendered frame acceptance. See
+[KEYED-TABS.md](KEYED-TABS.md) for exact viewport and input scope. Tear-off,
+native macOS/Windows, full accessibility/i18n and wider parity remain open.

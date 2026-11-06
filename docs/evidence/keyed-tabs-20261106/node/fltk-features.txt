@@ -1,0 +1,27 @@
+fltk-sys v1.5.23
+├── fltk-sys feature "default"
+│   └── fltk v1.5.23
+│       ├── fltk feature "default"
+│       │   ├── files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+│       │   │   └── files-ui feature "default" (command-line)
+│       │   │       └── files-app v0.0.4 (/home/node/Work/files/crates/app)
+│       │   │           └── files-app feature "default" (command-line)
+│       │   └── lib-fltk-omarchy v0.0.10 (/home/node/Work/files/vendor/lib-fltk-omarchy)
+│       │       └── lib-fltk-omarchy feature "default"
+│       │           └── files-ui v0.0.4 (/home/node/Work/files/crates/ui) (*)
+│       ├── fltk feature "no-images"
+│       │   ├── files-ui v0.0.4 (/home/node/Work/files/crates/ui) (*)
+│       │   └── lib-fltk-omarchy v0.0.10 (/home/node/Work/files/vendor/lib-fltk-omarchy) (*)
+│       └── fltk feature "use-wayland"
+│           ├── files-ui v0.0.4 (/home/node/Work/files/crates/ui) (*)
+│           └── lib-fltk-omarchy v0.0.10 (/home/node/Work/files/vendor/lib-fltk-omarchy) (*)
+│   [build-dependencies]
+│   └── files-ui v0.0.4 (/home/node/Work/files/crates/ui) (*)
+├── fltk-sys feature "no-images"
+│   [build-dependencies]
+│   └── files-ui v0.0.4 (/home/node/Work/files/crates/ui) (*)
+│   └── fltk feature "no-images" (*)
+└── fltk-sys feature "use-wayland"
+    [build-dependencies]
+    └── files-ui v0.0.4 (/home/node/Work/files/crates/ui) (*)
+    └── fltk feature "use-wayland" (*)

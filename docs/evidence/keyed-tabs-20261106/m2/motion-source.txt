@@ -1,0 +1,2 @@
+{"report": "/home/avillagran/.cache/files-m2-updates/keyed-e47cf81/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794002585811641924.json", "functional_gate": "PASS", "error": null}
+{"nested": {"socket": "wayland-2", "pid": ["4190727"]}, "stopped": true}
