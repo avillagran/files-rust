@@ -196,6 +196,7 @@ pub enum Action {
     PropertyApply,
     PropertyReload,
     PropertyClose,
+    PropertyStep(i32),
     NewEntry(bool),
     RenameField(usize),
     RenameCase,
@@ -437,6 +438,7 @@ impl Action {
             Self::PropertyReload => Some("Recargar propiedades"),
             Self::NativePaste => Some("Pegar archivos MIME del sistema"),
             Self::PropertyClose => Some("Cerrar propiedades"),
+            Self::PropertyStep(_) => Some("Cambiar objeto de propiedades"),
             Self::PropertyBit(_) => Some("Alternar permiso seleccionado"),
             _ => None,
         }
@@ -613,6 +615,9 @@ pub struct Model {
     pub context_menu: Option<crate::context_menu::Menu>,
     pub toolkit_popup: bool,
     pub show_hidden: bool,
+    /// Transient visibility for an explicit external reveal, never a preference.
+    pub reveal_hidden: bool,
+    pub external_reveal: Option<crate::file_manager_ui::Reveal>,
     pub operation_bar: bool,
     /// True when config.toml says whether previews start muted.
     pub preview_muted_configured: bool,
@@ -652,6 +657,9 @@ pub struct Model {
     pub all_stat: bool,
 }
 impl Model {
+    pub fn hidden_visible(&self) -> bool {
+        self.show_hidden || self.reveal_hidden
+    }
     /// Width shared by the rail, browser layout and pointer geometry.
     /// Offscreen scenes and covered widgets retain the endpoint layout.
     pub fn rail_width(&self) -> i32 {
@@ -817,6 +825,8 @@ impl Model {
             context_menu: None,
             toolkit_popup: false,
             show_hidden: prefs.show_hidden,
+            reveal_hidden: false,
+            external_reveal: None,
             operation_bar: prefs.operation_bar,
             preview_muted_configured: prefs.preview_muted.is_some(),
             grid_zoom: 1.0,
@@ -986,6 +996,8 @@ impl Model {
         }
     }
     pub(crate) fn load_location(&mut self, path: PathBuf) {
+        self.reveal_hidden = false;
+        self.external_reveal = None;
         self.search.close();
         self.search_locate = None;
         self.text_paste.invalidate();
@@ -1052,10 +1064,12 @@ impl Model {
             self.order.reserve_exact(self.entries.len());
         }
         self.order.extend((0..self.entries.len()).filter(|&i| {
-            files_core::visibility::accepts(&self.entries[i].name, self.show_hidden)
-                && (self.view == View::SpaceMap
-                    || self.query.is_empty()
-                    || filter.score(&self.entries[i]).is_some())
+            files_core::visibility::accepts(
+                &self.entries[i].name,
+                self.show_hidden || self.reveal_hidden,
+            ) && (self.view == View::SpaceMap
+                || self.query.is_empty()
+                || filter.score(&self.entries[i]).is_some())
         }));
         self.order.sort_by_cached_key(|&i| {
             files_core::natural_sort::NaturalKeyRef::new(&self.entries[i].name)
@@ -1137,7 +1151,7 @@ impl Model {
         }
         self.selection.retain(|i| {
             self.entries.get(*i).is_some_and(|e| {
-                files_core::visibility::accepts(&e.name, self.show_hidden)
+                files_core::visibility::accepts(&e.name, self.show_hidden || self.reveal_hidden)
                     && (self.query.is_empty() || filter.score(e).is_some())
             })
         });
@@ -1206,7 +1220,10 @@ impl Model {
                 continue;
             };
             if entry.is_dir()
-                || !files_core::visibility::accepts(&entry.name, self.show_hidden)
+                || !files_core::visibility::accepts(
+                    &entry.name,
+                    self.show_hidden || self.reveal_hidden,
+                )
                 || !crate::thumbnail_job::supported(std::path::Path::new(&entry.name))
             {
                 continue;
@@ -1790,10 +1807,12 @@ impl Model {
             self.anchor = None;
             let filter = files_core::name_filter::Filter::new(&self.query);
             for (index, entry) in self.entries.iter().enumerate() {
-                let visible = files_core::visibility::accepts(&entry.name, self.show_hidden)
-                    && (self.view == View::SpaceMap
-                        || self.query.is_empty()
-                        || filter.score(entry).is_some());
+                let visible = files_core::visibility::accepts(
+                    &entry.name,
+                    self.show_hidden || self.reveal_hidden,
+                ) && (self.view == View::SpaceMap
+                    || self.query.is_empty()
+                    || filter.score(entry).is_some());
                 if snapshot.contains(&entry.name) && visible {
                     self.selection.insert(index);
                 }
@@ -1826,7 +1845,11 @@ impl Model {
         {
             dirty = true;
             if let Some(i) = self.entries.iter().position(|e| {
-                e.name == name && files_core::visibility::accepts(&e.name, self.show_hidden)
+                e.name == name
+                    && files_core::visibility::accepts(
+                        &e.name,
+                        self.show_hidden || self.reveal_hidden,
+                    )
             }) {
                 self.select_entry(i, false, false);
                 self.search_reveal = true;
@@ -1844,7 +1867,12 @@ impl Model {
                 || self
                     .entries
                     .iter()
-                    .filter(|e| files_core::visibility::accepts(&e.name, self.show_hidden))
+                    .filter(|e| {
+                        files_core::visibility::accepts(
+                            &e.name,
+                            self.show_hidden || self.reveal_hidden,
+                        )
+                    })
                     .all(|e| e.stat_attempted))
             && let Some(viewport) = self.refresh_viewport.take()
         {
@@ -1888,7 +1916,12 @@ impl Model {
                 || self
                     .entries
                     .iter()
-                    .filter(|e| files_core::visibility::accepts(&e.name, self.show_hidden))
+                    .filter(|e| {
+                        files_core::visibility::accepts(
+                            &e.name,
+                            self.show_hidden || self.reveal_hidden,
+                        )
+                    })
                     .all(|e| e.stat_attempted && e.metadata.is_some()))
             && (self.view != View::Spatial || self.layout_ready)
             && (self.view != View::SpaceMap
@@ -1909,7 +1942,7 @@ impl Model {
                 .iter()
                 .enumerate()
                 .filter(|(i, e)| {
-                    files_core::visibility::accepts(&e.name, self.show_hidden)
+                    files_core::visibility::accepts(&e.name, self.show_hidden || self.reveal_hidden)
                         && !e.stat_attempted
                         && !self.stats_requested.contains(i)
                 })
@@ -1922,7 +1955,12 @@ impl Model {
                     self.entries
                         .iter()
                         .enumerate()
-                        .filter(|(_, e)| files_core::visibility::accepts(&e.name, self.show_hidden))
+                        .filter(|(_, e)| {
+                            files_core::visibility::accepts(
+                                &e.name,
+                                self.show_hidden || self.reveal_hidden,
+                            )
+                        })
                         .map(|(i, _)| i),
                 );
                 self.all_stat = true;
@@ -1967,7 +2005,7 @@ impl Model {
         let filter = files_core::name_filter::Filter::new(&self.query);
         let allowed = |i: &usize| {
             self.entries.get(*i).is_some_and(|e| {
-                files_core::visibility::accepts(&e.name, self.show_hidden)
+                files_core::visibility::accepts(&e.name, self.show_hidden || self.reveal_hidden)
                     && (self.view == View::SpaceMap
                         || self.query.is_empty()
                         || filter.score(e).is_some())
@@ -1986,6 +2024,7 @@ impl Model {
             self.error = "Espera a que termine la operación antes de cambiar ocultos".into();
             return;
         }
+        self.reveal_hidden = false;
         self.show_hidden = !self.show_hidden;
         self.preview.close();
         if let Some(job) = &self.du_job {
@@ -2272,11 +2311,9 @@ impl Model {
             self.error = format!("Espacio: {why}");
             return;
         }
-        let Some(entry) = self
-            .selected
-            .and_then(|i| self.entries.get(i))
-            .filter(|e| files_core::visibility::accepts(&e.name, self.show_hidden))
-        else {
+        let Some(entry) = self.selected.and_then(|i| self.entries.get(i)).filter(|e| {
+            files_core::visibility::accepts(&e.name, self.show_hidden || self.reveal_hidden)
+        }) else {
             return;
         };
         if self
@@ -2973,6 +3010,7 @@ impl Model {
             Action::PropertyApply => self.apply_properties(),
             Action::PropertyReload => self.reload_properties(),
             Action::PropertyClose => self.close_properties(),
+            Action::PropertyStep(delta) => self.step_properties(delta),
             Action::Rename => self.open_rename(crate::rename_dialog::Mode::Rename),
             Action::NewEntry(folder) => self.open_rename(if folder {
                 crate::rename_dialog::Mode::Folder

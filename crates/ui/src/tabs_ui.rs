@@ -68,6 +68,10 @@ impl Model {
             view: self.view,
             sort: self.sort,
             descending: self.descending,
+            reveal_hidden: self.reveal_hidden,
+            reveal_selection: self.external_reveal.as_ref().is_some_and(|reveal| {
+                reveal.owner == self.pane_owner() && reveal.generation == self.generation
+            }),
             query: self.query.clone(),
             scroll: self.scroll,
             grid_zoom: self.grid_zoom,
@@ -76,8 +80,24 @@ impl Model {
         })
     }
     pub(crate) fn restore_tab(&mut self, saved: Saved) {
+        let reveal = saved.reveal_selection.then(|| {
+            let mut names: Vec<_> = saved
+                .selection
+                .names()
+                .map(std::ffi::OsStr::to_os_string)
+                .collect();
+            // Snapshot membership is sorted, but the external request's
+            // first focused item must retain priority when a background tab opens.
+            if let Some(focus) = saved.selection.focus()
+                && let Some(at) = names.iter().position(|name| name == focus)
+            {
+                names.swap(0, at);
+            }
+            names
+        });
         self.view = saved.view;
         self.load_location(saved.path);
+        self.reveal_hidden = saved.reveal_hidden;
         self.folder_restore = None;
         self.history = saved.history;
         self.query = saved.query;
@@ -87,6 +107,11 @@ impl Model {
         self.pan_x = saved.pan_x;
         self.scroll = saved.scroll;
         self.refresh_selection = Some(saved.selection);
+        self.external_reveal = reveal.map(|names| crate::file_manager_ui::Reveal {
+            owner: self.pane_owner(),
+            generation: self.generation,
+            names,
+        });
         self.settings = false;
         self.help = None;
         self.text_viewport = Default::default();
@@ -134,6 +159,254 @@ impl Model {
             },
             reserved,
         )
+    }
+
+    /// Prepare the complete external navigation before publishing any row or
+    /// identity. The caller has already performed advisory filesystem preflight.
+    pub(crate) fn external_locations(
+        &mut self,
+        groups: &[files_core::file_manager::Group],
+        fresh: bool,
+    ) -> Result<Vec<u64>, String> {
+        use files_core::{file_manager::MAX_URIS, navigation_history::History};
+        if crate::tab_gestures::blocked(self) {
+            return Err(
+                "Finish the current edit, dialog or operation before showing locations".into(),
+            );
+        }
+        if groups.is_empty() || groups.len() > MAX_URIS {
+            return Err("External location count is outside the supported range".into());
+        }
+        let active = self.tabs.active;
+        let old_index = self
+            .tabs
+            .index(active)
+            .ok_or("The active tab is unavailable")?;
+        if self.tabs.rows[old_index].path.as_os_str() != self.path.as_os_str()
+            || self.tabs.rows.iter().enumerate().any(|(i, tab)| {
+                self.tabs.rows[..i].iter().any(|prior| prior.id == tab.id)
+                    || (tab.id == active) != tab.saved.is_none()
+                    || tab
+                        .saved
+                        .as_ref()
+                        .is_some_and(|saved| saved.path.as_os_str() != tab.path.as_os_str())
+            })
+        {
+            return Err("Tab identity or stored location is inconsistent".into());
+        }
+        if fresh
+            && (self.tabs.rows.len() != 1
+                || active != 1
+                || !self.tabs.closed.is_empty()
+                || self.dual.enabled)
+        {
+            return Err("A fresh request requires an untouched placeholder tab".into());
+        }
+        let clone_history = |history: &History| {
+            let (back, forward) = history.paths();
+            History::restore(back.clone(), forward.clone()).map_err(str::to_string)
+        };
+        let mut prepared = Vec::with_capacity(groups.len());
+        let mut released = 0usize;
+        for (i, group) in groups.iter().enumerate() {
+            files_core::navigation_history::validate(&group.directory)?;
+            if groups[..i]
+                .iter()
+                .any(|g| g.directory.as_os_str() == group.directory.as_os_str())
+            {
+                return Err("External location groups must have distinct directories".into());
+            }
+            if group.names.len() > MAX_URIS
+                || group.names.iter().any(|name| {
+                    name.is_empty()
+                        || name == "."
+                        || name == ".."
+                        || name.len() > 4096
+                        || name
+                            .as_encoded_bytes()
+                            .iter()
+                            .any(|b| matches!(b, 0 | b'/'))
+                })
+            {
+                return Err("External selection names are invalid or oversized".into());
+            }
+            let id = if fresh {
+                (i == 0).then_some(active)
+            } else if self.path.as_os_str() == group.directory.as_os_str() {
+                Some(active)
+            } else {
+                self.tabs
+                    .rows
+                    .iter()
+                    .find(|tab| tab.path.as_os_str() == group.directory.as_os_str())
+                    .map(|tab| tab.id)
+            };
+            let (history, view, sort, descending, grid_zoom, retained_hidden) =
+                if !fresh && id == Some(active) {
+                    (
+                        clone_history(&self.history)?,
+                        self.view,
+                        self.sort,
+                        self.descending,
+                        self.grid_zoom,
+                        self.reveal_hidden,
+                    )
+                } else if let Some(saved) = id.filter(|_| !fresh).and_then(|id| {
+                    self.tabs.rows[self.tabs.index(id).expect("live target")]
+                        .saved
+                        .as_ref()
+                }) {
+                    released = released
+                        .checked_add(saved.charge)
+                        .ok_or("Tab state budget overflow")?;
+                    (
+                        clone_history(&saved.history)?,
+                        saved.view,
+                        saved.sort,
+                        saved.descending,
+                        saved.grid_zoom,
+                        saved.reveal_hidden,
+                    )
+                } else {
+                    (
+                        History::default(),
+                        self.view,
+                        self.sort,
+                        self.descending,
+                        self.grid_zoom,
+                        false,
+                    )
+                };
+            let focus = group.names.first().map(std::ffi::OsString::as_os_str);
+            let selection = Snapshot::capture_with_anchor(
+                group.names.iter().map(std::ffi::OsString::as_os_str),
+                focus,
+                focus,
+                tabs::SELECTION_LIMIT,
+            )?;
+            let charge = selection
+                .retained_bytes()
+                .checked_add(history.retained_bytes())
+                .and_then(|n| n.checked_add(group.directory.as_os_str().len()))
+                .and_then(|n| n.checked_add(8192))
+                .filter(|&n| n <= tabs::SNAPSHOT_LIMIT)
+                .ok_or("External tab snapshot exceeds the retained-state limit")?;
+            let saved = Saved {
+                path: group.directory.clone(),
+                history,
+                selection,
+                view: if matches!(
+                    view,
+                    crate::model::View::SpaceMap | crate::model::View::Columns
+                ) && !group.names.is_empty()
+                {
+                    crate::model::View::List
+                } else {
+                    view
+                },
+                sort,
+                descending,
+                reveal_hidden: retained_hidden
+                    || group
+                        .names
+                        .iter()
+                        .any(|n| n.as_encoded_bytes().first() == Some(&b'.')),
+                reveal_selection: true,
+                query: String::new(),
+                scroll: 0,
+                grid_zoom,
+                pan_x: 0.,
+                charge,
+            };
+            prepared.push((id, saved));
+        }
+        let new_count = prepared.iter().filter(|(id, _)| id.is_none()).count();
+        if self
+            .tabs
+            .rows
+            .len()
+            .checked_add(new_count)
+            .is_none_or(|n| n > tabs::MAX_TABS)
+        {
+            return Err("The complete request does not fit within eight tabs".into());
+        }
+        self.tabs.check_new_ids(new_count)?;
+        let preserve_outgoing = !fresh && !prepared.iter().any(|(id, _)| *id == Some(active));
+        let outgoing_charge = if preserve_outgoing {
+            self.tab_charge()?
+        } else {
+            0
+        };
+        let stored = self
+            .tabs
+            .rows
+            .iter()
+            .filter_map(|tab| tab.saved.as_ref())
+            .chain(self.tabs.closed.iter())
+            .try_fold(0usize, |sum, saved| sum.checked_add(saved.charge))
+            .ok_or("Tab state budget overflow")?;
+        let prepared_stored = prepared
+            .iter()
+            .skip(1)
+            .try_fold(0usize, |sum, (_, saved)| sum.checked_add(saved.charge))
+            .ok_or("Tab state budget overflow")?;
+        if stored
+            .checked_sub(released)
+            .and_then(|n| n.checked_add(prepared_stored))
+            .and_then(|n| n.checked_add(outgoing_charge))
+            .and_then(|n| n.checked_add(self.dual.other_stored()))
+            .is_none_or(|n| n > tabs::STORED_LIMIT)
+        {
+            return Err("The complete request exceeds the shared tab-state budget".into());
+        }
+        let mut ids = Vec::new();
+        ids.try_reserve_exact(prepared.len())
+            .map_err(|_| "No memory to retain external tab identities")?;
+        self.tabs
+            .rows
+            .try_reserve_exact(new_count)
+            .map_err(|_| "No memory to publish external tab rows")?;
+        // All requested snapshots, paths, names and charges are ready before
+        // save admission or active snapshot capture can change app state.
+        if !fresh && !self.save_layout() {
+            return Err(if self.error.is_empty() {
+                "The current layout could not be saved".into()
+            } else {
+                self.error.clone()
+            });
+        }
+        let outgoing = if preserve_outgoing {
+            Some(self.capture_tab(outgoing_charge)?)
+        } else {
+            None
+        };
+        if let Some(outgoing) = outgoing {
+            self.tabs.rows[old_index].saved = Some(outgoing);
+        }
+        let mut foreground = None;
+        for (i, (existing, saved)) in prepared.into_iter().enumerate() {
+            let id = existing.unwrap_or_else(|| self.tabs.fresh_id());
+            let path = saved.path.clone();
+            let saved = if i == 0 {
+                foreground = Some(saved);
+                None
+            } else {
+                Some(saved)
+            };
+            if let Some(index) = self.tabs.index(id) {
+                self.tabs.rows[index].path = path;
+                self.tabs.rows[index].saved = saved;
+            } else {
+                self.tabs.rows.push(Tab { id, path, saved });
+            }
+            ids.push(id);
+        }
+        self.session.restore_allowed = false;
+        self.tabs.active = ids[0];
+        self.tabs.first = self.tabs.index(ids[0]).expect("foreground was published");
+        self.restore_tab(foreground.expect("nonempty prepared request"));
+        self.hits.clear();
+        Ok(ids)
     }
 
     /// Resolve only a current visible folder; no stat, selection or pane switch.
@@ -455,6 +728,8 @@ impl Model {
                     view: outgoing.view,
                     sort: outgoing.sort,
                     descending: outgoing.descending,
+                    reveal_hidden: outgoing.reveal_hidden,
+                    reveal_selection: false,
                     query: String::new(),
                     scroll: 0,
                     grid_zoom: outgoing.grid_zoom,
@@ -574,6 +849,8 @@ fn publish_background_tabs<'a>(
                 view,
                 sort,
                 descending,
+                reveal_hidden: false,
+                reveal_selection: false,
                 query: String::new(),
                 scroll: 0,
                 grid_zoom,
@@ -703,16 +980,40 @@ mod tests {
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            let root = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!(
-                    "tabs-{}-{}",
-                    std::process::id(),
-                    std::time::SystemTime::now()
-                        .duration_since(std::time::UNIX_EPOCH)
-                        .unwrap()
-                        .as_nanos()
-                ));
+            let base = std::env::var_os("TMPDIR")
+                .map(PathBuf::from)
+                .unwrap_or_else(|| PathBuf::from("/var/tmp/files-ui-tab-fixtures"));
+            if !base.exists() {
+                let mut create = fs::DirBuilder::new();
+                #[cfg(unix)]
+                {
+                    use std::os::unix::fs::DirBuilderExt;
+                    create.mode(0o700);
+                }
+                create.create(&base).unwrap();
+            }
+            let metadata = fs::symlink_metadata(&base).unwrap();
+            assert!(metadata.is_dir() && !metadata.file_type().is_symlink());
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                assert_eq!(metadata.permissions().mode() & 0o777, 0o700);
+            }
+            let root = base.join(format!(
+                "tabs-{}-{}",
+                std::process::id(),
+                std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap()
+                    .as_nanos()
+            ));
+            let mut create = fs::DirBuilder::new();
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::DirBuilderExt;
+                create.mode(0o700);
+            }
+            create.create(&root).unwrap();
             fs::create_dir_all(root.join("A")).unwrap();
             fs::create_dir(root.join("B")).unwrap();
             for n in ["A", "B"] {
@@ -723,11 +1024,8 @@ mod tests {
             Self(root)
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
-        }
-    }
+    // Owned fixture trees are retained; tests never remove or follow links
+    // during cleanup.
     fn wait(m: &mut Model) {
         let until = Instant::now() + Duration::from_secs(10);
         loop {
@@ -745,6 +1043,377 @@ mod tests {
     }
     fn tab_ids(m: &Model) -> Vec<u64> {
         m.tabs.rows.iter().map(|tab| tab.id).collect()
+    }
+    fn external_group(path: PathBuf, names: &[&str]) -> files_core::file_manager::Group {
+        files_core::file_manager::Group {
+            directory: path,
+            names: names.iter().map(std::ffi::OsString::from).collect(),
+        }
+    }
+    fn charged_snapshot(path: PathBuf, charge: usize) -> Saved {
+        Saved {
+            path,
+            history: Default::default(),
+            selection: Snapshot::capture(std::iter::empty(), None).unwrap(),
+            view: crate::model::View::List,
+            sort: files_core::listing::Sort::Name,
+            descending: false,
+            reveal_hidden: false,
+            reveal_selection: false,
+            query: String::new(),
+            scroll: 0,
+            grid_zoom: 1.,
+            pan_x: 0.,
+            charge,
+        }
+    }
+    #[test]
+    #[cfg(unix)]
+    fn external_fresh_request_reuses_only_placeholder_and_preserves_multiple_raw_names() {
+        use std::os::unix::ffi::OsStringExt;
+        let f = Fixture::new();
+        let raw = std::ffi::OsString::from_vec(b"raw-\xff".to_vec());
+        fs::write(f.0.join("B").join(&raw), b"raw fixture").unwrap();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        m.history
+            .visit(&f.0.join("discarded-placeholder-history"), &f.0.join("A"))
+            .unwrap();
+        m.view = crate::model::View::SpaceMap;
+        let preference = m.show_hidden;
+        let config_dirty = m.config_dirty;
+        let groups = [
+            files_core::file_manager::Group {
+                directory: f.0.join("B"),
+                names: vec![raw.clone(), ".hidden".into()],
+            },
+            external_group(f.0.join("A"), &["same.txt"]),
+        ];
+        let ids = m.external_locations(&groups, true).unwrap();
+        assert_eq!(ids, [1, 2]);
+        assert_eq!(tab_ids(&m), [1, 2]);
+        assert_eq!(m.path, f.0.join("B"));
+        assert!(m.history.paths().0.is_empty());
+        assert!(m.tabs.closed.is_empty());
+        assert_eq!(m.tabs.rows[1].path, f.0.join("A"));
+        assert!(m.view == crate::model::View::List);
+        assert!(m.reveal_hidden);
+        assert_eq!(m.show_hidden, preference);
+        assert_eq!(m.config_dirty, config_dirty);
+        let snapshot = m.refresh_selection.as_ref().unwrap();
+        assert!(snapshot.contains(&raw) && snapshot.contains(std::ffi::OsStr::new(".hidden")));
+        assert_eq!(snapshot.focus(), Some(raw.as_os_str()));
+        assert_eq!(snapshot.anchor(), Some(raw.as_os_str()));
+        assert_eq!(
+            m.external_reveal.as_ref().unwrap().names,
+            vec![raw.clone(), ".hidden".into()]
+        );
+        wait(&mut m);
+        let selected: std::collections::HashSet<_> = m
+            .selection
+            .iter()
+            .map(|&i| m.entries[i].name.clone())
+            .collect();
+        assert_eq!(
+            selected,
+            [raw.clone(), ".hidden".into()].into_iter().collect()
+        );
+        assert_eq!(m.entries[m.selected.unwrap()].name, raw);
+    }
+    #[test]
+    fn external_targets_reuse_stable_ids_active_preference_history_and_style() {
+        use crate::model::View;
+        use files_core::listing::Sort;
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        m.history
+            .visit(&f.0.join("A-history"), &f.0.join("A"))
+            .unwrap();
+        m.view = View::Grid;
+        m.sort = Sort::Modified;
+        m.descending = true;
+        m.grid_zoom = 1.4;
+        let active = m.tabs.active;
+        let b = m.background_tab(&f.0.join("B"), None).unwrap();
+        let duplicate = m.background_tab(&f.0.join("A"), None).unwrap();
+        m.tabs.move_before(duplicate, Some(active));
+        let b_index = m.tabs.index(b).unwrap();
+        let saved = m.tabs.rows[b_index].saved.as_mut().unwrap();
+        saved
+            .history
+            .visit(&f.0.join("B-history"), &f.0.join("B"))
+            .unwrap();
+        saved.view = View::Columns;
+        saved.sort = Sort::Size;
+        saved.reveal_hidden = true;
+        let ids = m
+            .external_locations(
+                &[
+                    external_group(f.0.join("B"), &["other.txt"]),
+                    external_group(f.0.join("A"), &["same.txt", "other.txt"]),
+                ],
+                false,
+            )
+            .unwrap();
+        assert_eq!(ids, [b, active]);
+        assert_eq!(m.tabs.rows.len(), 3);
+        assert_eq!(m.path, f.0.join("B"));
+        assert!(m.view == View::List);
+        assert_eq!(m.sort, Sort::Size);
+        assert!(m.reveal_hidden);
+        assert_eq!(m.history.paths().0.back(), Some(&f.0.join("B-history")));
+        let a = m.tabs.rows[m.tabs.index(active).unwrap()]
+            .saved
+            .as_ref()
+            .unwrap();
+        assert_eq!(a.history.paths().0.back(), Some(&f.0.join("A-history")));
+        assert!(a.view == View::Grid);
+        assert_eq!(a.sort, Sort::Modified);
+        assert!(a.descending);
+        assert_eq!(a.grid_zoom, 1.4);
+        assert!(a.query.is_empty());
+        assert!(a.reveal_selection);
+        assert!(
+            a.selection.contains(std::ffi::OsStr::new("same.txt"))
+                && a.selection.contains(std::ffi::OsStr::new("other.txt"))
+        );
+        assert!(
+            m.tabs.rows[m.tabs.index(duplicate).unwrap()]
+                .saved
+                .as_ref()
+                .unwrap()
+                .selection
+                .names()
+                .next()
+                .is_none()
+        );
+        assert_eq!(
+            m.background_tab(&f.0.join("C"), None).unwrap(),
+            duplicate + 1
+        );
+    }
+    #[test]
+    fn external_untargeted_active_and_other_pane_keep_exact_state() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        m.toggle_dual();
+        let until = Instant::now() + Duration::from_secs(10);
+        while !m.dual.other.as_ref().unwrap().loaded {
+            m.pump();
+            assert!(Instant::now() < until);
+            std::thread::yield_now();
+        }
+        select(&mut m, "same.txt", false);
+        select(&mut m, "other.txt", true);
+        m.query = "retained query".into();
+        m.reveal_hidden = true;
+        m.history.visit(&f.0.join("old-A"), &f.0.join("A")).unwrap();
+        let active = m.tabs.active;
+        let names = m
+            .selection
+            .iter()
+            .map(|&i| m.entries[i].name.clone())
+            .collect::<Vec<_>>();
+        let b = m.dual.other.as_ref().unwrap();
+        let other = (
+            b.id,
+            b.revision,
+            b.path.clone(),
+            b.query.clone(),
+            b.selection.clone(),
+            b.tabs.active,
+            b.tabs.rows.iter().map(|t| t.id).collect::<Vec<_>>(),
+            b.reveal_hidden,
+        );
+        m.external_locations(&[external_group(f.0.join("B"), &["other.txt"])], false)
+            .unwrap();
+        let outgoing = m.tabs.rows[m.tabs.index(active).unwrap()]
+            .saved
+            .as_ref()
+            .unwrap();
+        assert_eq!(outgoing.query, "retained query");
+        assert!(outgoing.reveal_hidden);
+        assert_eq!(outgoing.history.paths().0.back(), Some(&f.0.join("old-A")));
+        assert!(names.iter().all(|name| outgoing.selection.contains(name)));
+        let b = m.dual.other.as_ref().unwrap();
+        assert_eq!(
+            other,
+            (
+                b.id,
+                b.revision,
+                b.path.clone(),
+                b.query.clone(),
+                b.selection.clone(),
+                b.tabs.active,
+                b.tabs.rows.iter().map(|t| t.id).collect::<Vec<_>>(),
+                b.reveal_hidden
+            )
+        );
+    }
+    #[test]
+    fn external_capacity_rejection_consumes_no_rows_or_ids() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        for i in 0..6 {
+            m.background_tab(&f.0.join(format!("existing-{i}")), None)
+                .unwrap();
+        }
+        let ids = tab_ids(&m);
+        let active = m.tabs.active;
+        let generation = m.generation;
+        let path = m.path.clone();
+        assert!(
+            m.external_locations(
+                &[
+                    external_group(f.0.join("new-1"), &[]),
+                    external_group(f.0.join("new-2"), &[])
+                ],
+                false
+            )
+            .is_err()
+        );
+        assert_eq!(tab_ids(&m), ids);
+        assert_eq!(m.tabs.active, active);
+        assert_eq!(m.generation, generation);
+        assert_eq!(m.path, path);
+        assert_eq!(
+            m.background_tab(&f.0.join("after-rejection"), None)
+                .unwrap(),
+            8
+        );
+    }
+    #[test]
+    fn external_shared_budget_rejection_is_atomic_before_active_capture() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        select(&mut m, "same.txt", false);
+        let existing = m.background_tab(&f.0.join("B"), None).unwrap();
+        let stored = m.tabs.stored_bytes();
+        for charge in [
+            tabs::SNAPSHOT_LIMIT,
+            tabs::SNAPSHOT_LIMIT,
+            tabs::SNAPSHOT_LIMIT - stored - 1,
+        ] {
+            m.tabs
+                .closed
+                .push(charged_snapshot(f.0.join("closed"), charge));
+        }
+        let ids = tab_ids(&m);
+        let selected = m.selected;
+        let selection = m.selection.clone();
+        let generation = m.generation;
+        assert!(
+            m.external_locations(
+                &[
+                    external_group(f.0.join("C"), &[]),
+                    external_group(f.0.join("D"), &[])
+                ],
+                false
+            )
+            .is_err()
+        );
+        assert_eq!(tab_ids(&m), ids);
+        assert_eq!(m.selected, selected);
+        assert_eq!(m.selection, selection);
+        assert_eq!(m.generation, generation);
+        assert!(
+            m.tabs.rows[m.tabs.index(m.tabs.active).unwrap()]
+                .saved
+                .is_none()
+        );
+        m.tabs.closed.clear();
+        assert_eq!(
+            m.background_tab(&f.0.join("after-rejection"), None)
+                .unwrap(),
+            existing + 1
+        );
+    }
+    #[test]
+    fn external_bad_later_name_rejects_before_rows_history_or_ids_change() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        m.history.visit(&f.0.join("old"), &f.0.join("A")).unwrap();
+        let generation = m.generation;
+        assert!(
+            m.external_locations(
+                &[
+                    external_group(f.0.join("B"), &["same.txt"]),
+                    external_group(f.0.join("C"), &["bad/name"])
+                ],
+                false
+            )
+            .is_err()
+        );
+        assert_eq!(tab_ids(&m), [1]);
+        assert_eq!(m.history.paths().0.back(), Some(&f.0.join("old")));
+        assert_eq!(m.generation, generation);
+        assert_eq!(m.background_tab(&f.0.join("B"), None).unwrap(), 2);
+    }
+    #[test]
+    fn external_other_pane_budget_is_reserved_before_any_foreground_publication() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        m.toggle_dual();
+        let baseline = m.dual.other_stored();
+        for charge in [
+            tabs::SNAPSHOT_LIMIT,
+            tabs::SNAPSHOT_LIMIT,
+            tabs::SNAPSHOT_LIMIT - baseline,
+        ] {
+            m.dual
+                .other
+                .as_mut()
+                .unwrap()
+                .tabs
+                .closed
+                .push(charged_snapshot(f.0.join("other-closed"), charge));
+        }
+        assert_eq!(m.dual.other_stored(), tabs::STORED_LIMIT);
+        m.history.visit(&f.0.join("old"), &f.0.join("A")).unwrap();
+        let generation = m.generation;
+        assert!(
+            m.external_locations(&[external_group(f.0.join("B"), &["same.txt"])], false)
+                .is_err()
+        );
+        assert_eq!(tab_ids(&m), [1]);
+        assert_eq!(m.tabs.active, 1);
+        assert_eq!(m.generation, generation);
+        assert_eq!(m.history.paths().0.back(), Some(&f.0.join("old")));
+        assert_eq!(m.dual.other_stored(), tabs::STORED_LIMIT);
+        m.dual.other.as_mut().unwrap().tabs.closed.clear();
+        assert_eq!(m.background_tab(&f.0.join("B"), None).unwrap(), 2);
+    }
+    #[test]
+    fn external_pending_reveal_survives_switch_away_and_return() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.0.join("A"));
+        wait(&mut m);
+        let ids = m
+            .external_locations(
+                &[
+                    external_group(f.0.join("B"), &["other.txt"]),
+                    external_group(f.0.join("A"), &["same.txt"]),
+                ],
+                false,
+            )
+            .unwrap();
+        m.tab_command(Command::Select(ids[1]));
+        let saved = m.tabs.rows[m.tabs.index(ids[0]).unwrap()]
+            .saved
+            .as_ref()
+            .unwrap();
+        assert!(saved.reveal_selection);
+        m.tab_command(Command::Select(ids[0]));
+        let reveal = m.external_reveal.as_ref().unwrap();
+        assert_eq!(reveal.owner, m.pane_owner());
+        assert_eq!(reveal.generation, m.generation);
+        assert_eq!(reveal.names, [std::ffi::OsString::from("other.txt")]);
     }
     #[test]
     fn reorder_uses_stable_insertion_without_switching_or_recharging_tabs() {

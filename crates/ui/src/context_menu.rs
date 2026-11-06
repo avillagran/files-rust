@@ -626,12 +626,9 @@ pub fn open_at(m: &mut Model, x: i32, y: i32, w: i32, h: i32) -> bool {
             let Some(column) = m.columns.columns.iter_mut().find(|c| c.id == id) else {
                 return false;
             };
-            let Some(entry) = column
-                .data
-                .entries
-                .get(i)
-                .filter(|e| crate::columns::accepts(e, m.show_hidden, &column.data.query))
-            else {
+            let Some(entry) = column.data.entries.get(i).filter(|e| {
+                crate::columns::accepts(e, m.show_hidden || m.reveal_hidden, &column.data.query)
+            }) else {
                 return false;
             };
             let name = entry.name.clone();
@@ -666,7 +663,7 @@ pub fn open_at(m: &mut Model, x: i32, y: i32, w: i32, h: i32) -> bool {
                 || !m
                     .entries
                     .get(i)
-                    .is_some_and(|e| files_core::visibility::accepts(&e.name, m.show_hidden))
+                    .is_some_and(|e| files_core::visibility::accepts(&e.name, m.hidden_visible()))
             {
                 return false;
             }
@@ -745,7 +742,7 @@ pub fn open_keyboard(m: &mut Model, w: i32, h: i32) -> bool {
     let focused = m.selected.filter(|&i| {
         m.entries
             .get(i)
-            .is_some_and(|e| files_core::visibility::accepts(&e.name, m.show_hidden))
+            .is_some_and(|e| files_core::visibility::accepts(&e.name, m.hidden_visible()))
     });
     if let Some(index) = focused {
         let r = m

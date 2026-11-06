@@ -114,7 +114,7 @@ impl Model {
                 self.actions_menu = false;
                 self.end_path_edit();
                 self.search
-                    .open(self.path.clone(), self.query.clone(), self.show_hidden);
+                    .open(self.path.clone(), self.query.clone(), self.hidden_visible());
                 self.hits.clear();
             }
             Action::SearchTransfer(moving) => self.begin_search_transfer(moving),

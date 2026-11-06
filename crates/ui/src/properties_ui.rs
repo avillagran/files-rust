@@ -8,74 +8,138 @@ use fltk::{
     app,
     enums::{Event, Key, Shortcut},
 };
+use std::path::PathBuf;
+
+const MAX_OBJECTS: usize = 32;
+const MAX_OBJECT_BYTES: usize = 64 * 1024;
+
+fn bounded_objects(paths: Vec<PathBuf>) -> Result<Vec<PathBuf>, String> {
+    if paths.is_empty() || paths.len() > MAX_OBJECTS {
+        return Err("Propiedades: elige entre 1 y 32 objetos".into());
+    }
+    let mut bytes = 0usize;
+    let mut objects = Vec::with_capacity(paths.len());
+    for path in paths {
+        files_core::navigation_history::validate(&path).map_err(str::to_owned)?;
+        bytes = bytes
+            .checked_add(path.as_os_str().len())
+            .filter(|&n| n <= MAX_OBJECT_BYTES)
+            .ok_or("Propiedades: las rutas superan el límite de 64 KiB")?;
+        if !objects.contains(&path) {
+            objects.push(path);
+        }
+    }
+    Ok(objects)
+}
+
 impl Model {
     pub fn open_properties(&mut self) {
         if self.mutations.busy || self.mutation_applied || self.copy_busy() {
             return;
         }
-        if self.selection.len() > 1 {
-            self.operation_message =
-                Some("Propiedades: selecciona sólo un objeto en este bloque".into());
-            return;
-        }
-        let index = self.selection.iter().next().copied().or(self.selected);
-        let Some(entry) = index.and_then(|i| self.entries.get(i)) else {
-            return;
+        let indices: Vec<_> = if self.selection.is_empty() {
+            self.selected.into_iter().collect()
+        } else {
+            self.order
+                .iter()
+                .copied()
+                .filter(|i| self.selection.contains(i))
+                .collect()
         };
-        if self
-            .path
-            .as_os_str()
-            .as_encoded_bytes()
-            .len()
-            .saturating_add(entry.name.as_encoded_bytes().len())
-            .saturating_add(1)
-            > 4096
-        {
-            self.operation_message =
-                Some("Ruta de propiedades demasiado larga (máximo 4096 bytes)".into());
+        if indices.is_empty() {
             return;
         }
-        let path = self.path.join(&entry.name);
+        if indices.len() > MAX_OBJECTS {
+            self.operation_message = Some("Propiedades: elige entre 1 y 32 objetos".into());
+            return;
+        }
+        let paths: Option<Vec<_>> = indices
+            .iter()
+            .map(|i| {
+                self.entries
+                    .get(*i)
+                    .map(|entry| self.path.join(&entry.name))
+            })
+            .collect();
+        let Some(paths) = paths else { return };
+        if let Err(error) =
+            bounded_objects(paths).and_then(|objects| self.start_properties(objects, 0))
+        {
+            self.operation_message = Some(error);
+        }
+    }
+    /// Open explicit bounded paths without navigating or depending on browser
+    /// selection. The existing inspection worker performs all filesystem I/O.
+    pub fn open_properties_paths(&mut self, paths: Vec<PathBuf>) -> Result<(), String> {
+        let objects = bounded_objects(paths)?;
+        if crate::tab_gestures::blocked(self) || self.mutation_applied || self.copy_busy() {
+            return Err("Propiedades: termina la edición, diálogo u operación actual".into());
+        }
+        self.start_properties(objects, 0)
+    }
+    fn start_properties(&mut self, objects: Vec<PathBuf>, index: usize) -> Result<(), String> {
+        if self.mutations.busy || self.mutation_applied || self.copy_busy() {
+            return Err("Propiedades: espera a que termine la operación actual".into());
+        }
+        let path = objects
+            .get(index)
+            .ok_or("Propiedades: objeto no disponible")?
+            .clone();
+        let id = self.next_mutation_id();
+        self.mutations
+            .submit(Request::Inspect {
+                id,
+                path: path.clone(),
+            })
+            .map_err(|_| "El worker no aceptó la lectura de propiedades".to_owned())?;
+        let mut d = Dialog::new(id, path);
+        d.objects = objects;
+        d.object_index = index;
+        self.session.restore_allowed = false;
         self.operation_message = None;
         self.preview.close();
         self.rename_dialog = None;
         self.settings = false;
         self.actions_menu = false;
         self.notice_open = false;
-        let id = self.next_mutation_id();
-        let mut d = Dialog::new(id, path.clone());
-        if self
-            .mutations
-            .submit(Request::Inspect { id, path })
-            .is_err()
-        {
-            d.pending = false;
-            d.stale = true;
-            d.message = "El worker no aceptó la lectura; vuelve a intentar Recargar".into();
-        }
         self.properties_dialog = Some(d);
         self.hits.clear();
+        Ok(())
     }
     pub fn reload_properties(&mut self) {
         if self.mutations.busy || self.mutation_applied {
             return;
         }
-        let Some(path) = self.properties_dialog.as_ref().map(|d| d.path.clone()) else {
+        let Some((objects, index)) = self
+            .properties_dialog
+            .as_ref()
+            .map(|d| (d.objects.clone(), d.object_index))
+        else {
             return;
         };
-        let id = self.next_mutation_id();
-        let mut d = Dialog::new(id, path.clone());
-        if self
-            .mutations
-            .submit(Request::Inspect { id, path })
-            .is_err()
+        if let Err(error) = self.start_properties(objects, index)
+            && let Some(d) = &mut self.properties_dialog
         {
-            d.pending = false;
             d.stale = true;
-            d.message = "No se pudo recargar; el worker no está disponible".into();
+            d.message = error;
         }
-        self.properties_dialog = Some(d);
-        self.hits.clear();
+    }
+    pub fn step_properties(&mut self, delta: i32) {
+        if self.mutations.busy || self.mutation_applied || self.copy_busy() {
+            return;
+        }
+        let Some(d) = self.properties_dialog.as_ref() else {
+            return;
+        };
+        let Some(index) = d.step_index(delta) else {
+            return;
+        };
+        let objects = d.objects.clone();
+        if let Err(error) = self.start_properties(objects, index)
+            && let Some(d) = &mut self.properties_dialog
+        {
+            d.message = error;
+        }
     }
     pub fn apply_properties(&mut self) {
         if self.mutations.busy
@@ -168,11 +232,16 @@ impl Model {
         let close = d.close_after;
         d.pending = false;
         d.applying = false;
-        d.stale = !reply.success || reply.snapshot.is_none();
-        if let Some(snapshot) = &reply.snapshot {
-            d.observed = Some(snapshot.properties);
+        let observation = reply
+            .snapshot
+            .as_ref()
+            .map(|snapshot| snapshot.properties)
+            .or(reply.observed);
+        d.stale = !reply.success || observation.is_none();
+        if let Some(observed) = observation {
+            d.observed = Some(observed);
             if reply.success {
-                d.requested = snapshot.properties.mode & 0o777;
+                d.requested = observed.mode & 0o777;
             }
         }
         d.snapshot = reply.snapshot;
@@ -212,7 +281,9 @@ pub fn event(m: &mut Model, ev: Event, h: i32) -> bool {
 }
 
 pub fn key(m: &mut Model, key: Key, mods: Shortcut, h: i32) {
-    if key == Key::Escape {
+    if mods.intersects(Shortcut::Alt) && matches!(key, Key::Left | Key::Right) {
+        m.action(Action::PropertyStep(if key == Key::Left { -1 } else { 1 }));
+    } else if key == Key::Escape {
         m.action(Action::PropertyClose);
     } else if key == Key::Enter {
         m.action(Action::PropertyApply);
@@ -245,5 +316,299 @@ pub fn key(m: &mut Model, key: Key, mods: Shortcut, h: i32) {
         && let Some(index) = m.properties_dialog.as_ref().map(|d| d.focus)
     {
         m.action(Action::PropertyBit(index));
+    }
+}
+
+#[cfg(test)]
+mod batch_tests {
+    use super::*;
+    use std::{
+        fs::{self, OpenOptions},
+        io::Write,
+        sync::atomic::{AtomicU64, Ordering},
+        time::{Duration, Instant},
+    };
+    struct Fixture {
+        root: PathBuf,
+        paths: Vec<PathBuf>,
+    }
+    impl Fixture {
+        fn new() -> Self {
+            static ID: AtomicU64 = AtomicU64::new(0);
+            let root = std::env::temp_dir().join(format!(
+                "files-properties-batch-{}-{}",
+                std::process::id(),
+                ID.fetch_add(1, Ordering::Relaxed)
+            ));
+            fs::create_dir(&root).unwrap();
+            let paths = vec![root.join("a.txt"), root.join("b.txt")];
+            for path in &paths {
+                let mut file = OpenOptions::new()
+                    .write(true)
+                    .create_new(true)
+                    .open(path)
+                    .unwrap();
+                file.write_all(b"owned properties fixture\n").unwrap();
+            }
+            Self { root, paths }
+        }
+    }
+    impl Drop for Fixture {
+        fn drop(&mut self) {
+            for path in &self.paths {
+                let _ = fs::remove_file(path);
+            }
+            let _ = fs::remove_dir(&self.root);
+        }
+    }
+    fn wait(m: &mut Model, properties: bool) {
+        let end = Instant::now() + Duration::from_secs(4);
+        while Instant::now() < end {
+            m.pump();
+            if m.loaded && (!properties || m.properties_dialog.as_ref().is_some_and(|d| !d.pending))
+            {
+                return;
+            }
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        panic!("owned properties fixture did not settle");
+    }
+    #[test]
+    fn batch_properties_rejects_invalid_whole_requests_before_allocating_or_opening() {
+        let mut m = Model::new("/fixture/properties-admission".into());
+        m.worker.suspend();
+        let id = m.mutation_id;
+        for paths in [
+            vec![],
+            vec!["relative".into()],
+            vec!["/valid".into(), "relative".into()],
+            (0..33)
+                .map(|i| PathBuf::from(format!("/fixture/{i}")))
+                .collect(),
+            (0..17)
+                .map(|i| PathBuf::from(format!("/{i:02}/{}", "x".repeat(4080))))
+                .collect(),
+        ] {
+            assert!(m.open_properties_paths(paths).is_err());
+            assert!(m.properties_dialog.is_none());
+            assert_eq!(m.mutation_id, id);
+        }
+        m.editing = true;
+        assert!(m.open_properties_paths(vec!["/fixture/a".into()]).is_err());
+        assert!(m.properties_dialog.is_none());
+        assert_eq!(m.mutation_id, id);
+        m.editing = false;
+        m.settings = true;
+        assert!(m.open_properties_paths(vec!["/fixture/a".into()]).is_err());
+        assert!(
+            m.settings,
+            "external properties do not dismiss an existing menu"
+        );
+        assert!(m.properties_dialog.is_none());
+        assert_eq!(m.mutation_id, id);
+    }
+    #[test]
+    #[cfg(target_os = "linux")]
+    fn browser_properties_opens_the_whole_selection_without_changing_it() {
+        let f = Fixture::new();
+        let mut m = Model::new(f.root.clone());
+        wait(&mut m, false);
+        m.selection = (0..m.entries.len()).collect();
+        let before = (m.path.clone(), m.selection.clone(), m.generation);
+        let expected: Vec<_> = m
+            .order
+            .iter()
+            .filter(|i| m.selection.contains(i))
+            .map(|i| m.path.join(&m.entries[*i].name))
+            .collect();
+        m.open_properties();
+        wait(&mut m, true);
+        assert_eq!(m.properties_dialog.as_ref().unwrap().objects, expected);
+        assert_eq!((m.path.clone(), m.selection.clone(), m.generation), before);
+        m.close_properties();
+        assert!(m.properties_dialog.is_none());
+    }
+    #[test]
+    #[cfg(target_os = "linux")]
+    fn batch_properties_reads_each_object_without_navigation_and_preserves_edits() {
+        use std::os::unix::fs::PermissionsExt;
+        let f = Fixture::new();
+        let modes: Vec<_> = f
+            .paths
+            .iter()
+            .map(|path| fs::metadata(path).unwrap().permissions().mode())
+            .collect();
+        let mut m = Model::new(f.root.clone());
+        wait(&mut m, false);
+        m.view = crate::model::View::List;
+        m.sort = files_core::listing::Sort::Name;
+        m.query = ".txt".into();
+        m.rebuild();
+        let browser = (
+            m.path.clone(),
+            m.generation,
+            m.order.clone(),
+            m.selection.clone(),
+        );
+        m.session.restore_allowed = true;
+        m.open_properties_paths(vec![
+            f.paths[0].clone(),
+            f.paths[1].clone(),
+            f.paths[0].clone(),
+        ])
+        .unwrap();
+        assert!(!m.session.restore_allowed);
+        let first_id = m.properties_dialog.as_ref().unwrap().id;
+        m.step_properties(1);
+        assert_eq!(
+            m.properties_dialog.as_ref().unwrap().id,
+            first_id,
+            "pending read stays on first object"
+        );
+        wait(&mut m, true);
+        assert_eq!(m.properties_dialog.as_ref().unwrap().objects, f.paths);
+        assert!(m.properties_dialog.as_ref().unwrap().editable());
+        m.step_properties(1);
+        wait(&mut m, true);
+        let d = m.properties_dialog.as_ref().unwrap();
+        assert_eq!(d.path, f.paths[1]);
+        assert_eq!(d.object_index, 1);
+        assert_ne!(d.id, first_id);
+        let second_id = d.id;
+        m.step_properties(1);
+        assert_eq!(m.properties_dialog.as_ref().unwrap().id, second_id);
+        m.step_properties(-1);
+        wait(&mut m, true);
+        m.properties_dialog.as_mut().unwrap().toggle(1);
+        let d = m.properties_dialog.as_ref().unwrap();
+        assert!(d.changed());
+        let dirty = (d.id, d.path.clone(), d.requested);
+        m.step_properties(1);
+        let d = m.properties_dialog.as_ref().unwrap();
+        assert_eq!((d.id, d.path.clone(), d.requested), dirty);
+        assert!(m.open_properties_paths(vec![f.paths[1].clone()]).is_err());
+        m.reload_properties();
+        wait(&mut m, true);
+        let d = m.properties_dialog.as_ref().unwrap();
+        assert_eq!(d.objects, f.paths);
+        assert_eq!(d.object_index, 0);
+        assert!(!d.changed());
+        assert_eq!(
+            (
+                m.path.clone(),
+                m.generation,
+                m.order.clone(),
+                m.selection.clone()
+            ),
+            browser
+        );
+        assert_eq!(m.query, ".txt");
+        for (path, mode) in f.paths.iter().zip(modes) {
+            assert_eq!(fs::read(path).unwrap(), b"owned properties fixture\n");
+            assert_eq!(fs::metadata(path).unwrap().permissions().mode(), mode);
+        }
+        drop(m);
+    }
+    #[test]
+    #[cfg(target_os = "linux")]
+    fn root_observation_is_read_only_and_allows_browsing_to_an_owned_batch_object() {
+        use crate::painter::{Image, Painter, Rect};
+        use files_core::file_properties::{Identity, Kind, Properties, Timestamp};
+        struct Recorder(Vec<String>);
+        impl Painter for Recorder {
+            fn rect(&mut self, _: Rect, _: files_core::theme::Color) {}
+            fn rounded_rect(&mut self, _: Rect, _: i32, _: files_core::theme::Color) {}
+            fn text(
+                &mut self,
+                _: Rect,
+                text: &str,
+                _: i32,
+                _: files_core::theme::Color,
+                _: bool,
+                _: bool,
+            ) {
+                self.0.push(text.into());
+            }
+            fn image(&mut self, _: Rect, _: &Image<'_>) {}
+            fn clip(&mut self, _: Rect) {}
+            fn unclip(&mut self) {}
+        }
+        let f = Fixture::new();
+        let mut m = Model::new(f.root.clone());
+        wait(&mut m, false);
+        let browser = (m.path.clone(), m.generation, m.selection.clone());
+        let id = m.next_mutation_id();
+        let mut d = Dialog::new(id, "/".into());
+        d.objects.push(f.paths[0].clone());
+        m.properties_dialog = Some(d);
+        let time = Timestamp {
+            seconds: 1,
+            nanoseconds: 0,
+        };
+        // A synthetic root reply proves UI read-only behavior; this test never
+        // opens a host root or requests its permission-change capability.
+        let observed = Properties {
+            identity: Identity {
+                device: 1,
+                inode: 2,
+                kind: Kind::Directory,
+            },
+            apparent_bytes: 4096,
+            allocated_bytes: 4096,
+            hardlinks: 2,
+            uid: 0,
+            gid: 0,
+            mode: 0o755,
+            accessed: time,
+            modified: time,
+            changed: time,
+        };
+        m.properties_reply(
+            id,
+            Reply {
+                snapshot: None,
+                observed: Some(observed),
+                current_path: Some("/".into()),
+                success: true,
+                changed: false,
+                message: "Propiedades de la raíz: sólo lectura".into(),
+                warnings: vec![],
+            },
+        );
+        let d = m.properties_dialog.as_ref().unwrap();
+        assert!(!d.pending && !d.stale && !d.editable() && !d.changed() && !d.has_edits());
+        assert!(d.snapshot.is_none());
+        assert_eq!(d.observed, Some(observed));
+        assert_eq!(d.requested, 0o755);
+        assert_eq!(d.step_index(1), Some(1));
+        let mut recorder = Recorder(vec![]);
+        paint(&mut recorder, &mut m, 1000, 650);
+        assert!(
+            recorder
+                .0
+                .iter()
+                .any(|text| text.contains("Directorio sólo lectura"))
+        );
+        assert!(
+            !m.hits
+                .iter()
+                .any(|h| matches!(h.action, Action::PropertyApply | Action::PropertyBit(_)))
+        );
+        assert!(
+            m.hits
+                .iter()
+                .any(|h| matches!(h.action, Action::PropertyStep(1)))
+        );
+        m.apply_properties();
+        assert!(!m.mutations.busy && !m.mutation_applied);
+        m.step_properties(1);
+        wait(&mut m, true);
+        let d = m.properties_dialog.as_ref().unwrap();
+        assert_eq!(d.path, f.paths[0]);
+        assert_eq!(d.object_index, 1);
+        assert!(d.snapshot.is_some());
+        assert_eq!(d.step_index(-1), Some(0));
+        assert_eq!((m.path.clone(), m.generation, m.selection.clone()), browser);
+        drop(m);
     }
 }

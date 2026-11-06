@@ -178,6 +178,8 @@ mod tests {
     fn document() -> Session {
         Session {
             tabs: vec![crate::tabs::Saved {
+                reveal_hidden: false,
+                reveal_selection: false,
                 path: "/session-delayed-other".into(),
                 history: History::default(),
                 selection: Snapshot::capture(std::iter::empty(), None).unwrap(),

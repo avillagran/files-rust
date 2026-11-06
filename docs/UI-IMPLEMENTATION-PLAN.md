@@ -30,6 +30,13 @@ inactive-tab context actions are delivered in `1c2cdee`; see
 are implemented in `a0f1fff`/`e47cf81`; see [KEYED-TABS.md](KEYED-TABS.md).
 Tear-off and broader platform/accessibility acceptance remain open.
 
+Explicit FileManager1 service mode and the select/folders/properties CLI are
+implemented; see [FILEMANAGER1.md](FILEMANAGER1.md). Requests preserve exact
+path identity, use cancellable helper preflight and reject stale view/modal
+ownership before UI admission. Automatic desktop activation/default-provider
+registration and startup-token focus handling remain open. Initial local
+libdbus connection/authentication has no hard total deadline.
+
 Reconcile the existing Nautilus parity matrix with current implementation;
 several entries predate Sidebar, recent files and AccessKit in the toolkit.
 Validate keyboard navigation, selection, focus return, inline rename,

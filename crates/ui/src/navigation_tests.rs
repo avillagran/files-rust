@@ -2045,6 +2045,8 @@ fn folder_view_tab_session_snapshot_has_priority_over_late_catalog() {
     let mut f = Fixture::new();
     let m = &mut f.m;
     m.restore_tab(crate::tabs::Saved {
+        reveal_hidden: false,
+        reveal_selection: false,
         path: f.root.clone(),
         history: Default::default(),
         selection: crate::refresh_selection::Snapshot::capture(

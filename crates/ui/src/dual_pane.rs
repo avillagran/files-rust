@@ -25,6 +25,8 @@ pub struct Browser {
     pub selection: HashSet<usize>,
     pub anchor: Option<usize>,
     pub preserve_empty_selection: bool,
+    pub reveal_hidden: bool,
+    pub external_reveal: Option<crate::file_manager_ui::Reveal>,
     pub sort: Sort,
     pub descending: bool,
     pub query: String,
@@ -56,6 +58,8 @@ impl Browser {
             selection: HashSet::new(),
             anchor: None,
             preserve_empty_selection: false,
+            reveal_hidden: false,
+            external_reveal: None,
             sort: Sort::Name,
             descending: false,
             query: String::new(),
@@ -75,6 +79,8 @@ impl Browser {
     }
     fn swap(&mut self, m: &mut Model) {
         m.end_filter_edit();
+        std::mem::swap(&mut self.reveal_hidden, &mut m.reveal_hidden);
+        std::mem::swap(&mut self.external_reveal, &mut m.external_reveal);
         std::mem::swap(&mut self.revision, &mut m.pane_revision);
         std::mem::swap(&mut self.path, &mut m.path);
         std::mem::swap(&mut self.history, &mut m.history);
@@ -113,6 +119,10 @@ impl Browser {
     pub fn charge(&self) -> usize {
         crate::columns::charge(&self.entries, &self.order, &self.selection)
             + self.query.capacity()
+            + self
+                .external_reveal
+                .as_ref()
+                .map_or(0, |r| r.retained_bytes())
             + self.error.capacity()
             + self.stats_requested.capacity() * 24
             + self.requested.capacity() * 24
@@ -153,10 +163,15 @@ impl Browser {
                 .map_or(0, |v| v.retained_bytes())
             + self.history.retained_bytes()
             + self.query.capacity()
+            + self
+                .external_reveal
+                .as_ref()
+                .map_or(0, |r| r.retained_bytes())
             + self.path.capacity()
             + 8192)
     }
     fn rebuild(&mut self, hidden: bool, sizes: &crate::size_queue::State) {
+        let hidden = hidden || self.reveal_hidden;
         let filter = files_core::name_filter::Filter::new(&self.query);
         self.order.clear();
         self.order.reserve_exact(self.entries.len());
@@ -388,12 +403,14 @@ impl State {
                 .map_or(0, |v| v.retained_bytes())
             + m.history.retained_bytes()
             + m.query.capacity()
+            + m.external_reveal.as_ref().map_or(0, |r| r.retained_bytes())
             + m.path.capacity()
             + 8192)
     }
     pub fn data_charge(m: &Model) -> usize {
         crate::columns::charge(&m.entries, &m.order, &m.selection)
             + m.query.capacity()
+            + m.external_reveal.as_ref().map_or(0, |r| r.retained_bytes())
             + m.error.capacity()
             + m.stats_requested.capacity() * 24
             + m.requested.capacity() * 24
@@ -510,6 +527,14 @@ impl State {
         std::mem::swap(&mut self.active_id, &mut b.id);
         self.right_active = !self.right_active;
         m.generation = m.generation.wrapping_add(1);
+        let owner = m.pane_owner();
+        if let Some(reveal) = &mut m.external_reveal {
+            if reveal.owner == owner {
+                reveal.generation = m.generation;
+            } else {
+                m.external_reveal = None;
+            }
+        }
         m.visible_generation = 0;
         m.visible.clear();
         m.hits.clear();

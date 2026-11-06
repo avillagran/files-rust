@@ -4,6 +4,7 @@ mod directory_compare;
 mod directory_sync;
 mod du;
 mod duplicates;
+mod file_manager_preflight;
 mod image_preview;
 mod jpeg_scaled;
 mod office_preview;
@@ -95,6 +96,15 @@ fn run() -> io::Result<()> {
     let mut args = std::env::args_os();
     let _ = args.next();
     let command = args.next().unwrap_or_default();
+    if command == "file_manager_preflight" {
+        if args.next().is_some() {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "File-manager preflight takes no extra arguments",
+            ));
+        }
+        return file_manager_preflight::run();
+    }
     if command == "terminal" {
         let encoded = args.next().ok_or_else(|| {
             io::Error::new(

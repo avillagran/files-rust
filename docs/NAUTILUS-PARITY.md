@@ -47,7 +47,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 30 | Search with filters and full text | yes | — | — |
 | 31 | Executables and `.desktop` | no | — | P2 |
 | 32 | File chooser (portal) | no | — | P3 |
-| 33 | `org.freedesktop.FileManager1` and `.desktop` | no | «Show in folder» from other apps | P1 |
+| 33 | `org.freedesktop.FileManager1` and `.desktop` | partial | explicit three-method service and select/folders/properties CLI implemented; automatic desktop activation/default registration and startup-token focus handling pending | P1 |
 | 34 | Shortcut help | yes | — | — |
 | 35 | Bookmarks Ctrl+D | yes | — | — |
 | 36 | Copy path | **yes** | block 1: Ctrl+Alt+C and context menu | — |
@@ -299,3 +299,17 @@ startup intent pass on installed NODE and ARM M2. The shared indicator has
 intermediate/reversal/reduced-motion rendered frame acceptance. See
 [KEYED-TABS.md](KEYED-TABS.md) for exact viewport and input scope. Tear-off,
 native macOS/Windows, full accessibility/i18n and wider parity remain open.
+
+### 2026-11-06 — Explicit FileManager1 and external locations
+
+The Linux implementation provides all three FileManager1 methods behind
+`--file-manager-service`, plus `--select`, `--show-folders` and `--properties`.
+Bounded local URI decoding, exact item identity, whole-batch helper preflight,
+tab-budget admission and stale-view/modal cancellation precede UI effects.
+Multiple objects use the existing paged properties dialog, including browser
+multi-selection, without introducing batch permission changes. See
+[FILEMANAGER1.md](FILEMANAGER1.md) for limits, the startup/connect caveat and
+the source-only optional activation template. No activation provider or
+default association is installed by this work. Startup-token focus handling,
+native platform acceptance and the resource/startup gates remain open;
+delivery-specific acceptance is recorded separately.

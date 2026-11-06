@@ -407,6 +407,8 @@ impl<'a> Reader<'a> {
         Ok((
             charge,
             Some(Saved {
+                reveal_hidden: false,
+                reveal_selection: false,
                 path: path.into(),
                 history,
                 selection,
@@ -494,6 +496,8 @@ mod tests {
         let mut history = History::default();
         history.visit(Path::new("/old"), Path::new("/new")).unwrap();
         Saved {
+            reveal_hidden: false,
+            reveal_selection: false,
             path: "/new".into(),
             history,
             selection: Snapshot::capture_with_anchor(

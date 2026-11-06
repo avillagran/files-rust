@@ -11,7 +11,7 @@ pub fn is_map(m: &Model) -> bool {
     m.view == View::SpaceMap && !m.dual.enabled
 }
 pub fn map_stamp(m: &Model) -> Option<(u64, bool)> {
-    is_map(m).then(|| (m.space_map.revision(), m.show_hidden))
+    is_map(m).then(|| (m.space_map.revision(), m.hidden_visible()))
 }
 pub fn map_reason(m: &Model, command: Command) -> Option<&'static str> {
     if !is_map(m) || command == Command::Clear {
@@ -29,7 +29,7 @@ pub fn map_reason(m: &Model, command: Command) -> Option<&'static str> {
         m.generation,
         m.space_map.revision(),
         m.entries.len(),
-        m.show_hidden,
+        m.hidden_visible(),
     ) {
         return Some("Espera la proyección vigente del mapa");
     }
@@ -95,8 +95,10 @@ impl Model {
                     if map {
                         self.space_geometry.contains_entry(i)
                     } else {
-                        files_core::visibility::accepts(&e.name, self.show_hidden)
-                            && filter.as_ref().is_some_and(|f| f.score(e).is_some())
+                        files_core::visibility::accepts(
+                            &e.name,
+                            self.show_hidden || self.reveal_hidden,
+                        ) && filter.as_ref().is_some_and(|f| f.score(e).is_some())
                     }
                 })
             });

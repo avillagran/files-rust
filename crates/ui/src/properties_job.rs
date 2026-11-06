@@ -1,7 +1,7 @@
 //! Properties operations for the EXISTING mutation worker. No thread, helper,
 //! channel, unbounded history or UI filesystem access is created here.
 //! A snapshot pins two FDs; the caller owns at most one active inspector snapshot.
-use files_core::file_properties::{self, ChangeReport, Snapshot};
+use files_core::file_properties::{self, ChangeReport, Properties, Snapshot};
 use std::{
     fmt::{self, Write},
     path::PathBuf,
@@ -11,6 +11,8 @@ const MAX_MESSAGE_BYTES: usize = 1024;
 const MAX_WARNINGS: usize = 8;
 pub struct Reply {
     pub snapshot: Option<Box<Snapshot>>,
+    /// A read-only observation carries no descriptor or mutation authority.
+    pub observed: Option<Properties>,
     pub current_path: Option<PathBuf>,
     pub success: bool,
     /// True means the chmod syscall succeeded, even if later diagnostics failed.
@@ -55,6 +57,7 @@ fn cancelled(cancel: &AtomicBool) -> bool {
 fn inspect_failure(message: String) -> Reply {
     Reply {
         snapshot: None,
+        observed: None,
         current_path: None,
         success: false,
         changed: false,
@@ -65,6 +68,28 @@ fn inspect_failure(message: String) -> Reply {
 pub fn inspect(path: PathBuf, cancel: &AtomicBool) -> Reply {
     if cancelled(cancel) {
         return inspect_failure("Lectura de propiedades cancelada".into());
+    }
+    if path.as_os_str() == std::ffi::OsStr::new("/") {
+        let observed = match file_properties::read_only_directory(&path) {
+            Ok(observed) => observed,
+            Err(error) => {
+                return inspect_failure(diagnostic(format_args!(
+                    "No se pudieron leer las propiedades de la raíz: {error}"
+                )));
+            }
+        };
+        if cancelled(cancel) {
+            return inspect_failure("Lectura de propiedades cancelada".into());
+        }
+        return Reply {
+            snapshot: None,
+            observed: Some(observed),
+            current_path: Some(path),
+            success: true,
+            changed: false,
+            message: "Propiedades de la raíz: sólo lectura".into(),
+            warnings: Vec::new(),
+        };
     }
     let snapshot = match file_properties::capture(&path) {
         Ok(snapshot) => Box::new(snapshot),
@@ -90,6 +115,7 @@ pub fn inspect(path: PathBuf, cancel: &AtomicBool) -> Reply {
     }
     Reply {
         snapshot: Some(snapshot),
+        observed: None,
         current_path: Some(current_path),
         success: true,
         changed: false,
@@ -125,6 +151,7 @@ pub fn apply(snapshot: Box<Snapshot>, mode: u32, cancel: &AtomicBool) -> Reply {
             let current_path = current_path(&snapshot, &mut warnings);
             Reply {
                 snapshot: Some(snapshot),
+                observed: None,
                 current_path,
                 success: false,
                 changed: false,
@@ -156,6 +183,7 @@ fn applied(mut snapshot: Box<Snapshot>, report: ChangeReport) -> Reply {
     let keep_snapshot = report.after.is_some();
     Reply {
         snapshot: keep_snapshot.then_some(snapshot),
+        observed: None,
         current_path,
         success: true,
         changed: true,

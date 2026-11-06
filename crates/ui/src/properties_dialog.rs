@@ -1,4 +1,4 @@
-//! Single-object properties; UI holds at most one pinned snapshot. All FS I/O
+//! Properties browsing; UI holds at most one pinned object snapshot. All FS I/O
 //! stays in the existing mutation worker, including current-path resolution.
 use crate::{
     model::{Action, Hit, Model},
@@ -13,6 +13,8 @@ use std::path::PathBuf;
 pub struct Dialog {
     pub id: u64,
     pub path: PathBuf,
+    pub objects: Vec<PathBuf>,
+    pub object_index: usize,
     pub snapshot: Option<Box<Snapshot>>,
     pub current_path: Option<PathBuf>,
     pub observed: Option<Properties>,
@@ -102,6 +104,8 @@ impl Dialog {
     pub fn new(id: u64, path: PathBuf) -> Self {
         Self {
             id,
+            objects: vec![path.clone()],
+            object_index: 0,
             path,
             snapshot: None,
             current_path: None,
@@ -217,10 +221,18 @@ impl Dialog {
             })
     }
     pub fn changed(&self) -> bool {
-        self.editable()
-            && self
-                .observed
-                .is_some_and(|p| p.mode & 0o777 != self.requested)
+        self.editable() && self.has_edits()
+    }
+    pub fn has_edits(&self) -> bool {
+        self.observed
+            .is_some_and(|p| p.mode & 0o777 != self.requested)
+    }
+    pub fn step_index(&self, delta: i32) -> Option<usize> {
+        if self.pending || self.applying || self.has_edits() || delta == 0 {
+            return None;
+        }
+        let index = self.object_index.checked_add_signed(delta as isize)?;
+        (index < self.objects.len()).then_some(index)
     }
     pub fn toggle(&mut self, bit: usize) {
         if self.editable()
@@ -325,14 +337,43 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
         true,
         false,
     );
-    p.text(
-        Rect::new(x + 20, y + 40, width - 40, 24),
-        "Rutas completas en detalles · Inicio/Fin · Tab permisos",
-        10,
-        c.dark_foreground,
-        true,
-        false,
-    );
+    if d.objects.len() > 1 {
+        button(
+            p,
+            m,
+            Rect::new(x + 20, y + 40, 88, 24),
+            "Anterior",
+            Action::PropertyStep(-1),
+            d.step_index(-1).is_some(),
+            false,
+        );
+        p.text(
+            Rect::new(x + 116, y + 40, width - 232, 24),
+            &format!("Objeto {} de {}", d.object_index + 1, d.objects.len()),
+            10,
+            c.dark_foreground,
+            true,
+            false,
+        );
+        button(
+            p,
+            m,
+            Rect::new(x + width - 108, y + 40, 88, 24),
+            "Siguiente",
+            Action::PropertyStep(1),
+            d.step_index(1).is_some(),
+            false,
+        );
+    } else {
+        p.text(
+            Rect::new(x + 20, y + 40, width - 40, 24),
+            "Rutas completas en detalles · Inicio/Fin · Tab permisos",
+            10,
+            c.dark_foreground,
+            true,
+            false,
+        );
+    }
     let body = Rect::new(x + 20, y + 74, width - 40, (height - 176).max(0));
     d.ensure_layout(p, body.w);
     d.body_height = body.h;
@@ -459,7 +500,9 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
                 false,
             );
         }
-        let note = if d.editable() {
+        let note = if d.snapshot.is_none() && d.observed.is_some() && !d.stale {
+            "Directorio sólo lectura; no se habilitan cambios de permisos."
+        } else if d.editable() {
             "Sólo este objeto; sin recursión, ACL ni cambio de propietario."
         } else {
             "Sólo lectura o snapshot obsoleto: Recargar para volver a comprobar."
@@ -499,7 +542,11 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
     );
     p.text(
         Rect::new(x + 20, y + height - 70, width - 40, 20),
-        "Sin Deshacer · rueda/↑/↓ · Inicio/Fin · Tab permisos",
+        if d.objects.len() > 1 {
+            "Alt+←/→ objeto · rueda/↑/↓ · Tab permisos"
+        } else {
+            "Sin Deshacer · rueda/↑/↓ · Inicio/Fin · Tab permisos"
+        },
         10,
         c.dark_foreground,
         true,
@@ -556,7 +603,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
     );
 }
 pub fn fixture(m: &Model) -> serde_json::Value {
-    m.properties_dialog.as_ref().map_or(serde_json::Value::Null,|d|serde_json::json!({"id":d.id,"pending":d.pending,"applying":d.applying,"changed":d.changed(),"editable":d.editable(),"stale":d.stale,"requested":d.requested,"observed":d.observed.map(|p|p.mode),"path_raw":d.path.as_os_str().as_encoded_bytes(),"current_raw":d.current_path.as_ref().map(|p|p.as_os_str().as_encoded_bytes()),"scroll":d.scroll,"focus":d.focus,"body":[d.body.x,d.body.y,d.body.w,d.body.h],"content_height":d.content_height(),"paths":d.layout.as_ref().map(|l|serde_json::json!({"requested":l.requested,"verified":l.verified,"link":l.link,"permissions_top":l.permissions,"verified_top":l.verified_top,"link_top":l.link_top})),"buttons":m.hits.iter().filter_map(|h|{let (command,index)=match &h.action {Action::PropertyBit(i)=>("Bit",Some(*i)),Action::PropertyApply=>("Apply",None),Action::PropertyReload=>("Reload",None),Action::PropertyClose=>("Close",None),_=>return None};Some(serde_json::json!({"command":command,"index":index,"rect":[h.rect.x,h.rect.y,h.rect.w,h.rect.h]}))}).collect::<Vec<_>>()}))
+    m.properties_dialog.as_ref().map_or(serde_json::Value::Null,|d|serde_json::json!({"id":d.id,"object_index":d.object_index,"object_count":d.objects.len(),"objects_raw":d.objects.iter().map(|p|p.as_os_str().as_encoded_bytes()).collect::<Vec<_>>(),"pending":d.pending,"applying":d.applying,"changed":d.changed(),"editable":d.editable(),"stale":d.stale,"requested":d.requested,"observed":d.observed.map(|p|p.mode),"path_raw":d.path.as_os_str().as_encoded_bytes(),"current_raw":d.current_path.as_ref().map(|p|p.as_os_str().as_encoded_bytes()),"scroll":d.scroll,"focus":d.focus,"body":[d.body.x,d.body.y,d.body.w,d.body.h],"content_height":d.content_height(),"paths":d.layout.as_ref().map(|l|serde_json::json!({"requested":l.requested,"verified":l.verified,"link":l.link,"permissions_top":l.permissions,"verified_top":l.verified_top,"link_top":l.link_top})),"buttons":m.hits.iter().filter_map(|h|{let (command,index)=match &h.action {Action::PropertyBit(i)=>("Bit",Some(*i)),Action::PropertyApply=>("Apply",None),Action::PropertyReload=>("Reload",None),Action::PropertyClose=>("Close",None),Action::PropertyStep(delta)=>(if *delta<0 {"Previous"} else {"Next"},None),_=>return None};Some(serde_json::json!({"command":command,"index":index,"rect":[h.rect.x,h.rect.y,h.rect.w,h.rect.h]}))}).collect::<Vec<_>>()}))
 }
 
 #[cfg(test)]
@@ -722,5 +769,91 @@ mod tests {
         assert_eq!(d.scroll, CONTENT_HEIGHT - 228);
         d.scroll_by(i32::MIN, 228);
         assert_eq!(d.scroll, 0);
+    }
+    #[test]
+    fn batch_navigation_is_bounded_and_keeps_stale_unapplied_edits() {
+        use files_core::file_properties::Identity;
+        let mut d = Dialog::new(1, "/fixture/a".into());
+        d.objects.push("/fixture/b".into());
+        assert_eq!(d.step_index(1), None, "reading cannot switch objects");
+        d.pending = false;
+        assert_eq!(d.step_index(-1), None);
+        assert_eq!(d.step_index(1), Some(1));
+        assert_eq!(d.step_index(i32::MAX), None);
+        d.object_index = 1;
+        assert_eq!(d.step_index(1), None);
+        assert_eq!(d.step_index(-1), Some(0));
+        d.applying = true;
+        assert_eq!(d.step_index(-1), None);
+        d.applying = false;
+        let time = Timestamp {
+            seconds: 1,
+            nanoseconds: 0,
+        };
+        d.observed = Some(Properties {
+            identity: Identity {
+                device: 1,
+                inode: 2,
+                kind: Kind::File,
+            },
+            apparent_bytes: 1,
+            allocated_bytes: 512,
+            hardlinks: 1,
+            uid: 0,
+            gid: 0,
+            mode: 0o600,
+            accessed: time,
+            modified: time,
+            changed: time,
+        });
+        d.requested = 0o640;
+        d.stale = true;
+        assert!(!d.changed(), "stale snapshots cannot Apply");
+        assert!(d.has_edits());
+        assert_eq!(
+            d.step_index(-1),
+            None,
+            "failed edits are not discarded by navigation"
+        );
+        assert_eq!(d.requested, 0o640);
+    }
+    #[test]
+    fn batch_navigation_header_fits_minimum_width_without_changing_permission_focus() {
+        let mut m = Model::new("/fixture/properties-header".into());
+        m.worker.suspend();
+        let mut d = Dialog::new(1, "/fixture/a".into());
+        d.objects.push("/fixture/b".into());
+        d.pending = false;
+        for (index, expected) in [(0, 1), (1, -1)] {
+            d.object_index = index;
+            d.path = d.objects[index].clone();
+            let mut p = Recorder::default();
+            paint(&mut p, &mut m, &mut d, 440, 440);
+            let buttons: Vec<_> = m
+                .hits
+                .iter()
+                .filter(|hit| matches!(hit.action, Action::PropertyStep(_)))
+                .collect();
+            assert_eq!(buttons.len(), 1);
+            let hit = buttons[0];
+            assert!(matches!(hit.action,Action::PropertyStep(delta) if delta==expected));
+            assert!(hit.rect.x >= 18 && hit.rect.x + hit.rect.w <= 422);
+            assert!(hit.rect.y + hit.rect.h <= d.body.y);
+            assert!(
+                p.text
+                    .iter()
+                    .any(|text| text == &format!("Objeto {} de 2", index + 1))
+            );
+            d.focus = 0;
+            d.focus_next(true, d.body_height);
+            assert_eq!(d.focus, 8, "existing permission Tab cycle remains intact");
+        }
+        d.pending = true;
+        paint(&mut Recorder::default(), &mut m, &mut d, 440, 440);
+        assert!(
+            !m.hits
+                .iter()
+                .any(|hit| matches!(hit.action, Action::PropertyStep(_)))
+        );
     }
 }

@@ -45,6 +45,9 @@ mod dual_scene;
 mod dual_view;
 mod duplicate_job;
 mod file_clipboard;
+mod file_manager_bus;
+mod file_manager_preflight;
+mod file_manager_ui;
 mod filter_edit;
 mod folder_summary;
 mod folder_views_state;
@@ -985,9 +988,14 @@ pub fn run_since(start: Instant) -> bool {
     let mut args = std::env::args_os().skip(1);
     let mut end_options = false;
     let mut no_session = false;
+    let mut file_manager_service = false;
+    let mut external_method = None;
+    let mut external_operands = Vec::new();
     while let Some(a) = args.next() {
         if end_options {
-            path = Some(PathBuf::from(a));
+            let operand = PathBuf::from(a);
+            external_operands.push(operand.clone());
+            path = Some(operand);
             continue;
         }
         match a.to_str() {
@@ -1021,24 +1029,81 @@ pub fn run_since(start: Instant) -> bool {
                     .unwrap_or_default()
             }
             Some("--no-session") => no_session = true,
+            Some("--file-manager-service") => file_manager_service = true,
+            Some(mode @ ("--select" | "--show-folders" | "--properties")) => {
+                if external_method.is_some() {
+                    eprintln!("Usa solo uno de --select, --show-folders o --properties");
+                    return false;
+                }
+                external_method = Some(match mode {
+                    "--select" => files_core::file_manager::Method::ShowItems,
+                    "--properties" => files_core::file_manager::Method::ShowItemProperties,
+                    _ => files_core::file_manager::Method::ShowFolders,
+                });
+            }
             Some("--version") => {
                 println!("files {}", env!("CARGO_PKG_VERSION"));
                 return true;
             }
             Some("--help") => {
                 println!(
-                    "files [carpeta] [--size 1100x700] [--scale 1] [--list|--columns] [--exit-after segundos] [--no-session] [--ui-smoke]"
+                    "files [carpeta] [--select rutas... | --show-folders rutas... | --properties rutas...] [--file-manager-service] [--size 1100x700] [--scale 1] [--list|--columns] [--exit-after segundos] [--no-session] [--ui-smoke]"
                 );
                 return true;
             }
-            _ if !a.as_encoded_bytes().starts_with(b"-") => path = Some(PathBuf::from(a)),
+            _ if !a.as_encoded_bytes().starts_with(b"-") => {
+                let operand = PathBuf::from(a);
+                external_operands.push(operand.clone());
+                path = Some(operand);
+            }
             _ => {
                 eprintln!("Opción desconocida: {a:?}");
                 return false;
             }
         }
     }
-    let explicit_path = path.is_some();
+    if file_manager_service && (external_method.is_some() || !external_operands.is_empty()) {
+        eprintln!(
+            "El servicio FileManager1 no admite una ubicación inicial; usa --select o --show-folders por separado"
+        );
+        return false;
+    }
+    if external_method.is_none()
+        && (external_operands.len() > 1
+            || external_operands
+                .first()
+                .and_then(|p| p.to_str())
+                .is_some_and(|s| {
+                    s.get(..7)
+                        .is_some_and(|p| p.eq_ignore_ascii_case("file://"))
+                }))
+    {
+        external_method = Some(files_core::file_manager::Method::ShowFolders);
+    }
+    let external_request = if let Some(method) = external_method {
+        let cwd = match std::env::current_dir() {
+            Ok(path) => path,
+            Err(error) => {
+                eprintln!("{error}");
+                return false;
+            }
+        };
+        match file_manager_ui::cli_request(method, &external_operands, &cwd) {
+            Ok(request) => Some(request),
+            Err(error) => {
+                eprintln!("{error}");
+                return false;
+            }
+        }
+    } else {
+        None
+    };
+    let mut waiting_for_external = file_manager_service || external_request.is_some();
+    if waiting_for_external {
+        path = None;
+        no_session = true;
+    }
+    let explicit_path = path.is_some() || waiting_for_external;
     let path = path.unwrap_or_else(files_core::theme::home);
     let path = if path.is_absolute() {
         path
@@ -1773,10 +1838,26 @@ pub fn run_since(start: Instant) -> bool {
         && smoke
         && std::env::var_os("FILES_TEST_MUTATIONS").as_deref() == Some(std::ffi::OsStr::new("1"));
     let mut last_metrics = Instant::now() - Duration::from_secs(2);
+    let mut file_manager = match file_manager_ui::Controller::new(file_manager_service) {
+        Ok(controller) => controller,
+        Err(error) => {
+            eprintln!("{error}");
+            return false;
+        }
+    };
+    if let Some(request) = external_request
+        && let Err(error) = file_manager.enqueue_cli(&model.borrow(), request)
+    {
+        eprintln!("{error}");
+        return false;
+    }
+    let mut file_manager_status = String::new();
     if trace {
         eprintln!("FILES_PRE_SHOW_US={}", start.elapsed().as_micros());
     }
-    win.show();
+    if !waiting_for_external {
+        win.show();
+    }
     if smoke || trace {
         let g = fltk_omarchy::glass::setting();
         eprintln!(
@@ -1787,7 +1868,7 @@ pub fn run_since(start: Instant) -> bool {
             fltk_omarchy::glass::wayland()
         );
     }
-    if !isolate_fixture_input {
+    if !isolate_fixture_input && !waiting_for_external {
         model.borrow_mut().native_transfer.enable(&win);
     }
     let mut applied_window_mode = model.borrow().window_mode;
@@ -1795,7 +1876,9 @@ pub fn run_since(start: Instant) -> bool {
     if trace {
         eprintln!("FILES_SHOW_US={}", start.elapsed().as_micros());
     }
-    let _ = canvas.take_focus();
+    if !waiting_for_external {
+        let _ = canvas.take_focus();
+    }
     fltk_omarchy::app::flush();
     let wait_trace = std::env::var_os("FILES_WAIT_TRACE").is_some();
     let mut runtime_failed = false;
@@ -1811,10 +1894,13 @@ pub fn run_since(start: Instant) -> bool {
             runtime_failed = true;
             break;
         }
-        if !win.shown() {
+        if !win.shown() && !waiting_for_external {
             eprintln!("FILES_BACKEND_WIDGET_LOST phase=unexpected_hidden; cancelling and draining");
             runtime_failed = true;
             break;
+        }
+        if waiting_for_external && !win.shown() {
+            std::thread::sleep(Duration::from_millis(5));
         }
         match platform_wait::wait(0.005) {
             Ok(platform_wait::Outcome::Ready { raw, errno }) => {
@@ -1875,6 +1961,20 @@ pub fn run_since(start: Instant) -> bool {
         m.set_media_visible(win.shown() && win.visible_r());
         let strip_dirty = tab_strip.drain(&mut m);
         let mut dirty = m.pump() || changed || strip_dirty;
+        let external = file_manager.pump(&mut m);
+        dirty |= external.dirty || file_manager_ui::Controller::finish_reveal(&mut m);
+        if let Some(error) = &external.fatal {
+            eprintln!("Mostrar en carpeta: {error}");
+            runtime_failed = true;
+            m.closing = true;
+        }
+        if file_manager_service {
+            let status = file_manager.status();
+            if status != file_manager_status {
+                eprintln!("FILES_FILE_MANAGER_STATUS {status}");
+                file_manager_status = status;
+            }
+        }
         if m.tab_feedback
             .is_some_and(|at| at.elapsed() >= Duration::from_secs(3))
         {
@@ -1953,6 +2053,7 @@ pub fn run_since(start: Instant) -> bool {
             && m.search.is_drained()
             && m.mutations_drained()
             && !m.notice_open
+            && file_manager.drained()
         {
             if thumbnail_fixture {
                 eprintln!(
@@ -2062,10 +2163,19 @@ pub fn run_since(start: Instant) -> bool {
             && (m.view != View::Groups
                 || m.entries
                     .iter()
-                    .filter(|e| files_core::visibility::accepts(&e.name, m.show_hidden))
+                    .filter(|e| files_core::visibility::accepts(&e.name, m.hidden_visible()))
                     .all(|e| e.stat_attempted))
             && (m.view != View::Spatial || m.layout_ready);
         drop(m);
+        if external.present && !model.borrow().closing {
+            waiting_for_external = false;
+            win.show();
+            let _ = canvas.take_focus();
+            if !isolate_fixture_input {
+                model.borrow_mut().native_transfer.enable(&win);
+            }
+            canvas.redraw();
+        }
         if toolkit_fixture
             && !smoke
             && let Some(path) = &capture_path
@@ -2074,6 +2184,17 @@ pub fn run_since(start: Instant) -> bool {
             if let Ok(text) = std::fs::read_to_string(&command) {
                 let _ = std::fs::remove_file(command);
                 match text.trim() {
+                    "file-manager-state" => {
+                        let value = file_manager.marker(&model.borrow());
+                        eprintln!("FILES_FILE_MANAGER_STATE {value}");
+                    }
+                    "file-manager-protect" => model.borrow_mut().action(Action::Help),
+                    "file-manager-unprotect" => {
+                        model.borrow_mut().help = None;
+                    }
+                    "file-manager-prop-next" => model.borrow_mut().step_properties(1),
+                    "file-manager-prop-prev" => model.borrow_mut().step_properties(-1),
+                    "file-manager-prop-close" => model.borrow_mut().close_properties(),
                     "right-hold" | "right-release" => {
                         let rect =
                             model.borrow().hits.iter().find_map(|h| {
@@ -3353,12 +3474,14 @@ pub fn run_since(start: Instant) -> bool {
             }
         }
     }
+    file_manager.stop();
     if runtime_failed {
         // A real display/poll failure must not terminate an in-flight rollback.
         // No replacement jobs or UI waits are started while draining.
         loop {
             let mut m = model.borrow_mut();
             m.closing = true;
+            file_manager.pump(&mut m);
             m.mutations.cancel();
             m.copy.begin_close();
             if m.preview.visible() {
@@ -3376,6 +3499,7 @@ pub fn run_since(start: Instant) -> bool {
                 && m.search.is_drained()
                 && !m.search_transfer.busy()
                 && m.space_map.is_drained()
+                && file_manager.drained()
             {
                 let failure_marker = if m.preview.is_drained() {
                     "FILES_FAILURE_DRAINED"
@@ -3437,7 +3561,7 @@ fn smoke_test(model: &Rc<RefCell<Model>>, canvas: &mut Frame) {
         m.order.len(),
         m.entries
             .iter()
-            .filter(|e| files_core::visibility::accepts(&e.name, m.show_hidden))
+            .filter(|e| files_core::visibility::accepts(&e.name, m.hidden_visible()))
             .count()
     );
     m.action(Action::View(View::Groups));

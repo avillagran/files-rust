@@ -235,7 +235,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
             let bytes = report
                 .nodes
                 .iter()
-                .filter(|n| m.show_hidden || n.name.first() != Some(&b'.'))
+                .filter(|n| m.hidden_visible() || n.name.first() != Some(&b'.'))
                 .filter_map(|n| n.bytes)
                 .sum::<u64>();
             (
@@ -275,7 +275,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
         p,
         m,
         Rect::new(body.x + (body.w - 186).max(0), body.y, 184, 28),
-        if m.show_hidden {
+        if m.hidden_visible() {
             "  Ocultar ocultos"
         } else {
             "  Mostrar ocultos"
@@ -376,7 +376,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
         m.generation,
         m.space_map.revision(),
         (body.w.max(1), body.y + body.h - map_y),
-        m.show_hidden,
+        m.hidden_visible(),
     );
     let map = Rect::new(body.x, map_y, body.w.max(1), m.space_geometry.map_height);
     let list_top = map.y + map.h + 32;
@@ -640,7 +640,7 @@ pub fn inspector_details(m: &Model, index: usize) -> Option<String> {
         return None;
     }
     let entry = m.entries.get(index)?;
-    if !files_core::visibility::accepts(&entry.name, m.show_hidden) {
+    if !files_core::visibility::accepts(&entry.name, m.hidden_visible()) {
         return None;
     }
     let n = report

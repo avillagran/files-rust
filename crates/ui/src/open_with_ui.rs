@@ -74,7 +74,7 @@ impl Model {
         let Some(entry) = self
             .selected
             .and_then(|i| self.entries.get(i))
-            .filter(|e| files_core::visibility::accepts(&e.name, self.show_hidden))
+            .filter(|e| files_core::visibility::accepts(&e.name, self.hidden_visible()))
         else {
             self.operation_message = Some("Selecciona un archivo para abrir con…".into());
             return;

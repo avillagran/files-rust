@@ -133,7 +133,7 @@ impl Model {
                 .entries
                 .get(i)
                 .ok_or("El elemento ya no está disponible")?;
-            if !files_core::visibility::accepts(&entry.name, self.show_hidden)
+            if !files_core::visibility::accepts(&entry.name, self.hidden_visible())
                 || (!crate::selection_tools::is_map(self) && !self.order.contains(&i))
             {
                 return Err("El elemento ya no está visible");

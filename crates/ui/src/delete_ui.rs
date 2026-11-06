@@ -174,7 +174,7 @@ impl Model {
             .filter(|(i, e)| {
                 (self.selection.contains(i)
                     || self.selection.is_empty() && self.selected == Some(*i))
-                    && files_core::visibility::accepts(&e.name, self.show_hidden)
+                    && files_core::visibility::accepts(&e.name, self.hidden_visible())
             })
             .map(|(_, e)| self.path.join(&e.name))
             .collect();
@@ -199,7 +199,7 @@ impl Model {
             .filter(|(i, e)| {
                 (self.selection.contains(i)
                     || self.selection.is_empty() && self.selected == Some(*i))
-                    && files_core::visibility::accepts(&e.name, self.show_hidden)
+                    && files_core::visibility::accepts(&e.name, self.hidden_visible())
             })
             .map(|(_, e)| self.path.join(&e.name))
             .collect();
@@ -243,7 +243,7 @@ impl Model {
             .enumerate()
             .filter(|(i, e)| {
                 self.selection.contains(i)
-                    && files_core::visibility::accepts(&e.name, self.show_hidden)
+                    && files_core::visibility::accepts(&e.name, self.hidden_visible())
             })
             .map(|(_, e)| e.name.clone())
             .collect();

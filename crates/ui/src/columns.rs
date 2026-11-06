@@ -201,7 +201,7 @@ impl State {
         self.clear();
         self.enabled = true;
         self.generation = m.generation;
-        self.hidden = m.show_hidden;
+        self.hidden = m.hidden_visible();
         self.tab = m.tabs.active;
         let id = self.id();
         self.columns.push(Column {
@@ -404,10 +404,10 @@ impl State {
             self.generation = m.generation;
             dirty = true;
         }
-        if self.hidden != m.show_hidden {
-            self.hidden = m.show_hidden;
+        if self.hidden != m.hidden_visible() {
+            self.hidden = m.hidden_visible();
             for c in &mut self.columns {
-                c.data.rebuild(m.show_hidden);
+                c.data.rebuild(m.hidden_visible());
             }
             dirty = true;
         }
@@ -458,7 +458,7 @@ impl State {
                 }
                 _ => {}
             }
-            self.columns[index].data.rebuild(m.show_hidden);
+            self.columns[index].data.rebuild(m.hidden_visible());
             self.columns[index].data.restore();
         }
         if self.columns.windows(2).enumerate().any(|(i, pair)| {
@@ -510,7 +510,7 @@ impl State {
                 .selected
                 .filter(|i| m.selection.len() == 1 && m.selection.contains(i))
                 .and_then(|i| m.entries.get(i))
-                .filter(|e| e.is_dir() && accepts(e, m.show_hidden, &m.query));
+                .filter(|e| e.is_dir() && accepts(e, m.hidden_visible(), &m.query));
             let path = target.and_then(|e| {
                 m.path
                     .as_os_str()

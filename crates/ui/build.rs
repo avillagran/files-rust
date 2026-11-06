@@ -143,4 +143,23 @@ fn main() {
         .include(&config)
         .include(&source);
     compiler.compile("files_window_gestures");
+    println!("cargo:rerun-if-changed=../../native/filemanager-dbus.cxx");
+    let flags = std::process::Command::new("pkg-config")
+        .args(["--cflags", "dbus-1"])
+        .output()
+        .expect("pkg-config and dbus-1 development headers are required");
+    assert!(
+        flags.status.success(),
+        "dbus-1 development headers are unavailable"
+    );
+    let flags = String::from_utf8(flags.stdout).expect("dbus-1 compiler flags must be UTF-8");
+    let mut bus = cc::Build::new();
+    bus.cpp(true)
+        .std("c++17")
+        .file(repo.join("native/filemanager-dbus.cxx"));
+    for flag in flags.split_whitespace() {
+        bus.flag(flag);
+    }
+    bus.compile("files_filemanager_bus");
+    println!("cargo:rustc-link-lib=dbus-1");
 }

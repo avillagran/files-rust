@@ -5,6 +5,7 @@ pub mod archive_list;
 pub mod archive_member;
 pub mod bookmarks;
 pub mod copy_engine;
+pub mod file_manager;
 pub mod folder_usage;
 pub mod folder_views;
 pub mod listing;

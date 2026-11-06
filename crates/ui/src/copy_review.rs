@@ -46,7 +46,7 @@ pub fn reason(m: &Model, action: &Action) -> Option<&'static str> {
         usize::from(
             m.selected
                 .and_then(|i| m.entries.get(i))
-                .is_some_and(|e| files_core::visibility::accepts(&e.name, m.show_hidden)),
+                .is_some_and(|e| files_core::visibility::accepts(&e.name, m.hidden_visible())),
         )
     } else {
         m.selection.len()
@@ -77,7 +77,7 @@ pub fn validate(m: &Model, action: &Action) -> Option<&'static str> {
         m.entries
             .get(i)
             .is_some_and(|e: &files_core::listing::Entry| {
-                files_core::visibility::accepts(&e.name, m.show_hidden)
+                files_core::visibility::accepts(&e.name, m.hidden_visible())
                     && filter.as_ref().is_none_or(|f| f.score(e).is_some())
             })
     };

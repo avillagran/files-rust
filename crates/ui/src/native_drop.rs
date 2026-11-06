@@ -54,7 +54,7 @@ fn pane(
     entry: Option<usize>,
     rect: Rect,
 ) -> Result<Target, &'static str> {
-    let (parent, entries, query, owner, revision, loaded) = if id == m.dual.active_id {
+    let (parent, entries, query, owner, revision, loaded, hidden) = if id == m.dual.active_id {
         (
             &m.path,
             &m.entries,
@@ -62,6 +62,7 @@ fn pane(
             m.pane_owner(),
             m.pane_revision,
             m.loaded,
+            m.hidden_visible(),
         )
     } else if m.dual.enabled
         && let Some(b) = m.dual.other.as_ref().filter(|b| b.id == id)
@@ -73,6 +74,7 @@ fn pane(
             (b.id, b.tabs.active),
             b.revision,
             b.loaded,
+            m.show_hidden || b.reveal_hidden,
         )
     } else {
         return Err("Panel destino ya no existe");
@@ -85,7 +87,7 @@ fn pane(
         .transpose()?;
     Ok(Target {
         scope: Scope::Pane(id),
-        path: path(parent, e, m.show_hidden, query)?,
+        path: path(parent, e, hidden, query)?,
         owner,
         revision,
         generation: m.generation,
@@ -114,7 +116,7 @@ fn column(m: &Model, id: u64, entry: Option<usize>, rect: Rect) -> Result<Target
         .transpose()?;
     Ok(Target {
         scope: Scope::Column(id),
-        path: path(parent, e, m.show_hidden, query)?,
+        path: path(parent, e, m.hidden_visible(), query)?,
         owner: m.pane_owner(),
         revision: m.pane_revision,
         generation: m.generation,
@@ -244,7 +246,7 @@ impl Target {
                 self.owner == m.pane_owner()
                     && self.revision == m.pane_revision
                     && m.loaded
-                    && self.still_points_to(&m.path, &m.entries, &m.query, m.show_hidden)
+                    && self.still_points_to(&m.path, &m.entries, &m.query, m.hidden_visible())
             }
             Scope::Pane(id) => {
                 m.dual.enabled
@@ -253,7 +255,12 @@ impl Target {
                             && (b.id, b.tabs.active) == self.owner
                             && b.revision == self.revision
                             && b.loaded
-                            && self.still_points_to(&b.path, &b.entries, &b.query, m.show_hidden)
+                            && self.still_points_to(
+                                &b.path,
+                                &b.entries,
+                                &b.query,
+                                m.show_hidden || b.reveal_hidden,
+                            )
                     })
             }
             Scope::Column(id) => {
@@ -269,7 +276,7 @@ impl Target {
                                         &m.path,
                                         &m.entries,
                                         &m.query,
-                                        m.show_hidden,
+                                        m.hidden_visible(),
                                     )
                             } else {
                                 c.data.loaded
@@ -277,7 +284,7 @@ impl Target {
                                         &c.path,
                                         &c.data.entries,
                                         &c.data.query,
-                                        m.show_hidden,
+                                        m.hidden_visible(),
                                     )
                             }
                     })

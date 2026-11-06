@@ -170,7 +170,7 @@ impl Model {
             || !self
                 .entries
                 .get(i)
-                .is_some_and(|e| files_core::visibility::accepts(&e.name, self.show_hidden))
+                .is_some_and(|e| files_core::visibility::accepts(&e.name, self.hidden_visible()))
         {
             return;
         }
@@ -251,10 +251,9 @@ impl Model {
                 || self.view == View::SpaceMap
                     && !self.dual.enabled
                     && !self.space_geometry.navigation_indices().contains(&i)
-                || !self
-                    .entries
-                    .get(i)
-                    .is_some_and(|e| files_core::visibility::accepts(&e.name, self.show_hidden))
+                || !self.entries.get(i).is_some_and(|e| {
+                    files_core::visibility::accepts(&e.name, self.hidden_visible())
+                })
             {
                 return;
             }
@@ -351,7 +350,7 @@ impl Model {
                         && hit.rect.y < r.y + r.h
                         && r.y < hit.rect.y + hit.rect.h
                         && self.entries.get(i).is_some_and(|e| {
-                            files_core::visibility::accepts(&e.name, self.show_hidden)
+                            files_core::visibility::accepts(&e.name, self.hidden_visible())
                         })
                     {
                         selection.insert(i);

@@ -17,6 +17,8 @@ pub struct Saved {
     pub view: View,
     pub sort: Sort,
     pub descending: bool,
+    pub reveal_hidden: bool,
+    pub reveal_selection: bool,
     pub query: String,
     pub scroll: i32,
     pub grid_zoom: f32,
@@ -118,6 +120,13 @@ impl Tabs {
         self.next = self.next.checked_add(1).expect("tab ID exhausted");
         self.next
     }
+    pub(crate) fn check_new_ids(&self, count: usize) -> Result<(), &'static str> {
+        let count = u64::try_from(count).map_err(|_| "Tab ID capacity exhausted")?;
+        self.next
+            .checked_add(count)
+            .ok_or("Tab ID capacity exhausted")?;
+        Ok(())
+    }
     pub fn update_path(&mut self, path: &std::path::Path) {
         if let Some(i) = self.index(self.active) {
             self.rows[i].path = path.to_path_buf();
@@ -141,6 +150,8 @@ mod tests {
             view: View::List,
             sort: Sort::Name,
             descending: false,
+            reveal_hidden: false,
+            reveal_selection: false,
             query: String::new(),
             scroll: 0,
             grid_zoom: 1.,

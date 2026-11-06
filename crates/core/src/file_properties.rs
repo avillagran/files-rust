@@ -94,6 +94,24 @@ pub fn capture(path: &Path) -> io::Result<Snapshot> {
     validate_path(path)?;
     platform::capture(path)
 }
+/// Observe directory metadata without constructing a permission-change
+/// capability. Root is supported; no descriptor or Snapshot escapes the read.
+/// The final component is never followed through a symbolic link.
+pub fn read_only_directory(path: &Path) -> io::Result<Properties> {
+    let bytes = path.as_os_str().as_encoded_bytes();
+    if !path.is_absolute()
+        || bytes.len() > MAX_PATH_BYTES
+        || bytes.contains(&0)
+        || bytes
+            .split(|byte| *byte == b'/')
+            .any(|part| matches!(part, b"." | b".."))
+    {
+        return Err(invalid(
+            "Ruta de directorio inválida para propiedades de sólo lectura",
+        ));
+    }
+    platform::read_only_directory(path)
+}
 /// Internal writer primitive: caller must already own/pin and verify the object.
 /// No pathname fallback or process-wide umask changes.
 #[cfg(target_os = "linux")]
@@ -224,6 +242,10 @@ mod platform {
             modified: timestamp(stat.st_mtime, stat.st_mtime_nsec)?,
             changed: timestamp(stat.st_ctime, stat.st_ctime_nsec)?,
         })
+    }
+    pub(super) fn read_only_directory(path: &Path) -> io::Result<Properties> {
+        let directory = open_directory(path)?;
+        properties(&stat(&directory)?)
     }
     fn entry_identity(snapshot: &Snapshot) -> io::Result<Identity> {
         let name = c(&snapshot.name)?;
@@ -632,6 +654,9 @@ mod platform {
     pub(super) fn capture(_: &Path) -> io::Result<Snapshot> {
         Err(unsupported())
     }
+    pub(super) fn read_only_directory(_: &Path) -> io::Result<Properties> {
+        Err(unsupported())
+    }
     pub(super) fn current_path(_: &Snapshot) -> io::Result<PathBuf> {
         Err(unsupported())
     }
@@ -642,6 +667,48 @@ mod platform {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    #[cfg(target_os = "linux")]
+    fn read_only_directory_observes_owned_metadata_without_a_mutation_snapshot() {
+        use std::{
+            fs::{self, OpenOptions},
+            io::Write,
+            os::unix::fs::MetadataExt,
+            sync::atomic::{AtomicU64, Ordering},
+        };
+        static ID: AtomicU64 = AtomicU64::new(0);
+        let directory = std::env::temp_dir().join(format!(
+            "files-readonly-properties-{}-{}",
+            std::process::id(),
+            ID.fetch_add(1, Ordering::Relaxed)
+        ));
+        fs::create_dir(&directory).unwrap();
+        let path = directory.join("owned.txt");
+        let mut file = OpenOptions::new()
+            .create_new(true)
+            .write(true)
+            .open(&path)
+            .unwrap();
+        file.write_all(b"unchanged read-only fixture\n").unwrap();
+        drop(file);
+        let before = fs::metadata(&directory).unwrap();
+        let observation = read_only_directory(&directory).unwrap();
+        assert_eq!(observation.identity.kind, Kind::Directory);
+        assert_eq!(observation.identity.inode, before.ino());
+        assert_eq!(observation.identity.device, before.dev());
+        assert_eq!(observation.uid, before.uid());
+        assert_eq!(observation.gid, before.gid());
+        assert_eq!(observation.mode, before.mode() & 0o7777);
+        assert!(
+            read_only_directory(&path).is_err(),
+            "ordinary files are not directory observations"
+        );
+        assert!(read_only_directory(Path::new("relative")).is_err());
+        assert_eq!(fs::metadata(&directory).unwrap().mode(), before.mode());
+        assert_eq!(fs::read(&path).unwrap(), b"unchanged read-only fixture\n");
+        fs::remove_file(path).unwrap();
+        fs::remove_dir(directory).unwrap();
+    }
     #[test]
     fn path_and_permission_preflight_are_bounded() {
         for path in ["relative", "/", "/a/../b", "/a/./b"] {

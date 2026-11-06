@@ -29,7 +29,7 @@ pub fn supported(action: &Action) -> bool {
 fn focus_valid(m: &Model) -> bool {
     m.selected
         .and_then(|i| m.entries.get(i))
-        .is_some_and(|e| files_core::visibility::accepts(&e.name, m.show_hidden))
+        .is_some_and(|e| files_core::visibility::accepts(&e.name, m.hidden_visible()))
 }
 /// Consulta acotada para pintura; no recorre marcas ni consulta el sistema de archivos.
 pub fn reason(m: &Model, action: &Action) -> Option<&'static str> {
@@ -133,7 +133,7 @@ pub fn validate(m: &Model, action: &Action) -> Option<&'static str> {
         && m.selection.iter().any(|&i| {
             !m.entries
                 .get(i)
-                .is_some_and(|e| files_core::visibility::accepts(&e.name, m.show_hidden))
+                .is_some_and(|e| files_core::visibility::accepts(&e.name, m.hidden_visible()))
         })
     {
         return Some("La selección cambió; vuelve a marcar los elementos");

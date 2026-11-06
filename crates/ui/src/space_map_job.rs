@@ -290,6 +290,7 @@ pub(crate) fn run_helper_dialogue(
     mut control: Option<&mut dyn FnMut() -> io::Result<Dialogue>>,
 ) -> io::Result<()> {
     let response_limit = match command {
+        "file_manager_preflight" => 4096,
         "find_duplicates" => 32 * 1024 * 1024,
         "compare_directories" => files_core::directory_compare_wire::MAX_STREAM,
         "prepare_directory_sync" => files_core::directory_sync_wire::MAX_STREAM,
@@ -307,10 +308,15 @@ pub(crate) fn run_helper_dialogue(
             Ok(())
         }
     }
-    if request.len() > MAX_REQUEST {
+    let request_limit = if command == "file_manager_preflight" {
+        256 * 1024
+    } else {
+        MAX_REQUEST
+    };
+    if request.len() > request_limit {
         return Err(io::Error::new(
             io::ErrorKind::InvalidInput,
-            "Petición del helper superior a64KiB",
+            format!("Helper request exceeds {} KiB", request_limit / 1024),
         ));
     }
     #[cfg(test)]
@@ -440,6 +446,11 @@ pub(crate) fn run_helper_dialogue(
                     Ok(count) => {
                         output_bytes += count;
                         if output_bytes > response_limit {
+                            if response_limit < 1024 * 1024 {
+                                return Err(io::Error::other(format!(
+                                    "Helper response exceeds its {response_limit}-byte limit"
+                                )));
+                            }
                             return Err(io::Error::other(format!(
                                 "Respuesta del helper superior a{}MiB",
                                 response_limit / (1024 * 1024)

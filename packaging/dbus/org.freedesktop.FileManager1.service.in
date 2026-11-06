@@ -1,0 +1,5 @@
+# Optional source template; normal builds and updates do not install it.
+# Substitute a reviewed absolute executable path and validate Exec quoting.
+[D-BUS Service]
+Name=org.freedesktop.FileManager1
+Exec="@FILES_ABSOLUTE_EXECUTABLE@" --file-manager-service
