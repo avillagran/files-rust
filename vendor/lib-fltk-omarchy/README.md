@@ -105,7 +105,7 @@ no web view. See [docs/MERMAID.md](docs/MERMAID.md).
   15.0 MB PSS and 70 ms to first frame vs 59.5 MB / 127 ms (QML software)
   and 106.9 MB / 175 ms (QML GPU); method, three sessions and limits in
   [docs/PERFORMANCE.md](docs/PERFORMANCE.md).
-- **For agents**: [AGENTS.md](AGENTS.md).
+- **For agents**: [AGENTS.md](AGENTS.md); new apps the Omarchy way with the [omarchy-fltk-app skill](skills/omarchy-fltk-app/SKILL.md) and `cargo run --example new_app -- <name>` (template in `templates/omarchy-app`).
 
 ```sh
 cargo run --example gallery      # all components
@@ -114,6 +114,7 @@ cargo run --example composer     # chat composer: @files, $skills, /commands, dr
 cargo run --example app_shell    # Preferences/Actions menus, tabs, search, F1 help, operation toast
 cargo run --example docs_shots -- docs/components   # re-render the pictures of docs/COMPONENTS.md
 cargo run --example shaders      # shapes, gradients, effects, animated CPU shaders
+cargo run --release --features gpu --example lava   # interactive scene: reorder, drag/fall, bounded lava effect (docs/SCENE.md)
 cargo run --example richtext     # Markdown chat transcript (-- --stream streams a reply)
 cargo run --features mermaid --example mermaid   # native Mermaid diagrams (-- --snapshot dir, -- --bench)
 cargo run --release --example playground   # every component in one window, actions logged to build/playground.log

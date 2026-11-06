@@ -2,6 +2,96 @@
 
 ## Unreleased
 
+- **Managed node motion**: `Surface::animate_node(NodeId, NodeMotion)`
+  transitions position/opacity on the shared clock, retargets from the
+  current pose, and submits no new GPU resources or CPU parent redraws.
+  Reduced motion/hidden/unchanged targets settle; completion idles.
+  Deferred owner-aware callbacks suppress cancelled/replaced/deleted work.
+  Frozen-frame, backend-switch, completion and idle checks. docs/SCENE.md.
+
+- **Deterministic scene image scaling**: `Image::resampled` shares
+  pixel-center bilinear filtering in premultiplied alpha between CPU replay
+  and GPU preparation. Image samples stay unchanged when moved or clipped;
+  GPU upload no longer reconstructs scaled-image alpha from native captures.
+  Worker-safe immutable results, one shared cache up to 8 MiB per resource,
+  64 MiB output limit and explicit cache release. Expanded read-back keeps
+  the existing maximum difference of two levels per RGB channel.
+
+- **Scoped scene order and hit testing**: `raise_node` lifts a keyed layer
+  within its parent clip without new resources, and `hit_node` returns the
+  topmost keyed rectangular target through ancestor clips and group opacity.
+  CPU, prepared GL and live GL orders stay aligned, including deferred
+  uploads; raised root nodes stay below managed focus chrome.
+  `Surface::on_event_with` passes its owner for safe hit/update callbacks.
+  Native fallback textures preserve premultiplied raster precision at
+  overlapping translucent edges; expanded read-back parity keeps the same
+  maximum difference of two levels per RGB channel. docs/SCENE.md.
+
+- **Stable scene node updates**: `Layer::draw_keyed(NodeId, ..)` and
+  `Scene` / `Surface` / prepared GL `move_node` / `set_node_opacity`.
+  Initially clipped and zero-alpha cards retain their identities/resources;
+  moving or fading changes draw values without rebuilding, preparation,
+  uploads or CPU parent redraws. Shared CPU/GL opacity, duplicate/invalid
+  ID errors and damage cache invalidation; pixel read-back and lifecycle
+  checks. Position/opacity updates preserve paint order, size and ancestor clips. docs/SCENE.md.
+
+- **Managed scene surface** (`scene::Surface`): retained local-coordinate
+  painter, explicit CPU/GL policy with CPU default/fallback, automatic
+  theme/language/size/focus invalidation, local input and one keyboard stop,
+  CPU snapshots even while mapped on GL, tracked context lifecycle and
+  backend switching. Shader animation uses the shared paced clock; GL
+  frames redraw the child only, CPU requests are capped at Low before the
+  global pace policy, and hidden/reduced-motion/frozen views stop queuing.
+  `scene_surface` demonstrates shared translucent layers and has release
+  idle/animation/idle diagnostics. Widget/overlay bridge and atlases remain
+  pending. docs/SCENE.md.
+
+- **Single-surface GL scene compositor spike** (feature `gpu`):
+  `scene::gpu::PreparedScene` / `Renderer`, native rectangles and portable
+  `scene::shader` commands, premultiplied alpha/scissor composition, retained
+  CPU textures for text/rounded shapes/isolated layers/scaled images.
+  One framebuffer, shared resource/program uploads, 64 MiB texture budget,
+  no timers. `scene_gpu_check` compares full CPU/GPU read-back and shader
+  time changes in private Xvfb; CI runs it. Explicit unsafe GL context
+  lifetime API; atlases and batching remain pending.
+  CPU AppWindow rendering stays the default. docs/SCENE.md.
+
+- **Isolated scene layers** (`scene::Layer`): retain a bounded child scene,
+  translate it and apply group opacity once over the actual backdrop.
+  Rounded transparent corners, nested layers, outer clips, shared handles
+  and recursive cache release. CPU fallback reconstructs RGBA with native
+  black/white passes at logical 1×, then retains it; bounded temporary
+  storage and fading buffer are explicit. GL currently composes their retained
+  CPU texture; native isolated GPU layers remain pending.
+  docs/SCENE.md.
+
+- **Scene images and exact CPU damage replay**: immutable validated RGBA
+  resources (`scene::Image`, up to 64 MiB) retained by image commands;
+  alpha/scaling/clipping checks. Damage replay caches an opaque raster
+  rather than clipping native primitives separately: Cairo/CoreGraphics
+  can vary antialiasing or image sampling when clips change. The optional
+  backing store is bounded, released by `clear_raster`, and invalidated by
+  `append`; check `draw_damage`'s success result. Full replay stays direct.
+- **Shared painter foundation** (`scene`): record the existing `paint`
+  fills, rounded borders, text/spacing, rectangular alpha fills and clips
+  into a retained command list; CPU replay with damage clipping/culling.
+  Normal painting stays immediate, without a command-list allocation.
+  Pixel parity checks and a static `scene_cards` example with snapshot and
+  benchmark modes. This is the first window-scene slice, not a GPU scene
+  backend; paths/images/layers/GL composition remain pending. docs/SCENE.md.
+
+- **File dialogs through xdg-desktop-portal** (`dialog`): `open_files`,
+  `save_file` (the UI keeps running) and `*_async` (answer on the UI
+  thread), `Request` with filters, folder, accept label; portal first on
+  Linux (a built-in minimal D-Bus client in `src/platform/portal`, no
+  dependency), FLTK's native chooser as the fallback and on macOS and
+  Windows; `set_picker` for tests, `OMARCHY_FLTK_FILE_DIALOG`. The
+  composer's attach button uses it. docs/PLATFORMS.md.
+- **App template and agent skill**: `templates/omarchy-app` (Omarchy's
+  omarchy-app shape in Rust: backend/ui/cli, Omarchy catalogs, bin/build,
+  bin/test, bin/install, PKGBUILD, `.desktop`, icon, `check`/`render
+  --json`, `skill install`), `cargo run --example new_app -- <name>`, and
+  `skills/omarchy-fltk-app/SKILL.md` mapping the Qt skill to this toolkit.
 - **Native Mermaid diagrams** (`mermaid`, feature `mermaid`, off by
   default, no dependencies): flowcharts, sequence and state diagrams
   parsed, laid out (layered layout and cubic edge routing adapted from

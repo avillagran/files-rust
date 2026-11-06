@@ -1,7 +1,7 @@
 {
   "repository": "https://github.com/avillagran/lib-fltk-omarchy",
-  "base_commit": "0d00f2b79d86028524e5bc2034e59847e369defb",
-  "fix_commit": "0d00f2b79d86028524e5bc2034e59847e369defb",
+  "base_commit": "89632dc7cbcef39d1da8cf680b6b235e9cc4be58",
+  "fix_commit": "a029d45c1fc63f99763f9836d1af0c817ab82ffd",
   "status": "local committed upstream checkpoint, untagged; no vendor patches",
-  "scope": "Exact export: task::Latest, testkit, NavTree/Sidebar improvements, shortcuts, split, i18n conventions, RichText, optional media/diff/Mermaid; optional features remain disabled in Files."
+  "scope": "Exact a029d45 export: keyed tab requests and geometry from 89632dc, repeated activation reveals the active tab, and plain-FLTK background-host frame validation. Includes native dialogs/portal and retained CPU/GPU scenes; optional GPU, accessibility, images, playback, QR and Mermaid features remain disabled in Files."
 }

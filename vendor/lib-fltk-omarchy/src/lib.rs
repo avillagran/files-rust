@@ -3,6 +3,7 @@ pub mod anim;
 pub mod app;
 pub mod chart;
 pub mod diff;
+pub mod dialog;
 pub mod edit;
 pub mod focus;
 pub mod frame;
@@ -35,6 +36,7 @@ pub mod popups;
 #[cfg(feature = "qr")]
 pub mod qr;
 pub mod scroll;
+pub mod scene;
 pub mod shortcuts;
 pub mod sidebar;
 pub mod split;

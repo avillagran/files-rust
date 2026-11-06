@@ -595,6 +595,7 @@ pub struct Model {
     pub rail: bool,
     /// The toolkit Sidebar widget draws the rail rows (real window only).
     pub sidebar_widget: bool,
+    pub tabs_widget: bool,
     /// Sampled width of the painted toolkit rail during its transition.
     pub rail_width: Option<i32>,
     /// Fixture request to pin (`true`) or release the Sidebar.
@@ -801,6 +802,7 @@ impl Model {
             breadcrumbs: Default::default(),
             rail: false,
             sidebar_widget: false,
+            tabs_widget: false,
             rail_width: None,
             rail_request: None,
             rail_drops: Vec::new(),

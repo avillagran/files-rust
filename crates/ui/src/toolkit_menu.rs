@@ -437,7 +437,9 @@ impl Manager {
         let queue = self.dismissed.clone();
         let picked: Rc<RefCell<Option<String>>> = Rc::default();
         let pick = picked.clone();
-        if matches!(kind, Kind::Breadcrumbs | Kind::Tabs) {
+        if kind == Kind::Breadcrumbs
+            || kind == Kind::Tabs && !m.tab_context.as_ref().is_some_and(|menu| menu.retain_focus)
+        {
             let _ = canvas.clone().take_focus();
         }
         let handle = if let Some((x, y)) = position {

@@ -91,10 +91,22 @@ jobs:
         run: |
           cargo build --locked --release --example platform_check
           script/x11-check
+      - name: keyed tabs native buttons and keyboard (CPU, private Xvfb)
+        run: |
+          cargo build --locked --example tabs_input_check
+          script/tabs-input-check
       - name: gpu feature
         run: |
           cargo build --locked --all-targets --features gpu
           env -u WAYLAND_DISPLAY xvfb-run -a -s "-screen 0 1280x800x24" cargo test --locked --features gpu
+      - name: single-surface GPU scene read-back (private Xvfb)
+        run: env -u WAYLAND_DISPLAY xvfb-run -a -s "-screen 0 1280x800x24" cargo run --locked --features gpu --example scene_gpu_check
+      - name: GPU scene failure snapshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scene-gpu-x11
+          path: target/scene-gpu-check/
       - name: a11y feature (AccessKit; tree checks without a bus)
         run: env -u WAYLAND_DISPLAY xvfb-run -a -s "-screen 0 1280x800x24" cargo test --locked --features a11y
       - name: qr feature
@@ -142,6 +154,13 @@ jobs:
             exit 1
           }
 
+      - name: scene failure snapshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scene-wayland
+          path: build/test-ui/shots/scene-*.png
+
   macos:
     name: macOS
     runs-on: macos-latest
@@ -166,6 +185,13 @@ jobs:
         run: cargo build --locked --all-targets --features a11y
       - name: platform report
         run: cargo run --locked --release --example platform_check -- build-platform.json 2
+
+      - name: scene failure snapshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scene-macos
+          path: build/test-ui/shots/scene-*.png
 
   windows:
     name: Windows

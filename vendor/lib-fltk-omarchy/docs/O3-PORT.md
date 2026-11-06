@@ -6,6 +6,10 @@ The direction for the toolkit: high level, GPU capable where it pays off
 (GPUI-like scene rendering), and still the lightest option on idle and
 streaming loads.
 
+The 2026-11-06 continuation covers the complete plan. The renderer review
+now includes [Rune, GPUI and Flutter](RENDERER-RESEARCH.md), with pinned
+primary sources, concrete transfer ideas and verification gates.
+
 ## 1. Where o3-code is today
 
 | | Today (QML + Rust) | Port target |
@@ -190,9 +194,12 @@ protocol). P1 is needed for feature parity. P2 can wait or stay outside.
 ## 4. GPU rendering, the efficient way
 
 Decision already on record (2026-10-28): the interface is designed once;
-the toolkit decides whether the CPU or the GPU paints it. Today only
-`gfx::View` shaders can run on the GPU (a GL subwindow per view, +35–40 MB
-PSS for the driver, blocked until the window is on an output on Wayland).
+the toolkit decides whether the CPU or the GPU paints it. GPU support now
+covers portable `gfx::View` shaders and explicit composed `scene::Surface`
+regions, including retained CPU-widget overlays. Full-window widget
+rendering and automatic renderer policy remain below; CPU stays the
+default for managed scenes. [Current measurements](SCENE.md) distinguish
+warm rendering from cold shader compilation.
 
 Proposal, in order:
 
@@ -281,17 +288,19 @@ on the GPU backend than on the CPU backend; idle stays 0 %; total PSS
 | P0 8 NavTree o3 rows: cards, trailing actions, tree guides, hover preview, `ShelfResizer` | merged |
 | P1 9 native diff viewer (`diff`: parser, `DiffView`, `DiffFiles`; docs/DIFF.md) | merged |
 | P1 12 splitter (`split::Split`) | merged |
+| P1 12 lazy modal sheet with delayed content release | pending; generic `PopupCard` does not provide this lifecycle |
 | P1 13 reorder in plain lists (`List::reorderable`) | merged |
-| P1 14 nested scroll hand-off (`Scroll::passes`) | merged for List, Table, Tree; RichText and NavTree pending |
+| P1 14 nested scroll hand-off (`Scroll::passes`) | merged for List, Table, Tree, RichText, NavTree and TextArea |
 | P1 17 keys: command tables, record, repeat, suspend | merged |
 | P1 18 font weights, letter spacing, named and terminal colors, project colors | merged |
 | P1 19 charts (`chart`), QR codes (`qr`, feature), masked input (`TextField::mask`) | merged |
+| P1 19 persistent notice cards with actions | pending; existing critical notifications persist but only dismiss |
 | P1 15 paced animation clock (`anim::Pace`, `PaceMode`) | merged |
 | P1 16 layer rendering (`layer::Layer`, `capture`, `cross_fade`) | merged |
 | P1 10 `FrameView`: shared-memory frames (memfd/shm/file mapping, triple buffer, pipe/FIFO/event wake-ups), input events with Qt mapping, resize/zoom/copy, PNG/BMP file mode for gradual migration (`frame`, docs/FRAMES.md) | merged |
 | P1 11 video and audio (`media::Video` / `media::Audio`, feature `playback`, system ffmpeg) | merged; Linux verified, macOS/Windows type-checked |
 | P1 20 math (`text::math`, `MarkdownOptions::with_math`: Unicode text like o3, no math layout engine) | merged |
-| Section 4 GPU scene | not started |
+| Section 4 shared painter / GPU scene | CPU command list, immutable RGBA resources, bounded damage replay, managed `scene::Surface`, keyed motion and live lava example implemented ([SCENE.md](SCENE.md)); CPU widget overlays now compose over managed GL regions with native-child input routing. Full-window widget rendering, atlases, native isolated layers and policy remain pending |
 
 Verified locally on the merged branch: unit, doc and UI tests on X11
 (default, `a11y`, `images`, `qr`), CI clippy, platform rustfmt,
@@ -322,10 +331,61 @@ for o3's chat views. What to adopt, in order:
 Not adopted: spring-driven growth of every row (each animation frame is a
 repaint on the CPU backend).
 
-Where this toolkit is already ahead: O(log n) height index (Fenwick) vs a
+The earlier chat-view comparison recorded: O(log n) height index (Fenwick) vs a
 prefix-sum rebuild per height change; streaming keeps only the open tail's
 source (1.5 B per Markdown byte) vs rebuilding and hashing the whole message
 per update; idle 0 % CPU at 12.6–26.9 MB PSS vs ~34 MB RSS / 92–95 MB
 footprint; a 1.78 MB minimal binary vs 9.3 MB; scrolls move pixels instead
 of re-emitting every glyph; one-document transcript (selection, find, a11y
 across messages); code/table actions, alerts, math in Markdown.
+
+Those measurements belong to that earlier review's Rune snapshot and
+workloads. They are not measurements of the current pinned Rune/GPUI/Flutter
+revisions in [the renderer review](RENDERER-RESEARCH.md).
+
+
+## 9. Lava UI reference and next work (2026-11-06)
+
+The supplied `lava.mp4` is a useful composition acceptance case: reorderable
+cards above a shader background, a dragged/falling row, translucent layers,
+and a short effect on deletion. [SCENE.md](SCENE.md#video-reference-lavamp4-2026-11-06)
+separates existing components from the missing rendering path.
+
+Continue section 4 without changing the CPU default:
+
+1. Shared painter: the first CPU slice now records fills, borders, text,
+   alpha fills and balanced clips. Prove immediate/replay and damage parity.
+2. Complete scene primitives (RGBA images and isolated translated opacity layers now implemented; paths, affine transforms, shadows,
+   shader layers) and an invalidation lifecycle for widget caches.
+3. One GL scene surface: low-level `scene::gpu::Renderer` now composes
+   rectangles, portable shader commands and CPU texture fallbacks into a
+   single framebuffer (read-back check added). Managed `scene::Surface` now owns CPU/GL lifecycle, snapshots, input,
+   invalidation and paced shader frames. Stable keyed position/opacity updates
+   now preserve initially culled/zero-alpha cards without preparation/texture uploads.
+   Scoped keyed raising and rectangular clipped hit testing are now included.
+   Managed node position/opacity transitions now use the shared clock,
+   preserve retargeted poses and stop when settled/hidden/reduced motion.
+   The `lava` example now implements live pointer/keyboard reorder,
+   root drag previews, falling removal and a bounded GPU shader pulse.
+   Its tests include full actual GPU read-back versus CPU replay.
+   The CPU-widget overlay bridge now retains textures independently of the
+   scene and routes native-child events through the top-level window.
+   Consecutive compatible quads now use retained instanced attributes and
+   ordered batches; shader-only frames reuse the instance buffer. Zero-area
+   regions suspend GL and release resources, recovering on positive size.
+   A bounded per-renderer image page now groups different fallback images.
+   Next: full-window widget rendering, glyph atlases, residency across scenes and
+   native isolated shader layers.
+4. A live version of the interaction now runs in `examples/lava.rs`.
+   [Measurements](SCENE.md#interactive-lava-example) cover the actual
+   controller on Wayland: zero idle frames, retained resources during
+   reorder, low GPU submission CPU, but cold-cache GPU PSS still exceeds
+   100 MiB. Continue memory work, GPU/power measurements and normal/high-
+   refresh resolution gates. Effects are bounded and respect reduced
+   motion/visibility. The video remains a visual reference, not a benchmark.
+5. Real o3 protocol spike and full-window renderer policy retain the gates
+   above; the synthetic shell and static card demo do not close those gates.
+
+The portal file dialogs and Rust application template/generator have also
+been integrated into `o3-port`. The preceding `bab1db8` CI passed all six
+jobs; that result predates the shared-painter changes.

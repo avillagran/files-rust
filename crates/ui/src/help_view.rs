@@ -14,6 +14,18 @@ pub const ITEMS: &[(&str, &str)] = &[
     ("Ctrl+Tab / Ctrl+Shift+Tab", "Pestaña siguiente / anterior"),
     ("Ctrl+Shift+T", "Reabrir pestaña cerrada"),
     ("Ctrl+Shift+F10", "Acciones de la pestaña activa"),
+    ("Arrastrar pestaña", "Reordenar sin activarla"),
+    (
+        "Ctrl+Alt+T / Escape",
+        "Foco en pestañas / volver al navegador",
+    ),
+    ("← → en barra", "Elegir pestaña"),
+    ("Alt+← → en barra", "Mover cursor sin activar pestaña"),
+    ("Ctrl+Shift+← → en barra", "Mover la pestaña del cursor"),
+    (
+        "Menú / Shift+F10 en barra",
+        "Acciones de la pestaña del cursor",
+    ),
     (
         "Ctrl+Shift+RePág/AvPág",
         "Mover la pestaña activa a izquierda/derecha",

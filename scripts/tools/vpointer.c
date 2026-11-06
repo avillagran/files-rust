@@ -1,10 +1,10 @@
 // Pointer input for a PRIVATE nested compositor used by UI checks.
 //
-//   vpointer wayland-N W H x0 y0 x1 y1 [hoverMS | cN | m]
+//   vpointer wayland-N W H x0 y0 x1 y1 [hoverMS | cN | m | r]
 //
 // Absolute press at (x0,y0), 20 motion steps to (x1,y1), release (a drag;
 // a click when both points match). `cN` clicks N times at (x0,y0) instead;
-// `m` clicks the middle button once; a number hovers before pressing.
+// `m` and `r` click the middle and right buttons; a number hovers before pressing.
 // It connects only to the explicit socket and refuses wayland-0/wayland-1, so it can never
 // reach the user's own session.
 #include "wlr-virtual-pointer-unstable-v1-client.h"
@@ -38,7 +38,7 @@ static void nap(int ms) {
 int main(int argc, char **argv) {
   if ((argc != 8 && argc != 9) || strncmp(argv[1], "wayland-", 8) || !strcmp(argv[1], "wayland-0") ||
       !strcmp(argv[1], "wayland-1")) {
-    fprintf(stderr, "usage: vpointer wayland-N W H x0 y0 x1 y1 [hoverMS|cN|dDwellMS|m] (private nested socket only)\n");
+    fprintf(stderr, "usage: vpointer wayland-N W H x0 y0 x1 y1 [hoverMS|cN|dDwellMS|m|r] (private nested socket only)\n");
     return 2;
   }
   struct wl_display *display = wl_display_connect(argv[1]);
@@ -52,10 +52,11 @@ int main(int argc, char **argv) {
 #define FLUSH(ms) (zwlr_virtual_pointer_v1_frame(p), wl_display_flush(display), nap(ms))
   zwlr_virtual_pointer_v1_motion_absolute(p, now(), x0, y0, w, h);
   FLUSH(120);
-  if (argc == 9 && !strcmp(argv[8], "m")) {
-    zwlr_virtual_pointer_v1_button(p, now(), BTN_MIDDLE, WL_POINTER_BUTTON_STATE_PRESSED);
+  if (argc == 9 && (!strcmp(argv[8], "m") || !strcmp(argv[8], "r"))) {
+    uint32_t button = !strcmp(argv[8], "m") ? BTN_MIDDLE : BTN_RIGHT;
+    zwlr_virtual_pointer_v1_button(p, now(), button, WL_POINTER_BUTTON_STATE_PRESSED);
     FLUSH(40);
-    zwlr_virtual_pointer_v1_button(p, now(), BTN_MIDDLE, WL_POINTER_BUTTON_STATE_RELEASED);
+    zwlr_virtual_pointer_v1_button(p, now(), button, WL_POINTER_BUTTON_STATE_RELEASED);
     FLUSH(60);
   } else if (argc == 9 && argv[8][0] == 'c') {
     for (int k = 0; k < atoi(argv[8] + 1); k++) {

@@ -602,6 +602,16 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32) {
     let y = 58;
     p.rect(Rect::new(0, y, w, tabs::HEIGHT), c.darker_background);
     p.rect(Rect::new(0, y + tabs::HEIGHT - 1, w, 1), c.muted);
+    if m.tabs_widget {
+        let new = Rect::new(w - 34, y + 4, 28, 24);
+        p.text(new, crate::fonts::icon("", "+"), 13, c.accent, true, false);
+        m.hits.push(Hit {
+            generation: m.generation,
+            rect: new,
+            action: Action::Tab(Command::New),
+        });
+        return;
+    }
     let slots = ((w - 106).max(120) / 180).max(1) as usize;
     let active = m.tabs.index(m.tabs.active).unwrap_or(0);
     if active < m.tabs.first {

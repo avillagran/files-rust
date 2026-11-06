@@ -34,11 +34,14 @@ mod sidebar_ui;
 mod navtree_ui;
 mod popup_ui;
 mod split_ui;
+mod tabs_ui;
 mod chart_ui;
 mod keys_ui;
 mod list_ui;
 mod typo_ui;
 mod layer_ui;
+mod scene_ui;
+mod lava_ui;
 mod scroll_ui;
 mod media_ui;
 #[cfg(feature = "playback")]
@@ -2009,6 +2012,7 @@ fn main() {
     });
     tooltip_ui::checks(&mut run, COLORS_A, COLORS_B);
     edit_ui::checks(&mut run);
+    tabs_ui::checks(&mut run);
     motion_ui::checks(&mut run);
     sidebar_ui::checks(&mut run);
     navtree_ui::checks(&mut run);
@@ -2020,6 +2024,8 @@ fn main() {
     list_ui::checks(&mut run);
     typo_ui::checks(&mut run);
     layer_ui::checks(&mut run);
+    scene_ui::checks(&mut run);
+    lava_ui::checks(&mut run);
     scroll_ui::checks(&mut run);
     media_ui::checks(&mut run);
     #[cfg(feature = "playback")]

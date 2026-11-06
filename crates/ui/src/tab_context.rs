@@ -10,6 +10,7 @@ pub struct Menu {
     pub owner: (u64, u64),
     pub generation: u64,
     pub anchor: (i32, i32),
+    pub retain_focus: bool,
 }
 fn clear_surface(m: &Model) -> bool {
     !crate::places_sidebar::covered(m)
@@ -42,6 +43,7 @@ pub fn open(m: &mut Model, id: u64, x: i32, y: i32) {
             owner: m.pane_owner(),
             generation: m.generation,
             anchor: (x, y),
+            retain_focus: false,
         });
     }
 }

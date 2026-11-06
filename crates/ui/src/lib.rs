@@ -143,6 +143,8 @@ mod tab_context;
 mod tab_context_scene;
 mod tab_gesture_scene;
 mod tab_gestures;
+mod tab_motion_scene;
+mod tab_strip;
 mod tabs;
 mod tabs_scene;
 mod tabs_ui;
@@ -1058,6 +1060,7 @@ pub fn run_since(start: Instant) -> bool {
     let metrics_readiness = std::env::var_os("FILES_METRICS_READY").is_some();
     let mut readiness_emitted = None;
     let _application = app::App::default();
+    fltk_omarchy::focus::install();
     if smoke {
         fltk_omarchy::testkit::arm();
     }
@@ -1151,6 +1154,10 @@ pub fn run_since(start: Instant) -> bool {
     } else {
         win.size_range(700, 440, 0, 0);
     }
+    let isolate_fixture_input = smoke
+        && std::env::var_os("FILES_TEST_ISOLATE_INPUT").as_deref()
+            == Some(std::ffi::OsStr::new("1"));
+    let fixture_dispatch = Rc::new(Cell::new(false));
     let mut canvas = Frame::new(0, 0, size.0, size.1, "");
     canvas.set_frame(FrameType::NoBox);
     canvas.set_label("");
@@ -1262,6 +1269,7 @@ pub fn run_since(start: Instant) -> bool {
     sidebar.clear_visible_focus();
     let fixture_sidebar = sidebar.clone();
     let fixture_rail = rail_state.clone();
+    let tab_strip = tab_strip::Strip::new(size.0, isolate_fixture_input, fixture_dispatch.clone());
     win.end();
     win.resizable(&canvas);
     if trace {
@@ -1279,6 +1287,8 @@ pub fn run_since(start: Instant) -> bool {
     let mut rail_motion = fltk_omarchy::anim::Anim::<f64>::new();
     let rail_selected = rail_selected.clone();
     let rail_state = rail_state.clone();
+    let mut painted_tabs = tab_strip.clone();
+    let tabs_window = win.clone();
     canvas.draw(move |f| {
         if !painted && trace {
             eprintln!("FILES_PAINT_START_US={}", start.elapsed().as_micros());
@@ -1319,6 +1329,7 @@ pub fn run_since(start: Instant) -> bool {
             }
             .round() as i32;
             m.rail_width = Some(width.clamp(places_sidebar::RAIL, places_sidebar::WIDE));
+            painted_tabs.sync(&mut m, f.w());
             let previous_scroll = m.scroll;
             view::paint(&mut p, &mut m, f.w(), f.h());
             m.clamp_scroll(f.h() - 134);
@@ -1385,6 +1396,7 @@ pub fn run_since(start: Instant) -> bool {
                     native_drop::paint(&mut p, &m);
                 }
             }
+            painted_tabs.paint(&mut m, &tabs_window);
             drawn_size.set((f.w(), f.h()));
             drawn_revision.set(drawn_revision.get().wrapping_add(1));
         }
@@ -1393,10 +1405,6 @@ pub fn run_since(start: Instant) -> bool {
             painted = true;
         }
     });
-    let isolate_fixture_input = smoke
-        && std::env::var_os("FILES_TEST_ISOLATE_INPUT").as_deref()
-            == Some(std::ffi::OsStr::new("1"));
-    let fixture_dispatch = Rc::new(Cell::new(false));
     // Toolkit fixture: an invisible widget over a toolbar control, so the
     // toolkit tooltip can be shown without OS pointer input.
     let mut tooltip_probe: Option<Frame> = None;
@@ -1405,6 +1413,7 @@ pub fn run_since(start: Instant) -> bool {
     let mut gesture_window = win.clone();
     let mut grabbing = None;
     let mut deferred_click = None;
+    let event_tabs = tab_strip.clone();
     canvas.handle(move |f, e| {
         let release_click = if e == Event::Released {
             deferred_click.take()
@@ -1441,6 +1450,21 @@ pub fn run_since(start: Instant) -> bool {
                     | Event::Leave
             )
         {
+            return true;
+        }
+
+        if matches!(e, Event::KeyDown | Event::Shortcut)
+            && app::event_key() == Key::from_char('t')
+            && app::event_state().contains(Shortcut::Ctrl | Shortcut::Alt)
+        {
+            let key = m
+                .try_borrow()
+                .ok()
+                .filter(|m| !tab_gestures::blocked(m))
+                .map(|m| m.pane_owner());
+            if let Some(key) = key {
+                event_tabs.widget.focus_key(&key);
+            }
             return true;
         }
 
@@ -1575,16 +1599,59 @@ pub fn run_since(start: Instant) -> bool {
     let (aux_sidebar, aux_rail, mut aux_canvas) =
         (sidebar.clone(), fixture_rail.clone(), canvas.clone());
     let auxiliary_fixture = fixture_dispatch.clone();
+    let auxiliary_tabs = tab_strip.clone();
     let mut auxiliary_pressed = false;
     // FLTK groups otherwise dispatch children before our handler. Intercept
     // auxiliary buttons before the canvas or Sidebar treats them as primary.
     win.super_handle_first(false);
     win.handle(move |window, event| {
         native_transfer::window_event(&native_window_model, window, event);
+        if matches!(event, Event::KeyDown | Event::Shortcut) {
+            let mods = app::event_state();
+            if app::event_key() == Key::F10
+                && mods.contains(Shortcut::Ctrl | Shortcut::Shift)
+                && (!isolate_fixture_input || auxiliary_fixture.get())
+                && let Ok(mut m) = native_window_model.try_borrow_mut()
+            {
+                auxiliary_tabs.active_context(&mut m);
+                aux_canvas.redraw();
+                return true;
+            }
+            if app::event_key() == Key::from_char('t')
+                && mods.contains(Shortcut::Ctrl | Shortcut::Alt)
+                && (!isolate_fixture_input || auxiliary_fixture.get())
+                && let Ok(m) = native_window_model.try_borrow()
+                && !tab_gestures::blocked(&m)
+            {
+                auxiliary_tabs.widget.focus_key(&m.pane_owner());
+                return true;
+            }
+            if (!isolate_fixture_input || auxiliary_fixture.get())
+                && event == Event::KeyDown
+                && app::event_key() == Key::Escape
+                && app::focus()
+                    .is_some_and(|w| w.as_widget_ptr() == auxiliary_tabs.widget.as_widget_ptr())
+            {
+                // A pending drag gets Escape first. Otherwise return to the
+                // browser without clearing its independent selection.
+                let mut widget = auxiliary_tabs.widget.clone();
+                if !widget.handle_event(Event::KeyDown) {
+                    let _ = aux_canvas.take_focus();
+                }
+                return true;
+            }
+        }
         if event == Event::Push {
             auxiliary_pressed = false;
             let button = app::event_button();
             if button != 1 && button != 3 {
+                if auxiliary_tabs.contains(app::event_x(), app::event_y()) {
+                    if isolate_fixture_input && !auxiliary_fixture.get() {
+                        return true;
+                    }
+                    // The keyed widget owns press/release and cancellation here.
+                    return false;
+                }
                 auxiliary_pressed = true;
                 if isolate_fixture_input && !auxiliary_fixture.get() {
                     return true;
@@ -1781,6 +1848,7 @@ pub fn run_since(start: Instant) -> bool {
             fonts::reapply();
         }
         let mut m = model.borrow_mut();
+        tab_strip.refresh_hits(&mut m);
         if changed && !theme_override {
             omarchy_theme::apply(&mut m);
             fltk_omarchy::theme::with(|theme| {
@@ -1800,7 +1868,8 @@ pub fn run_since(start: Instant) -> bool {
             });
         }
         m.set_media_visible(win.shown() && win.visible_r());
-        let mut dirty = m.pump() || changed;
+        let strip_dirty = tab_strip.drain(&mut m);
+        let mut dirty = m.pump() || changed || strip_dirty;
         if m.tab_feedback
             .is_some_and(|at| at.elapsed() >= Duration::from_secs(3))
         {
@@ -2253,6 +2322,21 @@ pub fn run_since(start: Instant) -> bool {
                     t if t.starts_with("tab-context-") => {
                         let result = tab_context_scene::command(&mut model.borrow_mut(), t);
                         eprintln!("FILES_TAB_CONTEXT_COMMAND result={result:?}");
+                    }
+                    "tab-widget-motion" => {
+                        let result = tab_motion_scene::run(&win, &canvas, &model);
+                        eprintln!("FILES_TAB_WIDGET_MOTION {result}");
+                    }
+                    "tab-widget-state" => {
+                        let state = tab_strip.marker(&model.borrow(), &canvas);
+                        eprintln!("FILES_TAB_WIDGET_STATE {state}");
+                    }
+                    "tab-widget-focus-browser" => {
+                        let _ = canvas.take_focus();
+                    }
+                    t if t.starts_with("tab-widget-") => {
+                        let result = tab_strip.fixture(&mut model.borrow_mut(), t);
+                        eprintln!("FILES_TAB_WIDGET_COMMAND result={result:?}");
                     }
                     "tab-gesture-state" => {
                         let state = tab_gesture_scene::state(&model.borrow());
