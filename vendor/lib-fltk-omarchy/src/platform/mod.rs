@@ -23,8 +23,17 @@ pub(crate) mod a11y;
 pub mod dirs;
 pub(crate) mod fl_abi;
 pub mod fonts;
+/// Shared memory and wake-ups for `crate::frame` (memfd, POSIX shm, file
+/// mappings; pipes, FIFOs, events).
+pub(crate) mod frame;
 mod generic;
+/// Local IPC transport for `crate::instance` (Unix sockets, named pipes).
+pub(crate) mod instance;
 pub mod languages;
+pub mod memory;
+/// Child processes and audio outputs for `crate::media` playback.
+#[cfg(feature = "playback")]
+pub(crate) mod playback;
 pub(crate) mod poll;
 
 #[cfg(target_os = "linux")]
@@ -119,6 +128,13 @@ pub fn process_cpu_time() -> Option<std::time::Duration> {
     imp::process_cpu_time()
 }
 
+/// CPU time used by the calling thread so far (user + system): the frame
+/// log and the blocked-UI warning of [`crate::testkit`] compare it with
+/// wall time. None where the OS does not report it.
+pub fn thread_cpu_time() -> Option<std::time::Duration> {
+    imp::thread_cpu_time()
+}
+
 /// True when theme files live on this OS by default (Omarchy). Elsewhere
 /// the built-in theme is used unless a theme directory is configured.
 pub fn has_omarchy() -> bool {
@@ -172,4 +188,12 @@ pub(crate) mod glass {
     pub(crate) use super::imp::glass::{
         begin, current_surface, end, set_opaque_region, target, Target,
     };
+}
+
+/// Whether views move their pixels for scroll-only frames (`fl_scroll`)
+/// by default: on (measured 2–3× less CPU than repainting while scrolling
+/// on X11 and Wayland, docs/PERFORMANCE.md). Builds without `fl_scroll`
+/// (MSVC) repaint anyway.
+pub fn scroll_blit_default() -> bool {
+    true
 }

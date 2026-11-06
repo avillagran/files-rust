@@ -33,6 +33,22 @@ mod motion_ui;
 mod sidebar_ui;
 mod navtree_ui;
 mod popup_ui;
+mod split_ui;
+mod chart_ui;
+mod keys_ui;
+mod list_ui;
+mod typo_ui;
+mod layer_ui;
+mod scroll_ui;
+mod media_ui;
+#[cfg(feature = "playback")]
+mod playback_ui;
+mod transcript_ui;
+mod diff_ui;
+mod frame_ui;
+mod testkit_ui;
+#[cfg(feature = "mermaid")]
+mod mermaid_ui;
 
 const COLORS_A: &str = "accent = \"#e68e0d\"\nbackground = \"#121212\"\nforeground = \"#bebebe\"\nred = \"#d35f5f\"\n";
 const COLORS_B: &str = "accent = \"#33ccff\"\nbackground = \"#1a1b26\"\nforeground = \"#c0caf5\"\nred = \"#f7768e\"\n";
@@ -1998,6 +2014,22 @@ fn main() {
     navtree_ui::checks(&mut run);
     popup_ui::checks(&mut run);
     popup_ui::motion_checks(&mut run);
+    split_ui::checks(&mut run);
+    chart_ui::checks(&mut run);
+    keys_ui::checks(&mut run);
+    list_ui::checks(&mut run);
+    typo_ui::checks(&mut run);
+    layer_ui::checks(&mut run);
+    scroll_ui::checks(&mut run);
+    media_ui::checks(&mut run);
+    #[cfg(feature = "playback")]
+    playback_ui::checks(&mut run);
+    transcript_ui::checks(&mut run);
+    diff_ui::checks(&mut run);
+    frame_ui::checks(&mut run);
+    testkit_ui::checks(&mut run);
+    #[cfg(feature = "mermaid")]
+    mermaid_ui::checks(&mut run);
     #[cfg(feature = "a11y")]
     a11y_checks(&mut run);
     #[cfg(feature = "a11y")]
@@ -2010,6 +2042,16 @@ fn main() {
     navtree_ui::a11y_checks(&mut run);
     #[cfg(feature = "a11y")]
     popup_ui::a11y_checks(&mut run);
+    #[cfg(feature = "a11y")]
+    media_ui::a11y_checks(&mut run);
+    #[cfg(all(feature = "a11y", feature = "playback"))]
+    playback_ui::a11y_checks(&mut run);
+    #[cfg(feature = "a11y")]
+    transcript_ui::a11y_checks(&mut run);
+    #[cfg(feature = "a11y")]
+    diff_ui::a11y_checks(&mut run);
+    #[cfg(feature = "a11y")]
+    frame_ui::a11y_checks(&mut run);
     drop(app);
     println!("{}", if failed == 0 { "all ui checks passed" } else { "ui checks FAILED" });
     if failed > 0 && !strict {

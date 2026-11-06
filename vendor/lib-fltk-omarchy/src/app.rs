@@ -15,6 +15,9 @@ pub fn flush() {
     app::flush();
 }
 
+static KEEP_RUNNING: AtomicBool = AtomicBool::new(false);
+static QUIT: AtomicBool = AtomicBool::new(false);
+
 /// `let app = fltk_omarchy::App::new("dev.me.notes");` … `app.run();`
 pub struct App {
     id: String,
@@ -42,6 +45,8 @@ impl App {
         crate::tooltip::install();
         // Follow the system's Animations setting (Hyprland, GNOME, macOS, Windows).
         crate::anim::init();
+        // OMARCHY_FLTK_SCRIPT / _TREE / _FRAME_LOG (docs/TESTKIT.md).
+        crate::testkit::env::init();
         App { id: id.to_string(), _fltk: fltk, watcher: Some(ThemeWatcher::start()) }
     }
 
@@ -58,15 +63,43 @@ impl App {
         &self.id
     }
 
-    /// Runs until every window is closed or [`App::quit`] is called.
+    /// Runs until every window is closed or [`App::quit`] is called
+    /// (with [`App::keep_running`], only until `App::quit`).
     /// On return, background tasks are cancelled and their workers joined
     /// (up to 2 s) and theme watching stops.
     pub fn run(mut self) {
-        while app::wait() {
+        // A scripted run (OMARCHY_FLTK_SCRIPT) replaces the event loop.
+        if let Some(code) = crate::testkit::env::run_if_requested() {
+            self.shutdown();
+            if code != 0 {
+                std::process::exit(code);
+            }
+            return;
+        }
+        loop {
+            // Fl::wait() returns at once when no window is shown; a
+            // resident app waits for events, timers and posted work anyway.
+            let alive = if KEEP_RUNNING.load(Ordering::Relaxed) {
+                let _ = app::wait_for(1e20);
+                true
+            } else {
+                app::wait()
+            };
             task::drain();
+            if QUIT.swap(false, Ordering::Relaxed) || !alive {
+                break;
+            }
         }
         task::drain();
         self.shutdown();
+    }
+
+    /// Keeps [`App::run`] going while no window is shown, until
+    /// [`App::quit`]: apps that start hidden or hide to the background
+    /// (a single-instance app toggled from the bar, see [`crate::instance`]).
+    /// Off by default: `run` returns when the last window closes.
+    pub fn keep_running(&self, on: bool) {
+        KEEP_RUNNING.store(on, Ordering::Relaxed);
     }
 
     /// Processes pending events without blocking (tests and scripted demos).
@@ -75,11 +108,21 @@ impl App {
         task::drain();
     }
 
+    /// Hides every window and ends [`App::run`] (also with
+    /// [`App::keep_running`]). Thread-safe.
     pub fn quit() {
-        app::quit();
+        QUIT.store(true, Ordering::Relaxed);
+        if app::is_ui_thread() {
+            app::quit();
+        } else {
+            task::post(app::quit);
+        }
+        app::awake();
     }
 
     fn shutdown(&mut self) {
+        #[cfg(feature = "playback")]
+        crate::media::playback::stop_all();
         if let Some(w) = self.watcher.take() {
             w.stop();
         }
@@ -144,6 +187,8 @@ fn watch_loop(stop: Arc<AtomicBool>) {
             theme::reload();
             crate::glass::reload();
             crate::tooltip::reload_settings();
+            // Omarchy's Setup > Language writes ~/.config/omarchy/language.
+            crate::i18n::system_changed();
         });
     });
 }

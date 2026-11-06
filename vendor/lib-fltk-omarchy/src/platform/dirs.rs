@@ -85,6 +85,23 @@ pub fn cache() -> PathBuf {
     }
 }
 
+/// Runtime files (sockets, locks) that live as long as the session.
+/// Linux/BSDs: `$XDG_RUNTIME_DIR` (private, 0700), else the temporary
+/// directory; macOS: `$TMPDIR` (per user); Windows: `%TEMP%` (per user).
+/// The temporary-directory fallback can be shared by every user (`/tmp`):
+/// code that puts sockets here makes a private subdirectory first, as
+/// [`crate::instance`] does. `OMARCHY_FLTK_RUNTIME_DIR` overrides it
+/// (tests, sandboxes).
+pub fn runtime() -> PathBuf {
+    if let Some(p) = env_abs("OMARCHY_FLTK_RUNTIME_DIR") {
+        return p;
+    }
+    match OS {
+        Os::MacOs | Os::Windows => std::env::temp_dir(),
+        _ => env_abs("XDG_RUNTIME_DIR").unwrap_or_else(std::env::temp_dir),
+    }
+}
+
 /// `config()/<app_id>`.
 pub fn app_config(app_id: &str) -> PathBuf {
     config().join(app_id)
@@ -112,6 +129,31 @@ pub(crate) fn omarchy_current() -> PathBuf {
     match OS {
         Os::Linux => home().join(".local/state/omarchy/current"),
         _ => state().join("omarchy/current"),
+    }
+}
+
+/// The language picked under Omarchy's Setup > Language (`~/.config/
+/// omarchy/language`, one registry code such as `da` or `pt-BR`); None
+/// where Omarchy has no such file (macOS, Windows).
+pub(crate) fn omarchy_language_file() -> Option<PathBuf> {
+    match OS {
+        Os::Linux => Some(omarchy_config().join("language")),
+        _ => None,
+    }
+}
+
+/// Omarchy's registry of languages (`$OMARCHY_PATH/default/i18n/locales.json`:
+/// names, direction, decimal separator, digits); None without Omarchy.
+pub(crate) fn omarchy_locales_registry() -> Option<PathBuf> {
+    match OS {
+        Os::Linux => {
+            let root = std::env::var_os("OMARCHY_PATH")
+                .filter(|v| !v.is_empty())
+                .map(PathBuf::from)
+                .unwrap_or_else(|| PathBuf::from("/usr/share/omarchy"));
+            Some(root.join("default/i18n/locales.json"))
+        }
+        _ => None,
     }
 }
 

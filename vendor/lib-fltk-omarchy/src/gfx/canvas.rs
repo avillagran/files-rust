@@ -169,6 +169,27 @@ impl Canvas {
         Canvas { w, h, px: vec![0; w * h * 4], opacity: 1.0, blend: BlendMode::Normal, clips: Vec::new(), layers: Vec::new(), cov: Coverage::new(), unit: 1.0 }
     }
 
+    /// A canvas holding opaque RGB8 pixels (`w × h × 3`, row by row), e.g.
+    /// an offscreen picture of widgets (`layer::capture`).
+    pub fn from_rgb8(w: usize, h: usize, rgb: &[u8]) -> Canvas {
+        let mut c = Canvas::new(w, h);
+        for (o, p) in c.px.chunks_exact_mut(4).zip(rgb.chunks_exact(3)) {
+            o.copy_from_slice(&[p[0], p[1], p[2], 255]);
+        }
+        c
+    }
+
+    /// A canvas holding straight (not premultiplied) RGBA8 pixels.
+    pub fn from_rgba8(w: usize, h: usize, rgba: &[u8]) -> Canvas {
+        let mut c = Canvas::new(w, h);
+        for (o, p) in c.px.chunks_exact_mut(4).zip(rgba.chunks_exact(4)) {
+            let a = p[3] as u32;
+            let m = |v: u8| ((v as u32 * a + 127) / 255) as u8;
+            o.copy_from_slice(&[m(p[0]), m(p[1]), m(p[2]), p[3]]);
+        }
+        c
+    }
+
     /// Drawing units are scaled by `unit` (View sets it when it renders at
     /// a lower resolution than the widget).
     pub fn set_unit(&mut self, unit: f32) {
@@ -330,8 +351,12 @@ impl Canvas {
     }
 
     fn paint_coverage(&mut self, origin: (usize, usize), paint: &Paint) {
+        self.paint_coverage_rule(origin, paint, false)
+    }
+
+    fn paint_coverage_rule(&mut self, origin: (usize, usize), paint: &Paint, even_odd: bool) {
         let cov = std::mem::replace(&mut self.cov, Coverage::new());
-        cov.for_each(|x, y, k| {
+        cov.for_each_rule(even_odd, |x, y, k| {
             let (px, py) = (origin.0 + x, origin.1 + y);
             let c = paint.at((px as f32 + 0.5) / self.unit, (py as f32 + 0.5) / self.unit);
             self.put(px, py, c, k);
@@ -345,6 +370,16 @@ impl Canvas {
         let polys: Vec<Vec<Point>> = self.sc(path).flatten(0.2).into_iter().map(|(p, _)| p).collect();
         if let Some(o) = self.raster(&polys) {
             self.paint_coverage(o, &paint);
+        }
+    }
+
+    /// Fills `path` with the even-odd rule (SVG `fill-rule="evenodd"`):
+    /// overlapping subpaths cut holes whatever their direction.
+    pub fn fill_even_odd(&mut self, path: &Path, paint: impl Into<Paint>) {
+        let paint = paint.into();
+        let polys: Vec<Vec<Point>> = self.sc(path).flatten(0.2).into_iter().map(|(p, _)| p).collect();
+        if let Some(o) = self.raster(&polys) {
+            self.paint_coverage_rule(o, &paint, true);
         }
     }
 

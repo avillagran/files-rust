@@ -116,11 +116,25 @@ def main():
         click = command(f'sidebar-click:{downloads}', f'FILES_TOOLKIT_SIDEBAR_CLICK key={downloads}')
         assert 'rect=Some(' in click, click
         wait(lambda: str(home/'Downloads') in (state('downloads')['path']), 'navigate to Downloads')
+        tree_text = command('sidebar-tree', 'FILES_TOOLKIT_TREE ')
+        tree = json.loads(next(line.split('FILES_TOOLKIT_TREE ', 1)[1]
+                               for line in tree_text.splitlines() if line.startswith('FILES_TOOLKIT_TREE ')))
+        visible = [el for el in tree['elements'] if el['visible']]
+        assert any(el.get('name') == 'Recientes' for el in visible), visible
+        assert any(el.get('key') for el in visible), visible
+        result['toolkit_tree'] = tree
         s = result['states']['downloads']
         assert s['path'] == str(home/'Downloads') and s['active'] == downloads, s
         capture('downloads')
 
         # Devices: the mounted stick has the eject button (recorder only).
+        tree_text = command('sidebar-tree', 'FILES_TOOLKIT_TREE ')
+        tree = json.loads(next(line.split('FILES_TOOLKIT_TREE ', 1)[1]
+                               for line in tree_text.splitlines() if line.startswith('FILES_TOOLKIT_TREE ')))
+        visible = [el for el in tree['elements'] if el['visible']]
+        assert any(el.get('name') == 'Recientes' for el in visible), visible
+        assert any(el.get('key') for el in visible), visible
+        result['toolkit_tree'] = tree
         s = result['states']['downloads']
         assert {'h:devices', 'dev:/dev/sdz1', 'dev:/dev/sdy2'} <= set(s['keys']), s['keys']
         click = command('sidebar-click:dev:/dev/sdz1', 'FILES_TOOLKIT_SIDEBAR_CLICK key=dev:/dev/sdz1')

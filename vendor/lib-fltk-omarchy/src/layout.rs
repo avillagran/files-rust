@@ -169,13 +169,15 @@ impl FlexExt for Flex {
     fn fit<W: WidgetExt>(&mut self, child: &W) {
         // Creation order decides the parent in fltk; fitting a widget created
         // elsewhere moves it here, so the call reads as "put this in the row".
-        if child.parent().map_or(true, |p| p.as_widget_ptr() != self.as_widget_ptr()) {
-            self.add(child);
-        }
+        // The natural size first: adding to a flex lays it out, which would
+        // stretch a flexible newcomer before its size is known.
         let (w, h) = natural_of(child).unwrap_or_else(|| {
             remember(child);
             (child.w(), child.h())
         });
+        if child.parent().map_or(true, |p| p.as_widget_ptr() != self.as_widget_ptr()) {
+            self.add(child);
+        }
         self.fixed(child, if is_column(self) { h } else { w });
         crate::motion::install_if_free(self);
         if !is_column(self) {
@@ -283,13 +285,15 @@ pub fn set_direction<W: WidgetExt>(w: &W, d: Option<Direction>) {
 pub fn direction_of<W: WidgetExt>(w: &W) -> Direction {
     let forced = OVERRIDES.with(|o| {
         let o = o.borrow();
-        if o.is_empty() {
+        // A deleted widget (or override) has no pointer to compare:
+        // `as_widget_ptr` asserts on it, so check `was_deleted` first.
+        if o.is_empty() || w.was_deleted() {
             return None;
         }
         let mut cur = Some(as_widget(w));
         while let Some(c) = cur {
             let p = c.as_widget_ptr();
-            if let Some((_, d)) = o.iter().find(|(t, _)| t.as_widget_ptr() == p && !t.was_deleted()) {
+            if let Some((_, d)) = o.iter().find(|(t, _)| !t.was_deleted() && t.as_widget_ptr() == p) {
                 return Some(*d);
             }
             cur = c.parent().map(|g| as_widget(&g));

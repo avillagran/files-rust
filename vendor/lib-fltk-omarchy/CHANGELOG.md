@@ -2,6 +2,36 @@
 
 ## Unreleased
 
+- **Native Mermaid diagrams** (`mermaid`, feature `mermaid`, off by
+  default, no dependencies): flowcharts, sequence and state diagrams
+  parsed, laid out (layered layout and cubic edge routing adapted from
+  Rune's `rune-mermaid`, MIT) and drawn with `gfx` and theme fonts in
+  theme roles. `mermaid::render` → size + backend-neutral scene,
+  `MermaidView`, `RichText::native_mermaid` (closed fences become
+  diagrams under the code header with a Show source action; open fences
+  stay code while streaming). Bounded input, errors as values.
+  docs/MERMAID.md.
+- **Single instance and app IPC** (`instance`): `acquire` /
+  `acquire_or_forward` (a second launch forwards its arguments and
+  exits), `Server::handle` (function + string args → string reply, run on
+  the UI thread), `instance::call` for CLIs, built-in `ping`, `activate`,
+  `quit`, `show`/`hide`/`toggle`/`raise`/`window`/`is_active` for a
+  managed window; `App::keep_running` (start hidden), `AppWindow::raise`,
+  `is_active`, `toggle`; `platform::dirs::runtime`. Unix socket + `flock`
+  on Linux/BSD/macOS, named pipe on Windows; same user only, size limits
+  and timeouts. docs/PLATFORMS.md.
+- **Images** (`media`, feature `images`, off by default, Rust 1.80.1):
+  PNG, JPEG, GIF and WebP decoded on the task pool at the shown size in
+  device pixels, bounded and with errors as values, a byte-bounded LRU
+  cache, the `Image` widget (contain / cover / letterbox, rounded corners,
+  placeholder, animation on the shared clock) and the `ImageViewer`
+  overlay (zoom, pan, copy hook, keyboard). fltk keeps `no-images`.
+  docs/MEDIA.md.
+- **Icons** (`icon`, no feature, no dependencies): the SVG subset of
+  Lucide-style icons into `gfx` paths, tinted by theme role with a raster
+  cache; `Icon` widget and `icon::draw`. All of o3's 2 027 icons parse.
+  `gfx::Canvas::fill_even_odd`; `platform::memory` (glibc heap return).
+
 - **NavTree** (`navtree`): a model-based navigation sidebar for file
   managers and chat / coding apps (Files' places, o3's projects and
   threads). Items in a `ListModel<String, NavItem>` keyed by

@@ -876,52 +876,68 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
     }
 }
 
-/// Recent files (XDG recently-used.xbel) as the toolkit's filter menu; the
-/// file is read off the UI thread, the menu opens when the list is ready.
-fn open_recent(win: &Window, model: &Rc<RefCell<Model>>, canvas: &Frame) {
-    let (tx, rx) = std::sync::mpsc::channel();
-    let dir = files_core::apps::data_home();
-    std::thread::spawn(move || {
-        let _ = tx.send(files_core::recent::read(&dir));
-    });
+/// One latest-wins loader per window; only its newest request can open a menu.
+/// Disk access runs in the toolkit's bounded worker pool.
+fn recent_loader(
+    win: &Window,
+    model: &Rc<RefCell<Model>>,
+    canvas: &Frame,
+) -> fltk_omarchy::task::Latest<Result<Vec<files_core::recent::Recent>, String>> {
     let (win, model, canvas) = (win.clone(), model.clone(), canvas.clone());
-    let started = Instant::now();
-    app::add_timeout3(0.02, move |handle| {
-        let notice = |text: &str| {
-            if let Ok(mut state) = model.try_borrow_mut() {
-                state.operation_message = Some(text.into());
+    fltk_omarchy::task::Latest::new(
+        Duration::ZERO,
+        move |result: Result<Vec<files_core::recent::Recent>, String>| {
+            if win.was_deleted() || canvas.was_deleted() || !win.shown() {
+                return;
             }
-            canvas.clone().redraw();
-        };
-        match rx.try_recv() {
-            Ok(Ok(list)) if list.is_empty() => notice("No hay archivos recientes"),
-            Ok(Ok(list)) => {
-                eprintln!("FILES_TOOLKIT_RECENT count={}", list.len());
-                let items = places_sidebar::recent_items(&list);
-                let (m, c) = (model.clone(), canvas.clone());
-                fltk_omarchy::overlay::Menu::open(&win, "Recientes", items, move |i| {
-                    if let Some(r) = list.get(i)
-                        && let Ok(mut state) = m.try_borrow_mut()
-                    {
-                        let ok = places_sidebar::locate(&mut state, &r.path);
-                        eprintln!(
-                            "FILES_TOOLKIT_RECENT_PICK index={i} path={} located={ok}",
-                            r.path.display()
-                        );
-                    }
-                    let mut canvas = c.clone();
-                    let _ = canvas.take_focus();
-                    canvas.redraw();
-                });
-            }
-            Ok(Err(e)) => notice(&format!("No se pudieron leer los recientes: {e}")),
-            Err(std::sync::mpsc::TryRecvError::Empty)
-                if started.elapsed() < std::time::Duration::from_secs(5) =>
+            if model
+                .try_borrow()
+                .is_ok_and(|m| m.closing || places_sidebar::covered(&m))
             {
-                app::repeat_timeout3(0.02, handle)
+                return;
             }
-            Err(_) => notice("No se pudieron leer los recientes"),
-        }
+            let notice = |text: &str| {
+                if let Ok(mut state) = model.try_borrow_mut() {
+                    state.operation_message = Some(text.into());
+                }
+                canvas.clone().redraw();
+            };
+            match result {
+                Ok(list) if list.is_empty() => notice("No hay archivos recientes"),
+                Ok(list) => {
+                    eprintln!("FILES_TOOLKIT_RECENT count={}", list.len());
+                    let items = places_sidebar::recent_items(&list);
+                    let (m, c) = (model.clone(), canvas.clone());
+                    fltk_omarchy::overlay::Menu::open(&win, "Recientes", items, move |i| {
+                        if let Some(r) = list.get(i)
+                            && let Ok(mut state) = m.try_borrow_mut()
+                        {
+                            let ok = places_sidebar::locate(&mut state, &r.path);
+                            eprintln!(
+                                "FILES_TOOLKIT_RECENT_PICK index={i} path={} located={ok}",
+                                r.path.display()
+                            );
+                        }
+                        let mut canvas = c.clone();
+                        let _ = canvas.take_focus();
+                        canvas.redraw();
+                    });
+                }
+                Err(e) => notice(&format!("No se pudieron leer los recientes: {e}")),
+            }
+        },
+    )
+}
+
+fn open_recent(
+    loader: &fltk_omarchy::task::Latest<Result<Vec<files_core::recent::Recent>, String>>,
+) {
+    let dir = files_core::apps::data_home();
+    loader.request(move |ctx| {
+        ctx.check()?;
+        let result = files_core::recent::read(&dir).map_err(|e| e.to_string());
+        ctx.check()?;
+        Ok(result)
     });
 }
 
@@ -1015,6 +1031,9 @@ pub fn run_since(start: Instant) -> bool {
     let metrics_readiness = std::env::var_os("FILES_METRICS_READY").is_some();
     let mut readiness_emitted = None;
     let _application = app::App::default();
+    if smoke {
+        fltk_omarchy::testkit::arm();
+    }
     if trace {
         eprintln!("FILES_INIT_US={}", start.elapsed().as_micros());
     }
@@ -1116,6 +1135,7 @@ pub fn run_since(start: Instant) -> bool {
     actions_anchor.hide();
     // Places rail: the toolkit Sidebar over the canvas strip (y 90 to the
     // bottom of the browser). It is drawn after the canvas on every paint.
+    let recent = recent_loader(&win, &model, &canvas);
     let rail_selected = fltk_omarchy::State::new(usize::MAX);
     let rail_state = Rc::new(RefCell::new(places_sidebar::Rail::default()));
     let mut sidebar = {
@@ -1129,18 +1149,14 @@ pub fn run_since(start: Instant) -> bool {
             let _ = canvas.take_focus();
             canvas.redraw();
         };
-        let (m1, r1, c1, w1) = (
-            model.clone(),
-            rail_state.clone(),
-            canvas.clone(),
-            win.clone(),
-        );
+        let (m1, r1, c1) = (model.clone(), rail_state.clone(), canvas.clone());
+        let recent = recent.clone();
         let (m2, r2, c2) = (model.clone(), rail_state.clone(), canvas.clone());
         fltk_omarchy::widgets::Sidebar::new(Vec::new(), &rail_selected)
             .widths(places_sidebar::RAIL, places_sidebar::WIDE)
             .on_activate(move |i| {
                 if r1.borrow().kinds.get(i) == Some(&places_sidebar::Kind::Recent) {
-                    open_recent(&w1, &m1, &c1);
+                    open_recent(&recent);
                     return;
                 }
                 let action = r1.borrow().actions.get(i).cloned().flatten();
@@ -1158,12 +1174,8 @@ pub fn run_since(start: Instant) -> bool {
     // remove bookmark, mount / unmount / eject, trash).
     {
         let menu_tree = sidebar.tree();
-        let (m3, r3, c3, w3) = (
-            model.clone(),
-            rail_state.clone(),
-            canvas.clone(),
-            win.clone(),
-        );
+        let (m3, r3, c3) = (model.clone(), rail_state.clone(), canvas.clone());
+        let recent = recent.clone();
         sidebar = sidebar.on_context(move |i, x, y| {
             let entries = match m3.try_borrow() {
                 Ok(state) => places_sidebar::menu(&state, &r3.borrow(), i),
@@ -1173,13 +1185,14 @@ pub fn run_since(start: Instant) -> bool {
                 return;
             }
             let (items, picks): (Vec<_>, Vec<_>) = entries.into_iter().unzip();
-            let (m4, c4, w4) = (m3.clone(), c3.clone(), w3.clone());
+            let (m4, c4) = (m3.clone(), c3.clone());
+            let recent = recent.clone();
             eprintln!("FILES_TOOLKIT_SIDEBAR_MENU row={i} entries={}", picks.len());
             menu_tree.open_menu(x, y, items, move |k| {
                 if let Some(pick) = picks.get(k).cloned() {
                     eprintln!("FILES_TOOLKIT_SIDEBAR_PICK row={i} entry={k} pick={pick:?}");
                     if matches!(pick, places_sidebar::Pick::OpenRecent) {
-                        open_recent(&w4, &m4, &c4);
+                        open_recent(&recent);
                         return;
                     }
                     if let Ok(mut state) = m4.try_borrow_mut() {
@@ -2221,6 +2234,15 @@ pub fn run_since(start: Instant) -> bool {
                         eprintln!(
                             "FILES_TOOLKIT_SIDEBAR_DRAG from={from} to={to} found={}",
                             rect(from).is_some() && rect(to).is_some()
+                        );
+                    }
+                    "sidebar-tree" => {
+                        eprintln!(
+                            "FILES_TOOLKIT_TREE {}",
+                            serde_json::from_str::<serde_json::Value>(
+                                &fltk_omarchy::testkit::tree_json(&win)
+                            )
+                            .unwrap_or_default()
                         );
                     }
                     "sidebar-tabs" => {

@@ -59,7 +59,7 @@ pub(super) fn wayland() -> bool {
     !unsafe { fl_wl_display() }.is_null()
 }
 
-pub(super) use super::generic::process_cpu_time;
+pub(super) use super::generic::{process_cpu_time, thread_cpu_time};
 
 pub(super) fn prefers_dark() -> Option<bool> {
     None // the Omarchy theme decides
@@ -452,7 +452,12 @@ pub(super) fn watch_theme(stop: Arc<AtomicBool>, changed: &dyn Fn()) {
                         .to_string();
                     let relevant = matches!(
                         name.as_str(),
-                        "theme" | "theme.name" | "colors.toml" | "shell.toml" | "tooltips.json"
+                        "theme"
+                            | "theme.name"
+                            | "colors.toml"
+                            | "shell.toml"
+                            | "tooltips.json"
+                            | "language"
                     ) || ev.wd == theme_wd
                         || ev.wd == toggles_wd
                         || (toggle_parents.contains(&ev.wd)
