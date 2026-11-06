@@ -6,7 +6,10 @@ of Nautilus (GNOME Files 47–49) and take the best from other file managers.
 Nautilus sources: GNOME release notes 47/48, Nautilus `NEWS`, the GNOME Files
 help and, from version 49.0, `help-overlay.ui` (shortcuts),
 `nautilus-preferences-dialog.ui` and `freedesktop-dbus-interfaces.xml`.
-Files' status was verified in the code (not in docs) as of 6348af9.
+The original matrix was checked against code at `6348af9`. The dated
+2026-11-06 reconciliation below updates the entries supported by newer
+code and retained evidence through `8454476` / `f38f658`; unchanged rows
+retain their earlier scope and are not a fresh full-parity audit.
 
 States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use.
 
@@ -22,23 +25,23 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 8 | Image/video/PDF/cover thumbnails | partial | PDF, audio cover art, list | P2 |
 | 9 | Rubber-band (marquee) selection | **yes** | block 3: Groups/List/Grid, Ctrl/Shift adds, click on empty space clears | — |
 | 10 | Select by pattern Ctrl+S | **yes** | block 6 | — |
-| 11 | Clipboard with other apps | partial | block 3: Ctrl+V pastes the most recent copy (Files or system); no end-to-end test (the personal clipboard is not touched) | P2 |
-| 12 | Drag and drop with other apps | partial | dropping always goes through review | P2 |
+| 11 | Clipboard with other apps | partial | block 3: Ctrl+V pastes the most recent copy (Files or system); private native file-import end-to-end coverage remains pending | P2 |
+| 12 | Drag and drop with other apps | partial | real Files-to-Files Wayland drop onto the Sidebar verified on NODE/M2; other-app interoperability remains pending; drops use copy review | P2 |
 | 13 | Trash: empty, restore selected, Shift+Delete | **yes** | block 1: Shift+Delete with confirmation, Restore/Delete/Empty in the catalog | — |
 | 14 | Undo/redo operations | partial | only rename and the last batch sent to trash | P2 |
 | 15 | Rename and bulk rename | yes | (Files goes further: regex, sequences) | — |
 | 16 | New folder, with selection, `~/Templates` templates | **yes** | block 5 | — |
 | 17 | Compress/extract zip, tar.*, 7z | partial | ZIP only | P2 |
 | 18 | Create link Ctrl+M / Shift+Ctrl+M | **yes** | blocks 1 and 6 | — |
-| 19 | Properties: contents, free space, owner/group, recursive | partial | no count/space/owner/recursive | P2 |
+| 19 | Properties: contents, free space, owner/group, recursive | partial | numeric UID/GID, inode metadata and apparent/allocated size exist; owner/group names, recursive contents/count and filesystem free space in properties remain missing | P2 |
 | 20 | Open with another app and set as default | **yes** | block 2: Enter opens with the default; Open with… (Ctrl+Shift+O) | — |
 | 21 | Terminal here (Ctrl+.) | **yes** | block 1 | — |
 | 22 | User scripts / actions | no | — | P2 |
 | 23 | Conflicts: replace, merge, per file | partial | no replace or merge | P2 |
 | 24 | Operation progress | yes | — | — |
 | 25 | Starred | no | — | P2 |
-| 26 | Recent | no | — | P2 |
-| 27 | Sidebar: bookmarks, live devices, network | partial | block 4: bookmarks and live devices; network missing | P3 |
+| 26 | Recent | partial | bounded local XBEL menu locates an existing file in its folder; no dedicated recent-files view or remote entries | P2 |
+| 27 | Sidebar: bookmarks, live devices, network | partial | toolkit Sidebar: places, bookmark reorder, row menus, device actions and reviewed folder drops; network browsing missing; motion acceptance remains separate | P3 |
 | 28 | Mount/unmount/eject, space per device | **yes** | block 4: udisksctl, free space, eject with power-off | — |
 | 29 | Network: sftp/smb/ftp/dav/nfs | partial | SFTP only | P3 |
 | 30 | Search with filters and full text | yes | — | — |
@@ -51,7 +54,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 37 | Free space | yes | — | — |
 | 38 | Wallpaper | no | — | P3 |
 | 39 | i18n | no | — | P3 |
-| 40 | AT-SPI accessibility | no | FLTK has no AT-SPI bridge | blocked |
+| 40 | AT-SPI accessibility | no | toolkit has optional AccessKit adapters; Files leaves `a11y` disabled and its browser canvas lacks complete virtual rows/actions and native AT-SPI validation | P2 |
 | 41 | Space preview | yes | Files goes further (video, PDF, HTML, DOCX, ZIP) | — |
 | 42 | Checksum | partial | not in properties | P3 |
 
@@ -74,6 +77,61 @@ manager (yazi).
 5. Columns/sort, templates, recent, starred, tar, conflicts, scripts.
 
 Progress on each row is recorded here with commit and evidence.
+
+## Reconciliation — 2026-11-06
+
+- **Sidebar and recent files:** commits `164b7aa`, `24db8de`, `22178ad`
+  and `8454476` provide the toolkit Sidebar, bookmark reorder and a recent
+  files menu. Recents read at most 8 MiB of local `recently-used.xbel`, keep
+  at most 40 existing regular files, and locate the chosen file in its
+  folder. One `task::Latest` loader per window discards superseded results.
+  The [NODE Sidebar report](evidence/0.0.4/toolkit-sidebar-ui-1793946222728778808.json)
+  and [native ARM M2 Sidebar report](evidence/toolkit-20261106/m2/docs/evidence/0.0.4/toolkit-sidebar-ui-1793946395642985978.json)
+  pass recent-file location, bookmarks, row menus, simulated device actions
+  and reviewed copies. Device fixtures do not prove real hardware eject;
+  those scenes run with animations off and do not prove transition quality.
+- **Real Wayland drop:** `da49afe` integrates the native reception fix;
+  `f38f658` corrects the private harness for Lua/legacy Hyprland dispatchers.
+  The [NODE real-drop report](evidence/sidebar-drop-20261105/lua-dispatch-1793946576953621044.json)
+  and [M2 real-drop report](evidence/toolkit-20261106/m2/docs/evidence/sidebar-drop-20261105/lua-dispatch-1793946576062018538.json)
+  pass a drag between two Files windows in a private nested compositor,
+  opening copy review on the destination row and verifying copied bytes.
+  This is not a complete external-application or cross-platform DnD matrix.
+- **Properties:** `properties_dialog.rs` displays numeric UID/GID, mode,
+  inode/device, hardlink count, timestamps and apparent/allocated bytes.
+  Directory size is explicitly non-recursive. The owner/group row above
+  therefore distinguishes existing numeric metadata from missing named
+  identities and recursive summaries.
+- **Accessibility:** the vendored toolkit's `a11y` feature offers AccessKit
+  platform adapters. Files does not enable it. Smoke-only testkit inspection
+  of Sidebar elements is useful test evidence, not proof that the custom
+  browser canvas is accessible to AT-SPI. See
+  [toolkit adoption scope](TOOLKIT-0d00f2b.md).
+
+Functional reports do not close the resource/startup gates, which remain
+`NOT_MEASURED`, or establish full Nautilus/Finder parity.
+
+### Next navigation priorities
+
+1. Validate Sidebar motion and browser displacement together, including
+   rapid reversal, pin/hover, resize, covered modals and animations disabled.
+   The [UI implementation sequence](UI-IMPLEMENTATION-PLAN.md) records this
+   first delivery; the animation-disabled scenes above are its baseline.
+2. Add deliberate tab/folder pointer gestures: middle-click close/open in a
+   background tab, consistent modifier behavior and stable-ID tab reorder.
+   The current canvas routes non-right-button presses through the generic
+   selection path; this is not a validated middle-button interaction.
+3. Preserve access to clipped breadcrumb ancestors with an overflow menu,
+   exact path identities, background-tab opening and predictable focus return.
+   The current path bar removes early segments when the last segments fill
+   its width.
+
+Before treating the historical Ctrl+Shift+End SpaceMap failure as a product
+regression, reconcile `scripts/keyboard-nav-ui-check.py`: its final assertion
+still expects one marked item, while the current selection implementation
+supports Shift ranges and additive Ctrl+Shift ranges. The old failing report
+remains evidence of that run; a fresh corrected scene is required before
+claiming complete keyboard-navigation acceptance.
 
 ## Block 1 — 2026-11-04
 

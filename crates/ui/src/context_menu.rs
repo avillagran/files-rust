@@ -678,7 +678,7 @@ pub fn open_at(m: &mut Model, x: i32, y: i32, w: i32, h: i32) -> bool {
             Target::Entries
         }
         None | Some(Action::None) => {
-            let left = if m.rail { 170 } else { 52 };
+            let left = m.rail_width();
             let right = w - if !m.dual.enabled && m.inspector && w >= 800 {
                 240
             } else {
@@ -780,13 +780,13 @@ pub fn open_keyboard(m: &mut Model, w: i32, h: i32) -> bool {
         true
     } else if m.dual.enabled {
         let x = if m.dual.right_active {
-            if m.rail { 186 } else { 68 }
+            m.browser_left()
         } else {
             0
         } + if m.dual.right_active {
             m.dual_width / 2 + 12
         } else {
-            if m.rail { 198 } else { 80 }
+            m.browser_left() + 12
         };
         m.selection.clear();
         m.selected = None;
@@ -796,7 +796,7 @@ pub fn open_keyboard(m: &mut Model, w: i32, h: i32) -> bool {
         m.hits.clear();
         true
     } else {
-        open_at(m, if m.rail { 188 } else { 70 }, h - 45, w, h)
+        open_at(m, m.browser_left() + 2, h - 45, w, h)
     }
 }
 pub fn dismiss(m: &mut Model) {

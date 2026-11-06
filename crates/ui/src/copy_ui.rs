@@ -822,7 +822,7 @@ pub struct ProgressLayout {
     pub path_y: i32,
 }
 pub fn progress_layout(m: &Model, w: i32, h: i32) -> ProgressLayout {
-    let x = if m.rail { 186 } else { 68 };
+    let x = m.browser_left();
     let inspector = !m.dual.enabled && m.inspector && w >= 800;
     let width = (w - x - 24 - if inspector { 240 } else { 0 }).max(0);
     let narrow = width < 340;
@@ -982,7 +982,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             p,
             m,
             Rect::new(
-                if m.rail { 186 } else { 68 },
+                m.browser_left(),
                 crate::operation_bar::browser_height(m, h) - 72,
                 180,
                 28,

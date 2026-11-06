@@ -584,7 +584,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             }
         }
     }
-    let rail = if m.rail { 170 } else { 52 };
+    let rail = m.rail_width();
     p.rect(
         r(
             0,
@@ -1839,7 +1839,7 @@ pub(crate) fn entry_top(m: &Model, i: usize, w: i32) -> Option<i32> {
     if m.view == View::SpaceMap {
         return None;
     }
-    let left = if m.rail { 186 } else { 68 };
+    let left = m.browser_left();
     let iw = if !m.dual.enabled && m.inspector && w >= 800 {
         240
     } else {
@@ -1908,10 +1908,8 @@ pub fn reveal_selection(m: &mut Model, w: i32, h: i32) {
             m.scroll = (y + 120 - (h - 170)).max(0);
         }
         let x = position.x * m.layout.zoom;
-        let available = (w
-            - if m.inspector && w >= 800 { 240 } else { 0 }
-            - if m.rail { 170 } else { 52 }
-            - 32) as f32;
+        let available =
+            (w - if m.inspector && w >= 800 { 240 } else { 0 } - m.rail_width() - 32) as f32;
         if x < m.pan_x {
             m.pan_x = x;
         } else if x + 128.0 * m.layout.zoom > m.pan_x + available {
@@ -1980,6 +1978,49 @@ mod inspector_tabs_tests {
         fn clip(&mut self, _: Rect) {}
         fn unclip(&mut self) {}
     }
+    #[test]
+    fn sampled_sidebar_width_keeps_listing_hits_and_operation_layout_aligned() {
+        let mut m = Model::new("/fixture-sidebar-width".into());
+        m.loaded = true;
+        m.view = View::List;
+        m.entries = vec![files_core::listing::Entry {
+            name: "one.txt".into(),
+            kind: files_core::listing::Kind::File,
+            metadata: None,
+            stat_attempted: true,
+        }];
+        m.order = vec![0];
+        m.sidebar_widget = true;
+        for expanded in [false, true] {
+            m.rail = expanded;
+            for width in [52, 94, 136, 170] {
+                m.rail_width = Some(width);
+                paint(&mut Recorder::default(), &mut m, 1000, 650);
+                let row = m
+                    .hits
+                    .iter()
+                    .find(|h| matches!(h.action, Action::Entry(0)))
+                    .unwrap();
+                assert_eq!(m.listing_rect.x, width + 16);
+                assert_eq!(row.rect.x, m.listing_rect.x);
+                assert_eq!(row.rect.w, m.listing_rect.w);
+                assert_eq!(crate::grid_view::width(&m, 1000), m.listing_rect.w);
+                assert_eq!(
+                    crate::copy_ui::progress_layout(&m, 1000, 650).rect.x,
+                    row.rect.x
+                );
+            }
+        }
+        // A retained widget sample must not displace covered or offscreen scenes.
+        m.sidebar_widget = false;
+        m.rail_width = Some(94);
+        for (expanded, expected) in [(false, 68), (true, 186)] {
+            m.rail = expanded;
+            paint(&mut Recorder::default(), &mut m, 1000, 650);
+            assert_eq!(m.listing_rect.x, expected);
+        }
+    }
+
     #[test]
     fn trash_sidebar_is_pinned_and_catalog_targets_are_bounded_at_minimum_size() {
         for operation_bar in [false, true] {

@@ -125,6 +125,7 @@ mod sftp_report;
 mod sftp_report_ui;
 mod sftp_state;
 mod sftp_ui;
+mod sidebar_motion_scene;
 mod size_panel;
 mod size_queue;
 mod size_report;
@@ -1249,6 +1250,7 @@ pub fn run_since(start: Instant) -> bool {
     let scale_window = win.clone();
     let rail_window = win.clone();
     let mut rail_sidebar = sidebar.clone();
+    let mut rail_motion = fltk_omarchy::anim::Anim::<f64>::new();
     let rail_selected = rail_selected.clone();
     let rail_state = rail_state.clone();
     canvas.draw(move |f| {
@@ -1272,6 +1274,25 @@ pub fn run_since(start: Instant) -> bool {
             if !covered {
                 m.rail = rail_sidebar.is_expanded();
             }
+            let target = if m.rail {
+                places_sidebar::WIDE
+            } else {
+                places_sidebar::RAIL
+            };
+            // A free canvas has no Flex geometry to animate. Share the toolkit
+            // clock/timer and use this one sample for the widget and all content.
+            let width = if covered {
+                rail_motion.jump(target as f64)
+            } else {
+                rail_motion.get(
+                    target as f64,
+                    fltk_omarchy::anim::ms::LAYOUT,
+                    fltk_omarchy::anim::Ease::OutCubic,
+                    f,
+                )
+            }
+            .round() as i32;
+            m.rail_width = Some(width.clamp(places_sidebar::RAIL, places_sidebar::WIDE));
             let previous_scroll = m.scroll;
             view::paint(&mut p, &mut m, f.w(), f.h());
             m.clamp_scroll(f.h() - 134);
@@ -1304,13 +1325,9 @@ pub fn run_since(start: Instant) -> bool {
                 rail_selected.set_if_changed(rail.active);
                 *rail_state.borrow_mut() = rail;
                 let strip = (crate::operation_bar::browser_height(&m, f.h()) - 122).max(0);
-                // The width is the toolkit's (52 / 170). FLTK scales children
-                // with the window, so a resized window would distort it.
-                let w = if rail_sidebar.is_expanded() {
-                    places_sidebar::WIDE
-                } else {
-                    places_sidebar::RAIL
-                };
+                // Repair FLTK's child scaling with the same animated sample
+                // used by the browser, rather than forcing an endpoint.
+                let w = m.rail_width();
                 if (
                     rail_sidebar.x(),
                     rail_sidebar.y(),
@@ -2088,6 +2105,11 @@ pub fn run_since(start: Instant) -> bool {
                     }
                     "closed" => toolkit_menus.close(),
                     "close" => model.borrow_mut().closing = true,
+                    "sidebar-motion-check" => {
+                        let report =
+                            sidebar_motion_scene::run(&win, &canvas, &fixture_sidebar, &model);
+                        eprintln!("FILES_SIDEBAR_MOTION_REPORT {report}");
+                    }
                     "sidebar-expand" => fixture_sidebar.expand(),
                     "sidebar-collapse" => fixture_sidebar.collapse(),
                     "sidebar-state" => {

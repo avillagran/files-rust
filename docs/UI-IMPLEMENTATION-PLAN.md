@@ -7,6 +7,9 @@ not complete merely because the vendor builds.
 
 ## 1. Navigation and motion
 
+Sidebar geometry work is implemented and undergoing rendered-frame validation;
+see [SIDEBAR-MOTION.md](SIDEBAR-MOTION.md).
+
 Audit Sidebar expansion and browser displacement together. Files currently
 uses the binary expanded state to choose 52/170 px during every paint;
 verify whether this overrides the toolkit's intermediate animation widths.

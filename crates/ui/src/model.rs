@@ -587,6 +587,8 @@ pub struct Model {
     pub rail: bool,
     /// The toolkit Sidebar widget draws the rail rows (real window only).
     pub sidebar_widget: bool,
+    /// Sampled width of the painted toolkit rail during its transition.
+    pub rail_width: Option<i32>,
     /// Fixture request to pin (`true`) or release the Sidebar.
     pub rail_request: Option<bool>,
     /// Folder rows of the toolkit rail as painted (drop targets).
@@ -641,6 +643,26 @@ pub struct Model {
     pub all_stat: bool,
 }
 impl Model {
+    /// Width shared by the rail, browser layout and pointer geometry.
+    /// Offscreen scenes and covered widgets retain the endpoint layout.
+    pub fn rail_width(&self) -> i32 {
+        let endpoint = if self.rail {
+            crate::places_sidebar::WIDE
+        } else {
+            crate::places_sidebar::RAIL
+        };
+        if self.sidebar_widget {
+            self.rail_width.unwrap_or(endpoint)
+        } else {
+            endpoint
+        }
+    }
+
+    /// Browser inset after the rail and its content gutter.
+    pub fn browser_left(&self) -> i32 {
+        self.rail_width() + 16
+    }
+
     pub fn new(path: PathBuf) -> Self {
         let palette = std::fs::read_to_string(theme::theme_path())
             .ok()
@@ -768,6 +790,7 @@ impl Model {
             group_ends: [0; 5],
             rail: false,
             sidebar_widget: false,
+            rail_width: None,
             rail_request: None,
             rail_drops: Vec::new(),
             inspector: true,

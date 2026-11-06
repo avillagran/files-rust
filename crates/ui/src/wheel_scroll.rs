@@ -102,7 +102,7 @@ pub fn wheel(m: &mut Model, x: i32, delta: i32, horizontal: bool, h: i32) {
         return;
     }
     let (slot, step) = if m.dual.enabled {
-        let left = if m.rail { 186 } else { 68 };
+        let left = m.browser_left();
         let on_right = x >= left + m.dual_width.max(0) / 2;
         (usize::from(on_right != m.dual.right_active), 36)
     } else if m.view == View::Columns && horizontal {

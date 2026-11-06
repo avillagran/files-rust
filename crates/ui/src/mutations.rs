@@ -541,7 +541,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     if compact_notice_visible(m)
         && let Some(message) = m.operation_message.clone()
     {
-        let x = if m.rail { 186 } else { 68 };
+        let x = m.browser_left();
         let inspector_shown = !m.dual.enabled && m.inspector && w >= 800;
         let width = (w - x - 24 - if inspector_shown { 280 } else { 0 }).clamp(160, 540);
         let c = m.palette.clone();

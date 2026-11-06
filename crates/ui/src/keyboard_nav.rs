@@ -80,7 +80,7 @@ pub fn key(m: &mut Model, key: Key, ctrl: bool, shift: bool, w: i32, h: i32) -> 
     let columns = if grid {
         metrics.columns as i32
     } else if folder {
-        let rail = if m.rail { 170 } else { 52 };
+        let rail = m.rail_width();
         let inspector = if m.inspector && w >= 800 { 240 } else { 0 };
         ((w - inspector - rail - 32) / 240).max(1)
     } else {

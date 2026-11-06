@@ -54,7 +54,7 @@ impl Metrics {
     }
 }
 pub fn width(m: &Model, w: i32) -> i32 {
-    w - if m.inspector && w >= 800 { 240 } else { 0 } - 16 - if m.rail { 186 } else { 68 }
+    w - if m.inspector && w >= 800 { 240 } else { 0 } - 16 - m.browser_left()
 }
 pub fn move_focus(m: &mut Model, delta: i32, extend: bool, w: i32, h: i32) {
     if m.order.is_empty() {
