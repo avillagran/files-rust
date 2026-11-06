@@ -71,21 +71,30 @@ with tempfile.TemporaryDirectory(prefix='usability-', dir=BASE) as temp:
             time.sleep(.02)
         raise AssertionError(reason)
 
-    def state(after=0, predicate=lambda s: True):
+    def state(after=0, predicate=lambda s: True, record=True):
         def current():
-            rows = []
+            latest = None
             for line in log.read_text(errors='replace')[after:].split('\n')[:-1]:
                 if line.startswith('FILES_HIDDEN_STATE '):
                     s = json.loads(line[len('FILES_HIDDEN_STATE '):])
-                    if s['seq'] == seq and predicate(s):
-                        rows.append(s)
-            return rows[-1] if rows else None
+                    if s['seq'] == seq:
+                        latest = s
+            return latest if latest is not None and predicate(latest) else None
         s = wait(current, 'painted state absent for seq ' + str(seq))
-        report['states'].append(s)
+        if record:
+            report['states'].append(s)
         return s
+
+    def ready(s):
+        watch = s['listing_watch']
+        return (watch['settled'] and not watch['pending']
+                and any(p['active'] and p['loaded'] for p in s['dual']['panels']))
 
     def command(action):
         global seq
+        # Initial watch attachment and path changes can admit an async refresh.
+        # Wait before issuing an action; never replay a consumed navigation key.
+        state(predicate=ready, record=False)
         offset = len(log.read_text(errors='replace'))
         pending = raw.with_suffix('.pending')
         pending.write_text(action)
