@@ -1,0 +1,2 @@
+{"report": "/home/node/Work/files/docs/evidence/0.0.4/toolkit-menu-ui-1794000063121040218.json", "functional_gate": "FAIL"}
+/usr/bin/xvfb-run: line 185: kill: (2309959) - No such process

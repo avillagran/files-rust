@@ -1,0 +1,32 @@
+{
+  "gate": "PASS",
+  "receipt": "docs/evidence/0.0.4/installed-checkpoint-1794000128380979502.json",
+  "architecture": "/home/node/.local/bin/files: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 4.4.0, BuildID[sha1]=6690c91438e8d9a4bc3e808c168350753b4823bb, stripped",
+  "artifacts": [
+    {
+      "name": "files",
+      "installed_sha256": "b7a8b73f2b1d9220c86234f8a0242c7627ecab4041fc23f5da2c80c5fc2546a5",
+      "backup_sha256": "2b98655c34c58622640e45e2d38db8b26a11a3aee2e256f4544097dd15e31217"
+    },
+    {
+      "name": "files-helper",
+      "installed_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+      "backup_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a"
+    },
+    {
+      "name": "files-html-helper",
+      "installed_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+      "backup_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "installed_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "backup_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b"
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "installed_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd",
+      "backup_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd"
+    }
+  ]
+}

@@ -20,13 +20,15 @@ navigation surfaces. Preserve bookmark ordering and real Wayland drops.
 
 Complete hidden breadcrumb ancestry is delivered in `74d205f`, including
 keyboard opening, focus return and background destinations; see
-[BREADCRUMB-OVERFLOW.md](BREADCRUMB-OVERFLOW.md). The remaining navigation
-fixture reconciliation and tab-strip improvements remain open.
+[BREADCRUMB-OVERFLOW.md](BREADCRUMB-OVERFLOW.md). The keyboard fixture now
+checks inclusive/additive SpaceMap ranges against the current contract.
 
 Background folder tabs and middle-close gestures are delivered in `c52b96b`;
-see [TAB-GESTURES.md](TAB-GESTURES.md). Tab reordering and migration to the
-toolkit strip remain open. The toolkit thread has the stable-key/context/
-reorder requirements and the right-button activation finding.
+see [TAB-GESTURES.md](TAB-GESTURES.md). Stable menu/keyboard reordering and
+inactive-tab context actions are delivered in `1c2cdee`; see
+[TAB-CONTEXT.md](TAB-CONTEXT.md). Drag reordering and migration to the toolkit
+strip remain open. The toolkit thread has the stable-key/context/reorder
+requirements and the right-button activation finding.
 
 Reconcile the existing Nautilus parity matrix with current implementation;
 several entries predate Sidebar, recent files and AccessKit in the toolkit.
@@ -74,5 +76,6 @@ separately; do not silently enable GPU/effects or remove resource gates.
 The toolkit TabBar already has an animated indicator, overflow, keyboard
 cycling and middle-close, but migration must preserve stable tab identities,
 right-button safety and pane ownership. Coordinate missing APIs upstream
-before replacing the current strip. Navigation fixture reconciliation and other usability work can proceed
-independently of the tab-strip API request.
+before replacing the current strip. Wider keyboard/accessibility acceptance
+and other usability work can proceed independently of the tab-strip API
+request. The app-owned stable-ID controllers are ready for that integration.

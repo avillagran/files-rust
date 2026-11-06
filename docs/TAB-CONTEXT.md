@@ -46,5 +46,34 @@ The runner supports installed binaries, private HOME/XDG fixtures and
 newline-complete JSON records. No production selection behavior was reverted
 to make the old test pass.
 
+The native ARM run exposed a second fixture race: initial watch attachment
+admitted a listing refresh while the runner sent Ctrl+Shift+Down. Navigation
+is intentionally consumed during selection restoration. Harness checkpoint
+`8ae0de8` waits for the current watch and active pane to be ready before each
+action and tests predicates against the newest complete state. It does not
+replay keys or disable production guards. The failed run is retained.
+
+## Validated installation — 2026-11-06
+
+Application checkpoint `1c2cdee` passed 1,672 workspace tests (3 ignored),
+Clippy and release builds. Context scenes pass with animations on/off on
+NODE and native ARM M2; installed context and corrected keyboard matrices
+pass on both machines. NODE breadcrumb and general menu regressions pass.
+The first concurrent Xvfb menu run lost its display connection; its failure
+is retained alongside the isolated passing run. Future Xvfb runs use
+separate display numbers or sequential startup.
+
+| Machine | Installed app SHA-256 |
+|---|---|
+| NODE x86_64 | `b7a8b73f2b1d9220c86234f8a0242c7627ecab4041fc23f5da2c80c5fc2546a5` |
+| M2 native ARM | `3c419230f12d9506efcf52b4fe3499c955ac27de7597b27d47ceea174b6c538d` |
+
+All five installed and backup artifacts were hashed and verified per machine.
+The unchanged native HTML helpers were reused after recipe verification.
+Reports, captures, installation receipts, audits and build/test logs are in
+[the evidence bundle](evidence/tab-context-20261106/README.md).
+
+![Inactive tab actions preserve the active browser and its selection](evidence/tab-context-20261106/node/docs/evidence/0.0.4/tab-context-inactive-tab-menu-1794000138027177517.png)
+
 Resource and startup acceptance remain unmeasured; this delivery does not
 close the complete UI, accessibility, language or Nautilus/Finder roadmap.

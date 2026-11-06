@@ -1,0 +1,1812 @@
+{
+  "functional_gate": "PASS",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "method": "Private painted tab context targets and toolkit popup/key handlers with framebuffer captures; no native input",
+  "log_path": "/home/node/Work/files/docs/evidence/0.0.4/tab-context-ui-1793999854872346603.txt",
+  "states": [
+    {
+      "label": "loaded-A",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "loaded-A",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "loaded-A",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "loaded-A",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "loaded-A",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "selected-A",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "seeded",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "keyboard-move-right",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "keyboard-move-left",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "opened-last",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": true,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "escaped",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "keyboard-open",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": true,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "keyboard-escaped",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "opened-last",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": true,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "moved-left",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "opened-first",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "context_open": true,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "closed-right",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "reseeded",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "opened-first",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "context_open": true,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 4,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 5,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "closed-others",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 4,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "inactive-survivor-seeded",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 4,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "opened-last",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 4,
+      "closing": false,
+      "context_open": true,
+      "error": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/A"
+        },
+        {
+          "id": 6,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/B"
+        },
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          529,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          376,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "inactive-survivor-activated",
+      "active": 7,
+      "anchor_raw": null,
+      "closed": 6,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 3,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C",
+      "refreshing": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "inactive-survivor-activated",
+      "active": 7,
+      "anchor_raw": null,
+      "closed": 6,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 3,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C",
+      "refreshing": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "inactive-survivor-activated",
+      "active": 7,
+      "anchor_raw": null,
+      "closed": 6,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 3,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C",
+      "refreshing": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "inactive-survivor-activated",
+      "active": 7,
+      "anchor_raw": null,
+      "closed": 6,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 3,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C",
+      "refreshing": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "inactive-survivor-activated",
+      "active": 7,
+      "anchor_raw": null,
+      "closed": 6,
+      "closing": false,
+      "context_open": false,
+      "error": "",
+      "focus_browser": true,
+      "generation": 4,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C",
+      "refreshing": false,
+      "selected_raw": null,
+      "selection_raw": [],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 7,
+          "path": "/home/node/.cache/files-test/tab-context-55ny67x7/home/C"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          120,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    }
+  ],
+  "checks": [
+    "CtrlShiftPageDown and CtrlShiftPageUp move the active stable tab while preserving browser state",
+    "context on an inactive tab and Escape preserve active path, selection, anchor and generation; focus returns to browser",
+    "Ctrl+Shift+F10 opens the active-tab context and Escape restores browser focus without navigation",
+    "Move Left reorders the clicked stable tab ID without activating it or changing active browser state",
+    "Close Right uses current visual order and closes only tabs to the right, retaining the active browser",
+    "Close Others keeps the clicked active survivor; fresh IDs are not recycled after batch closure",
+    "Close Others on an inactive tab activates that survivor only after closing the prior active tab"
+  ],
+  "captures": [
+    "/home/node/Work/files/docs/evidence/0.0.4/tab-context-three-tabs-1793999854872346603.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/tab-context-inactive-tab-menu-1793999854872346603.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/tab-context-reordered-with-A-active-1793999854872346603.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/tab-context-clicked-survivor-active-1793999854872346603.png"
+  ],
+  "viewport": [
+    1000,
+    650
+  ],
+  "animations": "on",
+  "binary_sha256": "b7a8b73f2b1d9220c86234f8a0242c7627ecab4041fc23f5da2c80c5fc2546a5",
+  "helper_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "fixture_intact": true,
+  "normal_exit": true,
+  "exit_code": 0
+}

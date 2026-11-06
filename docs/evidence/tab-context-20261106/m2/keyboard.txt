@@ -1,0 +1,7 @@
+/home/avillagran/.cache/files-m2-updates/tab-context-1c2cdee/source/docs/evidence/keyboard-nav/keyboard-nav-ui-1794000196133924035.json
+Traceback (most recent call last):
+  File "/home/avillagran/.cache/files-m2-updates/tab-context-1c2cdee/source/scripts/keyboard-nav-ui-check.py", line 144, in <module>
+    s=act('nav:ctrlshift:down',focused_visible);assert selected(s)==expected|{b'folder-00',b'folder-01'}
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+{"nested": {"socket": "wayland-2", "pid": ["3796155"]}, "stopped": true}

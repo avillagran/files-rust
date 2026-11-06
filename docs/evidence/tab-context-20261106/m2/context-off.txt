@@ -1,0 +1,2 @@
+{"report": "/home/avillagran/.cache/files-m2-updates/tab-context-1c2cdee/source/docs/evidence/0.0.4/tab-context-ui-1794000192782054301.json", "functional_gate": "PASS", "error": null}
+{"nested": {"socket": "wayland-2", "pid": ["3795348"]}, "stopped": true}

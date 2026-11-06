@@ -8,7 +8,7 @@ help and, from version 49.0, `help-overlay.ui` (shortcuts),
 `nautilus-preferences-dialog.ui` and `freedesktop-dbus-interfaces.xml`.
 The original matrix was checked against code at `6348af9`. The dated
 2026-11-06 reconciliation below updates the entries supported by newer
-code and retained evidence through `8454476` / `f38f658`; unchanged rows
+code and retained evidence through `1c2cdee`; unchanged rows
 retain their earlier scope and are not a fresh full-parity audit.
 
 States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use.
@@ -18,7 +18,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 1 | List/grid, zoom Ctrl±/0 | partial | zoom only in grid | P2 |
 | 2 | Configurable columns and sort by type/owner/permissions/dates | partial | block 5: sort by type; configurable columns and owner/permissions/creation missing | P2 |
 | 3 | Expandable folders in list | no | — (Columns/Miller as an alternative) | P3 |
-| 4 | Tabs, per-tab history | yes | middle-folder background and middle-tab-close verified in c52b96b; drag reorder/tear-off pending | P2 |
+| 4 | Tabs, per-tab history | yes | background/middle-close in c52b96b; inactive-tab context, batch closure and keyboard/menu reorder in 1c2cdee; drag reorder/tear-off pending | P2 |
 | 5 | Path bar + Ctrl+L, `/` and `~` | yes | hidden ancestors, Alt+Down and background destinations verified in 74d205f | — |
 | 6 | Type to filter | yes | — | — |
 | 7 | Hidden files Ctrl+H | yes | — | — |
@@ -113,25 +113,25 @@ Functional reports do not close the resource/startup gates, which remain
 
 ### Next navigation priorities
 
-1. Validate Sidebar motion and browser displacement together, including
-   rapid reversal, pin/hover, resize, covered modals and animations disabled.
-   The [UI implementation sequence](UI-IMPLEMENTATION-PLAN.md) records this
-   first delivery; the animation-disabled scenes above are its baseline.
-2. Add deliberate tab/folder pointer gestures: middle-click close/open in a
-   background tab, consistent modifier behavior and stable-ID tab reorder.
-   The current canvas routes non-right-button presses through the generic
-   selection path; this is not a validated middle-button interaction.
-3. Preserve access to clipped breadcrumb ancestors with an overflow menu,
-   exact path identities, background-tab opening and predictable focus return.
-   The current path bar removes early segments when the last segments fill
-   its width.
+1. Continue navigation-surface focus and hover acceptance. Sidebar/browser
+   motion, reversal, pinning, resize and disabled motion are delivered in
+   `de480ce`; see [SIDEBAR-MOTION.md](SIDEBAR-MOTION.md).
+2. Integrate the toolkit keyed strip after its API is committed and validated.
+   Middle folder/background and middle-close gestures are delivered in
+   `c52b96b`, including native NODE/M2 input evidence; stable menu/keyboard
+   reorder and inactive-tab context follow in `1c2cdee`. Drag reorder,
+   tear-off and broader modifier/platform acceptance remain open.
+3. Extend cross-view keyboard/accessibility acceptance. Hidden breadcrumb
+   ancestors, exact path identity, background destinations and focus return
+   are delivered in `74d205f`; see
+   [BREADCRUMB-OVERFLOW.md](BREADCRUMB-OVERFLOW.md).
 
-Before treating the historical Ctrl+Shift+End SpaceMap failure as a product
-regression, reconcile `scripts/keyboard-nav-ui-check.py`: its final assertion
-still expects one marked item, while the current selection implementation
-supports Shift ranges and additive Ctrl+Shift ranges. The old failing report
-remains evidence of that run; a fresh corrected scene is required before
-claiming complete keyboard-navigation acceptance.
+The historical Ctrl+Shift+End SpaceMap failure came from an obsolete fixture
+expectation of one mark. `1c2cdee` corrects it to the complete inclusive range
+and adds an additive-range case retaining distant marks and anchor. Fresh
+private handler/render scenes pass; see [TAB-CONTEXT.md](TAB-CONTEXT.md).
+The original failing reports remain preserved. This is not complete native
+keyboard or accessibility acceptance.
 
 ## Block 1 — 2026-11-04
 
@@ -204,7 +204,9 @@ Linux: running it would launch the user's real application.
   fail.
 - Menu fixtures look up the entry by action (the sections moved the
   indices). `keyboard-nav-ui-check` fails in Space (Ctrl+Shift+End) just the same
-  with the binary from before the parity work (fa50e53): a pre-existing failure, pending.
+  with the binary from before the parity work (fa50e53): a pre-existing failure.
+  Resolved by the corrected fixture in `1c2cdee`, documented above; the
+  historical failure is retained rather than reclassified as a passing run.
 - Test windows must be launched with one Hyprland `exec` per script:
   when chained, the workspace rule expires and they appeared on the desktop.
 
@@ -254,7 +256,7 @@ Linux: running it would launch the user's real application.
 anchor, history or pane focus; middle-click closes the clicked tab ID
 without first selecting it. List/Grid/Columns and inactive-pane ownership
 pass private fixtures on NODE and M2, with separate real Wayland
-BTN_MIDDLE checks. See [TAB-GESTURES.md](TAB-GESTURES.md). Tab reordering,
+BTN_MIDDLE checks. See [TAB-GESTURES.md](TAB-GESTURES.md). Drag reordering,
 tear-off and native macOS verification remain open.
 
 ### 2026-11-06 — Complete breadcrumb ancestry
@@ -265,3 +267,13 @@ paths, Alt+Down, Escape focus return and hidden/visible ancestor background
 tabs pass private fixtures on NODE and M2 with animations on and off.
 See [BREADCRUMB-OVERFLOW.md](BREADCRUMB-OVERFLOW.md). Native OS input coverage
 for this path-bar scenario remains distinct from these handler checks.
+
+### 2026-11-06 — Stable tab context and ordering
+
+`1c2cdee` adds right-click actions for inactive tabs without selecting them,
+Close Others/Close Right with whole-action snapshot admission, and stable-ID
+menu/keyboard reordering. Ctrl+Shift+F10 opens active-tab actions;
+Ctrl+Shift+PageUp/PageDown moves the active tab while preserving its browser.
+The application controllers can receive the toolkit keyed strip's future
+callbacks; drag reordering and the widget migration remain pending.
+See [TAB-CONTEXT.md](TAB-CONTEXT.md) for scoped evidence and limitations.
