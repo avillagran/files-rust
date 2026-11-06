@@ -80,8 +80,8 @@ it does not replace the operation, interoperability or platform requirements.
 The upstream review found native dialogs/portal support (`4eef3bd`) and
 retained CPU/GPU scene surfaces (`c3c46ab` through `f02aacc`). These are
 committed upstream capabilities, not adopted Files functionality. The
-vendor now includes them through exact `a029d45`, but they are not enabled
-as Files features merely by exporting that source.
+current exact `0f68089` vendor export includes those capabilities, but they
+are not enabled as Files features merely by exporting that source.
 
 Adopt dialogs through explicit user actions and preserve existing path,
 mutation-review and close/cancel contracts. Review scene-backed motion
@@ -96,8 +96,9 @@ Upstream `89632dc` now supplies composite-key tabs, close/context/reorder
 requests, an independent keyboard cursor and authoritative hit geometry.
 The follow-up `a029d45` fixes reveal when activating an already-selected key
 after independent cursor scrolling. Files exports that committed tree
-exactly, with optional GPU/effects disabled. Its own acceptance is recorded
-in [KEYED-TABS.md](KEYED-TABS.md), separately from upstream X11 evidence.
+exactly in the original keyed-strip delivery; `0f68089` retains that fix
+with optional GPU/effects disabled. Its own acceptance is recorded in
+[KEYED-TABS.md](KEYED-TABS.md), separately from upstream X11 evidence.
 
 The adapter queues requests outside drawing and synchronous State
 notifications, validates pane/generation/key ownership, and restores accepted
@@ -112,19 +113,37 @@ language integration, tear-off and modal focus consistency across all views.
 Rendered motion snapshots and mapped native input have distinct scopes;
 resource/startup acceptance remains separate.
 
-## Next toolkit adoption: persistent feedback
+## Persistent feedback implemented at 0f68089
 
-The committed upstream `0f68089` supplies persistent `overlay::Notice` cards
-with stable action IDs, per-window stacks, focus restoration and app-owned
-dismissal/action outcomes. It is reviewed but not part of Files' `a029d45`
-vendor export yet. Adopt it as a separate delivery for actionable operation
-feedback, preserving the current mutation/review controllers and admission
-guards. Callbacks must enqueue app requests outside model borrows; no retry
-or mutation should happen merely because a card appears. Keep the visible
-queue bounded and verify native keyboard/pointer, narrow layouts, motion
-and closure on NODE and M2. Optional GPU/accessibility features remain off
-until their own acceptance work is completed.
+The exact committed `0f68089` export and the Files adapter are now
+implemented in source; see [PERSISTENT-NOTICES.md](PERSISTENT-NOTICES.md).
+One current feedback record supplies a bounded body and typed result
+identity to one persistent `overlay::Notice`. Clean results and information
+can remain non-modal; required error, recovery and truncated-report reviews
+retain their existing modal/queue-hold behavior. Undo/Redo uses a successful
+mutation origin and current worker history, and View report targets the
+exact retained copy result. Informational cards offer acknowledgement only.
 
-The requested public window-presentation/activation-token API remains a
-separate toolkit integration. Do not export its uncommitted platform work
-or claim that `show()` consumes a caller's startup ID.
+Callbacks enqueue at most eight requests and never borrow the model or
+start operations. The main loop revalidates the current record and guards
+before dispatch, with native card closure/focus restoration outside model
+borrows. Ctrl+Alt+N focuses the card without activating it. The normal
+runtime suppresses duplicate canvas feedback, preserving a fallback when
+the toolkit anchor is unavailable. Dismissal does not discard the retained
+copy report, which remains reachable through the menu and command palette.
+
+Complete private native ON/OFF, narrow-layout, focus, actual Undo/Redo,
+report and regression acceptance on NODE and M2 before recording a release
+or installation result. Requested and actual mapped geometry must be
+reported separately. Optional GPU/accessibility/media features remain off;
+full language, accessibility and platform acceptance remain open.
+
+## Next toolkit integration: native presentation
+
+Committed upstream `767235b` now provides `native::present` and explicit
+startup/activation hints. Its bounded Wayland private-queue handshakes do
+not imply that a `Requested` outcome grants focus. The current Files vendor
+remains `0f68089`; adopt `767235b` as a separate exact export after this
+feedback delivery, then validate Files' token forwarding and native M2
+behavior. Do not treat the existence of the upstream API as Files adoption
+or claim that the current `show()` consumes a caller's startup ID.

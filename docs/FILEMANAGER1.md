@@ -136,8 +136,9 @@ interval do not bound that initial phase. See the
 ## Activation and remaining scope
 
 The startup ID is accepted and bounded, but window presentation currently
-uses `show()` on a best-effort basis. The public toolkit does not yet expose
-the platform startup/activation-token API needed to consume that ID. Focus
+uses `show()` on a best-effort basis. Upstream toolkit `767235b` now exposes
+`native::present`, but that API is not part of Files' current `0f68089`
+vendor export and has not been adopted by this broker. Focus
 transfer and compositor startup-notification completion are not guaranteed.
 
 The source-only
