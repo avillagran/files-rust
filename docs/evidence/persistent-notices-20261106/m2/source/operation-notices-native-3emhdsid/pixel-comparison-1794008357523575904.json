@@ -1,0 +1,53 @@
+{
+  "functional_gate": "PASS",
+  "on_report": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/report.json",
+  "off_report": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/report.json",
+  "method": "ImageMagick AE restricted to notice rectangle; excludes variable browser status pixels",
+  "cases": {
+    "on_start_vs_middle": {
+      "ae": 2916.52,
+      "images": [
+        "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/info-start.png",
+        "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/info-middle.png"
+      ],
+      "sha256": [
+        "e463b84c81678fdae405c2a8eb397a56859d036dc6ee68114edf5ca25f65541e",
+        "c929d9bc515d995888216b3d48555221ed5625d9e1fb0813ce72ec4a4163415b"
+      ]
+    },
+    "on_middle_vs_settled": {
+      "ae": 145.952,
+      "images": [
+        "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/info-middle.png",
+        "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/info-settled.png"
+      ],
+      "sha256": [
+        "c929d9bc515d995888216b3d48555221ed5625d9e1fb0813ce72ec4a4163415b",
+        "e300a4b533483c55429189736a372de655aca94f8eb14ebf9204f454dec939d3"
+      ]
+    },
+    "off_start_vs_settled": {
+      "ae": 0.0,
+      "images": [
+        "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/info-start.png",
+        "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/info-settled.png"
+      ],
+      "sha256": [
+        "bb4fd1698bd54c1ba7de4c283f0cf0282ebcde68345120f3b33efab2185427ef",
+        "bb4fd1698bd54c1ba7de4c283f0cf0282ebcde68345120f3b33efab2185427ef"
+      ]
+    },
+    "on_vs_off_settled": {
+      "ae": 0.0,
+      "images": [
+        "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/info-settled.png",
+        "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/info-settled.png"
+      ],
+      "sha256": [
+        "e300a4b533483c55429189736a372de655aca94f8eb14ebf9204f454dec939d3",
+        "bb4fd1698bd54c1ba7de4c283f0cf0282ebcde68345120f3b33efab2185427ef"
+      ]
+    }
+  },
+  "crop": "443x140+547+10"
+}

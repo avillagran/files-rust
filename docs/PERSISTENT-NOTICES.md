@@ -137,3 +137,27 @@ Adopting it for Files' startup/activation context requires a separate exact
 export and Files-specific token and native M2 validation. The current
 FileManager1 presentation limitation remains documented in
 [FILEMANAGER1.md](FILEMANAGER1.md).
+
+
+## Validated delivery — 2026-11-06
+
+Application `893b25a` and acceptance/documentation `ddc5a9c` passed 1,722
+workspace tests (730 core, 113 helper, 879 UI; 3 ignored), Clippy, formatting
+and native release builds. Both NODE and native ARM M2 passed three notice
+profiles, the card-pixel comparator and six relevant source regressions.
+Installed notice, keyed-tab and tab-motion checks also passed; installed
+notice checks include the real Undo → Redo → Undo sequence.
+
+| Machine | Installed app SHA-256 |
+|---|---|
+| NODE x86_64 | `478975afde6fa35fb0bbbb9548341888a3aad585a5aecefc2da900f426812693` |
+| M2 native ARM Linux | `5e7342a887e692bbd6ba23ae47e34d2464ac0f8e78b77e7a73f2bedb0acb53f5` |
+
+All five installed artifacts and their backups were hashed. Existing native
+HTML helpers were unchanged and reused after recipe verification. Private
+sessions preserved personal configuration, associations and existing windows.
+Normal captures are 1000×650; the requested smaller profile mapped to
+508×325 on NODE and 810×449 on M2. Whole-card endpoint pixel equality is
+proved for ON/OFF, separately from native partial-damage behavior. See the
+[evidence bundle](evidence/persistent-notices-20261106/README.md) for scope,
+reports, frames, intermediate harness failures and installation receipts.

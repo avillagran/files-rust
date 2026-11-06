@@ -1,0 +1,13 @@
+
+running 8 tests
+test tests::clearing_invalidates_callbacks_and_a_later_identical_message_is_new ... ok
+test tests::covered_or_busy_surfaces_cannot_run_report_or_history_commands ... ok
+test tests::details_revalidate_the_single_retained_result_and_history_uses_current_flags ... ok
+test tests::failed_mutation_does_not_offer_history_retained_from_an_earlier_success ... ok
+test tests::stale_callback_cannot_target_a_replacement_with_identical_text ... ok
+test tests::dismiss_stays_dismissed_until_a_new_publication_or_changed_information ... ok
+test tests::text_is_utf8_bounded_and_hidden_tail_changes_demote_typed_provenance ... ok
+test tests::unrelated_information_never_inherits_history_or_retained_copy_actions ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

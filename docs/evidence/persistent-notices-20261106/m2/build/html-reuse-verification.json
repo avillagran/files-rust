@@ -1,0 +1,8 @@
+{
+  "verified": true,
+  "origin": "/home/avillagran/.cache/files-m2-updates/filemanager-0c9a59c/source/target/release",
+  "adapter_sha256": "babce060e9ec324af33f55b825a376e6a01213227bcd75e5227a8e95d2c69375",
+  "binary_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "architecture": "aarch64",
+  "all_three_artifacts_reused": true
+}

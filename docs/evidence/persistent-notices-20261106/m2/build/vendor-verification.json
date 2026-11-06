@@ -1,0 +1,9 @@
+{
+  "gate": "PASS",
+  "source_commit": "0f680890cba7038fa0519be19d159eed4f433a25",
+  "source_files": 430,
+  "additional_metadata_files": 1,
+  "upstream_receipts_preserved": 13,
+  "content_modes_verified_against_node_manifest": true,
+  "source_manifest_files": 1135
+}

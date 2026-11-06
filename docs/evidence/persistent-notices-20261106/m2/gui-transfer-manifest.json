@@ -1,0 +1,700 @@
+{
+  "files": [
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/app.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/app.txt",
+      "bytes": 22256,
+      "sha256": "e6de4f5efcdb7900fd2928b2b21635fa9e7328f95b39d43577148fb817981e8d"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/copy-result.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/copy-result.png",
+      "bytes": 36938,
+      "sha256": "fa79f08b60d61df54b08b4938466ab824d39b18d1318088251cd21046cd97cf8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/devices.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/devices.json",
+      "bytes": 21,
+      "sha256": "c9996b79c59a0d772d69e5504ad3413837b236806533ebc41cb18f6604ae977a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/info-middle.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/info-middle.png",
+      "bytes": 36201,
+      "sha256": "c929d9bc515d995888216b3d48555221ed5625d9e1fb0813ce72ec4a4163415b"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/info-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/info-settled.png",
+      "bytes": 36191,
+      "sha256": "e300a4b533483c55429189736a372de655aca94f8eb14ebf9204f454dec939d3"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/info-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/info-start.png",
+      "bytes": 34088,
+      "sha256": "e463b84c81678fdae405c2a8eb397a56859d036dc6ee68114edf5ca25f65541e"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/nested.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/nested.txt",
+      "bytes": 24586,
+      "sha256": "88f35bf7e760a0580996c6e31c2af5110193d776fd11809b3a82c677c2bbdf98"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/pixel-comparison-1794008357523575904.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/pixel-comparison-1794008357523575904.json",
+      "bytes": 2179,
+      "sha256": "e842ca8377c3a4d3d4f0ac8ee3c5dc2319d942cc87df1882e55bbbd04b183fdb"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/rename-undo.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/rename-undo.png",
+      "bytes": 29359,
+      "sha256": "a4c9310c22777b2cd3eddae487cbd10170c3a4b754e3abdea1f9bf54a6058412"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/replacement-middle.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/replacement-middle.png",
+      "bytes": 35901,
+      "sha256": "00ca0a5abc75cffad63a5c9b51d51f2bbdf313c1632280836c699caa91f48731"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/replacement-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/replacement-start.png",
+      "bytes": 36191,
+      "sha256": "a28f142f868a7bf3e48207eb678ceb16ce9ecdf6d7be6f216d12a90632208bd0"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/report.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/report.json",
+      "bytes": 41427,
+      "sha256": "c2389c1654d5fe28b507ebd05fff6dbbc7132a154c320d438e9436b56d9b773d"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/reversal-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/reversal-settled.png",
+      "bytes": 36324,
+      "sha256": "58e0a1b5b100a2fe0a4249f57f2d6929bddbfe43288a6fcd906bfa3123bad6a8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/reversal-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-3emhdsid/reversal-start.png",
+      "bytes": 36034,
+      "sha256": "bc59b10ce32be2611b054532de053924fc555a31bd6cb49d4cafb6eccf076953"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/app.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/app.txt",
+      "bytes": 22251,
+      "sha256": "0a09eb8d7563b463001bf22b5518216d8f59d1c24ab07d81aad3e0fed5e98417"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/copy-result.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/copy-result.png",
+      "bytes": 36736,
+      "sha256": "017dd06ebc19c4fc713d9e11488cea21f8cbd967e793d1178bf88933e0ad7f99"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/devices.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/devices.json",
+      "bytes": 21,
+      "sha256": "c9996b79c59a0d772d69e5504ad3413837b236806533ebc41cb18f6604ae977a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/info-middle.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/info-middle.png",
+      "bytes": 36191,
+      "sha256": "bb4fd1698bd54c1ba7de4c283f0cf0282ebcde68345120f3b33efab2185427ef"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/info-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/info-settled.png",
+      "bytes": 36191,
+      "sha256": "bb4fd1698bd54c1ba7de4c283f0cf0282ebcde68345120f3b33efab2185427ef"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/info-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/info-start.png",
+      "bytes": 36191,
+      "sha256": "bb4fd1698bd54c1ba7de4c283f0cf0282ebcde68345120f3b33efab2185427ef"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/nested.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/nested.txt",
+      "bytes": 24585,
+      "sha256": "8b5adea2e1c27ba28f5fd07de02c912e3cff36f710d1b76327c87f11201d1fbd"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/rename-undo.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/rename-undo.png",
+      "bytes": 29412,
+      "sha256": "81489815d3edb872697646b95505490407eac91ecb93cfe0d0dadae011c95399"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/replacement-middle.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/replacement-middle.png",
+      "bytes": 35900,
+      "sha256": "392c3a191a6866c0ba50ac85230f8aa091819d9e113a78afc67113ab0212d53b"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/replacement-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/replacement-start.png",
+      "bytes": 35900,
+      "sha256": "392c3a191a6866c0ba50ac85230f8aa091819d9e113a78afc67113ab0212d53b"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/report.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/report.json",
+      "bytes": 41428,
+      "sha256": "9f1aeaa544339702e9b8d054d00c6d7bd95427aa8d63778a44f841289a5d64c9"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/reversal-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/reversal-settled.png",
+      "bytes": 36268,
+      "sha256": "ba51ce0098ae5d60bbb814a1561ae5829f2cda31455c8aecb49a974ada381857"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-c7zg4t72/reversal-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-c7zg4t72/reversal-start.png",
+      "bytes": 36268,
+      "sha256": "ba51ce0098ae5d60bbb814a1561ae5829f2cda31455c8aecb49a974ada381857"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/app.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/app.txt",
+      "bytes": 20300,
+      "sha256": "7b7105e7a25d54232a2b997cb6305db8094b9fa4c9ad334cb050b0f79a0cff33"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/copy-result.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/copy-result.png",
+      "bytes": 29848,
+      "sha256": "0d13936bec3a2c2369c5fac9913b9c4d00c8bea959b1e85a81a7830d5648e5d8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/devices.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/devices.json",
+      "bytes": 21,
+      "sha256": "c9996b79c59a0d772d69e5504ad3413837b236806533ebc41cb18f6604ae977a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/info-middle.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/info-middle.png",
+      "bytes": 28949,
+      "sha256": "8d83c5ec6284a28eaf7a0e91293d49e60e8786fe3d82ec993a73c813b07acda9"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/info-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/info-settled.png",
+      "bytes": 28935,
+      "sha256": "8c364e0afd7a9fe13660d16f3673660693349e086e533e9941fe4b965f5f73f6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/info-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/info-start.png",
+      "bytes": 27413,
+      "sha256": "59f5ef9968a62cfb40a834a41b6484d0f2e0b928e24b389c639042abc27b3502"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/nested.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/nested.txt",
+      "bytes": 19234,
+      "sha256": "f7babe2f90b2953b3c765e7256e4117e469b5a28eca8544f0847ac9776e02c9d"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/rename-undo.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/rename-undo.png",
+      "bytes": 25099,
+      "sha256": "582f3f09a375dbfdbb823e124cc166f11b2ae1477903124bc6da59a0d946c7f2"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/replacement-middle.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/replacement-middle.png",
+      "bytes": 28668,
+      "sha256": "6f3fad8a9d58a0b86ab907fcbca600a611bd0202d25a10cfb7020859250fbeb4"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/replacement-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/replacement-start.png",
+      "bytes": 28935,
+      "sha256": "8c364e0afd7a9fe13660d16f3673660693349e086e533e9941fe4b965f5f73f6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/report.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/report.json",
+      "bytes": 37341,
+      "sha256": "74f4bfa375487a8d278da81151cd02d7ef986d92813c90749e0f325bd55b0d71"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/reversal-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/reversal-settled.png",
+      "bytes": 28935,
+      "sha256": "8c364e0afd7a9fe13660d16f3673660693349e086e533e9941fe4b965f5f73f6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-bs87e_uh/reversal-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/operation-notices-native-bs87e_uh/reversal-start.png",
+      "bytes": 28657,
+      "sha256": "d7b645be21ded1250c79f5aa215eda750f69b73042f9ab16dc310bd0dac4c610"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-eqocukkt/devices.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/filemanager1-native-eqocukkt/devices.json",
+      "bytes": 21,
+      "sha256": "c9996b79c59a0d772d69e5504ad3413837b236806533ebc41cb18f6604ae977a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-eqocukkt/duplicate.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/filemanager1-native-eqocukkt/duplicate.txt",
+      "bytes": 692,
+      "sha256": "ff71a36eb6e59c6e01178e51b96c46e7a71e2fcd2a13f59eae9e69ee61fb05e1"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-eqocukkt/multiple-properties.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/filemanager1-native-eqocukkt/multiple-properties.png",
+      "bytes": 48783,
+      "sha256": "8b80f32f9d33e449ef2dfd67de84fb3011871ce33778292783d9103a52d81799"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-eqocukkt/multiple-selection.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/filemanager1-native-eqocukkt/multiple-selection.png",
+      "bytes": 36801,
+      "sha256": "adfe02b031e53fd3e3550f8800bcbd4f4767358b881dc8afaee34233baeca996"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-eqocukkt/nested.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/filemanager1-native-eqocukkt/nested.txt",
+      "bytes": 3173,
+      "sha256": "c1431d21665098a46391ddd71eb099c59557389fd76b96445ef28caaf3fde3e7"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-eqocukkt/properties.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/filemanager1-native-eqocukkt/properties.txt",
+      "bytes": 3038,
+      "sha256": "52e6d1e06e2e6176d66738be16991c29ce3f7288d70f015cf60a354651f55f62"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-eqocukkt/report.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/filemanager1-native-eqocukkt/report.json",
+      "bytes": 75536,
+      "sha256": "0861fe4c4b9d52d22f1d46885eda22fb6445306f5d1511ed5697132154e1b3b1"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-eqocukkt/select.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/filemanager1-native-eqocukkt/select.txt",
+      "bytes": 1444,
+      "sha256": "ef7449d20901eff35d3e9326314c8e1cd22b9be7529dde2b80e97ab5c5fee748"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-eqocukkt/service.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/filemanager1-native-eqocukkt/service.txt",
+      "bytes": 32329,
+      "sha256": "e4daabed96be590437babf62b1e7d9d7e4050a020b744f34e25d495cf84dc9bb"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/filemanager1-native-eqocukkt/show-folders.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/filemanager1-native-eqocukkt/show-folders.txt",
+      "bytes": 1456,
+      "sha256": "c6f393d7e95e1bf5a1f332acbd873838994818978eed4aeccdab0dc5e89f55d8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-qemyke85/app.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/keyed-tabs-native-qemyke85/app.txt",
+      "bytes": 99416,
+      "sha256": "feaa17085fefd940c351bec0aa3b9f613f7d5639b11b68df4e67676e77be3180"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-qemyke85/devices.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/keyed-tabs-native-qemyke85/devices.json",
+      "bytes": 21,
+      "sha256": "c9996b79c59a0d772d69e5504ad3413837b236806533ebc41cb18f6604ae977a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-qemyke85/nested.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/keyed-tabs-native-qemyke85/nested.txt",
+      "bytes": 25916,
+      "sha256": "55c8986f9ac392f06acd05302b92682e3a5afa2a31250048f30a94bc5823d108"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-qemyke85/report.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/keyed-tabs-native-qemyke85/report.json",
+      "bytes": 199312,
+      "sha256": "a9420e5bd377b0ad999de7faa12cf07be34c7d5d1a34f22237bd876a70c9b6a5"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-qemyke85/right-body_rect.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/keyed-tabs-native-qemyke85/right-body_rect.png",
+      "bytes": 27718,
+      "sha256": "b79ad14910348aca235419d1d36ee3d0b9315209c2e717d85f38829c4f4c7602"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-qemyke85/right-close_rect.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/keyed-tabs-native-qemyke85/right-close_rect.png",
+      "bytes": 28095,
+      "sha256": "ac2ddf23d0055cacb4904d60a16866661f6d0436d7d2e6a870845dbcd27b08fd"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-qemyke85/seeded.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/keyed-tabs-native-qemyke85/seeded.png",
+      "bytes": 22518,
+      "sha256": "b6e67fde6b8e15c247f368f3f972998ed1bdc9ee31ddc2701ede3baccc81b4e0"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/app.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/app.txt",
+      "bytes": 22256,
+      "sha256": "a80eb97ddac9cae1fb993d99948cef6f9af703a74325f33dbd04b2c58c50a613"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/copy-result.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/copy-result.png",
+      "bytes": 36911,
+      "sha256": "32da72c566fabf1ec377db6762c6f36ff403bd786cc106ca26ef3f0dda28ca78"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/devices.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/devices.json",
+      "bytes": 21,
+      "sha256": "c9996b79c59a0d772d69e5504ad3413837b236806533ebc41cb18f6604ae977a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/info-middle.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/info-middle.png",
+      "bytes": 36201,
+      "sha256": "269cf8ca1de6e734a5795b73204bcf022f21825b5f99bf083f6878b860c5a267"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/info-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/info-settled.png",
+      "bytes": 36191,
+      "sha256": "0017d29ad585c48dd293f97c5345cff9f25da70fa00947cc07f1c2506b6bfc9f"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/info-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/info-start.png",
+      "bytes": 34088,
+      "sha256": "60476e22b9574eda65dc83df2e1f16a10aa9ebda34c4350bd41c76201dec60a1"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/nested.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/nested.txt",
+      "bytes": 24585,
+      "sha256": "55c63cae5148c44a2b635bdf79fbab04a013ee0c50a4da385acf54101a604aa8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/rename-undo.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/rename-undo.png",
+      "bytes": 29434,
+      "sha256": "7edeb463860e8c1c1dc02283aac106c496b2230c00635082f9e2817f297abd2d"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/replacement-middle.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/replacement-middle.png",
+      "bytes": 35901,
+      "sha256": "0e3c40fd04a72d195419cadcfc6355c9dc05528bf13c1c918a2b8ec77be86cca"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/replacement-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/replacement-start.png",
+      "bytes": 36191,
+      "sha256": "0017d29ad585c48dd293f97c5345cff9f25da70fa00947cc07f1c2506b6bfc9f"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/report.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/report.json",
+      "bytes": 41376,
+      "sha256": "3b3141702e879780a9eb9b7d7ab1960fd1fe34b36155a0104c9e541a674e2a05"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/reversal-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/reversal-settled.png",
+      "bytes": 36268,
+      "sha256": "47ea2f229e7b4c2bdae36971d2d6ff28830f583e32f43298358474a7717684b2"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/operation-notices-native-h33q20t3/reversal-start.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/operation-notices-native-h33q20t3/reversal-start.png",
+      "bytes": 35976,
+      "sha256": "d2f6d14cbd6c83c94610994a1ab2659459dc09ef44c709a1732be91773a3a233"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-yxyjp9bt/app.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/keyed-tabs-native-yxyjp9bt/app.txt",
+      "bytes": 99098,
+      "sha256": "de19e947c4298b9cb80161b83b04b6bfa15325d65680802109d693b41a175ae8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-yxyjp9bt/devices.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/keyed-tabs-native-yxyjp9bt/devices.json",
+      "bytes": 21,
+      "sha256": "c9996b79c59a0d772d69e5504ad3413837b236806533ebc41cb18f6604ae977a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-yxyjp9bt/nested.log",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/keyed-tabs-native-yxyjp9bt/nested.txt",
+      "bytes": 25917,
+      "sha256": "4d92e20f32f992759ea63dd6312981a47f895b09e0ba62fb6c901b5cb22b67c0"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-yxyjp9bt/report.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/keyed-tabs-native-yxyjp9bt/report.json",
+      "bytes": 198531,
+      "sha256": "6bbbfb56d9afcd529a9b006e9eee4b4b3c40bfd0fc76d28c1f2838518555ecc8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-yxyjp9bt/right-body_rect.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/keyed-tabs-native-yxyjp9bt/right-body_rect.png",
+      "bytes": 27718,
+      "sha256": "99c16a598d36b4fa2090c3c9d9a2ce966c1e7e3738f4077416301a6454db95c6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-yxyjp9bt/right-close_rect.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/keyed-tabs-native-yxyjp9bt/right-close_rect.png",
+      "bytes": 28095,
+      "sha256": "f08bdc15f90d8665a350995fe91efd3a9448ee085cdb06cdb19f9f8d1e6e80ea"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-test/keyed-tabs-native-yxyjp9bt/seeded.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/keyed-tabs-native-yxyjp9bt/seeded.png",
+      "bytes": 22518,
+      "sha256": "cb1b15707eb5a79fa5e1eac84d06965734b546734edce60835f57c810f738ad3"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794008397743647372.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/tab-strip-motion-ui-1794008397743647372.json",
+      "bytes": 11648,
+      "sha256": "9956ec21e16cb8bcb8565f4bcc681e6cc93dcfe417cc807e864feb37616ed2f8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008397743647372-shots/forward-input.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794008397743647372-shots/forward-input.png",
+      "bytes": 1950863,
+      "sha256": "b251336a1981f4c5ef5d2370dd81b70b14ce3dd1fc4159bade6c5377e0c5326b"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008397743647372-shots/disabled-last.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794008397743647372-shots/disabled-last.png",
+      "bytes": 1950863,
+      "sha256": "05e9c02b18c9489b5e2ad9f1167424b45b1aee36b201783ce1f8cdf94237d1a6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008397743647372-shots/reversed-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794008397743647372-shots/reversed-settled.png",
+      "bytes": 1950863,
+      "sha256": "05e9c02b18c9489b5e2ad9f1167424b45b1aee36b201783ce1f8cdf94237d1a6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008397743647372-shots/last-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794008397743647372-shots/last-settled.png",
+      "bytes": 1950863,
+      "sha256": "05e9c02b18c9489b5e2ad9f1167424b45b1aee36b201783ce1f8cdf94237d1a6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008397743647372-shots/reversed-input.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794008397743647372-shots/reversed-input.png",
+      "bytes": 1950863,
+      "sha256": "3036b960b938fb11d6273ae0ae2900047b7362ae728a4dd6bc95a3155e9f4111"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008397743647372-shots/forward-64.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794008397743647372-shots/forward-64.png",
+      "bytes": 1950863,
+      "sha256": "3ada752580a216b9f15cd08c27355849774141854499ac2856c2d6b4a2f2ab89"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794008397743647372.txt",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/0.0.4/tab-strip-motion-ui-1794008397743647372.txt",
+      "bytes": 9791,
+      "sha256": "655e4d973fcb1ccdf87ffef4bf41bf0a2bfee293336effd8e05d37cac45aafed"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008397743647372-shots/reverse-48.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794008397743647372-shots/reverse-48.png",
+      "bytes": 1950863,
+      "sha256": "eeddfa98c97aa1c061b1ac28bfc5d432f87c1c4854d870b6ff790c1897385ef8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008397743647372-shots/first-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/0.0.4/tab-strip-motion-1794008397743647372-shots/first-settled.png",
+      "bytes": 1950863,
+      "sha256": "19231b1cddc5ca1ee2e2aff61446a8d571c9f90a8e88c87b7d94df8d29ba62b0"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/keyboard-nav-ui-1794008408983674540.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/keyboard-nav-ui-1794008408983674540.json",
+      "bytes": 2898241,
+      "sha256": "59ea056918f995e0b4be1ae14051a497c19f0053450c7016985387aa12bed96d"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/list-end-range-1794008404144060644.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/list-end-range-1794008404144060644.png",
+      "bytes": 58659,
+      "sha256": "98917fa659ca9918f84c0d8783705075be21272dc40f84a582da8f8cc8ec4e9d"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/groups-visual-range-1794008405035371582.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/groups-visual-range-1794008405035371582.png",
+      "bytes": 45109,
+      "sha256": "a0dc30130b1b69690b5af15d4f9abe0d6f2feadce83296a93250bd9b5ede4182"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/treemap-additive-range-and-reveal-1794008408613372564.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/treemap-additive-range-and-reveal-1794008408613372564.png",
+      "bytes": 37733,
+      "sha256": "f2372eb718ffbf9261dfc39919b0cd9c3ac72ea1965edcac3dd56eca3d01b443"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/ctrl-focus-and-additive-range-1794008404271284266.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/ctrl-focus-and-additive-range-1794008404271284266.png",
+      "bytes": 46568,
+      "sha256": "ed7fc03ec27fc9dd1afe95ecd16d1ff64f9c1a2baf6fb7059c32eb4e3aad87a6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/treemap-additive-range-retains-distant-mark-1794008408847412833.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/treemap-additive-range-retains-distant-mark-1794008408847412833.png",
+      "bytes": 38855,
+      "sha256": "0fb95e7af5290b402a3f12548075ddb511fe89d00ac795c106b075c20065483f"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/grid-independent-focus-1794008407489625657.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/grid-independent-focus-1794008407489625657.png",
+      "bytes": 39413,
+      "sha256": "ef5a17a8b954b9363d2f0035e862bd2c9dea69bf9f7fb4b7109b6d39450c0d1a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/groups-visual-last-and-reveal-1794008404919270598.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/groups-visual-last-and-reveal-1794008404919270598.png",
+      "bytes": 60713,
+      "sha256": "04726a15349dea18964b552918b3740f3d4104334f99784b0e1ed0be6f57ee5d"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/list-page-range-1794008404425199268.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/list-page-range-1794008404425199268.png",
+      "bytes": 55568,
+      "sha256": "939a50d6937dca9e9998e3f8906596573ab534af0d847ecc62b194df21f06df6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/dual-focused-end-small-window-1794008408344222416.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/dual-focused-end-small-window-1794008408344222416.png",
+      "bytes": 32009,
+      "sha256": "8a93d00858cafabaac197a36e085f135228329eacc6b5641b8808f4b816fd2a6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/columns-keyboard-range-1794008406444198424.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/columns-keyboard-range-1794008406444198424.png",
+      "bytes": 47689,
+      "sha256": "f3e328969711d8ab9ccc852fda15f2f8afc29686c5a99b4f503aef3ab5de5f4f"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/keyboard-nav/keyboard-range-copy-review-1794008404580255734.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/keyboard-nav/keyboard-range-copy-review-1794008404580255734.png",
+      "bytes": 46964,
+      "sha256": "7eb046a2bdb8b5e70385f169ef505d08f41cb6e0323ea8c7d8e192cce55d120d"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/preview-copy-20261105/arm-notice-1794008414426564634.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/arm-notice-1794008414426564634.json",
+      "bytes": 1706,
+      "sha256": "e835837f760a2da5d1a61f4309095f9929af3ae8a9b9fdab64bbe14e0bf8ad62"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/preview-copy-20261105/arm-notice-empty-selection-notice-1794008420455526674.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/preview-copy-20261105/arm-notice-empty-selection-notice-1794008420455526674.png",
+      "bytes": 22235,
+      "sha256": "7182efb61799ac937499a1bbe15812fae1f5b2349d40f27f5f0c67c6f1458e95"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/preview-copy-20261105/arm-notice-copied-notice-1794008424918736856.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/preview-copy-20261105/arm-notice-copied-notice-1794008424918736856.png",
+      "bytes": 22315,
+      "sha256": "5da5e2907b7c0a220172678c416449675ff04d682ebc947a99f92a4d8eb9270a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/sidebar-drop-20261105/arm-notice-1794008432395118427.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/arm-notice-1794008432395118427.json",
+      "bytes": 4084,
+      "sha256": "862e803a6308e21b257462ae84264aea727ee0845c5ebb97fd4ea50db4a9272a"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/sidebar-drop-20261105/arm-notice-target-before-1794008435613230108.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/sidebar-drop-20261105/arm-notice-target-before-1794008435613230108.png",
+      "bytes": 13991,
+      "sha256": "0f995b35948479a7284eb636eec4f7ec3d89c1e9d94f96293f9383961327bb94"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/sidebar-drop-20261105/arm-notice-source-after-drag-1794008439966403044.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/sidebar-drop-20261105/arm-notice-source-after-drag-1794008439966403044.png",
+      "bytes": 24515,
+      "sha256": "eba73dafa351d3e451d2b85cae3116caf9101bcf2b668dae134d906bc114b117"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/sidebar-drop-20261105/arm-notice-target-review-1794008440105147222.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/source/captures/sidebar-drop-20261105/arm-notice-target-review-1794008440105147222.png",
+      "bytes": 28379,
+      "sha256": "1f46dbecb28d1479739949815e25d47ceeb5de25bd379ec5c2d7447f08cbcc29"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794008524034827844.json",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/tab-strip-motion-ui-1794008524034827844.json",
+      "bytes": 11597,
+      "sha256": "9018e3a25c150953afef4591e8dd11d6785568cffa1155469d2501d37aebbaef"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008524034827844-shots/last-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794008524034827844-shots/last-settled.png",
+      "bytes": 1950863,
+      "sha256": "05e9c02b18c9489b5e2ad9f1167424b45b1aee36b201783ce1f8cdf94237d1a6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008524034827844-shots/first-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794008524034827844-shots/first-settled.png",
+      "bytes": 1950863,
+      "sha256": "19231b1cddc5ca1ee2e2aff61446a8d571c9f90a8e88c87b7d94df8d29ba62b0"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008524034827844-shots/reversed-input.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794008524034827844-shots/reversed-input.png",
+      "bytes": 1950863,
+      "sha256": "3036b960b938fb11d6273ae0ae2900047b7362ae728a4dd6bc95a3155e9f4111"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008524034827844-shots/reversed-settled.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794008524034827844-shots/reversed-settled.png",
+      "bytes": 1950863,
+      "sha256": "05e9c02b18c9489b5e2ad9f1167424b45b1aee36b201783ce1f8cdf94237d1a6"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008524034827844-shots/forward-64.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794008524034827844-shots/forward-64.png",
+      "bytes": 1950863,
+      "sha256": "3ada752580a216b9f15cd08c27355849774141854499ac2856c2d6b4a2f2ab89"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008524034827844-shots/forward-input.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794008524034827844-shots/forward-input.png",
+      "bytes": 1950863,
+      "sha256": "b251336a1981f4c5ef5d2370dd81b70b14ce3dd1fc4159bade6c5377e0c5326b"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008524034827844-shots/reverse-48.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794008524034827844-shots/reverse-48.png",
+      "bytes": 1950863,
+      "sha256": "eeddfa98c97aa1c061b1ac28bfc5d432f87c1c4854d870b6ff790c1897385ef8"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794008524034827844.txt",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/captures/0.0.4/tab-strip-motion-ui-1794008524034827844.txt",
+      "bytes": 10799,
+      "sha256": "d5d8ba12b1e5b300bb07522811aaad5a65ebaebf0358c903ecc2e1543897e357"
+    },
+    {
+      "source": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/docs/evidence/0.0.4/tab-strip-motion-1794008524034827844-shots/disabled-last.png",
+      "destination": "docs/evidence/persistent-notices-20261106/m2/installed/captures/0.0.4/tab-strip-motion-1794008524034827844-shots/disabled-last.png",
+      "bytes": 1950863,
+      "sha256": "05e9c02b18c9489b5e2ad9f1167424b45b1aee36b201783ce1f8cdf94237d1a6"
+    }
+  ]
+}

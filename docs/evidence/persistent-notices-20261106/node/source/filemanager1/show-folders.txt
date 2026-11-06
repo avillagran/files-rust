@@ -1,0 +1,11 @@
+FILES_FONT=JetBrainsMono Nerd Font nerd=true
+FILES_GLASS mode=opaque opacity=1.00 overridden=true wayland=true
+FILES_UI_SMOKE_OK entries=8
+FILES_FIRST_PAINT_US=59269
+FILES_FILE_MANAGER_STATE {"accepted":1,"active":1,"anchor_raw":null,"closing":false,"config_dirty":false,"error":"","generation":2,"loaded":true,"modal":false,"other_tabs":null,"pane_id":1,"path_raw":"2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f66696c656d616e61676572312d6e61746976652d74395f725f6c37752f686f6d652f6469726563746f72792dff","pending":false,"pending_view":false,"properties":null,"refreshing":false,"rejected":0,"request_error":"","reveal_hidden":false,"selected_raw":null,"selection_raw":[],"service_status":"disabled","settled":false,"show_hidden_preference":false,"tabs":[{"id":1,"path_raw":"2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f66696c656d616e61676572312d6e61746976652d74395f725f6c37752f686f6d652f6469726563746f72792dff"}],"view":"groups"}
+FILES_TOOLKIT_FIXTURE action=file-manager-state
+FILES_TOOLKIT_FIXTURE action=close
+FILES_CLOSE_WAIT saves_ready=false mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false
+FILES_CLOSE_WAIT saves_ready=true mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false
+FILES_CLOSE_DRAINED
+FILES_GLASS_STATS glass_fills=0 opaque_fills=172 regions_cleared=0 regions_restored=0

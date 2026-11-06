@@ -313,3 +313,16 @@ the source-only optional activation template. No activation provider or
 default association is installed by this work. Startup-token focus handling,
 native platform acceptance and the resource/startup gates remain open;
 delivery-specific acceptance is recorded separately.
+
+
+### 2026-11-06 — Persistent operation feedback
+
+`893b25a` adopts exact toolkit `0f68089` notices: one current non-modal card,
+explicit acknowledgement and typed Undo/Redo or retained-result reports.
+Callbacks revalidate result identity and current admission; informational
+messages cannot inherit another operation's actions. Required recovery/error
+reviews and held queues retain their existing behavior. Native source and
+installed NODE/M2 checks pass, including real history actions and card-only
+ON/OFF pixel equality. See [PERSISTENT-NOTICES.md](PERSISTENT-NOTICES.md).
+This improves feedback without closing the remaining operation, platform,
+language, accessibility or activation gaps in this matrix.

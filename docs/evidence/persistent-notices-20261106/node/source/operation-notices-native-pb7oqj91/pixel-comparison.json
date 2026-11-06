@@ -1,0 +1,51 @@
+{
+  "crop": "443x140+549+8",
+  "method": "ImageMagick AE metric on card crop",
+  "cases": {
+    "on_start_vs_middle": {
+      "ae": 2903.16,
+      "images": [
+        "/home/node/.cache/files-test/operation-notices-native-pb7oqj91/info-start.png",
+        "/home/node/.cache/files-test/operation-notices-native-pb7oqj91/info-middle.png"
+      ],
+      "sha256": [
+        "bd66ff7d89b6bea6b062aed520b33021af7a2c635ca73041357619e9141b2e9e",
+        "279fabb2f96dcf5f2c0a2896bc6872f6c68de3786ba5a7ddee92893da28b9714"
+      ]
+    },
+    "on_middle_vs_settled": {
+      "ae": 145.952,
+      "images": [
+        "/home/node/.cache/files-test/operation-notices-native-pb7oqj91/info-middle.png",
+        "/home/node/.cache/files-test/operation-notices-native-pb7oqj91/info-settled.png"
+      ],
+      "sha256": [
+        "279fabb2f96dcf5f2c0a2896bc6872f6c68de3786ba5a7ddee92893da28b9714",
+        "b34693a3fd6c60d084002a1e874050c3dae0c8109bb6c1587970830211372ff5"
+      ]
+    },
+    "off_start_vs_settled": {
+      "ae": 0.0,
+      "images": [
+        "/home/node/.cache/files-test/operation-notices-native-v_m5fkm1/info-start.png",
+        "/home/node/.cache/files-test/operation-notices-native-v_m5fkm1/info-settled.png"
+      ],
+      "sha256": [
+        "b3d16684730fc268e4a62618243c43b1d594f7b196eb1262acd7aad4bc5aca65",
+        "b3d16684730fc268e4a62618243c43b1d594f7b196eb1262acd7aad4bc5aca65"
+      ]
+    },
+    "on_vs_off_settled": {
+      "ae": 0.0,
+      "images": [
+        "/home/node/.cache/files-test/operation-notices-native-pb7oqj91/info-settled.png",
+        "/home/node/.cache/files-test/operation-notices-native-v_m5fkm1/info-settled.png"
+      ],
+      "sha256": [
+        "b34693a3fd6c60d084002a1e874050c3dae0c8109bb6c1587970830211372ff5",
+        "b3d16684730fc268e4a62618243c43b1d594f7b196eb1262acd7aad4bc5aca65"
+      ]
+    }
+  },
+  "functional_gate": "PASS"
+}

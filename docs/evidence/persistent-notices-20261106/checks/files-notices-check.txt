@@ -1,0 +1,17 @@
+    Checking lib-fltk-omarchy v0.0.10 (/home/node/Work/files/vendor/lib-fltk-omarchy)
+    Checking files-helper v0.0.4 (/home/node/Work/files/crates/helper)
+    Checking files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+warning: method `stamp` is never used
+   --> crates/ui/src/operation_feedback.rs:149:12
+    |
+ 99 | impl State {
+    | ---------- method in this implementation
+...
+149 |     pub fn stamp(&self) -> Option<Stamp> {
+    |            ^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `files-ui` (lib) generated 1 warning
+    Checking files-app v0.0.4 (/home/node/Work/files/crates/app)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 8.20s

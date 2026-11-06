@@ -1,0 +1,114 @@
+{
+  "source_machine": "M2 (aarch64)",
+  "scope": "Build and provenance text only. No binaries or fixture data copied. Original M2 logs remain intact; NODE log copy uses .txt.",
+  "files": [
+    {
+      "path": "SOURCE_CHECKPOINT",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/SOURCE_CHECKPOINT",
+      "bytes": 41,
+      "sha256": "bd7a513f5f6eb7683da81bf4f3c5aa18881f96be6540d9439c07876b3368ecb0"
+    },
+    {
+      "path": "source-checkpoint.txt",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source-checkpoint.txt",
+      "bytes": 41,
+      "sha256": "bd7a513f5f6eb7683da81bf4f3c5aa18881f96be6540d9439c07876b3368ecb0"
+    },
+    {
+      "path": "source-manifest-893b25a.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source-manifest-893b25a.json",
+      "bytes": 298509,
+      "sha256": "d985c310fad1d61c8dffa7d6d1ad54656c6a36cb3ff768f39f6fd6b4525c6229"
+    },
+    {
+      "path": "node-vendor-manifest.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/node-vendor-manifest.json",
+      "bytes": 109784,
+      "sha256": "2738e95c13dbaa6104a37c444efa505485659e71b90a7f3e8014b5c78b8b5cae"
+    },
+    {
+      "path": "vendor-verification.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/vendor-verification.json",
+      "bytes": 267,
+      "sha256": "8b93e0e8843d4cbc4ae730e7f8319fc2306b0e4068f1496c8b8af666900a2714"
+    },
+    {
+      "path": "html-reuse-verification.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/html-reuse-verification.json",
+      "bytes": 363,
+      "sha256": "06101fa1ac508d8429039e8542fb02422f7fe71402bb572105fb0d6c41b384e5"
+    },
+    {
+      "path": "inherited-cache-manifest.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/inherited-cache-manifest.json",
+      "bytes": 2387,
+      "sha256": "84e0c5db9c6f6ef0f90cb491627bc6ba11aa8b4ecd72ea99066cbb79fdce4bdd"
+    },
+    {
+      "path": "inherited-artifacts-manifest.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/inherited-artifacts-manifest.json",
+      "bytes": 1399,
+      "sha256": "cb1589b6c31fc7cd1e9deaa9de3670e280a6c57c278fac17fb1309d81c12da29"
+    },
+    {
+      "path": "build-manifest.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/build-manifest.json",
+      "bytes": 3561,
+      "sha256": "9f09a166d6c255f51aaf169f0e331e6b4bf3be8266f1a09caf64a9c4c5ee4d47"
+    },
+    {
+      "path": "build.txt",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/build.log",
+      "bytes": 800,
+      "sha256": "5c88645c09b9550f7374a6412324f7480f5cb4699b6ec5bb3c3b9185351a1a25"
+    },
+    {
+      "path": "candidate-manifest.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/candidate-manifest.json",
+      "bytes": 2611,
+      "sha256": "6029c6375dd523263fc22806e399441936ae14279ced14e718b98b241a52aff3"
+    },
+    {
+      "path": "architecture.txt",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/architecture.txt",
+      "bytes": 3794,
+      "sha256": "b815052ea24f822b4a04b4c324c9f54befbe5a4a00ee636c0bc78e971765c166"
+    },
+    {
+      "path": "readelf-dynamic.txt",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/readelf-dynamic.txt",
+      "bytes": 2690,
+      "sha256": "283a4df705175c422f1de3a52c18ed36803160e91fe5a055cc90defaee24b515"
+    },
+    {
+      "path": "html-helper-build.json",
+      "origin": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/target/release/files-html-helper.build.json",
+      "bytes": 1118,
+      "sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838"
+    },
+    {
+      "path": "artifact-hashes.json",
+      "origin": "M2 successful build manifest, hashes only",
+      "bytes": 2557,
+      "sha256": "7f61acf041f8509115be4927a4c670afe286a4be2c5f2a018e882829f75820d0"
+    },
+    {
+      "path": "source-archive-sha256.txt",
+      "origin": "M2 source manifest",
+      "bytes": 85,
+      "sha256": "bee5501e591ca2d3d8804987abcc66876ad28244ec9e3ee9927fda2c90719ba0"
+    },
+    {
+      "path": "support-overlay.json",
+      "origin": "Read-only M2 driver hashes verified against NODE git ddc5a9c",
+      "bytes": 830,
+      "sha256": "f912cd89b985407aacc01d2a7c7103c7c3c22df8504f40a65d7b9c6293fa6551"
+    }
+  ],
+  "copied_file_count": 17,
+  "copied_bytes": 430837,
+  "compiled_source_checkpoint": "893b25a44b6886e157c06caf77bfdf1bb12e9299",
+  "compiled_source_manifest_files": 1135,
+  "support_overlay_checkpoint": "ddc5a9c4eb6a882d2cc2a06fc0e668e9866a6a29",
+  "support_overlay_file_count": 2
+}

@@ -1,0 +1,41 @@
+{
+  "checkpoint": "893b25a44b6886e157c06caf77bfdf1bb12e9299",
+  "html_helper": "reused staged, recipe verified",
+  "validation_report": "/home/avillagran/.cache/files-test/operation-notices-native-3emhdsid/report.json",
+  "scope": "per-user authorized installation; all staged then individual atomic replacements; no running windows controlled",
+  "backup": "/home/avillagran/.cache/files-test/installed-backups/1794008484195399854",
+  "files": [
+    {
+      "name": "files",
+      "old_sha256": "75ea16c6bacc7f24e237e475eac1b6baa7b0396a1039e7de6439710aa9bbb5b1",
+      "release_sha256": "5e7342a887e692bbd6ba23ae47e34d2464ac0f8e78b77e7a73f2bedb0acb53f5",
+      "installed_sha256": "5e7342a887e692bbd6ba23ae47e34d2464ac0f8e78b77e7a73f2bedb0acb53f5"
+    },
+    {
+      "name": "files-helper",
+      "old_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+      "release_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+      "installed_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d"
+    },
+    {
+      "name": "files-html-helper",
+      "old_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "release_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "installed_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "old_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "release_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "installed_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b"
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "old_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "release_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "installed_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838"
+    }
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED"
+}

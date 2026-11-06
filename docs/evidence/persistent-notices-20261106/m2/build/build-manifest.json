@@ -1,0 +1,70 @@
+{
+  "source_checkpoint": "893b25a44b6886e157c06caf77bfdf1bb12e9299",
+  "source_archive_sha256": "af463687b034b1749dd5087eb037eaa13f2f73cad2e7d0fd54b382eccc0b5bcb",
+  "source_manifest_files": 1135,
+  "vendor_checkpoint": "0f680890cba7038fa0519be19d159eed4f433a25",
+  "vendor_content_and_modes_verified": true,
+  "architecture": "aarch64",
+  "command": [
+    "cargo",
+    "build",
+    "--locked",
+    "--release",
+    "-p",
+    "files-app",
+    "-p",
+    "files-helper",
+    "-j",
+    "2"
+  ],
+  "started_unix": 1794008182.6103597,
+  "environment": {
+    "TMPDIR": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/private/tmp",
+    "FILES_CONFIG_DIR": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/private/config",
+    "XDG_DATA_HOME": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/private/data",
+    "XDG_CONFIG_HOME": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/private/config",
+    "XDG_RUNTIME_DIR": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/private/runtime",
+    "CARGO_BUILD_JOBS": "2",
+    "CMAKE_BUILD_PARALLEL_LEVEL": "2",
+    "NUM_JOBS": "2",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "cargo_pid": 897688,
+  "exit_code": 0,
+  "finished_unix": 1794008314.409379,
+  "artifacts": [
+    {
+      "name": "files",
+      "path": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/target/release/files",
+      "sha256": "5e7342a887e692bbd6ba23ae47e34d2464ac0f8e78b77e7a73f2bedb0acb53f5",
+      "bytes": 9138144,
+      "file": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/target/release/files: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 3.7.0, BuildID[sha1]=dc611ca9b7b73ecbc998f3d55f9190560c53b956, stripped"
+    },
+    {
+      "name": "files-helper",
+      "path": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/target/release/files-helper",
+      "sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+      "bytes": 2026808,
+      "file": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/target/release/files-helper: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 3.7.0, BuildID[sha1]=e9556d580d13005df483f1044e7ab115d50bfad9, stripped"
+    },
+    {
+      "name": "files-html-helper",
+      "path": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/target/release/files-html-helper",
+      "sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "bytes": 2239568,
+      "file": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/target/release/files-html-helper: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=bef9f2f6e1e8fd32028cacf71fe187e5ba293c59, for GNU/Linux 3.7.0, not stripped"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "path": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/target/release/files-html-helper.LICENSES",
+      "sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "bytes": 1193
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "path": "/home/avillagran/.cache/files-m2-updates/notices-893b25a/source/target/release/files-html-helper.build.json",
+      "sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "bytes": 1118
+    }
+  ]
+}

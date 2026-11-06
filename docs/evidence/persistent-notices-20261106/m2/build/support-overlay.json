@@ -1,0 +1,20 @@
+{
+  "compiled_source_checkpoint": "893b25a44b6886e157c06caf77bfdf1bb12e9299",
+  "compiled_source_manifest_files": 1135,
+  "support_overlay_checkpoint": "ddc5a9c4eb6a882d2cc2a06fc0e668e9866a6a29",
+  "support_overlay_files": [
+    {
+      "path": "scripts/operation-notices-nested-check.py",
+      "bytes": 17101,
+      "sha256": "6d0af215aa4f09927dfe0103df0a770d46fc56961b14cfef201a8ad696b2da0b"
+    },
+    {
+      "path": "scripts/operation-notices-compare.py",
+      "bytes": 3622,
+      "sha256": "4db5481bad3747df22c846448c67932428c667687793459c0fbcdc9f543cc0ad"
+    }
+  ],
+  "support_scripts_are_compiled_inputs": false,
+  "support_scripts_were_modified_by_build_agent": false,
+  "scope": "Selective source export of compiled base plus two committed GUI support drivers; not a complete export of the later repository HEAD."
+}

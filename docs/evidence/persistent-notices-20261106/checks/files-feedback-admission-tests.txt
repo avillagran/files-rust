@@ -1,0 +1,12 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.90s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 4 tests
+test operation_notices::tests::bounded_inbox_accepts_dismiss_once_without_clearing_the_model_payload ... ok
+test operation_notices::tests::queued_history_action_rechecks_a_new_legacy_message_before_dispatch ... ok
+test operation_notices::tests::queued_dismiss_of_an_identical_old_typed_result_cannot_hide_its_replacement ... ok
+test operation_notices::tests::queued_dismiss_cannot_acknowledge_a_critical_review_or_release_its_queue ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 875 filtered out; finished in 0.00s
+

@@ -132,11 +132,14 @@ runtime suppresses duplicate canvas feedback, preserving a fallback when
 the toolkit anchor is unavailable. Dismissal does not discard the retained
 copy report, which remains reachable through the menu and command palette.
 
-Complete private native ON/OFF, narrow-layout, focus, actual Undo/Redo,
-report and regression acceptance on NODE and M2 before recording a release
-or installation result. Requested and actual mapped geometry must be
-reported separately. Optional GPU/accessibility/media features remain off;
-full language, accessibility and platform acceptance remain open.
+Source `893b25a` and acceptance `ddc5a9c` passed 1,722 workspace tests and
+native notice ON/OFF, smaller-viewport, focus, real report/history actions
+and regression acceptance on NODE and native ARM M2. Both installed artifacts
+passed scoped checks with five-artifact backup/hash audits; see
+[the delivery evidence](evidence/persistent-notices-20261106/README.md).
+Requested and actual mapped geometry, full-frame captures and native input
+have separate declared scopes. Optional GPU/accessibility/media features
+remain off; full language, accessibility and platform acceptance stay open.
 
 ## Next toolkit integration: native presentation
 
