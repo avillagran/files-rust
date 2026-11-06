@@ -51,3 +51,21 @@ artifacts must be built and validated on M2 before installation. Both hosts
 back up and hash the five installed artifacts and check the installed binary.
 Resource/startup gates remain unmeasured. This delivery does not close the
 full Nautilus/Finder, accessibility or language roadmap.
+
+## Validated delivery 74d205f
+
+Installed app hashes start `2b98655c34c5` on NODE and `c2bb095e8a84` on
+native aarch64 M2. The scenario passes with animations both on and off on
+each architecture; both installed binaries pass with animations on.
+NODE path-edit and existing toolkit-menu regressions pass. Workspace:
+1,665 passing tests, three ignored; Clippy and release checks pass.
+All five installed artifacts and prior backups match their recorded hashes
+on each host. Unchanged native HTML helpers were reused after recipe checks.
+
+| Deep path | Hidden ancestors | Selected ancestor |
+|---|---|---|
+| ![Fitting suffix with overflow](evidence/0.0.4/breadcrumbs-deep-path-1793998214239405609.png) | ![Component-first ancestor labels and background-tab submenu](evidence/0.0.4/breadcrumbs-ancestor-menu-1793998214239405609.png) | ![Exact ancestor location](evidence/0.0.4/breadcrumbs-ancestor-located-1793998214239405609.png) |
+
+Reports, full logs and installation audits are retained under
+`evidence/breadcrumbs-20261106` and the linked scene reports. Earlier
+functional snapshots retain the component-label readability refinement.

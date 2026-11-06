@@ -1,0 +1,9 @@
+   Compiling fltk-sys v1.5.23
+   Compiling jpeg-decoder v0.3.2 (/home/avillagran/.cache/files-m2-updates/crumbs-74d205f/source/vendor/jpeg-decoder)
+   Compiling files-core v0.0.4 (/home/avillagran/.cache/files-m2-updates/crumbs-74d205f/source/crates/core)
+   Compiling files-helper v0.0.4 (/home/avillagran/.cache/files-m2-updates/crumbs-74d205f/source/crates/helper)
+   Compiling files-ui v0.0.4 (/home/avillagran/.cache/files-m2-updates/crumbs-74d205f/source/crates/ui)
+   Compiling fltk v1.5.23
+   Compiling lib-fltk-omarchy v0.0.10 (/home/avillagran/.cache/files-m2-updates/crumbs-74d205f/source/vendor/lib-fltk-omarchy)
+   Compiling files-app v0.0.4 (/home/avillagran/.cache/files-m2-updates/crumbs-74d205f/source/crates/app)
+    Finished `release` profile [optimized] target(s) in 1m 10s

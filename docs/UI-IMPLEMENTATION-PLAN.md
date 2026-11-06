@@ -18,6 +18,11 @@ navigation surfaces. Preserve bookmark ordering and real Wayland drops.
 
 ## 2. Everyday navigation and selection
 
+Complete hidden breadcrumb ancestry is delivered in `74d205f`, including
+keyboard opening, focus return and background destinations; see
+[BREADCRUMB-OVERFLOW.md](BREADCRUMB-OVERFLOW.md). The remaining navigation
+fixture reconciliation and tab-strip improvements remain open.
+
 Background folder tabs and middle-close gestures are delivered in `c52b96b`;
 see [TAB-GESTURES.md](TAB-GESTURES.md). Tab reordering and migration to the
 toolkit strip remain open. The toolkit thread has the stable-key/context/
@@ -69,5 +74,5 @@ separately; do not silently enable GPU/effects or remove resource gates.
 The toolkit TabBar already has an animated indicator, overflow, keyboard
 cycling and middle-close, but migration must preserve stable tab identities,
 right-button safety and pane ownership. Coordinate missing APIs upstream
-before replacing the current strip. Breadcrumb overflow and the navigation
-fixture reconciliation can proceed independently.
+before replacing the current strip. Navigation fixture reconciliation and other usability work can proceed
+independently of the tab-strip API request.

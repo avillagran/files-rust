@@ -1,0 +1,2 @@
+{"report": "/home/avillagran/.cache/files-m2-updates/crumbs-74d205f/source/docs/evidence/0.0.4/breadcrumbs-ui-1793998548191382953.json", "functional_gate": "PASS", "error": null}
+{"nested": {"socket": "wayland-2", "pid": ["3531777"]}, "stopped": true}

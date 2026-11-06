@@ -19,7 +19,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 2 | Configurable columns and sort by type/owner/permissions/dates | partial | block 5: sort by type; configurable columns and owner/permissions/creation missing | P2 |
 | 3 | Expandable folders in list | no | — (Columns/Miller as an alternative) | P3 |
 | 4 | Tabs, per-tab history | yes | middle-folder background and middle-tab-close verified in c52b96b; drag reorder/tear-off pending | P2 |
-| 5 | Path bar + Ctrl+L, `/` and `~` | yes | — | — |
+| 5 | Path bar + Ctrl+L, `/` and `~` | yes | hidden ancestors, Alt+Down and background destinations verified in 74d205f | — |
 | 6 | Type to filter | yes | — | — |
 | 7 | Hidden files Ctrl+H | yes | — | — |
 | 8 | Image/video/PDF/cover thumbnails | partial | PDF, audio cover art, list | P2 |
@@ -256,3 +256,12 @@ without first selecting it. List/Grid/Columns and inactive-pane ownership
 pass private fixtures on NODE and M2, with separate real Wayland
 BTN_MIDDLE checks. See [TAB-GESTURES.md](TAB-GESTURES.md). Tab reordering,
 tear-off and native macOS verification remain open.
+
+### 2026-11-06 — Complete breadcrumb ancestry
+
+`74d205f` keeps every hidden ancestor reachable through the toolkit popup,
+including above HOME. Bounded painted targets, measured widths, exact raw
+paths, Alt+Down, Escape focus return and hidden/visible ancestor background
+tabs pass private fixtures on NODE and M2 with animations on and off.
+See [BREADCRUMB-OVERFLOW.md](BREADCRUMB-OVERFLOW.md). Native OS input coverage
+for this path-bar scenario remains distinct from these handler checks.

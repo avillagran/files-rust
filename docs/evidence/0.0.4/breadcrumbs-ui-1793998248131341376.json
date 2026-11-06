@@ -1,0 +1,2644 @@
+{
+  "functional_gate": "PASS",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "method": "Private painted breadcrumb hit and toolkit popup/key handlers with framebuffer captures; no native input",
+  "log_path": "/home/node/Work/files/docs/evidence/0.0.4/breadcrumbs-ui-1793998248131341376.txt",
+  "states": [
+    {
+      "label": "loaded-initial",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 1,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "loaded-initial",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 1,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "loaded-initial",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 1,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "loaded-initial",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 1,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "loaded-initial",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "initial",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "pointer-open",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": true,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "escaped",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "keyboard-open",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": true,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "keyboard-open-escaped",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "picked-hidden-ancestor",
+      "active": 1,
+      "anchor_raw": null,
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 3,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "706172656e74",
+      "selection_raw": [
+        "706172656e74"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor"
+        }
+      ],
+      "visible": [
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "rect": [
+            142,
+            17,
+            153,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "picked-hidden-ancestor",
+      "active": 1,
+      "anchor_raw": null,
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 3,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "706172656e74",
+      "selection_raw": [
+        "706172656e74"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor"
+        }
+      ],
+      "visible": [
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "rect": [
+            142,
+            17,
+            153,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "picked-hidden-ancestor",
+      "active": 1,
+      "anchor_raw": null,
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 3,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "706172656e74",
+      "selection_raw": [
+        "706172656e74"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor"
+        }
+      ],
+      "visible": [
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "rect": [
+            142,
+            17,
+            153,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "picked-hidden-ancestor",
+      "active": 1,
+      "anchor_raw": null,
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 3,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "706172656e74",
+      "selection_raw": [
+        "706172656e74"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor"
+        }
+      ],
+      "visible": [
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "rect": [
+            142,
+            17,
+            153,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "picked-hidden-ancestor",
+      "active": 1,
+      "anchor_raw": "706172656e74",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 4,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "706172656e74",
+      "selection_raw": [
+        "706172656e74"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor"
+        }
+      ],
+      "visible": [
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "rect": [
+            142,
+            17,
+            153,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "loaded-reset",
+      "active": 1,
+      "anchor_raw": null,
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 5,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "loaded-reset",
+      "active": 1,
+      "anchor_raw": null,
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 5,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "loaded-reset",
+      "active": 1,
+      "anchor_raw": null,
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 5,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "loaded-reset",
+      "active": 1,
+      "anchor_raw": null,
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 5,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "loaded-reset",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 6,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "reset",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 6,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "background-hidden-ancestor",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 6,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "background-visible-ancestor",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 6,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "middle-overflow-ignored",
+      "active": 1,
+      "anchor_raw": "6578616d706c652e747874",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 6,
+      "loaded": true,
+      "omni_rect": [
+        100,
+        12,
+        304,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "breadcrumbs-zdsupt25",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a64737570743235"
+        },
+        {
+          "label": "~",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d65"
+        },
+        {
+          "label": "ancestor-with-a-long-readable-name",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        }
+      ],
+      "overflow_rect": [
+        100,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f62726561646372756d62732d7a647375707432352f686f6d652f616e636573746f722d776974682d612d6c6f6e672d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "6578616d706c652e747874",
+      "selection_raw": [
+        "6578616d706c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor"
+        },
+        {
+          "id": 3,
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent"
+        }
+      ],
+      "visible": [
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "rect": [
+            142,
+            17,
+            62,
+            24
+          ]
+        },
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/breadcrumbs-zdsupt25/home/ancestor-with-a-long-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            218,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    }
+  ],
+  "checks": [
+    "deep path retains every ancestor including above HOME, with bounded painted hit rectangles",
+    "Escape returns focus to the browser and preserves the current path, generation and selection",
+    "Alt+Down opens the ancestor menu without pointer input and Escape restores the same browser context",
+    "toolkit keyboard navigation picks the exact last hidden ancestor above the background submenu",
+    "hidden-ancestor submenu opens the exact path in a background tab while preserving browser context",
+    "middle-click on a visible ancestor opens a background tab without changing the active path",
+    "middle-click on the overflow control never runs its primary popup/navigation action"
+  ],
+  "captures": [
+    "/home/node/Work/files/docs/evidence/0.0.4/breadcrumbs-deep-path-1793998248131341376.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/breadcrumbs-ancestor-menu-1793998248131341376.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/breadcrumbs-ancestor-located-1793998248131341376.png"
+  ],
+  "viewport": [
+    1000,
+    650
+  ],
+  "animations": "off",
+  "binary_sha256": "2b98655c34c58622640e45e2d38db8b26a11a3aee2e256f4544097dd15e31217",
+  "helper_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "fixture_intact": true,
+  "normal_exit": true,
+  "exit_code": 0
+}
