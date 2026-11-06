@@ -1,0 +1,45 @@
+    Checking files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+error[E0277]: `model::View` doesn't implement `Debug`
+   --> crates/ui/src/tab_gesture_scene.rs:138:57
+    |
+138 |         "generation":m.generation,"view":format!("{:?}",m.view).to_lowercase(),"pane_id":m.dual.active_id,
+    |                                                   ----  ^^^^^^ `model::View` cannot be formatted using `{:?}` because it doesn't implement `Debug`
+    |                                                   |
+    |                                                   required by this formatting parameter
+    |
+    = help: the trait `Debug` is not implemented for `model::View`
+help: consider annotating `model::View` with `#[derive(Debug)]`
+   --> crates/ui/src/model.rs:17:1
+    |
+ 17 + #[derive(Debug)]
+ 18 | pub enum View {
+    |
+
+error[E0382]: the type `Rc` does not implement `Copy`
+    --> crates/ui/src/lib.rs:1548:27
+     |
+1257 |     let rail_state = rail_state.clone();
+     |         ---------- this move could be avoided by cloning the original `Rc`, which is inexpensive
+1258 |     canvas.draw(move |f| {
+     |                 -------- value moved into closure here
+...
+1324 |                 if drifted || rail.items != rail_state.borrow().items {
+     |                                             ---------- variable moved due to use in closure
+...
+1548 |         (sidebar.clone(), rail_state.clone(), canvas.clone());
+     |                           ^^^^^^^^^^ value borrowed here after move
+     |
+     = note: consider using `Rc::clone`
+help: consider cloning the value before moving it into the closure
+     |
+1258 ~     let value = rail_state.clone();
+1259 ~     canvas.draw(move |f| {
+1260 |         if !painted && trace {
+ ...
+1324 |                 };
+1325 ~                 if drifted || rail.items != value.borrow().items {
+     |
+
+Some errors have detailed explanations: E0277, E0382.
+For more information about an error, try `rustc --explain E0277`.
+error: could not compile `files-ui` (lib) due to 2 previous errors

@@ -1,0 +1,37 @@
+{
+  "machine": "NODE",
+  "installed_and_backup_hashes_match": true,
+  "files": [
+    {
+      "name": "files",
+      "old_sha256": "d5ea66b1cebb3691e7a8e7552feae473fb9e33bba5dccf8b16bc0d1f6498a87c",
+      "release_sha256": "933201a5304876b93b8ea5880843f2e7342f6708137bb44de9bdd351cd277891",
+      "installed_sha256": "933201a5304876b93b8ea5880843f2e7342f6708137bb44de9bdd351cd277891"
+    },
+    {
+      "name": "files-helper",
+      "old_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+      "release_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+      "installed_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a"
+    },
+    {
+      "name": "files-html-helper",
+      "old_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+      "release_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+      "installed_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "old_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "release_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "installed_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b"
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "old_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd",
+      "release_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd",
+      "installed_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd"
+    }
+  ],
+  "architecture": "/home/node/.local/bin/files: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 4.4.0, BuildID[sha1]=9192bd4b5cef850a398633a534c1247a8bea55cd, stripped"
+}

@@ -1,0 +1,18 @@
+XOpenIM() failed
+FILES_FONT=JetBrainsMono Nerd Font nerd=true
+FILES_GLASS mode=opaque opacity=1.00 overridden=true wayland=false
+FILES_FIRST_PAINT_US=30032
+FILES_UI_SMOKE_OK entries=2
+FILES_TAB_GESTURE_STATE {"active":1,"anchor_raw":"66696c652e747874","closed":0,"closing":false,"error":"","generation":1,"loaded":true,"other_loaded":false,"other_path":null,"other_tabs":[],"pane_id":1,"path":"/home/node/.cache/files-test/tab-gestures-838bfqtr/home/fixture","selected_raw":"66696c652e747874","selection_raw":["66696c652e747874"],"tabs":[{"id":1,"path":"/home/node/.cache/files-test/tab-gestures-838bfqtr/home/fixture"}],"targets":{"file":[68,236,676,38],"folder":[68,122,334,74],"tab-close-button-last":[161,62,24,24],"tab-first":[8,61,152,26],"tab-last":[8,61,152,26],"tab-new-button":[909,62,28,24]},"view":"groups"}
+FILES_TOOLKIT_FIXTURE action=tab-gesture-state
+FILES_TAB_GESTURE_COMMAND result=Ok(())
+FILES_TOOLKIT_FIXTURE action=tab-gesture:select-file
+FILES_TAB_GESTURE_STATE {"active":1,"anchor_raw":"66696c652e747874","closed":0,"closing":false,"error":"","generation":1,"loaded":true,"other_loaded":false,"other_path":null,"other_tabs":[],"pane_id":1,"path":"/home/node/.cache/files-test/tab-gestures-838bfqtr/home/fixture","selected_raw":"66696c652e747874","selection_raw":["66696c652e747874"],"tabs":[{"id":1,"path":"/home/node/.cache/files-test/tab-gestures-838bfqtr/home/fixture"}],"targets":{"file":[68,236,676,38],"folder":[68,122,334,74],"tab-close-button-last":[161,62,24,24],"tab-first":[8,61,152,26],"tab-last":[8,61,152,26],"tab-new-button":[909,62,28,24]},"view":"groups"}
+FILES_TOOLKIT_FIXTURE action=tab-gesture-state
+FILES_TAB_GESTURE_STATE {"active":1,"anchor_raw":"66696c652e747874","closed":0,"closing":false,"error":"","generation":1,"loaded":true,"other_loaded":false,"other_path":null,"other_tabs":[],"pane_id":1,"path":"/home/node/.cache/files-test/tab-gestures-838bfqtr/home/fixture","selected_raw":"66696c652e747874","selection_raw":["66696c652e747874"],"tabs":[{"id":1,"path":"/home/node/.cache/files-test/tab-gestures-838bfqtr/home/fixture"}],"targets":{"file":[68,236,676,38],"folder":[68,122,334,74],"tab-close-button-last":[161,62,24,24],"tab-first":[8,61,152,26],"tab-last":[8,61,152,26],"tab-new-button":[909,62,28,24]},"view":"groups"}
+FILES_TOOLKIT_FIXTURE action=tab-gesture-state
+FILES_CAPTURE_OK id=0 redraw=false before=7 paint=7 width=1000 height=650
+FILES_TAB_GESTURE_COMMAND result=Ok(())
+FILES_TOOLKIT_FIXTURE action=tab-gesture:folder
+FILES_TAB_GESTURE_STATE {"active":1,"anchor_raw":"66696c652e747874","closed":0,"closing":false,"error":"","generation":2,"loaded":true,"other_loaded":false,"other_path":null,"other_tabs":[],"pane_id":1,"path":"/home/node/.cache/files-test/tab-gestures-838bfqtr/home/fixture","selected_raw":"66696c652e747874","selection_raw":["66696c652e747874"],"tabs":[{"id":1,"path":"/home/node/.cache/files-test/tab-gestures-838bfqtr/home/fixture"},{"id":2,"path":"/home/node/.cache/files-test/tab-gestures-838bfqtr/home/fixture/folder"}],"targets":{"file":[68,236,676,38],"folder":[68,122,334,74],"tab-close-button-last":[345,62,24,24],"tab-first":[8,61,152,26],"tab-last":[192,61,152,26],"tab-new-button":[909,62,28,24]},"view":"groups"}
+FILES_TOOLKIT_FIXTURE action=tab-gesture-state

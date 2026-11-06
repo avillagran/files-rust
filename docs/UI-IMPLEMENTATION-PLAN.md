@@ -18,6 +18,11 @@ navigation surfaces. Preserve bookmark ordering and real Wayland drops.
 
 ## 2. Everyday navigation and selection
 
+Background folder tabs and middle-close gestures are delivered in `c52b96b`;
+see [TAB-GESTURES.md](TAB-GESTURES.md). Tab reordering and migration to the
+toolkit strip remain open. The toolkit thread has the stable-key/context/
+reorder requirements and the right-button activation finding.
+
 Reconcile the existing Nautilus parity matrix with current implementation;
 several entries predate Sidebar, recent files and AccessKit in the toolkit.
 Validate keyboard navigation, selection, focus return, inline rename,
@@ -50,3 +55,19 @@ respect the existing freeze on resource experiments.
 
 The complete project roadmap remains open. This sequence organizes UI work;
 it does not replace the operation, interoperability or platform requirements.
+
+## Toolkit review at f02aacc
+
+The upstream review found native dialogs/portal support (`4eef3bd`) and
+retained CPU/GPU scene surfaces (`c3c46ab` through `f02aacc`). These are
+committed upstream capabilities, not adopted Files functionality. The
+vendor remains the verified `0d00f2b` checkpoint during this delivery.
+
+Adopt dialogs through explicit user actions and preserve existing path,
+mutation-review and close/cancel contracts. Review scene-backed motion
+separately; do not silently enable GPU/effects or remove resource gates.
+The toolkit TabBar already has an animated indicator, overflow, keyboard
+cycling and middle-close, but migration must preserve stable tab identities,
+right-button safety and pane ownership. Coordinate missing APIs upstream
+before replacing the current strip. Breadcrumb overflow and the navigation
+fixture reconciliation can proceed independently.

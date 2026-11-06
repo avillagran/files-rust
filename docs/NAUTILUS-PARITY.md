@@ -18,7 +18,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 1 | List/grid, zoom Ctrl±/0 | partial | zoom only in grid | P2 |
 | 2 | Configurable columns and sort by type/owner/permissions/dates | partial | block 5: sort by type; configurable columns and owner/permissions/creation missing | P2 |
 | 3 | Expandable folders in list | no | — (Columns/Miller as an alternative) | P3 |
-| 4 | Tabs, per-tab history | yes | — | — |
+| 4 | Tabs, per-tab history | yes | middle-folder background and middle-tab-close verified in c52b96b; drag reorder/tear-off pending | P2 |
 | 5 | Path bar + Ctrl+L, `/` and `~` | yes | — | — |
 | 6 | Type to filter | yes | — | — |
 | 7 | Hidden files Ctrl+H | yes | — | — |
@@ -247,3 +247,12 @@ Linux: running it would launch the user's real application.
 - Ctrl+M creates links here to what was copied in Files (background menu PASTE).
 - Validation: floor check (`*.txt` → 4 marked; Ctrl+M «Enlace a
   zeta.ab»); 720/112/808 tests, Clippy.
+
+### 2026-11-06 — Background folder tab gestures
+
+`c52b96b` adds middle-click folder admission without changing selection,
+anchor, history or pane focus; middle-click closes the clicked tab ID
+without first selecting it. List/Grid/Columns and inactive-pane ownership
+pass private fixtures on NODE and M2, with separate real Wayland
+BTN_MIDDLE checks. See [TAB-GESTURES.md](TAB-GESTURES.md). Tab reordering,
+tear-off and native macOS verification remain open.

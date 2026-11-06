@@ -1,0 +1,2384 @@
+{
+  "functional_gate": "PASS",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_path": "/home/avillagran/.cache/files-m2-updates/tabs-c52b96b/source/target/release/files",
+  "method": "Private fixture commands invoke auxiliary-pointer handling on painted hits; framebuffer captures; no native input",
+  "log_path": "/home/avillagran/.cache/files-m2-updates/tabs-c52b96b/source/docs/evidence/0.0.4/tab-gestures-ui-1793997261500494984.txt",
+  "states": [
+    {
+      "label": "ready-file",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          528,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          260,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          761,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "ready-file",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "ready-file",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "ready-file",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "ready-file",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "select-file",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "ready-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "initial",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        },
+        {
+          "id": 2,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture/folder"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          345,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          192,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "file",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        },
+        {
+          "id": 2,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture/folder"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          345,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          192,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "tab-new-button",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        },
+        {
+          "id": 2,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture/folder"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          345,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          192,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "blocked-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        },
+        {
+          "id": 2,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture/folder"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          345,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          192,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "tab-close-button-last",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 1,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 1,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        },
+        {
+          "id": 3,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture/folder"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          345,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          192,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "tab-last",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          334,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "label": "view-list",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          162,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          124,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    },
+    {
+      "label": "ready-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          162,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          124,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    },
+    {
+      "label": "folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 2,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        },
+        {
+          "id": 4,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture/folder"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          162,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          124,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          345,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          192,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    },
+    {
+      "label": "tab-last",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 3,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          162,
+          676,
+          38
+        ],
+        "folder": [
+          68,
+          124,
+          676,
+          38
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    },
+    {
+      "label": "view-grid",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 3,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          237,
+          130,
+          169,
+          132
+        ],
+        "folder": [
+          68,
+          130,
+          169,
+          132
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "grid"
+    },
+    {
+      "label": "ready-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 3,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          237,
+          130,
+          169,
+          132
+        ],
+        "folder": [
+          68,
+          130,
+          169,
+          132
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "grid"
+    },
+    {
+      "label": "folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 3,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        },
+        {
+          "id": 5,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture/folder"
+        }
+      ],
+      "targets": {
+        "file": [
+          237,
+          130,
+          169,
+          132
+        ],
+        "folder": [
+          68,
+          130,
+          169,
+          132
+        ],
+        "tab-close-button-last": [
+          345,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          192,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "grid"
+    },
+    {
+      "label": "tab-last",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 4,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          237,
+          130,
+          169,
+          132
+        ],
+        "folder": [
+          68,
+          130,
+          169,
+          132
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "grid"
+    },
+    {
+      "label": "view-columns",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 4,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          254,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          254,
+          34
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "columns"
+    },
+    {
+      "label": "ready-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 4,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          254,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          254,
+          34
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "columns"
+    },
+    {
+      "label": "folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 4,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        },
+        {
+          "id": 6,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture/folder"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          254,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          254,
+          34
+        ],
+        "tab-close-button-last": [
+          345,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          192,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "columns"
+    },
+    {
+      "label": "tab-last",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 5,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          254,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          254,
+          34
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "columns"
+    },
+    {
+      "label": "dual",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 5,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          448,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          448,
+          34
+        ],
+        "inactive-folder": [
+          533,
+          158,
+          448,
+          34
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    },
+    {
+      "label": "ready-inactive-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 5,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          448,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          448,
+          34
+        ],
+        "inactive-folder": [
+          533,
+          158,
+          448,
+          34
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    },
+    {
+      "label": "ready-inactive-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 5,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          448,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          448,
+          34
+        ],
+        "inactive-folder": [
+          533,
+          158,
+          448,
+          34
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    },
+    {
+      "label": "ready-inactive-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 5,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          448,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          448,
+          34
+        ],
+        "inactive-folder": [
+          533,
+          158,
+          448,
+          34
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    },
+    {
+      "label": "ready-inactive-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 5,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          448,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          448,
+          34
+        ],
+        "inactive-folder": [
+          533,
+          158,
+          448,
+          34
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    },
+    {
+      "label": "ready-inactive-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 5,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          448,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          448,
+          34
+        ],
+        "inactive-folder": [
+          533,
+          158,
+          448,
+          34
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    },
+    {
+      "label": "inactive-folder",
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 5,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": true,
+      "other_path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "other_tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        },
+        {
+          "id": 2,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture/folder"
+        }
+      ],
+      "pane_id": 1,
+      "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/avillagran/.cache/files-test/tab-gestures-q9r7fk7e/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          71,
+          194,
+          448,
+          34
+        ],
+        "folder": [
+          71,
+          158,
+          448,
+          34
+        ],
+        "inactive-folder": [
+          533,
+          158,
+          448,
+          34
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          909,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "list"
+    }
+  ],
+  "checks": [
+    "folder opens metadata-only tab while active path/selection/anchor/generation remain unchanged",
+    "middle file/new-tab-button/covered folder do not run primary actions",
+    "middle tab body and close-button close only that stable tab ID",
+    "List/Grid/Columns folder hits open background tabs without changing active state",
+    "inactive dual pane owns its new tab without switching pane or disturbing active listing"
+  ],
+  "captures": [
+    "/home/avillagran/.cache/files-m2-updates/tabs-c52b96b/source/docs/evidence/0.0.4/tab-gestures-selected-file-1793997261500494984.png",
+    "/home/avillagran/.cache/files-m2-updates/tabs-c52b96b/source/docs/evidence/0.0.4/tab-gestures-background-folder-1793997261500494984.png"
+  ],
+  "binary_sha256": "5e613aa3c694b7963b990f1075bf406c309e062c08c70c4cebea582461311f47",
+  "helper_sha256": "e5401c541f6ca42ca9eb3415d8277df5c6bfb114835913cbe48d2bd9245b942c",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "fixture_intact": true,
+  "normal_exit": true,
+  "exit_code": 0
+}

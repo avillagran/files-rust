@@ -1,0 +1,813 @@
+{
+  "functional_gate": "PASS",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "label": "installed",
+  "binary_path": "/home/node/.local/bin/files",
+  "log_path": "/home/node/Work/files/docs/evidence/0.0.4/tab-middle-native-installed-1793997201987112665.txt",
+  "method": "Real BTN_MIDDLE over a virtual pointer on a private hidden nested Wayland compositor; painted PID-owned window targets",
+  "checks": {
+    "background_folder_preserves_active": true,
+    "middle_tab_closes_without_navigation": true,
+    "middle_file_is_ignored": true,
+    "fixture_intact": true
+  },
+  "states": [
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 1,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": false,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture/folder"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          345,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          192,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 0,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        },
+        {
+          "id": 2,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture/folder"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          345,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          192,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 1,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 1,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    },
+    {
+      "active": 1,
+      "anchor_raw": "66696c652e747874",
+      "closed": 1,
+      "closing": false,
+      "error": "",
+      "generation": 2,
+      "loaded": true,
+      "other_loaded": false,
+      "other_path": null,
+      "other_tabs": [],
+      "pane_id": 1,
+      "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture",
+      "refreshing": false,
+      "selected_raw": "66696c652e747874",
+      "selection_raw": [
+        "66696c652e747874"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/tab-middle-native-b5_tbh43/home/fixture"
+        }
+      ],
+      "targets": {
+        "file": [
+          68,
+          236,
+          424,
+          38
+        ],
+        "folder": [
+          68,
+          122,
+          424,
+          74
+        ],
+        "tab-close-button-last": [
+          161,
+          62,
+          24,
+          24
+        ],
+        "tab-first": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-last": [
+          8,
+          61,
+          152,
+          26
+        ],
+        "tab-new-button": [
+          417,
+          62,
+          28,
+          24
+        ]
+      },
+      "view": "groups"
+    }
+  ],
+  "captures": [
+    "/home/node/Work/files/docs/evidence/0.0.4/tab-middle-native-installed-1793997201987112665-before.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/tab-middle-native-installed-1793997201987112665-background-tab.png"
+  ],
+  "binary_sha256": "933201a5304876b93b8ea5880843f2e7342f6708137bb44de9bdd351cd277891",
+  "helper_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "1835016"
+    ]
+  },
+  "input": [
+    {
+      "target": "folder",
+      "rect": [
+        68,
+        122,
+        424,
+        74
+      ],
+      "point": [
+        301,
+        180
+      ],
+      "extent": [
+        550,
+        367
+      ],
+      "pid": 1835143
+    },
+    {
+      "target": "tab-last",
+      "rect": [
+        192,
+        61,
+        152,
+        26
+      ],
+      "point": [
+        289,
+        95
+      ],
+      "extent": [
+        550,
+        367
+      ],
+      "pid": 1835143
+    },
+    {
+      "target": "file",
+      "rect": [
+        68,
+        236,
+        424,
+        38
+      ],
+      "point": [
+        301,
+        276
+      ],
+      "extent": [
+        550,
+        367
+      ],
+      "pid": 1835143
+    }
+  ],
+  "normal_exit": true,
+  "exit_code": 0,
+  "nested_stopped": true
+}

@@ -1,0 +1,41 @@
+{
+  "checkpoint": "c52b96bb5a0609a6b1c77df50ac2a2c180a3baad",
+  "html_helper": "reused staged, recipe verified",
+  "validation_report": "/home/node/Work/files/docs/evidence/0.0.4/tab-gestures-ui-1793997105246104837.json",
+  "scope": "per-user authorized installation; all staged then individual atomic replacements; no running windows controlled",
+  "backup": "/home/node/.cache/files-test/installed-backups/1793997172823761643",
+  "files": [
+    {
+      "name": "files",
+      "old_sha256": "d5ea66b1cebb3691e7a8e7552feae473fb9e33bba5dccf8b16bc0d1f6498a87c",
+      "release_sha256": "933201a5304876b93b8ea5880843f2e7342f6708137bb44de9bdd351cd277891",
+      "installed_sha256": "933201a5304876b93b8ea5880843f2e7342f6708137bb44de9bdd351cd277891"
+    },
+    {
+      "name": "files-helper",
+      "old_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+      "release_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+      "installed_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a"
+    },
+    {
+      "name": "files-html-helper",
+      "old_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+      "release_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+      "installed_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "old_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "release_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "installed_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b"
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "old_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd",
+      "release_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd",
+      "installed_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd"
+    }
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED"
+}

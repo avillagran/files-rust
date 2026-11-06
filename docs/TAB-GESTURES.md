@@ -51,3 +51,28 @@ mutation surfaces block the gesture. F1 documents both middle-click actions.
 This is an incremental usability delivery, not full tab or Finder parity.
 Tab reordering/tear-off, complete shortcut customization and native macOS
 validation remain separate work. Resource/startup gates remain unmeasured.
+
+## Validated delivery c52b96b
+
+The checkpoint is installed on NODE (`933201a53048`) and native ARM M2
+(`5e613aa3c694`). The handler matrix and real middle-button check pass on
+both architectures; installed native checks and real Wayland DnD regressions
+also pass. NODE additionally passes the toolkit menu regression. Workspace:
+1,657 passing tests, three ignored; Clippy and release checks pass.
+All five installed artifacts and prior backups were verified by hash on
+both machines. Native HTML helpers were reused after recipe verification.
+
+A successful background open uses a brief status-bar message, never a
+persistent operation card over file rows. Both middle-click gestures are
+listed in F1.
+
+| Original selection | Background tab, same selection |
+|---|---|
+| ![Selected fixture file](evidence/0.0.4/tab-middle-native-final-1793997103391965205-before.png) | ![Folder tab created without navigating or covering the selected file](evidence/0.0.4/tab-middle-native-final-1793997103391965205-background-tab.png) |
+
+Evidence, including setup and regression failures, is retained under
+`evidence/tab-gestures-20261106` and the scene reports. The first native
+check exposed child-before-window dispatch changing selection; the window
+interceptor now runs first. Earlier handler checks also exposed an unstable
+watcher baseline and a fixture resolving active Columns entries from its
+inactive cache. Those failures remain recorded with the subsequent passes.

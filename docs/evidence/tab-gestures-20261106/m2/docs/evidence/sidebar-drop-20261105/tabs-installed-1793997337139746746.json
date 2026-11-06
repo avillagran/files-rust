@@ -1,0 +1,106 @@
+{
+  "functional_gate": "PASS",
+  "label": "tabs-installed",
+  "binary_sha256": "5e613aa3c694b7963b990f1075bf406c309e062c08c70c4cebea582461311f47",
+  "method": "private nested Hyprland on a hidden special workspace; real Wayland DnD from a Files listing to another Files window's Sidebar row with the virtual pointer",
+  "checks": {
+    "drag": {
+      "from": [
+        171,
+        203
+      ],
+      "to": [
+        262,
+        289
+      ],
+      "row": "place:/home/avillagran/.cache/files-test/sidebar-drop-6s0wvfcg/home/Documents"
+    },
+    "target_log_tail": [
+      "FILES_TOOLKIT_SIDEBAR_FORM open=true destination=/home/avillagran/.cache/files-test/sidebar-drop-6s0wvfcg/home/Documents names=1 message=Some(\"Revisa origen y destino antes de pegar archivos del sistema\")"
+    ],
+    "logs": {
+      "source": [
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=214 y=193 seq=34 last=34 owner=(1,1) pane=(1,1)"
+      ],
+      "target": [
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=28 last=28 owner=(1,1) pane=(1,1)"
+      ]
+    },
+    "review": {
+      "destination": "/home/avillagran/.cache/files-test/sidebar-drop-6s0wvfcg/home/Documents",
+      "names": 1
+    },
+    "copied": true,
+    "source_intact": true
+  },
+  "captures": [
+    "/home/avillagran/.cache/files-m2-updates/tabs-c52b96b/source/docs/evidence/sidebar-drop-20261105/tabs-installed-target-before-1793997340402048327.png",
+    "/home/avillagran/.cache/files-m2-updates/tabs-c52b96b/source/docs/evidence/sidebar-drop-20261105/tabs-installed-source-after-drag-1793997344753198807.png",
+    "/home/avillagran/.cache/files-m2-updates/tabs-c52b96b/source/docs/evidence/sidebar-drop-20261105/tabs-installed-target-review-1793997344921575098.png"
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "3333412"
+    ]
+  },
+  "nested_extent": [
+    852,
+    534
+  ],
+  "dispatch": [
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+  ],
+  "windows": {
+    "source": [
+      [
+        21,
+        64
+      ],
+      [
+        810,
+        449
+      ]
+    ],
+    "target": [
+      [
+        236,
+        40
+      ],
+      [
+        700,
+        474
+      ]
+    ]
+  },
+  "onto": "rail",
+  "nested_stopped": true
+}

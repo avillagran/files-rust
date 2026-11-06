@@ -1,0 +1,106 @@
+{
+  "functional_gate": "PASS",
+  "label": "tabs-regression",
+  "binary_sha256": "933201a5304876b93b8ea5880843f2e7342f6708137bb44de9bdd351cd277891",
+  "method": "private nested Hyprland on a hidden special workspace; real Wayland DnD from a Files listing to another Files window's Sidebar row with the virtual pointer",
+  "checks": {
+    "drag": {
+      "from": [
+        171,
+        160
+      ],
+      "to": [
+        356,
+        289
+      ],
+      "row": "place:/home/node/.cache/files-test/sidebar-drop-lk8vp85l/home/Documents"
+    },
+    "target_log_tail": [
+      "FILES_TOOLKIT_SIDEBAR_FORM open=true destination=/home/node/.cache/files-test/sidebar-drop-lk8vp85l/home/Documents names=1 message=Some(\"Revisa origen y destino antes de pegar archivos del sistema\")"
+    ],
+    "logs": {
+      "source": [
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)"
+      ],
+      "target": [
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)"
+      ]
+    },
+    "review": {
+      "destination": "/home/node/.cache/files-test/sidebar-drop-lk8vp85l/home/Documents",
+      "names": 1
+    },
+    "copied": true,
+    "source_intact": true
+  },
+  "captures": [
+    "/home/node/Work/files/docs/evidence/sidebar-drop-20261105/tabs-regression-target-before-1793997144706830603.png",
+    "/home/node/Work/files/docs/evidence/sidebar-drop-20261105/tabs-regression-source-after-drag-1793997149059564475.png",
+    "/home/node/Work/files/docs/evidence/sidebar-drop-20261105/tabs-regression-target-review-1793997149193272153.png"
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "1825371"
+    ]
+  },
+  "nested_extent": [
+    550,
+    367
+  ],
+  "dispatch": [
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+  ],
+  "windows": {
+    "source": [
+      [
+        21,
+        21
+      ],
+      [
+        508,
+        325
+      ]
+    ],
+    "target": [
+      [
+        330,
+        40
+      ],
+      [
+        700,
+        440
+      ]
+    ]
+  },
+  "onto": "rail",
+  "nested_stopped": true
+}

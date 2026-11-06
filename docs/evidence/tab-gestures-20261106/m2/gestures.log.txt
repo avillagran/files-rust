@@ -1,0 +1,2 @@
+{"report": "/home/avillagran/.cache/files-m2-updates/tabs-c52b96b/source/docs/evidence/0.0.4/tab-gestures-ui-1793997261500494984.json", "functional_gate": "PASS", "error": null}
+{"nested": {"socket": "wayland-2", "pid": ["3320437"]}, "stopped": true}
