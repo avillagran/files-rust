@@ -351,11 +351,22 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             },
         );
     }
+    let up = Rect::new(84, 13, 30, 32);
+    let parent = m.path.parent().is_some();
+    p.text(
+        up,
+        crate::fonts::icon("", "^"),
+        16,
+        if parent { c.foreground } else { c.muted },
+        true,
+        false,
+    );
+    hit(m, up, if parent { Action::Parent } else { Action::None });
     let toolbar_right = crate::toolbar::prepare(p, m, w, h);
     let omni = if m.editing {
-        r(88, 10, (w - 192).max(1), 38)
+        r(124, 10, (w - 228).max(1), 38)
     } else {
-        r(88, 10, (toolbar_right - 96).max(1), 38)
+        r(124, 10, (toolbar_right - 132).max(1), 38)
     };
     p.rounded_rect(omni, 10 * rad, c.darker_background);
     hit(

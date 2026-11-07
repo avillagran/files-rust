@@ -80,6 +80,14 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
     let entries: Vec<(PopupItem, Action)> = match kind {
         Kind::Settings => vec![
             (
+                row(
+                    "Mostrar miniaturas de imágenes y vídeos",
+                    "",
+                    m.show_thumbnails,
+                ),
+                Action::ShowThumbnails(!m.show_thumbnails),
+            ),
+            (
                 row("Calcular tamaños automáticamente", "", m.auto_folder_sizes),
                 Action::AutoFolderSizes(!m.auto_folder_sizes),
             ),
@@ -341,6 +349,7 @@ fn toolbar_group(kind: Kind, action: &Action) -> usize {
             Action::ToggleOperationBar
             | Action::ToggleHidden
             | Action::DualPane
+            | Action::ShowThumbnails(_)
             | Action::AutoFolderSizes(_)
             | Action::RailPin(_) => 1,
             Action::WindowMode(_) => 2,

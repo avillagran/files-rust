@@ -31,12 +31,15 @@ fn status(m: &Model) -> u8 {
     }
 }
 pub fn title(m: &Model) -> String {
-    let path = files_core::name_label::label(m.path.as_os_str());
-    let mut title = String::new();
+    display_title(m.path.as_os_str(), status(m))
+}
+fn display_title(raw: &std::ffi::OsStr, state: u8) -> String {
+    let path = files_core::name_label::label(raw);
+    let mut title = String::from("Files > ");
     for ch in path.chars().take(1024) {
         title.push(if ch.is_control() { ' ' } else { ch });
     }
-    let status = match status(m) {
+    let status = match state {
         1 => "Cerrando…",
         2 => "Error",
         3 => "Operación en curso…",
@@ -74,5 +77,19 @@ pub fn set_icon(win: &mut Window) {
     }
     if let Ok(image) = RgbImage::new(&rgba, 64, 64, ColorDepth::Rgba8) {
         win.set_icon(Some(image));
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn title_names_the_application_before_its_explanatory_path() {
+        let title = display_title(std::ffi::OsStr::new("/home/example"), 0);
+        assert_eq!(title, "Files > /home/example");
+        assert_eq!(
+            display_title(std::ffi::OsStr::new("/tmp"), 4),
+            "Files > /tmp · Cargando…"
+        );
     }
 }

@@ -4,6 +4,8 @@ use crate::{
     painter::{Painter, Rect},
 };
 use fltk_omarchy::anim::{Anim, Ease};
+use std::time::{Duration, Instant};
+const TOOLTIP_DELAY: Duration = Duration::from_secs(2);
 
 #[derive(Default)]
 pub struct State {
@@ -11,18 +13,76 @@ pub struct State {
     rows: Vec<Rect>,
     motion: [Anim<f64>; 10],
     widths: Vec<i32>,
+    since: Option<Instant>,
+    suppressed: bool,
+    visible: bool,
+    tooltip: Option<(String, Rect)>,
+    navigation: [Rect; 3],
 }
 impl State {
     pub fn hover(&mut self, pointer: Option<(i32, i32)>) -> bool {
-        let hot = pointer.and_then(|(x, y)| self.rows.iter().position(|r| r.contains(x, y)));
+        self.hover_at(pointer, Instant::now())
+    }
+    fn hover_at(&mut self, pointer: Option<(i32, i32)>, now: Instant) -> bool {
+        let hot = pointer.and_then(|(x, y)| {
+            self.rows.iter().position(|r| r.contains(x, y)).or_else(|| {
+                self.navigation
+                    .iter()
+                    .position(|r| r.contains(x, y))
+                    .map(|i| i + 10)
+            })
+        });
         let changed = self.hot != hot;
+        if changed {
+            self.since = hot.map(|_| now);
+            self.suppressed = false;
+            self.visible = false;
+            self.tooltip = None;
+        }
         self.hot = hot;
+        changed
+    }
+    pub fn suppress(&mut self) -> bool {
+        let changed = self.visible;
+        self.suppressed = true;
+        self.visible = false;
+        self.since = None;
+        self.tooltip = None;
+        changed
+    }
+    pub fn tick(&mut self, now: Instant, active: bool) -> bool {
+        if !active {
+            return self.suppress();
+        }
+        let visible = !self.suppressed
+            && self.hot.is_some()
+            && self
+                .since
+                .is_some_and(|at| now.saturating_duration_since(at) >= TOOLTIP_DELAY);
+        let changed = self.visible != visible;
+        self.visible = visible;
         changed
     }
     pub fn schedule(&self, canvas: &fltk::frame::Frame) {
         if self.motion.iter().any(Anim::running) {
             fltk_omarchy::anim::request_redraw(canvas);
         }
+    }
+}
+fn shortcut(action: &Action) -> &'static str {
+    match action {
+        Action::Filter => "Ctrl+F",
+        Action::ClearFilter => "Esc",
+        Action::Omni => "Ctrl+L",
+        Action::View(View::Groups) => "Ctrl+1",
+        Action::View(View::List) => "Ctrl+2",
+        Action::View(View::Grid) => "Ctrl+5",
+        Action::View(View::SpaceMap) => "Ctrl+4",
+        Action::View(View::Columns) => "Ctrl+3",
+        Action::Inspector => "Ctrl+Alt+I",
+        Action::Settings => "Ctrl+,",
+        Action::Actions => "F10",
+        _ => "",
     }
 }
 struct Item {
@@ -136,8 +196,11 @@ pub fn marker(m: &Model, w: i32, h: i32) -> serde_json::Value {
     serde_json::json!({
         "hot":m.toolbar.hot,"animating":m.toolbar.motion.iter().any(Anim::running),
         "enabled":fltk_omarchy::anim::enabled(),
+        "up_rect":[84,13,30,32],
+        "tooltip":if m.toolbar.visible {m.toolbar.tooltip.as_ref().map(|(text,r)|serde_json::json!({"text":text,"rect":[r.x,r.y,r.w,r.h]}))}else{None},
         "items":items(m,w,h).iter().enumerate().map(|(i,item)|serde_json::json!({
             "index":i,"label":item.label,"on":item.on,
+            "shortcut":shortcut(&item.action),
             "rect":m.toolbar.rows.get(i).map(|r|[r.x,r.y,r.w,r.h]),
         })).collect::<Vec<_>>()
     })
@@ -152,7 +215,12 @@ pub fn prepare(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) -> i32 {
             motion.jump(0.);
         }
     }
-    if m.toolbar.hot.is_some_and(|i| i >= count) {
+    m.toolbar.navigation = [
+        Rect::new(12, 13, 30, 32),
+        Rect::new(48, 13, 30, 32),
+        Rect::new(84, 13, 30, 32),
+    ];
+    if m.toolbar.hot.is_some_and(|i| i >= count && i < 10) {
         m.toolbar.hot = None;
     }
     let allowance = (base_right(w) - 176).clamp(0, 160);
@@ -181,6 +249,57 @@ pub fn prepare(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) -> i32 {
     }
     w - 12 - total - 14
 }
+
+/// This canvas-owned surface avoids the toolkit's global warm-tooltip delay.
+/// It has no hit target and is painted after native tab/header children.
+pub fn paint_tooltip(p: &mut dyn Painter, m: &mut Model, w: i32) {
+    m.toolbar.tooltip = None;
+    if !m.toolbar.visible {
+        return;
+    }
+    let Some(index) = m.toolbar.hot else {
+        return;
+    };
+    let (text, anchor) = if index >= 10 {
+        let i = index - 10;
+        let Some(anchor) = m.toolbar.navigation.get(i) else {
+            return;
+        };
+        (["Alt+Izquierda", "Alt+Derecha", "Alt+Arriba"][i], *anchor)
+    } else {
+        let controls = items(m, w, 0);
+        let Some(item) = controls.get(index) else {
+            return;
+        };
+        (shortcut(&item.action), m.toolbar.rows[index])
+    };
+    if text.is_empty() {
+        return;
+    }
+    let width = (p.text_width(text, 12, true).ceil() as i32 + 24).min(w - 16);
+    let rect = Rect::new(
+        (anchor.x + anchor.w / 2 - width / 2).clamp(8, (w - width - 8).max(8)),
+        52,
+        width,
+        28,
+    );
+    p.rounded_rect(rect, 5 * m.radius, m.palette.lighter_background);
+    p.rounded_rect(
+        Rect::new(rect.x + 1, rect.y + 1, rect.w - 2, rect.h - 2),
+        5 * m.radius,
+        m.palette.darker_background,
+    );
+    p.text(
+        Rect::new(rect.x + 12, rect.y, rect.w - 24, rect.h),
+        text,
+        12,
+        m.palette.foreground,
+        true,
+        false,
+    );
+    m.toolbar.tooltip = Some((text.into(), rect));
+}
+
 pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     for (i, item) in items(m, w, h).into_iter().enumerate() {
         let rect = m.toolbar.rows[i];
@@ -222,5 +341,47 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             rect,
             action: item.action,
         });
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn shortcut_delay_restarts_for_each_control_without_warm_shortcut() {
+        let mut state = State {
+            rows: vec![Rect::new(0, 0, 36, 36), Rect::new(40, 0, 36, 36)],
+            ..Default::default()
+        };
+        let start = Instant::now();
+        state.hover_at(Some((5, 5)), start);
+        assert!(!state.tick(start + Duration::from_millis(1999), true));
+        assert!(!state.visible);
+        assert!(state.tick(start + TOOLTIP_DELAY, true));
+        assert!(state.visible);
+        state.hover_at(Some((45, 5)), start + TOOLTIP_DELAY);
+        state.tick(start + Duration::from_millis(3999), true);
+        assert!(!state.visible);
+        state.tick(start + Duration::from_secs(4), true);
+        assert!(state.visible);
+    }
+    #[test]
+    fn input_and_exit_cancel_tooltip_until_a_new_hover() {
+        let mut state = State {
+            rows: vec![Rect::new(0, 0, 36, 36)],
+            ..Default::default()
+        };
+        let now = Instant::now();
+        state.hover_at(Some((1, 1)), now);
+        state.tick(now + TOOLTIP_DELAY, true);
+        assert!(state.suppress());
+        state.tick(now + Duration::from_secs(20), true);
+        assert!(!state.visible);
+        state.hover_at(None, now);
+        state.hover_at(Some((1, 1)), now);
+        state.tick(now + TOOLTIP_DELAY, true);
+        assert!(state.visible);
+        state.hover_at(None, now);
+        assert!(!state.visible);
     }
 }

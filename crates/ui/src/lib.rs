@@ -166,6 +166,7 @@ mod text_preview_state;
 mod text_preview_view;
 mod theme_watch;
 mod thumbnail_cache;
+mod thumbnail_disk_cache;
 mod thumbnail_job;
 mod thumbnails;
 mod toolbar;
@@ -736,6 +737,18 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             if key == Key::Menu || key == Key::F10 && app::event_state().intersects(Shortcut::Shift)
             {
                 crate::context_menu::open_keyboard(m, w, h);
+                return true;
+            }
+            if key == Key::Up && app::event_state().contains(Shortcut::Alt) && !m.editing {
+                m.action(Action::Parent);
+                return true;
+            }
+            if ctrl
+                && app::event_state().contains(Shortcut::Alt)
+                && key == Key::from_char('i')
+                && !m.editing
+            {
+                m.action(Action::Inspector);
                 return true;
             }
             if key == Key::F10 {
@@ -1477,6 +1490,7 @@ pub fn run_since(start: Instant) -> bool {
                 }
             }
             painted_tabs.paint(&mut m, &tabs_window);
+            toolbar::paint_tooltip(&mut p, &mut m, f.w());
             drawn_size.set((f.w(), f.h()));
             drawn_revision.set(drawn_revision.get().wrapping_add(1));
         }
@@ -1625,6 +1639,18 @@ pub fn run_since(start: Instant) -> bool {
             f.redraw();
             return true;
         }
+        if matches!(
+            e,
+            Event::Push
+                | Event::KeyDown
+                | Event::MouseWheel
+                | Event::Hide
+                | Event::Deactivate
+                | Event::Unfocus
+        ) && state.toolbar.suppress()
+        {
+            f.redraw();
+        }
         let zone = window_chrome::at(&state, f.w(), f.h(), app::event_x(), app::event_y());
         if matches!(
             e,
@@ -1658,7 +1684,7 @@ pub fn run_since(start: Instant) -> bool {
             } else {
                 control_name.unwrap_or_else(|| zone.map_or("", |z| z.name()))
             };
-            f.set_tooltip(tip);
+            f.set_tooltip(if app::event_y() < 58 { "" } else { tip });
         }
         if e == Event::Push
             && app::event_button() == 1
@@ -2255,6 +2281,9 @@ pub fn run_since(start: Instant) -> bool {
                 }
             }
         }
+        let tooltip_active =
+            win.shown() && win.visible() && !window_chrome::blocked(&m) && !m.editing;
+        dirty |= m.toolbar.tick(Instant::now(), tooltip_active);
         identity.sync(&m, &mut win);
         if last_metrics.elapsed() >= Duration::from_secs(2) {
             m.pss = files_core::system::pss_kib();
@@ -3459,13 +3488,14 @@ pub fn run_since(start: Instant) -> bool {
                                 "total":report.total_bytes,"observed":report.observed_bytes,"nodes":report.nodes.len()})
                             }
                         };
-                        let marker = serde_json::json!({"space":space,"title":win.label(),"app_id":"files",
+                        let thumbnail_snapshot = state.thumbnails.snapshot();
+                        let marker = serde_json::json!({"thumbnails":thumbnail_snapshot,"show_thumbnails":state.show_thumbnails,"space":space,"title":win.label(),"app_id":"files",
                             "path":state.path.as_os_str().as_encoded_bytes(),"loaded":state.loaded,
                             "toolbar":toolbar::marker(&state,canvas.w(),canvas.h()),"sidebar":sidebar,
-                            "auto_sizes":state.auto_folder_sizes,"config_pending":state.config_dirty||state.config_in_flight.is_some(),
+                            "scroll":state.scroll,"size_busy":state.sizes.has_work(),"size_dispatch_total":state.sizes.dispatch_count_total(),"auto_sizes":state.auto_folder_sizes,"config_pending":state.config_dirty||state.config_in_flight.is_some(),
                             "footer_status":state.footer_status,"cache_error":state.sizes.automatic_cache_error(),"cache_hits":state.sizes.automatic_cache_hits(),
                             "folders":state.visible.iter().take(64).filter_map(|&i|state.entries.get(i)).filter(|e|e.is_dir()).map(|e|serde_json::json!({
-                                "name":e.name.as_encoded_bytes(),"size":state.sizes.label(&state.path,&e.name),
+                                "name":e.name.as_encoded_bytes(),"size":state.sizes.label(&state.path,&e.name),"dispatch_count":state.sizes.dispatch_count(&state.path.join(&e.name)),
                             })).collect::<Vec<_>>(),"error":state.error});
                         eprintln!("FILES_USABILITY_STATE {marker}");
                         Ok(())

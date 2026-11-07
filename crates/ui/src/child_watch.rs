@@ -174,8 +174,24 @@ mod tests {
 
     #[test]
     fn reports_changes_inside_visible_subfolders_only() {
-        let d = std::env::temp_dir().join(format!("files-child-watch-{}", std::process::id()));
-        let _ = std::fs::remove_dir_all(&d);
+        use std::os::unix::fs::{DirBuilderExt, MetadataExt};
+        let parent = std::env::temp_dir();
+        let meta = std::fs::symlink_metadata(&parent).unwrap();
+        assert!(
+            meta.is_dir()
+                && !meta.file_type().is_symlink()
+                && meta.uid() == unsafe { libc::geteuid() }
+                && meta.mode() & 0o077 == 0
+        );
+        let d = parent.join(format!(
+            "files-child-watch-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::DirBuilder::new().mode(0o700).create(&d).unwrap();
         for n in ["a", "b", "c"] {
             std::fs::create_dir_all(d.join(n)).unwrap();
         }
@@ -202,7 +218,7 @@ mod tests {
         w.set(&d, vec!["b".into(), "a".into()]);
         w.set(&d, Vec::new());
         assert_eq!(w.watching(), 0);
-        let _ = std::fs::remove_dir_all(&d);
+        // Keep this exclusive fixture for inspection.
     }
 }
 
@@ -220,6 +236,7 @@ const LINGER: std::time::Duration = std::time::Duration::from_secs(5);
 #[derive(Default)]
 pub struct Pending {
     changed: std::collections::HashMap<OsString, std::time::Instant>,
+    actual: HashSet<OsString>,
     sized: std::collections::HashMap<OsString, std::time::Instant>,
     /// Watched names and when they were last on screen.
     seen: std::collections::HashMap<OsString, std::time::Instant>,
@@ -243,7 +260,7 @@ impl crate::model::Model {
         }
         // A reload of the open folder (e.g. after creating a link) is not a
         // reason to stop watching: changes made meanwhile would be lost.
-        if self.closing || self.view == crate::model::View::Columns {
+        if self.closing {
             let path = self.path.clone();
             self.child_watch.set(&path, Vec::new());
             return false;
@@ -310,6 +327,7 @@ impl crate::model::Model {
             if std::env::var_os("FILES_CHILD_WATCH_TRACE").is_some() {
                 eprintln!("FILES_CHILD_WATCH_EVENT {name:?}");
             }
+            self.child_pending.actual.insert(name.clone());
             self.child_pending.changed.insert(name, now);
         }
         let due: Vec<OsString> = self
@@ -326,20 +344,31 @@ impl crate::model::Model {
         for name in due {
             let Some(i) = self.entries.iter().position(|e| e.name == name) else {
                 self.child_pending.changed.remove(&name);
+                self.child_pending.actual.remove(&name);
                 continue;
             };
             // Count and date: the visible-row request path re-reads them.
             self.requested.remove(&i);
             self.stats_requested.remove(&i);
             self.entries[i].stat_attempted = false;
-            // Measured size: requeue slowly (the size queue runs one at a time).
+            // A lost watch is only a reason to probe metadata, not to rescan
+            // a recently measured subtree. Real events invalidate its observation.
+            let actual = self.child_pending.actual.contains(&name);
+            if actual
+                && self.sizes.invalidate_automatic_name(&path, &name)
+                && let Some(job) = &self.du_job
+            {
+                job.cancel();
+            }
+            // Explicit measurements retain their existing throttled refresh.
+
             let measured = self.sizes.measured_mode(&path, &name);
             let recent = self
                 .child_pending
                 .sized
                 .get(&name)
                 .is_some_and(|t| now - *t < SIZE_EVERY);
-            if let Some(mode) = measured {
+            if actual && let Some(mode) = measured {
                 if recent {
                     // Keep the hint; it is retried once the minute has passed.
                     continue;
@@ -352,6 +381,7 @@ impl crate::model::Model {
                     self.child_pending.sized.insert(name.clone(), now);
                 }
             }
+            self.child_pending.actual.remove(&name);
             self.child_pending.changed.remove(&name);
             eprintln!(
                 "FILES_CHILD_REFRESH name={:?} size_requeued={}",

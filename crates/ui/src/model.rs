@@ -90,6 +90,7 @@ pub enum Action {
     Tab(crate::tabs::Command),
     Entry(usize),
     Navigate(PathBuf),
+    Parent,
     Breadcrumbs,
     BackgroundNavigate(PathBuf),
     View(View),
@@ -104,6 +105,7 @@ pub enum Action {
     CancelListedSizes,
     PauseSizes(bool),
     AutoFolderSizes(bool),
+    ShowThumbnails(bool),
     RailPin(bool),
     RailOrder(Vec<String>),
     RetrySizeErrors,
@@ -427,6 +429,7 @@ impl Action {
             Self::Settings => Some("Preferencias"),
             Self::Help => Some("Ayuda de atajos, F1"),
             Self::HelpClose => Some("Cerrar ayuda, Esc"),
+            Self::Parent => Some("Arriba, Alt+Arriba"),
             Self::History(false) => Some("Atrás, Alt+Izquierda"),
             Self::History(true) => Some("Adelante, Alt+Derecha"),
             Self::Actions => Some("Acciones"),
@@ -481,6 +484,7 @@ pub struct Model {
     pub rail_pinned: bool,
     pub rail_order: Vec<String>,
     pub auto_folder_sizes: bool,
+    pub show_thumbnails: bool,
     pub native_transfer: crate::native_transfer::State,
     pub text_paste: crate::text_paste_gate::Gate<Option<crate::clipboard_ui::TextKey>>,
     pub clipboard_state: crate::file_clipboard::State,
@@ -711,6 +715,7 @@ impl Model {
             rail_pinned: prefs.rail_pinned,
             rail_order: prefs.rail_order.clone(),
             auto_folder_sizes: prefs.auto_folder_sizes,
+            show_thumbnails: prefs.show_thumbnails,
             listing_sync: Default::default(),
             refresh_viewport: None,
             native_transfer: Default::default(),
@@ -1210,15 +1215,15 @@ impl Model {
         self.media_visible = visible;
     }
     pub fn update_thumbnail_demand(&mut self) {
-        if self.closing
+        // Size work pauses worker admission below, but keeps the current
+        // demand and verified pixels. Queue activity is not a source change.
+        if !self.show_thumbnails
+            || self.closing
             || self.search.busy()
             || !self.media_visible
             || self.preview.visible()
             || !self.loaded
             || self.view == View::SpaceMap
-            || self.du_job.is_some()
-            || self.du_requested.is_some()
-            || self.sizes.has_work()
             || self.help.is_some()
             || self.bookmarks.panel.is_some()
             || self.commands.is_some()
@@ -2126,6 +2131,7 @@ impl Model {
     /// MC-style marking: toggle the focused row, then advance focus without
     /// replacing the marked batch. Never opens the next directory implicitly.
     pub fn invalidate_sizes(&mut self) {
+        self.sizes.invalidate_automatic_root(&self.path);
         self.sizes.invalidate();
         self.du_requested = None;
         self.du_target = None;
@@ -2423,6 +2429,7 @@ impl Model {
                     self.auto_folder_sizes,
                     self.rail_pinned,
                     self.rail_order.clone(),
+                    self.show_thumbnails,
                 ))
                 .is_ok()
         {
@@ -2724,6 +2731,7 @@ impl Model {
             Action::ContextItem(i) => crate::context_menu::activate(self, i),
             Action::ToggleHidden => self.toggle_hidden(),
             Action::Refresh => {
+                self.sizes.invalidate_automatic_root(&self.path);
                 self.listing_sync.retry();
                 self.refresh_current();
             }
@@ -3126,6 +3134,7 @@ impl Model {
                 crate::tab_gestures::middle(self, Some(Action::Navigate(p)))
             }
             Action::Navigate(p) => self.navigate(p),
+            Action::Parent => crate::keyboard_nav::backspace(self),
             Action::View(v) => {
                 if self.dual.enabled {
                     self.toggle_dual();
@@ -3171,6 +3180,16 @@ impl Model {
                 } else {
                     self.inspector = !self.inspector;
                 }
+            }
+            Action::ShowThumbnails(enabled) => {
+                self.show_thumbnails = enabled;
+                if !enabled {
+                    self.thumbnails.suspend();
+                }
+                self.config_revision += 1;
+                self.config_dirty = true;
+                self.config_error = None;
+                self.dispatch_config();
             }
             Action::AutoFolderSizes(enabled) => {
                 self.auto_folder_sizes = enabled;
