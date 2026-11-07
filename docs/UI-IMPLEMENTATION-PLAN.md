@@ -35,9 +35,12 @@ implemented; see [FILEMANAGER1.md](FILEMANAGER1.md). Requests preserve exact
 path identity, use cancellable helper preflight and reject stale view/modal
 ownership before UI admission. Automatic desktop activation/default-provider
 registration remains open. The current source forwards explicit startup
-context through exact toolkit `767235b`; Files-specific native acceptance
-is pending. See [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md). Initial
-local libdbus connection/authentication has no hard total deadline.
+context through exact toolkit `fac0705`, retaining one cancellable handle
+and polling Wayland phases during ordinary UI turns. Its asynchronous Files
+acceptance and NODE/M2 installation remain pending; the earlier synchronous
+`99db7b1` / `024bb87` delivery retains its validated scope. See
+[WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md). Initial local libdbus
+connection/authentication still has no hard total deadline.
 
 Reconcile the existing Nautilus parity matrix with current implementation;
 several entries predate Sidebar, recent files and AccessKit in the toolkit.
@@ -82,7 +85,7 @@ it does not replace the operation, interoperability or platform requirements.
 The upstream review found native dialogs/portal support (`4eef3bd`) and
 retained CPU/GPU scene surfaces (`c3c46ab` through `f02aacc`). These are
 committed upstream capabilities, not adopted Files functionality. The
-current exact `767235b` vendor export includes those capabilities, but they
+current exact `fac0705` vendor export includes those capabilities, but they
 are not enabled as Files features merely by exporting that source.
 
 Adopt dialogs through explicit user actions and preserve existing path,
@@ -99,7 +102,7 @@ requests, an independent keyboard cursor and authoritative hit geometry.
 The follow-up `a029d45` fixes reveal when activating an already-selected key
 after independent cursor scrolling. Files exports that committed tree
 exactly in the original keyed-strip delivery; `0f68089` and the current
-`767235b` export retain that fix with optional GPU/effects disabled. Its own
+`fac0705` export retain that fix with optional GPU/effects disabled. Its own
 acceptance is recorded in
 [KEYED-TABS.md](KEYED-TABS.md), separately from upstream X11 evidence.
 
@@ -144,23 +147,48 @@ Requested and actual mapped geometry, full-frame captures and native input
 have separate declared scopes. Optional GPU/accessibility/media features
 remain off; full language, accessibility and platform acceptance stay open.
 
-## Native presentation integrated at 767235b
+## Historical native presentation delivery at 767235b
 
-The current source exports exact committed toolkit `767235b` and connects
-`native::present` to accepted FileManager1/CLI requests. It preserves explicit
-startup context, queues the admission reply before native work and revalidates
-current ownership. One pending slot waits at most two seconds for a hidden
-window's first paint; stale or competing interaction drops it without replay.
-`Requested` remains distinct from confirmed activation, and no foreground
-forcing or retry bypasses platform policy. See
-[WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md).
+Source `9904f88`/`99db7b1`, with evidence recorded in `024bb87`, connected
+exact toolkit `767235b` and synchronous `native::present` to admitted
+FileManager1/CLI requests. Explicit startup context, queued admission ACK,
+one expiring first-paint slot and strict ownership checks preceded native
+work. NODE and ARM Linux M2 each passed eight source scopes and three
+installed checks. This delivery's synchronous Wayland wait and its acceptance
+remain historical facts; the newer adapter below has separate acceptance.
+See [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md) and the original
+[native delivery evidence](evidence/native-presentation-20261106/README.md).
 
-Files-specific native acceptance and NODE/M2 installation passed for this
-integration: eight source scopes and three installed checks per machine.
-The historical feedback and external-navigation evidence above retains its
-original scope; the new delivery is recorded separately. The current
-Wayland implementation can synchronously wait for two two-second private
-handshakes on its first no-token call. A nonblocking variant has been
-requested in the toolkit thread; no uncommitted follow-up is adopted.
-Automatic activation/default registration, native macOS/Windows acceptance
-and the existing resource/startup gates remain open.
+## Asynchronous presentation realized in source at fac0705
+
+Files exports all 467 committed toolkit files plus `UPSTREAM.json`, including
+26 upstream receipts. The manager retains intent plus `PresentRequest`,
+begins outside model borrows, polls on ordinary UI turns and drops pending
+native work when generation/modal/latch ownership changes, another request
+replaces it or the window closes. Canvas focus is restored only when native
+work starts. Queued/native stages and polling/cancellation/dispatch counters
+remain distinct from confirmed focus and admission-reply delivery.
+
+The first-paint/start gate expires after two seconds only before native
+begin. Wayland discovery and token acquisition then have independent
+two-second deadlines, with private callbacks and no compositor wait, worker
+or internal timer. X11's first poll still performs synchronous native I/O.
+`Requested` means dispatch, never granted focus; cancellation cannot undo
+mapping or a terminal request. The original D-Bus ACK contract is unchanged.
+
+The upstream CPU/default-feature receipts report 284 unit, 6 integration,
+189 UI, 51 doctest and four directed UI checks before the TLS fix; the TLS
+exit regression changes from 134 to 0 and post-fix probes are retained
+separately. This is toolkit evidence, not Files end-to-end acceptance.
+Files `8b69160` passed 1,729 workspace tests, Clippy, native builds and nine
+source scopes per machine. Delayed-token UI/input/Sidebar transition and
+ordinary native focus checks passed; each installed path passed four checks.
+See [the application evidence](evidence/async-presentation-20261106/README.md).
+
+The exact export also contains the committed lazy `overlay::Sheet` API from
+`8be476b`; Files has not adopted it. Review draft persistence, owner teardown,
+dismissal and required acknowledgement before choosing a first dialog
+migration. Do not alter current operation/recovery flows merely because the
+source is present. Optional GPU/accessibility/media features remain disabled.
+Automatic activation/default registration, native macOS/Windows acceptance,
+full i18n/accessibility and resource/startup gates remain open.

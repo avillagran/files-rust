@@ -2,8 +2,10 @@
 
 Files uses the toolkit's `overlay::Notice` for compact operation feedback.
 The notice adapter originally adopted exact committed toolkit `0f68089`.
-The current source exports `767235b`, retaining that notice API and adding
-native presentation; see [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md).
+The current source exports exact toolkit `fac0705` (467 upstream files plus
+Files-owned provenance), retaining that notice API and adding manually polled
+native presentation. The included `8be476b` Sheet API is not adopted by
+Files. See [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md).
 Optional GPU, accessibility, images, playback, QR and Mermaid features
 remain disabled. The original notice export's 430 upstream files and Files'
 `UPSTREAM.json` are recorded in its
@@ -133,16 +135,17 @@ These cards do not complete Nautilus/Finder parity, enable Files' optional
 accessibility feature, establish full application translation or close the
 resource/startup gates, which remain `NOT_MEASURED`.
 
-The current source separately adopts exact `767235b` for explicit external
-request presentation. It preserves the startup ID without logging it,
-queues the admission reply before native work and drops stale or modal-conflicting
-intent. `Requested` still does not mean focus was granted. Its synchronous
-Wayland private-queue wait remains bounded but can stall the UI; a
-nonblocking toolkit follow-up is requested and unadopted. Files-specific
-presentation acceptance, notice regressions after this export and NODE/M2
-installation passed. The historical notice delivery below retains
-its original `0f68089` scope. See
-[WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md) and
+The current source separately adopts exact `fac0705` for cancellable external
+request presentation. It preserves startup context without logging it,
+queues the admission reply before native begin and drops stale or competing
+modal intent plus its native handle. Wayland phases are polled without
+compositor waits; X11's first poll still performs synchronous native I/O.
+`Requested` does not establish granted focus. Files asynchronous acceptance,
+notice regressions after this export and NODE/M2 installation passed.
+The preceding synchronous `99db7b1` / `024bb87` presentation delivery passed
+its own scoped acceptance; those results and the historical `0f68089` /
+`893b25a` notice delivery below retain their original scope. Optional features
+remain disabled. See [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md) and
 [FILEMANAGER1.md](FILEMANAGER1.md).
 
 

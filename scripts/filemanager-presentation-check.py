@@ -254,7 +254,7 @@ def main():
             safe_last = {key: last.get(key) for key in
                          ('sequence', 'has_startup_id', 'visible', 'status', 'backend', 'error')}
             assert safe_last['status'] in (None, 'requested', 'granted', 'unsupported', 'refused', 'error',
-                                           'queued', 'awaiting-paint', 'stale', 'expired', 'window-lost')
+                                           'queued', 'awaiting-paint', 'pending-native', 'stale', 'expired', 'window-lost')
             assert safe_last['backend'] in (None, 'wayland', 'x11', 'windows', 'macos', 'other')
             assert safe_last['error'] is None or safe_last['error'] in (
                 'wrong-thread', 'deleted-window', 'child-window', 'invalid-hint', 'busy', 'timed-out', 'native-error')

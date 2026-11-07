@@ -10,8 +10,10 @@ The original matrix was checked against code at `6348af9`. The dated
 2026-11-06 reconciliation below updates the entries supported by newer
 code and retained evidence through `cbc83a9`; unchanged rows
 retain their earlier scope and are not a fresh full-parity audit.
-Source notes also describe the `767235b` presentation integration below;
-its Files-specific native acceptance remains pending.
+Source notes distinguish the validated synchronous `99db7b1` / `024bb87`
+presentation delivery from the current exact-toolkit `fac0705` asynchronous
+adapter. Files asynchronous acceptance and NODE/M2 installation passed in
+`8b69160`; its application evidence is separate from upstream validation.
 
 States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use.
 
@@ -49,7 +51,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 30 | Search with filters and full text | yes | — | — |
 | 31 | Executables and `.desktop` | no | — | P2 |
 | 32 | File chooser (portal) | no | — | P3 |
-| 33 | `org.freedesktop.FileManager1` and `.desktop` | partial | explicit three-method service and select/folders/properties CLI implemented; startup context forwarded through toolkit 767235b with native acceptance pending; automatic desktop activation/default registration remains open | P1 |
+| 33 | `org.freedesktop.FileManager1` and `.desktop` | partial | explicit three-method service and select/folders/properties CLI implemented; startup context and cancellable presentation through toolkit fac0705 in source; async NODE/M2 acceptance and installation passed; automatic desktop activation/default registration remains open | P1 |
 | 34 | Shortcut help | yes | — | — |
 | 35 | Bookmarks Ctrl+D | yes | — | — |
 | 36 | Copy path | **yes** | block 1: Ctrl+Alt+C and context menu | — |
@@ -330,16 +332,17 @@ ON/OFF pixel equality. See [PERSISTENT-NOTICES.md](PERSISTENT-NOTICES.md).
 This improves feedback without closing the remaining operation, platform,
 language, accessibility or activation gaps in this matrix.
 
-### 2026-11-06 — Native presentation source integration
+### 2026-11-06 — Historical synchronous presentation delivery
 
-Exact toolkit `767235b` supplies the current `native::present` boundary.
+Source `9904f88`/`99db7b1`, recorded in `024bb87`, used exact toolkit
+`767235b` and its synchronous `native::present` boundary.
 Accepted FileManager1 requests retain their exact startup context, queue a
 reply before native work and recheck view/modal ownership immediately before
 presentation. A single expiring first-paint slot handles initially hidden
 windows. Native `Requested` does not establish granted focus, and Files
-does not force activation or replay rejected context. The synchronous
-Wayland private-queue wait remains a usability limitation; a nonblocking
-toolkit follow-up has been requested but is not adopted.
+does not force activation or replay rejected context. This historical
+delivery used bounded synchronous Wayland private-queue waits; its results
+do not validate the newer asynchronous transitions below.
 
 Files-specific native acceptance and installation passed on NODE and ARM
 Linux M2, including real gesture tokens, compositor focus and first-map
@@ -348,3 +351,28 @@ automatic activation/default registration and the resource/startup gates
 remain open. See [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md). This source
 change does not turn row 33 into complete desktop interoperability or close
 the broader Nautilus/Finder goal.
+
+
+### 2026-11-06 — Asynchronous presentation implemented in source
+
+Exact toolkit `fac0705` supplies `begin_present` and a UI-thread-only handle
+with owned redacted hints, poll/cancel and cached terminal outcomes. Files
+retains one intent plus handle, polls during ordinary UI turns outside model
+borrows and drops pending work on stale generation/modal/latch ownership,
+replacement or close. Canvas focus is restored only at native start. The
+two-second first-paint/start gate ends when native begin succeeds; Wayland
+then uses separate two-second discovery/token deadlines without compositor
+waits or an internal worker/timer. X11's first poll still performs synchronous
+native I/O. Queued admission ACK and `Requested` retain their earlier scope:
+neither establishes granted focus or guarantees reply delivery during close.
+
+The exact export contains 467 upstream files, all 26 tracked receipts and
+Files-owned provenance, with CPU/default-feature configuration unchanged.
+It includes the committed lazy Sheet source from `8be476b`, which Files has
+not adopted. Toolkit CPU suites, the TLS exit fix and native probes are
+upstream evidence. Files passed nine source scopes and four installed checks
+on each machine, including delayed token reply/input/motion and late-cancel
+protection. Native macOS/Windows,
+automatic activation/default registration, full language/accessibility,
+remaining operation gaps and `NOT_MEASURED` resource/startup gates stay open.
+See [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md).

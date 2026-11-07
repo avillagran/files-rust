@@ -118,6 +118,9 @@ is delivered.
 | UI admission deadline | 5 seconds per bus call |
 | Filesystem helper deadline | 3 seconds |
 | Service worker polling interval | At most 25 ms requested per poll |
+| Pending presentation intents/handles | One current slot |
+| Presentation first-paint/start gate | 2 seconds before native begin, checked by the UI loop |
+| Wayland discovery/token phase deadline | 2 seconds for each phase after native begin, checked when polled |
 | `Hello` and `RequestName` reply timeout | 1 second for each call |
 
 Only local `file://` URIs with an empty authority or `localhost` are accepted.
@@ -138,25 +141,40 @@ interval do not bound that initial phase. See the
 
 ## Activation and remaining scope
 
-The current source adopts exact toolkit `767235b` and forwards the accepted
-request's startup ID unchanged to `native::present`. The owned intent is
-created only after UI admission, and the D-Bus reply is queued before native
-activation. An already mapped window can be presented immediately; a hidden
-initial window waits for its first paint in one pending slot with a
-two-second expiry. Current view/modal/operation guards are checked again
-before the native call, allowing only a properties request's own inspector.
-Rejected or stale intents are dropped without replay or activation retries.
+The current source adopts exact toolkit `fac0705` and forwards the accepted
+request's startup ID unchanged to `native::begin_present`. The owned intent
+is created only after UI admission; the D-Bus admission reply is queued
+before native begin. That ACK does not wait for focus or guarantee delivery
+during immediate close/disconnection, and its bus ticket is not retained as
+a native-work lease.
 
-`Requested` means native dispatch, not confirmed focus. Files records the
-toolkit's activation outcome separately from visibility and does not force
-foreground ownership. Startup context and native error text are redacted;
-activation environment variables are neither imported nor mutated. The
-current Wayland private-queue implementation is synchronous and can wait
-for two separate two-second handshakes on its first no-token call. This
-wait follows admission-reply queuing and remains a usability limitation.
-Files-specific native acceptance and installation passed on NODE and native
-ARM Linux M2. See [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md) for the complete
-contract and the requested, unadopted nonblocking toolkit follow-up.
+One pending slot holds the intent and native request handle. An already
+mapped window can start in the admission iteration; a hidden initial window
+waits for its first paint. The two-second start expiry applies only before
+native begin. Thereafter Wayland discovery and token acquisition each use
+the toolkit's own two-second phase deadline. The UI loop polls pending work
+while rechecking pane/tab/generation, modal, operation and shared-close-latch
+ownership; a newer admission, stale context, competing interaction or close
+drops the handle without replay. Only a properties request's own exact
+inspector is exempt from competing-modal rejection. Canvas focus is restored
+once at native start, rather than on each pending poll. All native work runs
+outside application model borrows.
+
+Wayland protocol polling does not wait for the compositor and uses only
+private callbacks, without an internal worker or timer. X11 retains
+synchronous native I/O on the first poll. A terminal `Requested` means
+dispatch, not confirmed focus; cancel/drop cannot undo mapping or recall
+that dispatch. Files never forces foreground ownership. Startup context and
+native error text remain redacted, and activation environment variables are
+neither imported nor mutated.
+
+Files asynchronous acceptance and installation passed on NODE and native
+ARM Linux M2, including UI progress during a delayed token reply. The previous synchronous
+`99db7b1` / `024bb87` delivery passed its own NODE/M2 acceptance and remains
+historical evidence. Upstream CPU/probe receipts and Windows/macOS typechecks
+do not establish Files end-to-end or native Windows/macOS behavior. See
+[WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md) for the full lifecycle,
+provenance, diagnostics and separate delivery scopes.
 
 The source-only
 [optional service template](../packaging/dbus/org.freedesktop.FileManager1.service.in)

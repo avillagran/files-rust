@@ -1,15 +1,25 @@
 # External-request window presentation
 
-Files adopts the exact committed toolkit `767235b` export for
-`native::present`. It retains the notices and keyed tabs delivered with
-`0f68089`; optional toolkit features remain disabled. The export identity is
-recorded in [UPSTREAM.json](../vendor/lib-fltk-omarchy/UPSTREAM.json), and the
-native API contract is in the toolkit's
+The current Files source adopts the exact committed toolkit `fac0705`
+export and its `native::begin_present` / `PresentRequest::poll` flow. The
+export contains 467 upstream files plus the Files-owned `UPSTREAM.json`,
+including all 26 tracked upstream receipts. It retains notices and keyed
+tabs; optional GPU, accessibility, images, playback, QR and Mermaid features
+remain disabled. The committed `overlay::Sheet` API from `8be476b` is also
+included, but Files has not adopted it.
+
+The export identity is recorded in
+[UPSTREAM.json](../vendor/lib-fltk-omarchy/UPSTREAM.json), with exact bytes,
+Git blobs and modes in the
+[export manifest](evidence/async-presentation-20261106/vendor-manifest.json).
+The native contract is in the toolkit's
 [PRESENTATION.md](../vendor/lib-fltk-omarchy/docs/PRESENTATION.md).
 
-This document describes source `9904f88`/`99db7b1`, validated and installed
-on NODE and native ARM Linux M2. Earlier FileManager1 and notice delivery
-results retain their original scope.
+Source `8b69160` passed private delayed-proxy and ordinary native validation
+and is installed on NODE and native ARM Linux M2. The historical
+`9904f88`/`99db7b1` delivery, recorded in `024bb87`, remains validated and
+installed within its original synchronous scope. Earlier FileManager1 and
+notice results retain their original scope as well.
 
 ## Admission before activation
 
@@ -20,7 +30,7 @@ request does not produce a presentation intent.
 
 Successful admission creates one owned intent containing the exact incoming
 startup ID and the resulting view ownership. The broker queues the D-Bus
-admission reply before the native presentation call. It does not promise
+admission reply before beginning native presentation. It does not promise
 focus, completed enumeration, painting or properties metadata. A later
 native refusal or error cannot retract the already acknowledged UI change.
 The bus ticket is an admission guard, not a post-reply activation lease.
@@ -38,34 +48,50 @@ they do not copy the startup ID or native error text.
 ## One current intent and the first paint
 
 `file_manager_ui::PresentationIntent` records the post-admission pane/tab
-owner and generation. `window_presentation::Manager` owns at most one
-pending intent. A newer admission consumes the older pending context; there
-is no activation history, FIFO or replay after rejection.
+owner and generation. `window_presentation::Manager` owns one pending slot
+containing that intent and, after native work starts, its UI-thread-only
+`PresentRequest`. A newer admission drops the older intent and handle,
+cancelling its pending protocol work. There is no activation history, FIFO
+or replay after rejection.
 
-For an already mapped window, the manager can attempt presentation in the
-same loop iteration. For a hidden initial window, it first validates the
-intent, maps the owned window and requests redraw, then waits for the paint
-revision to advance on an event-loop turn. The pending slot expires two
-seconds after scheduling when next checked. This is a short first-paint
-gate, not a general deferred-activation queue.
+For an already mapped window, the manager can begin and poll presentation
+in the admission iteration. For a hidden initial window, it first validates
+the intent, maps the owned window and requests redraw, then waits for the
+paint revision to advance on an event-loop turn. Before `begin_present`,
+the slot expires two seconds after scheduling when next checked. Once a
+native handle exists, that first-paint expiry no longer applies: the toolkit
+owns separate discovery/token deadlines. The slot is not a general
+deferred-activation queue.
 
-The manager checks ownership and current interaction guards before mapping
-and immediately before native presentation, including after restoring the
-canvas keyboard target. Changed generation, navigation, a competing dialog,
-an edit, an incompatible operation, closing or a lost window discards the
-intent. A properties request may retain its own exact inspector ID while
-its read-only inspection is pending or settled; another inspector, an Apply,
-dismissal or an unrelated surface cannot borrow that exception.
+The manager checks ownership and current interaction guards before mapping,
+before `begin_present`, after beginning and before every pending poll.
+Changed generation, navigation, a competing dialog, an edit, an incompatible
+operation, replacement, closing or a lost window drops the intent and any
+native handle. A properties request may retain its own exact inspector ID
+while its read-only inspection is pending or settled; another inspector, an
+Apply, dismissal or an unrelated surface cannot borrow that exception.
 
-Mapping, native focus operations and `native::present` run outside a
-`Model` borrow because FLTK may dispatch callbacks synchronously. Pending
-presentation is checked after event dispatch and before listing/watch
-pumping, so the initial watch attachment cannot invalidate an otherwise
-current first-frame request. User interaction still invalidates ownership.
-Queued notice and tab gestures are applied before that check. The manager
-also reads the close callback's shared latch before mapping and after focus,
-so a callback can revoke activation before `Model.closing` is processed.
-Closing the window drops pending context.
+Canvas keyboard focus is restored once when native work starts. It is not
+retaken on each `Pending` turn. The manager rechecks the window, canvas,
+shared close latch and model ownership after that focus operation and after
+beginning native work. A close callback can therefore revoke presentation
+before `Model.closing` is processed. Closing drops the pending handle;
+retired work cannot later activate a replacement context.
+
+Mapping, focus, `begin_present` and polling run outside a `Model` borrow
+because native calls may dispatch callbacks synchronously. Each UI turn
+drains queued notice and tab gestures before pumping presentation, then
+advances listing/watch work. Strict generation ownership remains in force
+throughout the native handshake. The manager retains the intent and handle
+across `Pending`, returns to the normal UI loop, and consumes them on a
+terminal result. Completed toolkit polls cache their result without replay.
+
+Fixture diagnostics retain `pending_stage` (`paint` or `native`), request and
+begin-attempt counts, `native_polls`, `dispatches` for `Requested` outcomes,
+`cancelled_native`, superseded/skipped counts and error categories. These
+counters distinguish a queued intent, real pending native progress and
+terminal dispatch. They do not prove reply delivery or granted focus and do
+not expose startup-ID contents.
 
 ## Native outcomes and policy
 
@@ -90,22 +116,72 @@ The existing canvas keyboard target does not establish native user intent.
 Toolkit platform behavior and its own upstream evidence do not establish
 Files acceptance on another platform.
 
-## Synchronous limitation and remaining scope
+## Asynchronous phases and remaining scope
 
-At this checkpoint, Wayland discovery/token acquisition runs synchronously
-on the UI thread. It uses a private protocol queue, avoiding application
-callback dispatch during the handshake, but the first no-token call can
-wait for two separate two-second handshakes; later calls can need one.
-The two-second first-paint gate does not bound this native call. The D-Bus
-admission reply has already been queued before that wait. This bounded
-stall remains a usability limitation and is not evidence that startup or
-resource gates have passed.
+On Wayland, `begin_present` prepares private discovery work without sending
+activation. Each poll performs a protocol pass with a zero-timeout socket
+poll, dispatching only its private callbacks and pairing prepared reads with
+a read or cancellation before returning. Discovery and token acquisition
+each have a separate two-second elapsed deadline checked on subsequent
+polls. There is no internal worker, timer or compositor wait in these
+phases; the application must continue ordinary UI turns while pending.
+Neither phase deadline bounds normal mapping or the X11 backend.
 
-A nonblocking variant has been requested in the toolkit thread. That
-follow-up is not part of this committed export; uncommitted toolkit work
-must not be adopted as though it had completed review or acceptance.
+The toolkit captures native input permission before its own `window.show()`,
+retains owned redacted hints and never borrows a later gesture's serial.
+It revalidates the display/socket and live seat, tracks origin deletion and
+resolves current origin/target surfaces before use. Cancellation/drop retire
+private protocol callbacks. They prevent a pending activation, but cannot
+undo mapping or recall a terminal `Requested` dispatch.
 
-## Validated delivery — 2026-11-06
+X11 still performs its existing synchronous native I/O in the first poll.
+Other platforms defer their existing native call until that poll; the handle
+does not make every OS API asynchronous. Windows/macOS have toolkit
+typechecks but no Files runtime acceptance. ARM Linux on M2 is not macOS.
+
+The committed upstream CPU/default-feature receipts report 284 unit checks,
+6 integration checks, 189 UI checks, 51 doctests and four directed UI checks
+before the TLS-exit fix. They separately retain the TLS exit regression
+(134 before, 0 after), post-fix X11 wire/Wayland gesture probes, Clippy and
+cross-target checks. See the
+[upstream summary](../vendor/lib-fltk-omarchy/docs/evidence/async-presentation-20261106/summary.json).
+These are toolkit records with a separate scope from the Files acceptance
+below. Resource/startup gates remain `NOT_MEASURED`.
+
+## Asynchronous delivery — 2026-11-06
+
+Source `8b69160` passed 1,729 workspace tests (730 core, 113 helper, 886 UI;
+three ignored), formatting, Clippy and native NODE/ARM release builds. Each
+machine passed nine source scopes and four installed checks. These include
+the previous usability regressions, ordinary token/focus validation and the
+new delayed-token integration driver.
+
+While a private proxy retained `xdg_activation_token_v1.done`, the same
+request remained pending as UI polls, real keyboard input and canvas draws
+continued. The Sidebar rendered intermediate widths 123 and 149 between
+52 and 170 pixels. Modal, navigation, replacement and close cancelled four
+pending native requests; releasing their late replies did not dispatch an
+obsolete activation. The proxy preserves descriptor and object lifecycle
+ordering, including retained `delete_id`; its reproducible socket tests pass.
+
+The proxy changes compositor-visible peer credentials and is used only for
+progress/cancellation evidence. Separate tests without it validate real
+startup tokens and focus. Only token replies were selectively delayed;
+discovery has source review and normal protocol coverage, not equivalent
+peer-delay acceptance. The key-event observer sees an unconsumed F12 event;
+the initial Down attempt was consumed by the canvas before that observer.
+
+Both installations backed up and verified all five artifacts, retained the
+native HTML recipe and passed async, ordinary presentation, keyed-tab and
+rendered-motion checks. User configuration hashes remained unchanged.
+[Reports, manifests and retained failures](evidence/async-presentation-20261106/README.md)
+separate immutable binary source from four later fixture overlays.
+
+## Historical validated delivery — 2026-11-06
+
+The following results belong to source `9904f88`/`99db7b1`, recorded in
+`024bb87`, with exact toolkit `767235b` and its synchronous native boundary.
+They do not establish acceptance of the current asynchronous adapter.
 
 The workspace passed 1,728 tests (730 core, 113 helper, 885 UI; 3 ignored),
 Clippy and native release builds. Final ownership/close scheduling changes
