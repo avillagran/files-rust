@@ -67,6 +67,62 @@ fn allocate(next: &mut u64) -> u64 {
     id
 }
 impl State {
+    pub fn dispatch_count_total(&self) -> u64 {
+        self.automatic.dispatch_total()
+    }
+    /// None means this path has fallen outside the bounded diagnostic history.
+    pub fn dispatch_count(&self, path: &Path) -> Option<u64> {
+        self.automatic.dispatch_count(path)
+    }
+    pub(crate) fn restore_automatic_observation(
+        &mut self,
+        root: &Path,
+        name: &OsStr,
+        value: files_core::folder_size_cache::Observation,
+    ) -> Option<u64> {
+        if self.status(root, name).is_some() {
+            return None;
+        }
+        self.enqueue(root, std::iter::once(name)).ok()?;
+        let record = self.records.iter_mut().find(|r| r.name == name)?;
+        record.status = Status::Measured {
+            bytes: value.bytes,
+            entries: value.entries,
+            at: value.at,
+        };
+        Some(record.id)
+    }
+    /// Return true only when an affected active automatic helper must be cancelled.
+    pub fn invalidate_automatic_name(&mut self, root: &Path, name: &OsStr) -> bool {
+        self.invalidate_automatic_path(&root.join(name))
+    }
+    pub fn invalidate_automatic_root(&mut self, root: &Path) -> bool {
+        self.invalidate_automatic_path(root)
+    }
+    fn invalidate_automatic_path(&mut self, path: &Path) -> bool {
+        self.automatic.invalidate_path(path.to_owned(), &self.root);
+        let ids: Vec<_> = self
+            .records
+            .iter()
+            .filter(|r| {
+                self.automatic.owns(r.id) && {
+                    let observed = self.root.join(&r.name);
+                    observed.starts_with(path) || path.starts_with(&observed)
+                }
+            })
+            .map(|r| r.id)
+            .collect();
+        let mut cancel = false;
+        for id in ids {
+            if self.active_id() == Some(id) {
+                self.automatic.mark_refresh_after_ack(id);
+                cancel |= self.cancel_id(self.epoch, id);
+            } else {
+                self.forget_automatic(id);
+            }
+        }
+        cancel
+    }
     pub(crate) fn bind_automatic_root(&mut self, root: &Path) {
         if self.root != root {
             self.invalidate();
@@ -387,10 +443,11 @@ impl State {
             valid: true,
             mode: record.mode,
         });
-        Some(Work {
-            path: self.root.join(&record.name),
-            mode: record.mode,
-        })
+        let path = self.root.join(&record.name);
+        let mode = record.mode;
+        let id = record.id;
+        self.automatic.note_dispatch(path.clone(), id, mode);
+        Some(Work { path, mode })
     }
     pub fn progress(&mut self, value: (u64, u64)) -> bool {
         let Some(active) = &self.active else {
@@ -446,10 +503,21 @@ impl State {
             Ok(value) => {
                 self.automatic.partials.remove(&record.name);
                 record.allocation = value.allocation;
+                let at = SystemTime::now();
+                self.automatic.remember_completed(
+                    &self.root,
+                    &record.name,
+                    record.id,
+                    files_core::folder_size_cache::Observation {
+                        bytes: value.bytes,
+                        entries: value.entries,
+                        at,
+                    },
+                );
                 Status::Measured {
                     bytes: value.bytes,
                     entries: value.entries,
-                    at: SystemTime::now(),
+                    at,
                 }
             }
             Err(error) => {
@@ -509,7 +577,16 @@ impl State {
         }
     }
     pub fn label(&self, root: &Path, name: &OsStr) -> Option<String> {
-        let record = self.rows(root).iter().find(|r| r.name == name)?;
+        let record =
+            match self.rows(root).iter().find(|r| r.name == name) {
+                Some(record) => record,
+                None if self.root == root => {
+                    return self.automatic.cached.get(name).map(|value| {
+                        format!("≈ {} · caché", files_core::format_size(value.bytes))
+                    });
+                }
+                None => return None,
+            };
         if record.mode == Mode::Apparent
             && matches!(record.status, Status::Queued | Status::Running { .. })
             && let Some(value) = self.automatic.cached.get(name)
@@ -539,7 +616,11 @@ impl State {
         Some(label)
     }
     pub fn detail(&self, root: &Path, name: &OsStr) -> Option<String> {
-        let record = self.rows(root).iter().find(|r| r.name == name)?;
+        let record = match self.rows(root).iter().find(|r| r.name == name) {
+            Some(record) => record,
+            None if self.root == root => return self.automatic.cached.get(name).map(|value| format!("Última observación: {} · {} entradas · {}\nCaché provisional; se verifica su identidad sin recorrer otra vez la carpeta", files_core::format_size(value.bytes), value.entries, files_core::relative_date(value.at, SystemTime::now()))),
+            None => return None,
+        };
         if record.mode == Mode::Apparent
             && matches!(record.status, Status::Queued | Status::Running { .. })
             && let Some(value) = self.automatic.cached.get(name)

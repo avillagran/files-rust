@@ -42,11 +42,13 @@ pub struct Completed {
 pub enum Op {
     Read { root: PathBuf, names: Vec<OsString> },
     Save { root: PathBuf, rows: Vec<Completed> },
+    Invalidate { roots: Vec<PathBuf> },
 }
 #[derive(Debug)]
 pub enum Updated {
     Read(Vec<Checked>, Option<String>),
     Saved,
+    Invalidated,
 }
 #[derive(Clone, Debug, PartialEq, Eq)]
 struct Row {
@@ -345,7 +347,12 @@ mod storage {
         file.take(MAX_BYTES as u64 + 1).read_to_end(&mut bytes)?;
         decode(&bytes)
     }
-    pub fn save(config: &Path, added: Vec<Row>, now: SystemTime) -> io::Result<()> {
+    pub fn save(
+        config: &Path,
+        added: Vec<Row>,
+        removed: &[PathBuf],
+        now: SystemTime,
+    ) -> io::Result<()> {
         let dir = directory(&config.join("size-cache"), true)?;
         check_private(&dir)?;
         // Coordination is best effort, but never block the shared auxiliary worker.
@@ -373,7 +380,13 @@ mod storage {
             owner: unsafe { libc::getpid() },
         };
         let mut rows = read_from(&dir)?;
-        rows.retain(|r| !added.iter().any(|a| a.path == r.path) && fresh(r.value, now));
+        rows.retain(|r| {
+            !added.iter().any(|a| a.path == r.path)
+                && !removed
+                    .iter()
+                    .any(|root| r.path.starts_with(root) || root.starts_with(&r.path))
+                && fresh(r.value, now)
+        });
         rows.extend(added);
         rows.sort_by_key(|r| r.value.at);
         while rows.len() > MAX_ROWS
@@ -455,6 +468,13 @@ pub fn apply(config: &Path, op: &Op) -> io::Result<Updated> {
     {
         let now = SystemTime::now();
         match op {
+            Op::Invalidate { roots } => {
+                if roots.len() > MAX_NAMES || roots.iter().any(|root| !valid_path(root)) {
+                    return Err(invalid());
+                }
+                storage::save(config, Vec::new(), roots, now)?;
+                Ok(Updated::Invalidated)
+            }
             Op::Read { root, names } => {
                 if names.len() > MAX_NAMES
                     || !valid_path(root)
@@ -515,7 +535,7 @@ pub fn apply(config: &Path, op: &Op) -> io::Result<Updated> {
                     }
                 }
                 if !added.is_empty() {
-                    storage::save(config, added, now)?;
+                    storage::save(config, added, &[], now)?;
                 }
                 Ok(Updated::Saved)
             }
@@ -690,6 +710,74 @@ mod tests {
             panic!("stale save")
         };
         assert!(last[0].cached.is_none());
+    }
+    #[test]
+    fn observed_nested_changes_invalidate_ancestors_without_touching_siblings() {
+        let run = fixture();
+        let config = run.join("config");
+        let root = run.join("browser");
+        for path in [&config, &root] {
+            fs::DirBuilder::new().mode(0o700).create(path).unwrap();
+        }
+        for name in ["a", "ab"] {
+            fs::create_dir(root.join(name)).unwrap();
+            fs::write(root.join(name).join("retained"), b"unchanged").unwrap();
+        }
+        fs::create_dir(root.join("a/nested")).unwrap();
+        let Updated::Read(rows, None) = apply(
+            &config,
+            &Op::Read {
+                root: root.clone(),
+                names: vec!["a".into(), "ab".into()],
+            },
+        )
+        .unwrap() else {
+            panic!("read")
+        };
+        apply(
+            &config,
+            &Op::Save {
+                root: root.clone(),
+                rows: rows
+                    .iter()
+                    .map(|r| Completed {
+                        name: r.name.clone(),
+                        stamp: r.stamp,
+                        value: observation(9),
+                    })
+                    .collect(),
+            },
+        )
+        .unwrap();
+        fs::write(root.join("a/nested/new"), b"new bytes").unwrap();
+        assert_eq!(
+            storage::stamp(&fs::metadata(root.join("a")).unwrap()),
+            rows[0].stamp
+        );
+        assert!(matches!(
+            apply(
+                &config,
+                &Op::Invalidate {
+                    roots: vec![root.join("a/nested")]
+                }
+            )
+            .unwrap(),
+            Updated::Invalidated
+        ));
+        let Updated::Read(after, None) = apply(
+            &config,
+            &Op::Read {
+                root: root.clone(),
+                names: vec!["a".into(), "ab".into()],
+            },
+        )
+        .unwrap() else {
+            panic!("read invalidated")
+        };
+        assert!(after[0].cached.is_none());
+        assert!(after[1].cached.is_some());
+        assert_eq!(fs::read(root.join("a/retained")).unwrap(), b"unchanged");
+        assert_eq!(fs::read(root.join("ab/retained")).unwrap(), b"unchanged");
     }
     #[test]
     fn links_remain_inside_the_fixture_and_are_never_followed_for_sizes_or_cache() {
