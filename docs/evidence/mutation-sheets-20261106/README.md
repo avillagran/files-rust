@@ -20,6 +20,13 @@ symlink/reparse components, and replaces five tree and six exact-file cleanup
 sites with preservation by rename. It has not been compiled or tested. The
 repair was presented for explicit user authorization before any resumption.
 
+While authorization remains pending, Files `9b963ae` hardens the private
+input/fixture driver and `7df6769` hardens comparison reads, output and
+decoder budgets. These commits have only static review; no script, compiler,
+GUI, decoder or test was executed to validate them after the stop. Automatic
+goal continuation is not interpreted as resume authorization. Additional
+Unix/macOS/Windows fixture-parent checks are being reviewed separately.
+
 ## Retained candidate results
 
 - NODE candidate `d734ce7` compiled and passed one native 1000 by 650
