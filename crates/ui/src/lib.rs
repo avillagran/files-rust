@@ -1349,6 +1349,8 @@ pub fn run_since(start: Instant) -> bool {
         eprintln!("FILES_WINDOW_US={}", start.elapsed().as_micros());
     }
     let paint_revision = Rc::new(Cell::new(0u64));
+    let presentation_key_events = Rc::new(Cell::new(0u64));
+    let observe_presentation = smoke && std::env::var_os("FILES_TEST_TOOLKIT_POPUP").is_some();
     let drawn_revision = paint_revision.clone();
     let painted_size = Rc::new(Cell::new((0i32, 0i32)));
     let drawn_size = painted_size.clone();
@@ -1690,7 +1692,11 @@ pub fn run_since(start: Instant) -> bool {
     // FLTK groups otherwise dispatch children before our handler. Intercept
     // auxiliary buttons before the canvas or Sidebar treats them as primary.
     win.super_handle_first(false);
+    let observed_presentation_keys = presentation_key_events.clone();
     win.handle(move |window, event| {
+        if observe_presentation && event == Event::KeyDown {
+            observed_presentation_keys.set(observed_presentation_keys.get().wrapping_add(1));
+        }
         native_transfer::window_event(&native_window_model, window, event);
         if matches!(event, Event::KeyDown | Event::Shortcut) {
             let mods = app::event_state();
@@ -1922,6 +1928,7 @@ pub fn run_since(start: Instant) -> bool {
     let wait_trace = std::env::var_os("FILES_WAIT_TRACE").is_some();
     let mut runtime_failed = false;
     let mut clean_hidden = false;
+    let mut pump_revision = 0u64;
     loop {
         if clean_hidden {
             break;
@@ -1968,6 +1975,7 @@ pub fn run_since(start: Instant) -> bool {
             break;
         }
         fltk_omarchy::task::drain();
+        pump_revision = pump_revision.wrapping_add(1);
         // Observe the native close latch before an external request can map
         // or activate a window. The callback itself never borrows Model.
         let callback_close = close_requested.replace(false);
@@ -2320,6 +2328,12 @@ pub fn run_since(start: Instant) -> bool {
                     "file-manager-state" => {
                         let mut value = file_manager.marker(&model.borrow());
                         value["presentation"] = window_presentation.marker();
+                        value["ui"] = serde_json::json!({
+                            "pump_revision":pump_revision,
+                            "paint_revision":paint_revision.get(),
+                            "native_key_events":presentation_key_events.get(),
+                            "sidebar_width":model.borrow().rail_width()
+                        });
                         eprintln!("FILES_FILE_MANAGER_STATE {value}");
                     }
                     "file-manager-protect" => model.borrow_mut().action(Action::Help),

@@ -1,7 +1,7 @@
 {
   "repository": "https://github.com/avillagran/lib-fltk-omarchy",
-  "base_commit": "0f680890cba7038fa0519be19d159eed4f433a25",
-  "fix_commit": "767235b79d9f6fd5ef9b20495585d5d2e21cc141",
+  "base_commit": "767235b79d9f6fd5ef9b20495585d5d2e21cc141",
+  "fix_commit": "fac0705d25eabc43f34d62ab94ee2b9e48902a75",
   "status": "local committed upstream checkpoint, untagged; no vendor patches",
-  "scope": "Exact 767235b export: public native::present for application-owned top-level windows, explicit startup/activation hints, platform activation outcomes and bounded private-queue Wayland handshakes. Includes the committed xdg-activation license, platform implementations, probes and prior tracked evidence. Retains persistent notices and keyed tabs from 0f68089. Optional GPU, accessibility, images, playback, QR and Mermaid features remain disabled in Files."
+  "scope": "Exact fac0705 export: cancellable UI-thread begin_present/poll/cancel with owned redacted startup hints and nonwaiting Wayland phases. Retains synchronous native::present, persistent notices and keyed tabs. Includes the committed lazy overlay::Sheet API from 8be476b, which Files has not adopted, and every tracked upstream receipt/license. Optional GPU, accessibility, images, playback, QR and Mermaid features remain disabled in Files."
 }

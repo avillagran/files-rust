@@ -1,11 +1,14 @@
 //! One-shot native presentation after external UI admission.
 use crate::{file_manager_ui::PresentationIntent, model::Model};
 use fltk::{frame::Frame, prelude::*, window::Window};
-use fltk_omarchy::native::{self, PresentBackend, PresentError, PresentOptions, PresentStatus};
+use fltk_omarchy::native::{
+    self, PresentBackend, PresentError, PresentOptions, PresentRequest, PresentStatus,
+};
 use serde_json::{Value, json};
 use std::{
     cell::{Cell, RefCell},
     rc::Rc,
+    task::Poll,
     time::{Duration, Instant},
 };
 
@@ -15,14 +18,23 @@ struct Pending {
     intent: PresentationIntent,
     after_paint: Option<u64>,
     queued_at: Instant,
+    native: Option<PresentRequest>,
 }
 impl Pending {
     fn gate(&self, current: bool, paint: u64, now: Instant) -> Gate {
-        paint_gate(current, self.after_paint, paint, self.queued_at, now)
+        presentation_gate(
+            current,
+            self.native.is_some(),
+            self.after_paint,
+            paint,
+            self.queued_at,
+            now,
+        )
     }
 }
-fn paint_gate(
+fn presentation_gate(
     current: bool,
+    native_started: bool,
     after_paint: Option<u64>,
     paint: u64,
     queued_at: Instant,
@@ -30,6 +42,10 @@ fn paint_gate(
 ) -> Gate {
     if !current {
         Gate::Stale
+    } else if native_started {
+        // Native discovery/token phases have their own deadlines. The
+        // initial first-paint expiry must not replace those phase clocks.
+        Gate::Ready
     } else if now.saturating_duration_since(queued_at) >= FIRST_PAINT_DEADLINE {
         Gate::Expired
     } else if after_paint.is_some_and(|before| paint <= before) {
@@ -52,6 +68,9 @@ pub struct Manager {
     pending: Option<Pending>,
     sequence: u64,
     attempts: u64,
+    native_polls: u64,
+    dispatches: u64,
+    cancelled_native: u64,
     superseded: u64,
     skipped: u64,
     errors: u64,
@@ -75,8 +94,9 @@ impl Manager {
         canvas: &mut Frame,
         paint: u64,
     ) -> bool {
-        if self.pending.take().is_some() {
+        if self.pending.is_some() {
             self.superseded += 1;
+            self.drop_pending();
         }
         self.sequence += 1;
         let has_hint = !intent.startup_id().is_empty();
@@ -92,12 +112,13 @@ impl Manager {
             intent,
             after_paint: hidden.then_some(paint),
             queued_at: Instant::now(),
+            native: None,
         });
         if hidden {
             window.show();
         }
         if window.was_deleted() || canvas.was_deleted() || !window.shown() {
-            self.pending = None;
+            self.drop_pending();
             self.skipped += 1;
             self.record(has_hint, false, "window-lost", None, None);
             return false;
@@ -123,19 +144,17 @@ impl Manager {
         canvas: &mut Frame,
         paint: u64,
     ) {
-        let Some(pending) = self.pending.as_ref() else {
+        if self.pending.is_none() {
             return;
-        };
+        }
         if window.was_deleted() || canvas.was_deleted() || !window.shown() {
-            let has_hint = !pending.intent.startup_id().is_empty();
-            self.pending = None;
-            self.skipped += 1;
-            self.record(has_hint, false, "window-lost", None, None);
+            self.discard(false, "window-lost");
             return;
         }
         let Ok(m) = model.try_borrow() else {
             return;
         };
+        let pending = self.pending.as_ref().expect("checked pending presentation");
         let gate = pending.gate(
             !self.close_requested.get() && pending.intent.is_current(&m),
             paint,
@@ -145,63 +164,104 @@ impl Manager {
         if gate == Gate::Wait {
             return;
         }
-        let pending = self.pending.take().expect("checked pending presentation");
         let has_hint = !pending.intent.startup_id().is_empty();
         if gate != Gate::Ready {
-            self.skipped += 1;
-            self.record(
-                has_hint,
+            self.discard(
                 window.shown(),
                 if gate == Gate::Stale {
                     "stale"
                 } else {
                     "expired"
                 },
-                None,
-                None,
             );
             return;
         }
-        if window.was_deleted() || canvas.was_deleted() || !window.shown() {
-            self.skipped += 1;
-            self.record(has_hint, false, "window-lost", None, None);
-            return;
-        }
-        // This restores the existing canvas keyboard target, not native
-        // foreground ownership. Native activation is exclusively the API below.
-        let _ = canvas.take_focus();
-        if window.was_deleted() || canvas.was_deleted() || !window.shown() {
-            self.skipped += 1;
-            self.record(has_hint, false, "window-lost", None, None);
-            return;
-        }
-        if self.close_requested.get()
-            || !model
-                .try_borrow()
-                .is_ok_and(|m| pending.intent.is_current(&m))
+        if self
+            .pending
+            .as_ref()
+            .is_some_and(|pending| pending.native.is_none())
         {
-            self.skipped += 1;
-            self.record(has_hint, window.shown(), "stale", None, None);
+            // Restore the browser's keyboard target once at request start,
+            // rather than stealing widget focus on every pending poll.
+            let _ = canvas.take_focus();
+            if window.was_deleted() || canvas.was_deleted() || !window.shown() {
+                self.discard(false, "window-lost");
+                return;
+            }
+            if !self.current(model) {
+                self.discard(window.shown(), "stale");
+                return;
+            }
+            self.attempts += 1;
+            let result = {
+                let pending = self.pending.as_ref().expect("checked pending presentation");
+                native::begin_present(
+                    window,
+                    PresentOptions {
+                        startup_id: Some(pending.intent.startup_id()),
+                        ..Default::default()
+                    },
+                )
+            };
+            match result {
+                Ok(request) => {
+                    self.pending
+                        .as_mut()
+                        .expect("checked pending presentation")
+                        .native = Some(request);
+                    self.record(has_hint, window.shown(), "pending-native", None, None);
+                }
+                Err(error) => {
+                    self.errors += 1;
+                    self.drop_pending();
+                    self.record(
+                        has_hint,
+                        !window.was_deleted() && window.shown(),
+                        "error",
+                        None,
+                        Some(error_kind(&error)),
+                    );
+                    return;
+                }
+            }
+        }
+        if window.was_deleted() || canvas.was_deleted() || !window.shown() {
+            self.discard(false, "window-lost");
             return;
         }
-        self.attempts += 1;
-        let result = native::present(
-            window,
-            PresentOptions {
-                startup_id: Some(pending.intent.startup_id()),
-                ..Default::default()
-            },
-        );
+        // Recheck after begin as well: mapping may synchronously run a close
+        // or focus callback, even though the request has not activated yet.
+        if !self.current(model) {
+            self.discard(window.shown(), "stale");
+            return;
+        }
+        self.native_polls += 1;
+        let result = self
+            .pending
+            .as_mut()
+            .expect("checked pending presentation")
+            .native
+            .as_mut()
+            .expect("started native presentation")
+            .poll();
         match result {
-            Ok(result) => self.record(
-                has_hint,
-                window.shown(),
-                status(result.status),
-                Some(backend(result.backend)),
-                None,
-            ),
-            Err(error) => {
+            Poll::Pending => {}
+            Poll::Ready(Ok(result)) => {
+                if result.status == PresentStatus::Requested {
+                    self.dispatches += 1;
+                }
+                self.drop_pending();
+                self.record(
+                    has_hint,
+                    !window.was_deleted() && window.shown(),
+                    status(result.status),
+                    Some(backend(result.backend)),
+                    None,
+                );
+            }
+            Poll::Ready(Err(error)) => {
                 self.errors += 1;
+                self.drop_pending();
                 self.record(
                     has_hint,
                     !window.was_deleted() && window.shown(),
@@ -214,7 +274,41 @@ impl Manager {
     }
 
     pub fn close(&mut self) {
-        self.pending = None;
+        self.drop_pending();
+    }
+
+    fn current(&self, model: &Rc<RefCell<Model>>) -> bool {
+        !self.close_requested.get()
+            && self.pending.as_ref().is_some_and(|pending| {
+                model
+                    .try_borrow()
+                    .is_ok_and(|m| pending.intent.is_current(&m))
+            })
+    }
+
+    fn drop_pending(&mut self) {
+        if let Some(pending) = self.pending.take() {
+            if pending
+                .native
+                .as_ref()
+                .is_some_and(PresentRequest::is_pending)
+            {
+                self.cancelled_native += 1;
+            }
+            // Dropping the request retires private protocol callbacks before
+            // releasing its lease. No delayed activation survives replacement.
+            drop(pending);
+        }
+    }
+
+    fn discard(&mut self, visible: bool, reason: &str) {
+        let has_hint = self
+            .pending
+            .as_ref()
+            .is_some_and(|pending| !pending.intent.startup_id().is_empty());
+        self.drop_pending();
+        self.skipped += 1;
+        self.record(has_hint, visible, reason, None, None);
     }
 
     fn record(
@@ -230,9 +324,17 @@ impl Manager {
     }
 
     pub fn marker(&self) -> Value {
-        json!({"pending":self.pending.is_some(),"requests":self.sequence,
+        let stage = self.pending.as_ref().map(|pending| {
+            if pending.native.is_some() {
+                "native"
+            } else {
+                "paint"
+            }
+        });
+        json!({"pending":self.pending.is_some(),"pending_stage":stage,"requests":self.sequence,
             "attempts":self.attempts,"superseded":self.superseded,
-            "skipped":self.skipped,"errors":self.errors,"last":self.last})
+            "native_polls":self.native_polls,"dispatches":self.dispatches,
+            "cancelled_native":self.cancelled_native,"skipped":self.skipped,"errors":self.errors,"last":self.last})
     }
 }
 fn backend(value: PresentBackend) -> &'static str {
@@ -260,6 +362,7 @@ fn error_kind(value: &PresentError) -> &'static str {
         PresentError::InvalidHint => "invalid-hint",
         PresentError::Busy => "busy",
         PresentError::TimedOut => "timed-out",
+        PresentError::Cancelled => "cancelled",
         PresentError::Native(_) => "native-error",
     }
 }
@@ -270,16 +373,41 @@ mod tests {
     #[test]
     fn first_paint_wait_is_bounded_and_stale_never_presents() {
         let now = Instant::now();
-        assert_eq!(paint_gate(true, Some(4), 4, now, now), Gate::Wait);
-        assert_eq!(paint_gate(true, Some(4), 5, now, now), Gate::Ready);
-        assert_eq!(paint_gate(true, None, 0, now, now), Gate::Ready);
+        assert_eq!(
+            presentation_gate(true, false, Some(4), 4, now, now),
+            Gate::Wait
+        );
+        assert_eq!(
+            presentation_gate(true, false, Some(4), 5, now, now),
+            Gate::Ready
+        );
+        assert_eq!(
+            presentation_gate(true, false, None, 0, now, now),
+            Gate::Ready
+        );
         for paint in [4, 5] {
-            assert_eq!(paint_gate(false, Some(4), paint, now, now), Gate::Stale);
             assert_eq!(
-                paint_gate(true, Some(4), paint, now, now + FIRST_PAINT_DEADLINE),
+                presentation_gate(false, false, Some(4), paint, now, now),
+                Gate::Stale
+            );
+            assert_eq!(
+                presentation_gate(true, false, Some(4), paint, now, now + FIRST_PAINT_DEADLINE),
                 Gate::Expired
             );
         }
+    }
+    #[test]
+    fn native_phase_keeps_its_own_deadline_but_cannot_bypass_ownership() {
+        let now = Instant::now();
+        let after_paint_deadline = now + FIRST_PAINT_DEADLINE + Duration::from_millis(1);
+        assert_eq!(
+            presentation_gate(true, true, Some(4), 5, now, after_paint_deadline),
+            Gate::Ready
+        );
+        assert_eq!(
+            presentation_gate(false, true, Some(4), 5, now, after_paint_deadline),
+            Gate::Stale
+        );
     }
     #[test]
     fn diagnostic_never_copies_native_error_or_claims_request_as_grant() {
