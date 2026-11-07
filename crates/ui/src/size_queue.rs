@@ -40,6 +40,7 @@ struct Active {
     mode: Mode,
 }
 pub struct State {
+    pub(crate) automatic: crate::automatic_sizes::State,
     root: PathBuf,
     epoch: u64,
     records: Vec<Record>,
@@ -50,6 +51,7 @@ pub struct State {
 impl Default for State {
     fn default() -> Self {
         Self {
+            automatic: Default::default(),
             root: PathBuf::new(),
             epoch: 0,
             records: Vec::with_capacity(MAX_ROWS),
@@ -65,6 +67,30 @@ fn allocate(next: &mut u64) -> u64 {
     id
 }
 impl State {
+    pub(crate) fn bind_automatic_root(&mut self, root: &Path) {
+        if self.root != root {
+            self.invalidate();
+            self.root = root.to_owned();
+        }
+    }
+    pub(crate) fn active_id(&self) -> Option<u64> {
+        self.active.as_ref().map(|a| a.id)
+    }
+    pub(crate) fn forget_automatic(&mut self, id: u64) -> bool {
+        if self.active_id() == Some(id) {
+            return false;
+        }
+        let before = self.records.len();
+        self.records.retain(|r| r.id != id);
+        before != self.records.len()
+    }
+    /// Count only persisted cache hits returned for this directory epoch.
+    pub fn automatic_cache_hits(&self) -> usize {
+        self.automatic.cached_hits()
+    }
+    pub fn automatic_cache_error(&self) -> Option<&str> {
+        self.automatic.warning()
+    }
     pub fn root(&self) -> &Path {
         &self.root
     }
@@ -140,6 +166,7 @@ impl State {
         record.id = allocate(&mut self.next_id);
         record.allocation = None;
         record.status = Status::Queued;
+        self.automatic.partials.remove(&record.name);
         Some(record.id)
     }
     /// Explicitly replace one completed observation; other records and admission order stay intact.
@@ -154,6 +181,7 @@ impl State {
         record.id = allocate(&mut self.next_id);
         record.allocation = None;
         record.status = Status::Queued;
+        self.automatic.partials.remove(&record.name);
         Some(record.id)
     }
     pub fn enqueue<'a>(
@@ -231,6 +259,7 @@ impl State {
                 record.mode = mode;
                 record.allocation = None;
                 record.status = Status::Queued;
+                self.automatic.partials.remove(name);
             } else {
                 self.records.push(Record {
                     id,
@@ -258,6 +287,7 @@ impl State {
                 record.id = allocate(&mut self.next_id);
                 record.allocation = None;
                 record.status = Status::Queued;
+                self.automatic.partials.remove(&record.name);
                 count += 1;
             }
         }
@@ -372,6 +402,9 @@ impl State {
             }
             *bytes = value.0;
             *entries = value.1;
+            if self.automatic.owns(active.id) {
+                self.automatic.partials.insert(record.name.clone(), value);
+            }
             return true;
         }
         false
@@ -405,6 +438,7 @@ impl State {
         record.allocation = None;
         record.status = match result {
             Ok(value) => {
+                self.automatic.partials.remove(&record.name);
                 record.allocation = value.allocation;
                 Status::Measured {
                     bytes: value.bytes,
@@ -466,6 +500,21 @@ impl State {
     }
     pub fn label(&self, root: &Path, name: &OsStr) -> Option<String> {
         let record = self.rows(root).iter().find(|r| r.name == name)?;
+        if record.mode == Mode::Apparent
+            && matches!(record.status, Status::Queued | Status::Running { .. })
+            && let Some(value) = self.automatic.cached.get(name)
+        {
+            return Some(format!(
+                "≈ {} · caché",
+                files_core::format_size(value.bytes)
+            ));
+        }
+        if matches!(record.status, Status::Failed(_))
+            && let Some((bytes, _)) = self.automatic.partials.get(name)
+            && *bytes > 0
+        {
+            return Some(format!("≥{} · parcial", files_core::format_size(*bytes)));
+        }
         let mut label = match &record.status {
             Status::Queued if self.paused => "En pausa".into(),
             Status::Queued => "En cola".into(),
@@ -481,6 +530,17 @@ impl State {
     }
     pub fn detail(&self, root: &Path, name: &OsStr) -> Option<String> {
         let record = self.rows(root).iter().find(|r| r.name == name)?;
+        if record.mode == Mode::Apparent
+            && matches!(record.status, Status::Queued | Status::Running { .. })
+            && let Some(value) = self.automatic.cached.get(name)
+        {
+            return Some(format!(
+                "Última observación: {} · {} entradas · {}\nCaché provisional; actualizando en segundo plano",
+                files_core::format_size(value.bytes),
+                value.entries,
+                files_core::relative_date(value.at, SystemTime::now())
+            ));
+        }
         let mut text = match &record.status {
             Status::Queued if self.paused => {
                 "En pausa · reanuda desde Acciones → Reanudar tamaños".into()
@@ -495,7 +555,13 @@ impl State {
                 files_core::format_size(*bytes),
                 files_core::relative_date(*at, SystemTime::now())
             ),
-            Status::Failed(e) => format!("Error: {e}"),
+            Status::Failed(e) => match self.automatic.partials.get(name) {
+                Some((bytes, entries)) if *bytes > 0 => format!(
+                    "Parcial: ≥{} · {entries} entradas\n{e}\nSin total confirmado; reintenta desde el gestor de tamaños",
+                    files_core::format_size(*bytes)
+                ),
+                _ => format!("Error: {e}"),
+            },
             Status::Cancelled => "Cancelado · sin total confirmado".into(),
         };
         if record.mode == Mode::Allocated {
@@ -588,6 +654,47 @@ mod tests {
                 by_identity: files_core::folder_usage::Value::Bytes(4096),
             }),
         }
+    }
+    #[test]
+    fn provisional_cache_is_labelled_and_does_not_become_a_confirmed_sort_value() {
+        let mut state = State::default();
+        let root = Path::new("/private/browser");
+        state.enqueue(root, [OsStr::new("a")].into_iter()).unwrap();
+        state.automatic.cached.insert(
+            "a".into(),
+            files_core::folder_size_cache::Observation {
+                bytes: 42,
+                entries: 1,
+                at: SystemTime::now(),
+            },
+        );
+        assert!(
+            state
+                .label(root, OsStr::new("a"))
+                .unwrap()
+                .contains("caché")
+        );
+        assert!(state.measured_map(root).is_empty());
+        state.dispatch_work().unwrap();
+        assert!(
+            state
+                .label(root, OsStr::new("a"))
+                .unwrap()
+                .contains("caché")
+        );
+        state.finish_measurement(Err("permission denied".into()));
+        assert_eq!(state.label(root, OsStr::new("a")).as_deref(), Some("Error"));
+        assert!(state.measured_map(root).is_empty());
+        state.retry_errors();
+        state.dispatch_work().unwrap();
+        state.finish_measurement(Ok(Measurement::apparent(0, 0)));
+        assert_eq!(state.measured_map(root).get(OsStr::new("a")), Some(&0));
+        assert!(
+            !state
+                .label(root, OsStr::new("a"))
+                .unwrap()
+                .contains("caché")
+        );
     }
     #[test]
     fn mixed_modes_preserve_allocation_through_finish_and_revoke_it_for_fresh_attempts() {

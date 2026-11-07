@@ -1,4 +1,4 @@
-//! Un único trabajador acotado para preferencias/layouts; nunca uno por gesto.
+//! One bounded worker for preferences and layouts, never one worker per gesture.
 use files_core::{
     spatial::SpatialLayout,
     theme::{Corners, WindowMode},
@@ -10,6 +10,7 @@ use std::{
     thread,
 };
 pub enum Request {
+    FolderSizes(u64, Arc<files_core::folder_size_cache::Op>),
     TrashCatalog(u64, PathBuf, Arc<std::sync::atomic::AtomicBool>),
     PrepareCreateArchive(
         u64,
@@ -75,9 +76,20 @@ pub enum Request {
     Load(u64, PathBuf),
     Save(u64, PathBuf, Arc<SpatialLayout>),
     /// revision, corners, window mode, hidden, operation bar, preview muted
-    Preferences(u64, Corners, WindowMode, bool, bool, bool),
+    Preferences(
+        u64,
+        Corners,
+        WindowMode,
+        bool,
+        bool,
+        bool,
+        bool,
+        bool,
+        Vec<String>,
+    ),
 }
 pub enum Response {
+    FolderSizes(u64, Result<files_core::folder_size_cache::Updated, String>),
     TrashCatalog(u64, Result<files_core::trash::Catalog, String>),
     ArchivePrepared(u64, Result<crate::archive_operation::Prepared, String>),
     SavedSearches(u64, Result<files_core::saved_search::Updated, String>),
@@ -111,6 +123,11 @@ impl AuxIo {
             let mut session_store = None;
             while let Ok(job) = input.recv() {
                 let result = match job {
+                    Request::FolderSizes(id, op) => Response::FolderSizes(
+                        id,
+                        files_core::folder_size_cache::apply(&files_core::theme::config_dir(), &op)
+                            .map_err(|error| error.to_string()),
+                    ),
                     Request::TrashCatalog(id, root, cancel) => Response::TrashCatalog(
                         id,
                         files_core::trash::catalog(&root, &cancel).map_err(|e| e.to_string()),
@@ -270,29 +287,40 @@ impl AuxIo {
                     Request::Save(g, p, l) => {
                         Response::Saved(p.clone(), g, l.save(&p).map_err(|e| e.to_string()))
                     }
-                    Request::Preferences(revision, c, mode, show_hidden, operation_bar, muted) => {
-                        Response::Config(
-                            revision,
-                            files_core::persistence::update_config_values(
-                                &files_core::theme::config_dir().join("config.toml"),
-                                &[
-                                    (
-                                        "corners",
-                                        match c {
-                                            Corners::Omarchy => "omarchy",
-                                            Corners::Square => "square",
-                                            Corners::Rounded => "rounded",
-                                        }
-                                        .into(),
-                                    ),
-                                    ("window_mode", mode.key().into()),
-                                    ("show_hidden", show_hidden.into()),
-                                    ("operation_bar", operation_bar.into()),
-                                    ("preview_muted", muted.into()),
-                                ],
-                            ),
-                        )
-                    }
+                    Request::Preferences(
+                        revision,
+                        c,
+                        mode,
+                        show_hidden,
+                        operation_bar,
+                        muted,
+                        automatic,
+                        pinned,
+                        order,
+                    ) => Response::Config(
+                        revision,
+                        files_core::persistence::update_config_values(
+                            &files_core::theme::config_dir().join("config.toml"),
+                            &[
+                                (
+                                    "corners",
+                                    match c {
+                                        Corners::Omarchy => "omarchy",
+                                        Corners::Square => "square",
+                                        Corners::Rounded => "rounded",
+                                    }
+                                    .into(),
+                                ),
+                                ("window_mode", mode.key().into()),
+                                ("show_hidden", show_hidden.into()),
+                                ("operation_bar", operation_bar.into()),
+                                ("preview_muted", muted.into()),
+                                ("auto_folder_sizes", automatic.into()),
+                                ("rail_pinned", pinned.into()),
+                                ("rail_order", order.into()),
+                            ],
+                        ),
+                    ),
                 };
                 if output.send(result).is_err() {
                     break;

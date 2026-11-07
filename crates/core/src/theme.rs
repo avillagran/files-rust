@@ -112,8 +112,18 @@ impl WindowMode {
         }
     }
 }
-#[derive(Default, Serialize, Deserialize)]
+fn enabled() -> bool {
+    true
+}
+#[derive(Serialize, Deserialize)]
 pub struct Preferences {
+    /// Visible folders are measured with bounded background work unless explicitly disabled.
+    #[serde(default = "enabled")]
+    pub auto_folder_sizes: bool,
+    #[serde(default)]
+    pub rail_pinned: bool,
+    #[serde(default)]
+    pub rail_order: Vec<String>,
     #[serde(default)]
     pub corners: Corners,
     #[serde(default)]
@@ -127,6 +137,20 @@ pub struct Preferences {
     /// Global mute of media previews; absent means sound on.
     #[serde(default)]
     pub preview_muted: Option<bool>,
+}
+impl Default for Preferences {
+    fn default() -> Self {
+        Self {
+            auto_folder_sizes: true,
+            rail_pinned: false,
+            rail_order: Vec::new(),
+            corners: Corners::default(),
+            window_mode: WindowMode::default(),
+            show_hidden: false,
+            operation_bar: false,
+            preview_muted: None,
+        }
+    }
 }
 pub fn home() -> PathBuf {
     std::env::var_os("HOME")
@@ -182,11 +206,48 @@ pub fn rounding(c: Corners) -> i32 {
     }
 }
 pub fn parse_preferences(s: &str) -> Result<Preferences, String> {
-    toml::from_str(s).map_err(|e| e.to_string())
+    let value: Preferences = toml::from_str(s).map_err(|e| e.to_string())?;
+    if value.rail_order.len() > 128
+        || value.rail_order.iter().map(String::len).sum::<usize>() > 64 * 1024
+        || value.rail_order.iter().enumerate().any(|(index, id)| {
+            let key = id
+                .strip_prefix("place:")
+                .or_else(|| id.strip_prefix("dev:"));
+            value.rail_order[..index].contains(id)
+                || !key.is_some_and(|key| {
+                    !key.is_empty()
+                        && key.len() % 2 == 0
+                        && key.bytes().all(|b| b.is_ascii_hexdigit())
+                })
+        })
+    {
+        return Err("Sidebar order exceeds its budget or contains an invalid stable key".into());
+    }
+    Ok(value)
 }
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn background_sizes_default_on_without_overwriting_explicit_preferences() {
+        assert!(Preferences::default().auto_folder_sizes);
+        assert!(parse_preferences("").unwrap().auto_folder_sizes);
+        assert!(
+            parse_preferences("show_hidden = true")
+                .unwrap()
+                .auto_folder_sizes
+        );
+        assert!(
+            !parse_preferences("auto_folder_sizes = false")
+                .unwrap()
+                .auto_folder_sizes
+        );
+        assert!(!parse_preferences("").unwrap().rail_pinned);
+        assert!(parse_preferences("rail_order = ['place:2f61', 'dev:2f62']").is_ok());
+        assert!(parse_preferences("rail_order = ['place:2f61', 'place:2f61']").is_err());
+        assert!(parse_preferences("rail_order = ['place:../bad']").is_err());
+    }
+
     #[test]
     fn operation_bar_defaults_off_and_requires_boolean() {
         assert!(!parse_preferences("").unwrap().operation_bar);
