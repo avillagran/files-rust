@@ -27,6 +27,19 @@ GUI, decoder or test was executed to validate them after the stop. Automatic
 goal continuation is not interpreted as resume authorization. Additional
 Unix/macOS/Windows fixture-parent checks are being reviewed separately.
 
+The isolated toolkit branch now records static-only `a85c591` for platform
+fixture ownership/ACL and CI setup, `9695ad5` for retained entrypoint
+documentation, and `100a55a` for unit fixtures and owned displays. The latter
+removes seven library-unit recursive cleanup sites, prepares five fixture
+contract tests, repairs two native scripts and preserves all eight original
+X11 CI command argument sets behind `script/retained-x11`. Wayland keeps its
+own runtime, logs and exact child-process lifecycle. No Cargo, build, test,
+PowerShell, GUI or CI execution validated these changes; only static review
+and explicitly scoped source formatting occurred. Hostile-ACL Windows
+runtime coverage remains unverified. Three template cleanup sites and the
+separate `frame-bench` wrapper remain outside this repair and are not
+alternative validators while execution is stopped.
+
 ## Retained candidate results
 
 - NODE candidate `d734ce7` compiled and passed one native 1000 by 650
