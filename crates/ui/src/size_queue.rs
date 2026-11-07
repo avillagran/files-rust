@@ -84,10 +84,11 @@ impl State {
         self.records.retain(|r| r.id != id);
         before != self.records.len()
     }
-    /// Remember automatic work temporarily displaced by another view. Call
-    /// before cancelling its queue; explicit Stop must not create this intent.
-    pub fn yield_automatic(&mut self) {
+    /// Cancel work displaced by another view while retaining only automatic
+    /// resume intents. Explicit Stop uses cancel_all instead.
+    pub fn cancel_for_view(&mut self) {
         self.automatic.mark_yielded(&self.records);
+        self.cancel_all_inner();
     }
     /// Count only persisted cache hits returned for this directory epoch.
     pub fn automatic_cache_hits(&self) -> usize {
@@ -492,6 +493,10 @@ impl State {
         cancel
     }
     pub fn cancel_all(&mut self) {
+        self.automatic.clear_yielded();
+        self.cancel_all_inner();
+    }
+    fn cancel_all_inner(&mut self) {
         self.paused = false;
         if let Some(a) = &mut self.active {
             a.valid = false;

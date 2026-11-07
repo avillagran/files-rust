@@ -158,6 +158,9 @@ impl State {
         });
         true
     }
+    pub(crate) fn clear_yielded(&mut self) {
+        self.yielded.clear();
+    }
     pub(crate) fn mark_yielded(&mut self, rows: &[crate::size_queue::Record]) {
         self.yielded.extend(
             rows.iter()
@@ -483,8 +486,7 @@ mod tests {
         let mut queue = queue();
         let first_id = queue.rows(queue.root())[0].id;
         queue.dispatch_work().unwrap();
-        queue.yield_automatic();
-        queue.cancel_all();
+        queue.cancel_for_view();
         let mut automatic = std::mem::take(&mut queue.automatic);
         let visible = vec![OsString::from("automatic"), OsString::from("manual")];
         assert!(!automatic.resume_yielded(&mut queue, &visible, false));
@@ -501,6 +503,25 @@ mod tests {
         assert_ne!(rows[0].id, first_id);
         assert!(matches!(rows[1].status, Status::Cancelled));
         assert!(!automatic.resume_yielded(&mut queue, &visible, true));
+    }
+    #[test]
+    fn explicit_stop_revokes_an_existing_temporary_view_resume_intent() {
+        let mut queue = queue();
+        queue.cancel_for_view();
+        assert!(!queue.automatic.yielded.is_empty());
+        queue.cancel_all();
+        let mut automatic = std::mem::take(&mut queue.automatic);
+        assert!(!automatic.resume_yielded(
+            &mut queue,
+            &["automatic".into(), "manual".into()],
+            true
+        ));
+        assert!(
+            queue
+                .rows(queue.root())
+                .iter()
+                .all(|row| matches!(row.status, Status::Cancelled))
+        );
     }
     #[test]
     fn explicit_stop_does_not_gain_a_view_resume_intent() {
