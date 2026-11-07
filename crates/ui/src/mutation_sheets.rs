@@ -172,7 +172,7 @@ impl Manager {
         };
         let s = a.published.borrow();
         let c = a.controls.borrow();
-        let geometry = c.as_ref().map(|c| serde_json::json!({
+        let geometry = c.as_ref().filter(|c| !c.form.was_deleted() && !c.scroll.was_deleted()).map(|c| serde_json::json!({
             "fields": c.fields.iter().map(|f| rect(&f.input())).collect::<Vec<_>>(),
             "apply":rect(&*c.apply),"cancel":rect(&*c.cancel),
             "scroll":rect(&c.scroll),"preview":c.preview.as_ref().map(rect),
