@@ -103,6 +103,9 @@ pub enum Action {
     CalculateMarkedAllocatedSizes,
     CancelListedSizes,
     PauseSizes(bool),
+    AutoFolderSizes(bool),
+    RailPin(bool),
+    RailOrder(Vec<String>),
     RetrySizeErrors,
     CancelSize(std::ffi::OsString),
     Search,
@@ -473,6 +476,10 @@ pub struct Hit {
     pub action: Action,
 }
 pub struct Model {
+    pub toolbar: crate::toolbar::State,
+    pub rail_pinned: bool,
+    pub rail_order: Vec<String>,
+    pub auto_folder_sizes: bool,
     pub native_transfer: crate::native_transfer::State,
     pub text_paste: crate::text_paste_gate::Gate<Option<crate::clipboard_ui::TextKey>>,
     pub clipboard_state: crate::file_clipboard::State,
@@ -698,6 +705,10 @@ impl Model {
             .unwrap_or_default();
         let worker = Worker::start(path.clone());
         let mut model = Self {
+            toolbar: Default::default(),
+            rail_pinned: prefs.rail_pinned,
+            rail_order: prefs.rail_order.clone(),
+            auto_folder_sizes: prefs.auto_folder_sizes,
             listing_sync: Default::default(),
             refresh_viewport: None,
             native_transfer: Default::default(),
@@ -823,7 +834,7 @@ impl Model {
             sidebar_widget: false,
             tabs_widget: false,
             rail_width: None,
-            rail_request: None,
+            rail_request: Some(prefs.rail_pinned),
             rail_drops: Vec::new(),
             inspector: true,
             settings: false,
@@ -1510,6 +1521,7 @@ impl Model {
                 dirty |= measured && self.sort == Sort::Size;
             }
         }
+        sizes_repaint |= self.pump_automatic_sizes();
         if self.comparison.is_none()
             && !self.closing
             && !size_ack
@@ -1747,6 +1759,9 @@ impl Model {
                         }
                         dirty = true;
                     }
+                }
+                crate::aux_io::Response::FolderSizes(id, result) => {
+                    sizes_repaint |= self.automatic_sizes_response(id, result);
                 }
                 crate::aux_io::Response::Config(revision, result)
                     if self.config_in_flight == Some(revision) =>
@@ -2403,6 +2418,9 @@ impl Model {
                     self.show_hidden,
                     self.operation_bar,
                     self.preview.muted(),
+                    self.auto_folder_sizes,
+                    self.rail_pinned,
+                    self.rail_order.clone(),
                 ))
                 .is_ok()
         {
@@ -3151,6 +3169,31 @@ impl Model {
                 } else {
                     self.inspector = !self.inspector;
                 }
+            }
+            Action::AutoFolderSizes(enabled) => {
+                self.auto_folder_sizes = enabled;
+                if enabled {
+                    self.sizes.pause(false);
+                }
+                self.config_revision += 1;
+                self.config_dirty = true;
+                self.config_error = None;
+                self.dispatch_config();
+            }
+            Action::RailPin(pinned) => {
+                self.rail_pinned = pinned;
+                self.rail_request = Some(pinned);
+                self.config_revision += 1;
+                self.config_dirty = true;
+                self.config_error = None;
+                self.dispatch_config();
+            }
+            Action::RailOrder(order) => {
+                self.rail_order = order;
+                self.config_revision += 1;
+                self.config_dirty = true;
+                self.config_error = None;
+                self.dispatch_config();
             }
             Action::Settings => {
                 self.settings = !self.settings;

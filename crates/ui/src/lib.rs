@@ -1,8 +1,10 @@
+mod app_identity;
 mod archive_operation;
 mod archive_preview_job;
 mod archive_recovery;
 mod archive_ui;
 mod audio_preview_job;
+mod automatic_sizes;
 mod aux_io;
 mod bookmarks_state;
 mod bookmarks_ui;
@@ -136,6 +138,7 @@ mod sftp_report_ui;
 mod sftp_state;
 mod sftp_ui;
 mod sidebar_motion_scene;
+mod sidebar_order;
 mod size_panel;
 mod size_queue;
 mod size_report;
@@ -165,6 +168,7 @@ mod theme_watch;
 mod thumbnail_cache;
 mod thumbnail_job;
 mod thumbnails;
+mod toolbar;
 mod toolkit_menu;
 mod trash_browser;
 mod trash_history;
@@ -396,7 +400,13 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             });
             let hovering_tip = ev != Event::Leave && view::tip_rect(w, h).contains(x, y);
             m.status_tips.set_hover(hovering_tip);
-            let changed = old != m.rail || hover != m.hovered;
+            let toolbar_hover = if ev == Event::Leave || m.editing || window_chrome::blocked(m) {
+                None
+            } else {
+                Some((x, y))
+            };
+            let toolbar_changed = m.toolbar.hover(toolbar_hover);
+            let changed = old != m.rail || hover != m.hovered || toolbar_changed;
             m.hovered = hover;
             changed
         }
@@ -1219,6 +1229,8 @@ pub fn run_since(start: Instant) -> bool {
         .with_size(size.0, size.1)
         .with_label("files");
     win.set_xclass("files");
+    app_identity::set_icon(&mut win);
+    win.set_label(&app_identity::title(&model.borrow()));
     win.set_border(true);
     if smoke
         && std::env::var_os("FILES_TEST_FIXED_SIZE").as_deref() == Some(std::ffi::OsStr::new("1"))
@@ -1262,6 +1274,14 @@ pub fn run_since(start: Instant) -> bool {
         fltk_omarchy::widgets::Sidebar::new(Vec::new(), &rail_selected)
             .widths(places_sidebar::RAIL, places_sidebar::WIDE)
             .on_activate(move |i| {
+                if r1.borrow().kinds.get(i) == Some(&places_sidebar::Kind::Pin) {
+                    if let Ok(mut state) = m1.try_borrow_mut() {
+                        let pinned = !state.rail_pinned;
+                        state.action(Action::RailPin(pinned));
+                    }
+                    c1.clone().redraw();
+                    return;
+                }
                 if r1.borrow().kinds.get(i) == Some(&places_sidebar::Kind::Recent) {
                     open_recent(&recent);
                     return;
@@ -1312,31 +1332,8 @@ pub fn run_since(start: Instant) -> bool {
             });
         });
     }
-    // Bookmarks reorder by dragging, among themselves: the row moves at once
-    // and the new order is saved; a failed save is put back by the paint.
-    {
-        let tree = sidebar.tree();
-        let model_rows = tree.model();
-        let m5 = model.clone();
-        let mut c5 = canvas.clone();
-        let _ = tree
-            .reorder(fltk_omarchy::navtree::Reorder::Siblings)
-            .accept_move(|key, parent, _| places_sidebar::movable(key, parent))
-            .on_move(move |key, parent, index| {
-                if !places_sidebar::movable(key, parent) {
-                    return;
-                }
-                let path = std::path::PathBuf::from(&key["mark:".len()..]);
-                let moved = m5
-                    .try_borrow_mut()
-                    .is_ok_and(|mut state| places_sidebar::move_bookmark(&mut state, &path, index));
-                eprintln!("FILES_TOOLKIT_SIDEBAR_MOVE key={key} index={index} requested={moved}");
-                if moved {
-                    fltk_omarchy::navtree::move_item(&model_rows, key, parent, index);
-                }
-                c5.redraw();
-            });
-    }
+    // The current toolkit activates navigation before distinguishing a drag.
+    // Keep ordering explicit in row menus until its click/drag contract is fixed.
     sidebar.resize(0, 90, places_sidebar::RAIL, (size.1 - 122).max(0));
     // Tab stays with the browser (it switches panes); the rail is pointer-driven.
     sidebar.clear_visible_focus();
@@ -1367,6 +1364,7 @@ pub fn run_since(start: Instant) -> bool {
     let mut rail_sidebar = sidebar.clone();
     let mut rail_motion = fltk_omarchy::anim::Anim::<f64>::new();
     let rail_selected = rail_selected.clone();
+    let fixture_rail_state = rail_state.clone();
     let rail_state = rail_state.clone();
     let mut painted_tabs = tab_strip.clone();
     let tabs_window = win.clone();
@@ -1413,6 +1411,7 @@ pub fn run_since(start: Instant) -> bool {
             painted_tabs.sync(&mut m, f.w());
             let previous_scroll = m.scroll;
             view::paint(&mut p, &mut m, f.w(), f.h());
+            m.toolbar.schedule(f);
             m.clamp_scroll(f.h() - 134);
             if previous_scroll != m.scroll {
                 view::paint(&mut p, &mut m, f.w(), f.h());
@@ -1423,7 +1422,7 @@ pub fn run_since(start: Instant) -> bool {
                     rail_sidebar.hide();
                 }
             } else {
-                let rail = places_sidebar::rail(&m);
+                let rail = places_sidebar::rail(&m, m.rail_pinned, &m.rail_order);
                 // A row moved by dragging that did not end up saved (or any
                 // other drift) is put back once no bookmark request runs.
                 let drifted = !m.bookmarks.busy() && {
@@ -1919,6 +1918,7 @@ pub fn run_since(start: Instant) -> bool {
     let mutation_fixture = scene == "rename"
         && smoke
         && std::env::var_os("FILES_TEST_MUTATIONS").as_deref() == Some(std::ffi::OsStr::new("1"));
+    let mut identity = app_identity::State::default();
     let mut last_metrics = Instant::now() - Duration::from_secs(2);
     let mut file_manager = match file_manager_ui::Controller::new(file_manager_service) {
         Ok(controller) => controller,
@@ -2255,6 +2255,7 @@ pub fn run_since(start: Instant) -> bool {
                 }
             }
         }
+        identity.sync(&m, &mut win);
         if last_metrics.elapsed() >= Duration::from_secs(2) {
             m.pss = files_core::system::pss_kib();
             last_metrics = Instant::now();
@@ -3435,8 +3436,40 @@ pub fn run_since(start: Instant) -> bool {
                     // outside Model even in private diagnostics.
                     let native_marker = (command.trim() == "mutation-sheet-state")
                         .then(|| mutation_sheets.marker());
+                    let sidebar_marker=(command.trim()=="usability-state").then(|| {
+                        let rail=fixture_rail_state.borrow();
+                        serde_json::json!({"pinned":sidebar.is_pinned(),"expanded":sidebar.is_expanded(),
+                            "width":sidebar.w(),"rows":rail.items.iter().enumerate().map(|(i,row)|serde_json::json!({
+                                "key":row.key,"label":row.label,"header":row.header,"footer":row.footer,
+                                "rect":sidebar.item_rect(i).map(|r|[r.0,r.1,r.2,r.3]),
+                            })).collect::<Vec<_>>()})
+                    });
                     let mut state = model.borrow_mut();
-                    match if let Some(mut marker) = native_marker {
+                    match if let Some(sidebar) = sidebar_marker {
+                        let space = match state.space_map.view() {
+                            space_map_state::View::Closed => serde_json::json!({"state":"closed"}),
+                            space_map_state::View::Loading => {
+                                serde_json::json!({"state":"loading"})
+                            }
+                            space_map_state::View::Error(error) => {
+                                serde_json::json!({"state":"error","error":error})
+                            }
+                            space_map_state::View::Ready(report) => {
+                                serde_json::json!({"state":"ready","complete":report.complete,
+                                "total":report.total_bytes,"observed":report.observed_bytes,"nodes":report.nodes.len()})
+                            }
+                        };
+                        let marker = serde_json::json!({"space":space,"title":win.label(),"app_id":"files",
+                            "path":state.path.as_os_str().as_encoded_bytes(),"loaded":state.loaded,
+                            "toolbar":toolbar::marker(&state,canvas.w(),canvas.h()),"sidebar":sidebar,
+                            "auto_sizes":state.auto_folder_sizes,"config_pending":state.config_dirty||state.config_in_flight.is_some(),
+                            "cache_error":state.sizes.automatic_cache_error(),"cache_hits":state.sizes.automatic_cache_hits(),
+                            "folders":state.visible.iter().take(64).filter_map(|&i|state.entries.get(i)).filter(|e|e.is_dir()).map(|e|serde_json::json!({
+                                "name":e.name.as_encoded_bytes(),"size":state.sizes.label(&state.path,&e.name),
+                            })).collect::<Vec<_>>(),"error":state.error});
+                        eprintln!("FILES_USABILITY_STATE {marker}");
+                        Ok(())
+                    } else if let Some(mut marker) = native_marker {
                         marker["model"] = serde_json::json!({
                             "mode":state.rename_dialog.as_ref().map(|d| match d.mode {rename_dialog::Mode::File=>"file",rename_dialog::Mode::Folder=>"folder",rename_dialog::Mode::Rename=>"rename"}),
                             "dialog_id":state.rename_dialog.as_ref().map(|d|d.id),

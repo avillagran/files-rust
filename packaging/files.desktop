@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Files
+Comment=Browse and organize files
+Exec=files %F
+Icon=files
+Terminal=false
+Categories=System;FileTools;FileManager;
+StartupNotify=true
+StartupWMClass=files
+MimeType=inode/directory;

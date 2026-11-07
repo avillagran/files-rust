@@ -84,6 +84,11 @@ impl State {
         self.records.retain(|r| r.id != id);
         before != self.records.len()
     }
+    /// Remember automatic work temporarily displaced by another view. Call
+    /// before cancelling its queue; explicit Stop must not create this intent.
+    pub fn yield_automatic(&mut self) {
+        self.automatic.mark_yielded(&self.records);
+    }
     /// Count only persisted cache hits returned for this directory epoch.
     pub fn automatic_cache_hits(&self) -> usize {
         self.automatic.cached_hits()

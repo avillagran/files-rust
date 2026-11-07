@@ -273,13 +273,7 @@ pub fn status(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     p.text(r(w - 180, h - 31, 160, 30), &pss, 12, c.green, true, true);
 }
 pub fn omni_right(w: i32) -> i32 {
-    w - if w >= 1100 {
-        776
-    } else if w >= 800 {
-        520
-    } else {
-        144
-    }
+    crate::toolbar::base_right(w)
 }
 /// Empty-listing text is shared; each browser surface owns its placement.
 pub(crate) fn empty_browser_message<'a>(loaded: bool, error: &'a str, query: &str) -> &'a str {
@@ -347,13 +341,14 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             },
         );
     }
+    let toolbar_right = crate::toolbar::prepare(p, m, w, h);
     let omni = if m.editing {
         r(88, 10, (w - 192).max(1), 38)
     } else {
         r(
             88,
             10,
-            (omni_right(w) - 152 - if m.query.is_empty() { 0 } else { 30 }).max(1),
+            (toolbar_right - 152 - if m.query.is_empty() { 0 } else { 30 }).max(1),
             38,
         )
     };
@@ -400,7 +395,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         );
     } else {
         if !m.query.is_empty() {
-            let path_button = r(omni_right(w) - 90, 13, 28, 32);
+            let path_button = r(toolbar_right - 90, 13, 28, 32);
             p.text(
                 path_button,
                 crate::fonts::icon("", "L"),
@@ -411,7 +406,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             );
             hit(m, path_button, Action::Omni);
         }
-        let filter_button = r(omni_right(w) - 60, 13, 28, 32);
+        let filter_button = r(toolbar_right - 60, 13, 28, 32);
         p.text(
             filter_button,
             crate::fonts::icon("", "?"),
@@ -421,7 +416,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             false,
         );
         hit(m, filter_button, Action::Filter);
-        let clear_button = r(omni_right(w) - 30, 13, 28, 32);
+        let clear_button = r(toolbar_right - 30, 13, 28, 32);
         p.text(
             clear_button,
             if m.query.is_empty() {
@@ -443,92 +438,9 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                 Action::ClearFilter
             },
         );
-        if w >= 800 {
-            let wide = w >= 1100;
-            let mut x = omni_right(w) + 14;
-            for (width, label, on, action) in [
-                (
-                    if wide { 92 } else { 40 },
-                    if wide {
-                        crate::fonts::icon("  Grupos", "Grupos")
-                    } else {
-                        crate::fonts::icon("", "G")
-                    },
-                    m.view == View::Groups,
-                    Action::View(View::Groups),
-                ),
-                (
-                    if wide { 78 } else { 40 },
-                    if wide {
-                        crate::fonts::icon("  Lista", "Lista")
-                    } else {
-                        crate::fonts::icon("", "L")
-                    },
-                    m.view == View::List,
-                    Action::View(View::List),
-                ),
-                (
-                    if wide { 92 } else { 40 },
-                    if wide {
-                        crate::fonts::icon("  Grilla", "Grilla")
-                    } else {
-                        crate::fonts::icon("", "G")
-                    },
-                    m.view == View::Grid,
-                    Action::View(View::Grid),
-                ),
-                (
-                    if wide { 110 } else { 104 },
-                    crate::fonts::icon("  Espacio", "Espacio"),
-                    m.view == View::SpaceMap,
-                    Action::View(View::SpaceMap),
-                ),
-                (
-                    if wide { 112 } else { 104 },
-                    crate::fonts::icon("  Columnas", "Columnas"),
-                    m.view == View::Columns,
-                    Action::View(View::Columns),
-                ),
-                (
-                    40,
-                    if m.dual.enabled {
-                        crate::fonts::icon("", "MC")
-                    } else {
-                        crate::fonts::icon("", "I")
-                    },
-                    m.inspector || m.dual.enabled,
-                    Action::Inspector,
-                ),
-                (
-                    40,
-                    crate::fonts::icon("", "P"),
-                    m.settings,
-                    Action::Settings,
-                ),
-                (
-                    40,
-                    crate::fonts::icon("", "A"),
-                    m.actions_menu,
-                    Action::Actions,
-                ),
-            ] {
-                button(p, m, r(x, 10, width, 36), label, on, action);
-                x += width + 4;
-            }
-        } else {
-            for (x, label, action) in [
-                (
-                    w - 140,
-                    crate::fonts::icon("", "V"),
-                    Action::ViewMenu(w, h),
-                ),
-                (w - 96, crate::fonts::icon("", "P"), Action::Settings),
-                (w - 52, crate::fonts::icon("", "A"), Action::Actions),
-            ] {
-                button(p, m, r(x, 10, 40, 36), label, false, action);
-            }
-        }
+        crate::toolbar::paint(p, m, w, h);
     }
+
     let rail = m.rail_width();
     p.rect(
         r(

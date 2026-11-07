@@ -158,6 +158,47 @@ impl State {
         });
         true
     }
+    pub(crate) fn mark_yielded(&mut self, rows: &[crate::size_queue::Record]) {
+        self.yielded.extend(
+            rows.iter()
+                .filter(|row| {
+                    self.automatic.contains(&row.id)
+                        && matches!(row.status, Status::Queued | Status::Running { .. })
+                })
+                .map(|row| row.name.clone()),
+        );
+    }
+    fn resume_yielded(
+        &mut self,
+        queue: &mut crate::size_queue::State,
+        names: &[OsString],
+        helper_drained: bool,
+    ) -> bool {
+        if !helper_drained {
+            return false;
+        }
+        let mut dirty = false;
+        for name in names {
+            if !self.yielded.contains(name) {
+                continue;
+            }
+            if let Some((id, true)) = queue
+                .rows(queue.root())
+                .iter()
+                .find(|row| &row.name == name)
+                .map(|row| (row.id, matches!(row.status, Status::Cancelled)))
+                && let Some(new) = queue.retry_id(queue.epoch(), id)
+            {
+                self.automatic.remove(&id);
+                self.automatic.insert(new);
+                self.proof_ids.insert(name.clone(), new);
+                self.partials.remove(name);
+                dirty = true;
+            }
+            self.yielded.remove(name);
+        }
+        dirty
+    }
     fn pump(&mut self, m: &mut Model) -> bool {
         m.sizes.bind_automatic_root(&m.path);
         self.synchronize(m.sizes.epoch());
@@ -324,24 +365,8 @@ impl State {
                 self.last_save = Some(Instant::now());
             }
         }
+        dirty |= self.resume_yielded(&mut m.sizes, &names, m.du_job.is_none());
         for name in &names {
-            if self.yielded.contains(name) && m.du_job.is_none() {
-                if let Some((id, true)) = m
-                    .sizes
-                    .rows(&m.path)
-                    .iter()
-                    .find(|r| &r.name == name)
-                    .map(|r| (r.id, matches!(r.status, Status::Cancelled)))
-                    && let Some(new) = m.sizes.retry_id(m.sizes.epoch(), id)
-                {
-                    self.automatic.remove(&id);
-                    self.automatic.insert(new);
-                    self.proof_ids.insert(name.clone(), new);
-                    self.partials.remove(name);
-                    dirty = true;
-                }
-                self.yielded.remove(name);
-            }
             if self.stamps.contains_key(name)
                 && m.sizes.status(&m.path, name).is_none()
                 && m.sizes.rows(&m.path).len() < MAX_ROWS
@@ -434,5 +459,64 @@ impl Model {
         let dirty = state.response(self, id, result);
         self.sizes.automatic = state;
         dirty
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::{ffi::OsStr, path::Path};
+    fn queue() -> crate::size_queue::State {
+        let mut queue = crate::size_queue::State::default();
+        queue
+            .enqueue(
+                Path::new("/private/browser"),
+                [OsStr::new("automatic"), OsStr::new("manual")].into_iter(),
+            )
+            .unwrap();
+        let id = queue.rows(queue.root())[0].id;
+        queue.automatic.automatic.insert(id);
+        queue
+    }
+    #[test]
+    fn view_yield_resumes_only_automatic_work_after_the_old_ack() {
+        let mut queue = queue();
+        let first_id = queue.rows(queue.root())[0].id;
+        queue.dispatch_work().unwrap();
+        queue.yield_automatic();
+        queue.cancel_all();
+        let mut automatic = std::mem::take(&mut queue.automatic);
+        let visible = vec![OsString::from("automatic"), OsString::from("manual")];
+        assert!(!automatic.resume_yielded(&mut queue, &visible, false));
+        assert!(
+            queue
+                .rows(queue.root())
+                .iter()
+                .all(|row| matches!(row.status, Status::Cancelled))
+        );
+        assert!(!queue.finish_measurement(Err("cancelled and reaped".into())));
+        assert!(automatic.resume_yielded(&mut queue, &visible, true));
+        let rows = queue.rows(queue.root());
+        assert!(matches!(rows[0].status, Status::Queued));
+        assert_ne!(rows[0].id, first_id);
+        assert!(matches!(rows[1].status, Status::Cancelled));
+        assert!(!automatic.resume_yielded(&mut queue, &visible, true));
+    }
+    #[test]
+    fn explicit_stop_does_not_gain_a_view_resume_intent() {
+        let mut queue = queue();
+        queue.cancel_all();
+        let mut automatic = std::mem::take(&mut queue.automatic);
+        assert!(!automatic.resume_yielded(
+            &mut queue,
+            &["automatic".into(), "manual".into()],
+            true
+        ));
+        assert!(
+            queue
+                .rows(queue.root())
+                .iter()
+                .all(|row| matches!(row.status, Status::Cancelled))
+        );
     }
 }

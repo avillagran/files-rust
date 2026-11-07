@@ -284,6 +284,7 @@ pub enum Pick {
     RemoveBookmark(PathBuf),
     /// Open the recent files menu (the window does it).
     OpenRecent,
+    MoveBookmark(String, usize),
 }
 
 impl std::fmt::Debug for Pick {
@@ -295,6 +296,7 @@ impl std::fmt::Debug for Pick {
             }
             Pick::RemoveBookmark(p) => write!(f, "RemoveBookmark({})", p.display()),
             Pick::OpenRecent => write!(f, "OpenRecent"),
+            Pick::MoveBookmark(key, index) => write!(f, "MoveBookmark({key},{index})"),
         }
     }
 }
@@ -390,7 +392,39 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
         )),
         Some(Kind::Header | Kind::Pin) | None => {}
     }
-    let _ = m;
+    let parent = match rail.kinds.get(i) {
+        Some(Kind::Place(_)) => Some("h:places"),
+        Some(Kind::Device { .. }) => Some("h:devices"),
+        Some(Kind::Bookmark(_)) => Some("h:marks"),
+        _ => None,
+    };
+    if let Some(parent) = parent {
+        let keys = rail.section_keys(parent);
+        if let Some(key) = rail.items.get(i).map(|item| &item.key)
+            && let Some(index) = keys.iter().position(|k| k == key)
+        {
+            for (label, icon, target) in [
+                ("Mover arriba", "", index.checked_sub(1)),
+                (
+                    "Mover abajo",
+                    "",
+                    (index + 1 < keys.len()).then_some(index + 1),
+                ),
+            ] {
+                if let Some(target) = target {
+                    let pick = if parent == "h:marks" {
+                        Some(Pick::MoveBookmark(key.clone(), target))
+                    } else {
+                        crate::sidebar_order::moved(&m.rail_order, &keys, key, target)
+                            .map(|order| Pick::Run(vec![Action::RailOrder(order)]))
+                    };
+                    if let Some(pick) = pick {
+                        out.push((PopupItem::new(icon, label), pick));
+                    }
+                }
+            }
+        }
+    }
     out
 }
 
@@ -428,6 +462,7 @@ pub fn move_bookmark(m: &mut Model, key: &str, to: usize) -> bool {
 }
 
 /// The rail rows that may be dragged to reorder (bookmarks, among themselves).
+#[cfg(test)]
 pub fn movable(key: &str, parent: &str) -> bool {
     match parent {
         "h:marks" => key
@@ -468,6 +503,9 @@ pub fn apply(m: &mut Model, pick: Pick) {
             }
         }
         Pick::OpenRecent => {}
+        Pick::MoveBookmark(key, index) => {
+            move_bookmark(m, &key, index);
+        }
     }
 }
 

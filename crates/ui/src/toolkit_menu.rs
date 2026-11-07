@@ -71,13 +71,22 @@ pub struct Manager {
     dismissed: Rc<RefCell<VecDeque<Dismiss>>>,
 }
 fn row(label: &str, shortcut: &str, checked: bool) -> PopupItem {
-    PopupItem::new("", label)
+    let (icon, label) = split_icon(label);
+    PopupItem::new(icon, label)
         .shortcut(shortcut)
         .checked(checked)
 }
 fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
     let entries: Vec<(PopupItem, Action)> = match kind {
         Kind::Settings => vec![
+            (
+                row("Calcular tamaños automáticamente", "", m.auto_folder_sizes),
+                Action::AutoFolderSizes(!m.auto_folder_sizes),
+            ),
+            (
+                row("Mantener barra lateral abierta", "", m.rail_pinned),
+                Action::RailPin(!m.rail_pinned),
+            ),
             (
                 row(" Guardar vista de esta carpeta", "", false),
                 Action::SaveFolderView,
@@ -287,11 +296,83 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
         ],
         Kind::Context | Kind::Breadcrumbs | Kind::Tabs => unreachable!(),
     };
-    entries
-        .into_iter()
-        .map(|(item, action)| (item, Some(action)))
-        .unzip()
+    let groups: &[(&str, &str)] = if kind == Kind::Settings {
+        &[
+            ("", "Carpeta"),
+            ("", "Vista"),
+            ("", "Ventana"),
+            ("", "Apariencia"),
+            ("", "Sesión y ayuda"),
+        ]
+    } else {
+        &[
+            ("", "Crear y organizar"),
+            ("", "Portapapeles"),
+            ("󰄬", "Selección"),
+            ("", "Buscar y abrir"),
+            ("", "Espacio y tamaños"),
+            ("", "Herramientas"),
+            ("", "Historial y resultados"),
+        ]
+    };
+    let mut children: Vec<Vec<PopupItem>> = groups.iter().map(|_| Vec::new()).collect();
+    let mut actions = Vec::new();
+    for (index, (item, action)) in entries.into_iter().enumerate() {
+        let group = toolbar_group(kind, &action);
+        children[group].push(item.id(&index.to_string()));
+        actions.push(Some(action));
+    }
+    let items = groups
+        .iter()
+        .zip(children)
+        .filter_map(|((icon, label), children)| {
+            (!children.is_empty()).then(|| PopupItem::submenu(icon, label, children))
+        })
+        .collect();
+    (items, actions)
 }
+fn toolbar_group(kind: Kind, action: &Action) -> usize {
+    if kind == Kind::Settings {
+        return match action {
+            Action::SaveFolderView
+            | Action::ForgetFolderView
+            | Action::RetryFolderView
+            | Action::DiscardFolderView => 0,
+            Action::ToggleOperationBar
+            | Action::ToggleHidden
+            | Action::DualPane
+            | Action::AutoFolderSizes(_)
+            | Action::RailPin(_) => 1,
+            Action::WindowMode(_) => 2,
+            Action::Corner(_) | Action::Theme(_) => 3,
+            _ => 4,
+        };
+    }
+    match action {
+        Action::NewEntry(_)
+        | Action::Rename
+        | Action::Trash
+        | Action::CreateArchive
+        | Action::ExtractArchive => 0,
+        Action::ClipboardCopy | Action::ClipboardCut | Action::ClipboardPaste => 1,
+        Action::Selection(_) => 2,
+        Action::Search
+        | Action::Filter
+        | Action::Preview
+        | Action::Properties
+        | Action::Bookmarks
+        | Action::BookmarkAdd => 3,
+        Action::Sizes
+        | Action::CalculateSize
+        | Action::CalculateListedSizes
+        | Action::CancelListedSizes
+        | Action::PauseSizes(_)
+        | Action::RetrySizeErrors => 4,
+        Action::Undo(_) | Action::CopyDetails | Action::RecoveryCatalog => 6,
+        _ => 5,
+    }
+}
+
 impl Manager {
     pub fn close(&self) {
         if let Some(active) = &self.active {
@@ -322,7 +403,7 @@ impl Manager {
                     && m.trash_browser.is_none()
                     && (active.kind != Kind::Breadcrumbs || crate::breadcrumb_ui::available(m))
                     && (active.kind != Kind::Tabs || crate::tab_context::available(m));
-                if let Dismiss::Picked(index) = reason
+                if let Dismiss::Picked(_index) = reason
                     && valid
                 {
                     if active.kind == Kind::Context {
@@ -355,7 +436,13 @@ impl Manager {
                         {
                             m.action(action.clone());
                         }
-                    } else if let Some(Some(action)) = active.actions.get(index) {
+                    } else if let Some(Some(action)) = active
+                        .picked
+                        .borrow_mut()
+                        .take()
+                        .and_then(|id| id.parse::<usize>().ok())
+                        .and_then(|i| active.actions.get(i))
+                    {
                         m.action(action.clone());
                     }
                 }
@@ -465,7 +552,9 @@ impl Manager {
                 actions_anchor
             };
             anchor.resize(x, y, w, h);
-            PopupMenu::open(anchor, items, |_| {})
+            PopupMenu::open_id(anchor, items, move |id| {
+                *pick.borrow_mut() = Some(id.to_string());
+            })
         }
         .on_dismiss(move |reason| queue.borrow_mut().push_back(reason));
         if !handle.is_open() {
