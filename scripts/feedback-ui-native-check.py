@@ -628,10 +628,9 @@ def main():
         owned = clients(service.pid)
         assert len(owned) == 1 and owned[0].get('app_id') == 'files', owned
         report['native_window'] = {k: owned[0].get(k) for k in ('name', 'app_id', 'rect', 'pid')}
-        assert initial['title'].startswith('Files > ')
-        assert initial['title'].count('Files > ') == 1
+        assert not initial['title'].startswith('Files > ')
         assert bytes(initial['path']) == os.fsencode(home / 'A' / 'Nested')
-        initial_prefix = 'Files > ' + str(home / 'A' / 'Nested')
+        initial_prefix = str(home / 'A' / 'Nested')
         wait(lambda: (c if (c := clients(service.pid)) and
                       (c[0].get('name') == initial_prefix or c[0].get('name', '').startswith(initial_prefix + ' · ')) else None),
              'native initial title')
@@ -686,7 +685,7 @@ def main():
         assert up and up[2] > 0 and up[3] > 0
         pointer(*row_center(up), click=True)
         parent = usability('up-without-history', lambda s: s['loaded'] and bytes(s['path']) == os.fsencode(home / 'A'))
-        title_prefix = 'Files > ' + str(home / 'A')
+        title_prefix = str(home / 'A')
         assert parent['title'] == title_prefix or parent['title'].startswith(title_prefix + ' · ')
         wait(lambda: (c if (c := clients(service.pid)) and
                       (c[0].get('name') == title_prefix or c[0].get('name', '').startswith(title_prefix + ' · ')) else None),
