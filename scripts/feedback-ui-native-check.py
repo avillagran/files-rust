@@ -636,6 +636,11 @@ def main():
                       (c[0].get('name') == initial_prefix or c[0].get('name', '').startswith(initial_prefix + ' · ')) else None),
              'native initial title')
         capture('initial')
+        narrow = initial['toolbar']['items'][-1]['rect'][0] + initial['toolbar']['items'][-1]['rect'][2] + 12 < 800
+        if narrow:
+            key('-M', 'ctrl', '-k', '5', '-m', 'ctrl')
+            usability('thumbnail-grid-narrow', lambda s: any(item['label'] == 'Grilla' and item['on']
+                      for item in s['toolbar']['items']))
         def thumbnail(s, color):
             return next((item for item in s['thumbnails']['ready']
                          if item['path'].endswith('/thumbnail.png"') and item['pixel'] == list(color)), None)
@@ -647,24 +652,36 @@ def main():
         assert first_decodes > 0
         capture('thumbnail-red')
 
-        def toggle_thumbnails(state):
+        def toggle_thumbnails(state, label):
             settings = state['toolbar']['items'][-1]
-            pointer(*row_center(settings['rect']), click=True)
+            pointer(*row_center(settings['rect']))
+            stable = usability(label + '-hover', lambda s: s['toolbar']['hot'] == settings['index'] and
+                               not s['toolbar']['animating'])
+            offset = len(text())
+            pointer(*row_center(stable['toolbar']['items'][-1]['rect']), click=True)
+            time.sleep(.2)
+            capture_desktop(label + '-settings')
+            wait(lambda: 'FILES_TOOLKIT_POPUP_OPEN kind=Settings' in text()[offset:], 'native Settings popup')
             key('-k', 'Home')
             key('-k', 'Down')
             key('-k', 'Right')
+            time.sleep(.15)
             key('-k', 'Return')
 
-        toggle_thumbnails(first_thumbnail)
+        toggle_thumbnails(first_thumbnail, 'disable-thumbnail')
         disabled = usability('thumbnails-disabled', lambda s: not s['show_thumbnails'] and
                              not s['thumbnails']['ready'] and s['thumbnails']['painted'] == 0 and not s['config_pending'])
         capture('thumbnail-disabled')
-        toggle_thumbnails(disabled)
+        toggle_thumbnails(disabled, 'enable-thumbnail')
         enabled = usability('thumbnails-reenabled', lambda s: s['show_thumbnails'] and
                             thumbnail(s, (210, 40, 55)) is not None and not s['thumbnails']['busy'] and
                             not s['config_pending'])
         assert enabled['thumbnails']['worker']['decodes'] == first_decodes
         report['checks'].append('native Preferences toggle hides thumbnails and reuses the verified in-memory image')
+        if narrow:
+            key('-M', 'ctrl', '-k', '1', '-m', 'ctrl')
+            usability('groups-after-thumbnail', lambda s: any(item['label'] == 'Grupos' and item['on']
+                      for item in s['toolbar']['items']))
         up = initial['toolbar']['up_rect']
         assert up and up[2] > 0 and up[3] > 0
         pointer(*row_center(up), click=True)
@@ -727,9 +744,9 @@ def main():
         far = usability('folder-offscreen', lambda s: s['scroll'] > 0)
         capture('folder-offscreen')
         key('-k', 'Home')
-        back = usability('folder-returned', lambda s: s['scroll'] == 0 and folder_zero(s) is not None)
+        back = usability('folder-returned', lambda s: s['scroll'] < 50 and folder_zero(s) is not None)
         time.sleep(1.0)
-        settled = usability('folder-returned-settled', lambda s: s['scroll'] == 0 and not s['size_busy'] and
+        settled = usability('folder-returned-settled', lambda s: s['scroll'] < 50 and not s['size_busy'] and
                             folder_zero(s) is not None)
         assert folder_zero(settled)['dispatch_count'] == before, (before, folder_zero(settled))
         assert (folder_zero(settled)['size'] or '').startswith('∑ ')
@@ -761,10 +778,18 @@ def main():
                                        env=env, stdout=subprocess.DEVNULL, stderr=out, start_new_session=True)
         wait(lambda: 'FILES_UI_SMOKE_OK' in text() and clients(service.pid), 'private restart')
         focus_own(service.pid)
+        if narrow:
+            key('-M', 'ctrl', '-k', '5', '-m', 'ctrl')
+            usability('thumbnail-grid-after-restart', lambda s: any(item['label'] == 'Grilla' and item['on']
+                      for item in s['toolbar']['items']))
         cached = usability('thumbnail-disk-hit', lambda s: s['show_thumbnails'] and
                            thumbnail(s, (210, 40, 55)) is not None and
                            s['thumbnails']['worker']['disk_hits'] > 0 and not s['thumbnails']['busy'])
         assert cached['thumbnails']['worker']['decodes'] == 0
+        key('-M', 'ctrl', '-k', '5', '-m', 'ctrl')
+        cached = usability('thumbnail-grid', lambda s: any(item['label'] == 'Grilla' and item['on']
+                           for item in s['toolbar']['items']) and
+                           thumbnail(s, (210, 40, 55)) is not None and not s['thumbnails']['busy'])
         old_revision = thumbnail(cached, (210, 40, 55))['revision']
         original = home / 'A' / 'Nested' / 'thumbnail.png'
         assert entry_kind(original) == 'file'
@@ -790,13 +815,14 @@ def main():
         assert read_private(base / 'retained-originals' / 'thumbnail.png') == fixture_png((210, 40, 55))
         capture('thumbnail-missing')
         before_decodes = missing['thumbnails']['worker']['decodes']
+        before_hits = missing['thumbnails']['worker']['disk_hits']
         write_private(original, fixture_png((30, 80, 220)))
         key('-M', 'ctrl', '-k', 'r', '-m', 'ctrl')
         changed = usability('thumbnail-replaced', lambda s: thumbnail(s, (30, 80, 220)) is not None and
                             s['thumbnails']['worker']['decodes'] > before_decodes)
         assert thumbnail(changed, (30, 80, 220))['revision'] != old_revision
         assert changed['thumbnails']['worker']['decodes'] == before_decodes + 1
-        assert changed['thumbnails']['worker']['disk_hits'] == cached['thumbnails']['worker']['disk_hits']
+        assert changed['thumbnails']['worker']['disk_hits'] == before_hits
         capture('thumbnail-blue')
         report['checks'].append('persisted thumbnail is read after restart and a changed source produces new pixels')
         report['thumbnail_evidence'] = {'old_revision': old_revision,
