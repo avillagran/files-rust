@@ -35,7 +35,9 @@ pub fn title(m: &Model) -> String {
 }
 fn display_title(raw: &std::ffi::OsStr, state: u8) -> String {
     let path = files_core::name_label::label(raw);
-    let mut title = String::from("Files > ");
+    // The desktop entry supplies the app name and icon. Keep the client title
+    // descriptive so compositor decorations can style their own app prefix.
+    let mut title = String::new();
     for ch in path.chars().take(1024) {
         title.push(if ch.is_control() { ' ' } else { ch });
     }
@@ -84,12 +86,12 @@ pub fn set_icon(win: &mut Window) {
 mod tests {
     use super::*;
     #[test]
-    fn title_names_the_application_before_its_explanatory_path() {
+    fn title_publishes_the_path_and_status_for_native_decorations() {
         let title = display_title(std::ffi::OsStr::new("/home/example"), 0);
-        assert_eq!(title, "Files > /home/example");
+        assert_eq!(title, "/home/example");
         assert_eq!(
             display_title(std::ffi::OsStr::new("/tmp"), 4),
-            "Files > /tmp · Cargando…"
+            "/tmp · Cargando…"
         );
     }
 }
