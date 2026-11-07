@@ -35,12 +35,16 @@ try:
     for name in names:
         source=release/name;destination=bin/name
         old=sha(destination) if destination.is_file() else None
-        if destination.exists() or destination.is_symlink():shutil.copy2(destination,backup/name,follow_symlinks=False)
+        backup_hash=None
+        if destination.exists() or destination.is_symlink():
+            shutil.copy2(destination,backup/name,follow_symlinks=False)
+            backup_hash=sha(backup/name)
+            if backup_hash!=old:raise RuntimeError('Backup hash mismatch: '+name)
         fd,tmp=tempfile.mkstemp(prefix='.'+name+'-',dir=bin)
         with os.fdopen(fd,'wb') as out,source.open('rb') as inp:
             shutil.copyfileobj(inp,out);out.flush();os.fsync(out.fileno());os.fchmod(out.fileno(),0o755 if name in names[:3] else 0o644)
         if sha(Path(tmp))!=sha(source):raise RuntimeError('Staged hash mismatch: '+name)
-        staged.append((name,Path(tmp),old));records.append({'name':name,'old_sha256':old,'release_sha256':sha(source)})
+        staged.append((name,Path(tmp),old));records.append({'name':name,'old_sha256':old,'backup_sha256':backup_hash,'release_sha256':sha(source)})
     for name,tmp,old in staged:
         destination=bin/name
         if (sha(destination) if destination.is_file() else None)!=old:raise RuntimeError('Concurrent local install detected: '+name)
@@ -58,7 +62,7 @@ finally:
     for _,tmp,_ in staged:tmp.unlink(missing_ok=True)
 try:checkpoint=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True,stderr=subprocess.DEVNULL).strip()
 except (OSError,subprocess.CalledProcessError):checkpoint=os.environ.get('FILES_SOURCE_CHECKPOINT','exported tree without git')
-result={'checkpoint':checkpoint,'html_helper':'reused staged, recipe verified' if args.reuse_staged_html_helper else 'staged from pinned build','validation_report':str(args.report.resolve()),'scope':'per-user authorized installation; all staged then individual atomic replacements; no running windows controlled','backup':str(backup),'files':records,'resource_gate':'NOT_MEASURED','startup_gate':'NOT_MEASURED'}
+result={'checkpoint':checkpoint,'binary_source_checkpoint':report.get('binary_source_checkpoint',checkpoint),'html_helper':'reused staged, recipe verified' if args.reuse_staged_html_helper else 'staged from pinned build','validation_report':str(args.report.resolve()),'scope':'per-user authorized installation; all five backups hashed before individual atomic replacements; no running windows controlled','backup':str(backup),'files':records,'resource_gate':'NOT_MEASURED','startup_gate':'NOT_MEASURED'}
 path=ROOT/'docs/evidence/0.0.4'/('installed-checkpoint-'+str(time.time_ns())+'.json')
 with path.open('x') as out:json.dump(result,out,indent=2)
 print(path)
