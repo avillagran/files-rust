@@ -8,15 +8,16 @@ import hashlib
 import importlib.util
 import json
 import os
+import secrets
 from pathlib import Path
-import select
 import shlex
 import signal
+import socket as socket_module
+import stat
+import struct
 import subprocess
 import sys
-import tempfile
 import time
-from urllib.parse import quote_from_bytes
 from xml.sax.saxutils import escape
 
 from memcheck import stop_tree
@@ -28,8 +29,219 @@ spec.loader.exec_module(harness)
 STATE = 'FILES_MUTATION_SHEET_STATE '
 
 
+def open_directory(path):
+    """Open every absolute directory component without following symlinks."""
+    path = Path(path)
+    if not path.is_absolute() or '..' in path.parts:
+        raise ValueError('directory must be an absolute normalized path')
+    fd = os.open('/', os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
+    try:
+        for part in path.parts[1:]:
+            nxt = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=fd)
+            os.close(fd)
+            fd = nxt
+        return fd
+    except BaseException:
+        os.close(fd)
+        raise
+
+
+def check_private_directory(path):
+    fd = open_directory(path)
+    info = os.fstat(fd)
+    if info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) != 0o700:
+        os.close(fd)
+        raise ValueError('fixture directory must be owned and mode 0700')
+    return fd
+
+
+def create_directory(parent, name, mode=0o700):
+    fd = open_directory(parent)
+    try:
+        os.mkdir(name, mode, dir_fd=fd)
+        child = os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=fd)
+        os.close(child)
+    finally:
+        os.close(fd)
+    return Path(parent) / name
+
+
+def create_fixture(parent, prefix):
+    for _ in range(32):
+        name = prefix + secrets.token_hex(6)
+        try:
+            path = create_directory(parent, name)
+        except FileExistsError:
+            continue
+        fd = check_private_directory(path)
+        os.close(fd)
+        return path
+    raise RuntimeError('cannot allocate unique private fixture')
+
+
+def entry_kind(path):
+    path = Path(path)
+    fd = open_directory(path.parent)
+    try:
+        try:
+            info = os.stat(path.name, dir_fd=fd, follow_symlinks=False)
+        except FileNotFoundError:
+            return None
+        if stat.S_ISLNK(info.st_mode):
+            raise ValueError('symlink found at private fixture boundary')
+        if info.st_uid != os.getuid():
+            raise ValueError('private fixture entry is not owned by this user')
+        if stat.S_ISREG(info.st_mode): return 'file'
+        if stat.S_ISDIR(info.st_mode): return 'directory'
+        if stat.S_ISSOCK(info.st_mode): return 'socket'
+        raise ValueError('unexpected private fixture entry type')
+    finally:
+        os.close(fd)
+
+
+def read_private(path):
+    path = Path(path)
+    directory = open_directory(path.parent)
+    try:
+        fd = os.open(path.name, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=directory)
+        with os.fdopen(fd, 'rb') as file:
+            info = os.fstat(file.fileno())
+            if not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid():
+                raise ValueError('private input is not a regular file')
+            data = file.read(32 * 1024 * 1024 + 1)
+            if len(data) > 32 * 1024 * 1024:
+                raise ValueError('private input exceeds fixture limit')
+            return data
+    finally:
+        os.close(directory)
+
+
+def open_private_executable(path):
+    path = Path(path)
+    directory = open_directory(path.parent)
+    try:
+        fd = os.open(path.name, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=directory)
+        info = os.fstat(fd)
+        if not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid() or not info.st_mode & 0o100:
+            os.close(fd)
+            raise ValueError('private helper is not an owned executable file')
+        return fd
+    finally:
+        os.close(directory)
+
+
+def write_private(path, value):
+    path = Path(path)
+    directory = open_directory(path.parent)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC
+    try:
+        fd = os.open(path.name, flags, 0o600, dir_fd=directory)
+        with os.fdopen(fd, 'wb') as file:
+            if not stat.S_ISREG(os.fstat(file.fileno()).st_mode):
+                raise ValueError('private output is not a regular file')
+            file.write(value if isinstance(value, bytes) else value.encode())
+    finally:
+        os.close(directory)
+
+
+def open_private_output(path):
+    path = Path(path)
+    directory = open_directory(path.parent)
+    try:
+        fd = os.open(path.name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
+                     0o600, dir_fd=directory)
+        return os.fdopen(fd, 'wb')
+    finally:
+        os.close(directory)
+
+
+def waiting_files(path, phase):
+    directory = check_private_directory(path)
+    try:
+        matches = []
+        for name in os.listdir(directory):
+            if name.startswith(phase + '-') and name.endswith('.waiting'):
+                info = os.stat(name, dir_fd=directory, follow_symlinks=False)
+                if not stat.S_ISREG(info.st_mode):
+                    raise ValueError('worker signal is not a regular file')
+                matches.append(name)
+        return matches
+    finally:
+        os.close(directory)
+
+
+def runtime_in_use(runtime):
+    hypr = Path(runtime) / 'hypr'
+    kind = entry_kind(hypr)
+    if kind is None:
+        return False
+    if kind != 'directory':
+        raise ValueError('invalid compositor runtime entry')
+    fd = open_directory(hypr)
+    try:
+        for name in os.listdir(fd):
+            info = os.stat(name, dir_fd=fd, follow_symlinks=False)
+            if stat.S_ISLNK(info.st_mode):
+                raise ValueError('symlink in private compositor runtime')
+            if not stat.S_ISDIR(info.st_mode):
+                continue
+            child = os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=fd)
+            try:
+                try:
+                    sock = os.stat('.socket.sock', dir_fd=child, follow_symlinks=False)
+                except FileNotFoundError:
+                    continue
+                if stat.S_ISLNK(sock.st_mode):
+                    raise ValueError('symlink in private compositor runtime')
+                if stat.S_ISSOCK(sock.st_mode):
+                    return True
+            finally:
+                os.close(child)
+        return False
+    finally:
+        os.close(fd)
+
+
+def preserve_entry(path):
+    """Move an existing regular fixture entry aside without deleting it."""
+    path = Path(path)
+    if entry_kind(path) is None:
+        return
+    if entry_kind(path) != 'file':
+        raise ValueError('only regular fixture files may be preserved')
+    directory = open_directory(path.parent)
+    try:
+        target = path.name + '.retained-' + secrets.token_hex(8)
+        os.link(path.name, target, src_dir_fd=directory, dst_dir_fd=directory, follow_symlinks=False)
+        # Rename the original name to a unique retained name; never unlink.
+        os.rename(path.name, path.name + '.moved-' + secrets.token_hex(8),
+                  src_dir_fd=directory, dst_dir_fd=directory)
+    finally:
+        os.close(directory)
+
+
+def stage_command(path, value):
+    """Publish an owned command without replacing an existing entry."""
+    path = Path(path)
+    directory = open_directory(path.parent)
+    pending = '.command-' + secrets.token_hex(8)
+    try:
+        fd = os.open(pending, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
+                     0o600, dir_fd=directory)
+        with os.fdopen(fd, 'wb') as file:
+            file.write(value.encode())
+        os.link(pending, path.name, src_dir_fd=directory, dst_dir_fd=directory, follow_symlinks=False)
+        # Keep the source link as evidence; the application owns the command link.
+    finally:
+        os.close(directory)
+
+
 def policy_enabled(value):
     return value.get('bool') is True or (type(value.get('int')) is int and value['int'] == 1)
+
+
+def wayland_socket_name(value):
+    return isinstance(value, str) and value.startswith('wayland-') and value[8:].isdigit()
 
 
 def started(pid):
@@ -41,6 +253,8 @@ def started(pid):
 
 
 def main():
+    if not __debug__:
+        raise SystemExit('This check requires Python assertions to be enabled.')
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--binary', type=Path, default=ROOT / 'target/release/files')
     ap.add_argument('--size', choices=('1000x650', '600x650'), default='1000x650')
@@ -48,14 +262,21 @@ def main():
     ap.add_argument('--private-child', action='store_true', help=argparse.SUPPRESS)
     args = ap.parse_args()
     cache = Path.home() / '.cache/files-test'
-    cache.mkdir(parents=True, exist_ok=True)
+    if entry_kind(cache) is None:
+        create_directory(cache.parent, cache.name)
+    cache_fd = open_directory(cache)
+    cache_info = os.fstat(cache_fd)
+    if cache_info.st_uid != os.getuid() or stat.S_IMODE(cache_info.st_mode) & 0o022:
+        os.close(cache_fd)
+        raise ValueError('fixture parent must be owned and not group/world writable')
+    os.close(cache_fd)
     if not args.private_child:
-        directory = Path(tempfile.mkdtemp(prefix='mutation-sheet-bus-', dir=cache))
+        directory = create_fixture(cache, 'mutation-sheet-bus-')
         config = directory / 'bus.conf'
-        config.write_text('<busconfig><type>session</type><listen>unix:tmpdir=' + escape(str(directory)) +
-                          '</listen><auth>EXTERNAL</auth><policy context="default">'
-                          '<allow send_destination="*"/><allow receive_sender="*"/>'
-                          '<allow own="*"/></policy></busconfig>')
+        write_private(config, '<busconfig><type>session</type><listen>unix:tmpdir=' + escape(str(directory)) +
+                      '</listen><auth>EXTERNAL</auth><policy context="default">'
+                      '<allow send_destination="*"/><allow receive_sender="*"/>'
+                      '<allow own="*"/></policy></busconfig>')
         env = dict(os.environ)
         env['FILES_TEST_PARENT_BUS'] = env.get('DBUS_SESSION_BUS_ADDRESS', '')
         env['FILES_TEST_BUS_DIR'] = str(directory)
@@ -66,14 +287,15 @@ def main():
                                '--size', args.size, '--animations', args.animations],
                               env=env, check=False).returncode
     bus = os.environ.get('DBUS_SESSION_BUS_ADDRESS', '')
-    assert bus != os.environ.get('FILES_TEST_PARENT_BUS', '') and bus.startswith(
-        'unix:path=' + os.environ.get('FILES_TEST_BUS_DIR', '<absent>') + '/'), 'refusing non-private bus'
+    if bus == os.environ.get('FILES_TEST_PARENT_BUS', '') or not bus.startswith(
+            'unix:path=' + os.environ.get('FILES_TEST_BUS_DIR', '<absent>') + '/'):
+        raise ValueError('refusing non-private bus')
     binary = args.binary.resolve(strict=True)
-    base = Path(tempfile.mkdtemp(prefix='mutation-sheet-native-', dir=cache))
+    base = create_fixture(cache, 'mutation-sheet-native-')
     report = {'functional_gate': 'FAIL', 'fixture_dir': str(base), 'checks': [], 'states': [],
               'binary_path': str(binary), 'requested_size': args.size, 'animations': args.animations,
               'captures': [], 'animation_comparison': 'NOT_COMPARED',
-              'scope': 'native input and real private mutation fixtures; this profile alone does not prove cross-profile motion',
+              'scope': 'native input and private mutation fixtures; executable paths and compositor-owned paths are outside fixture file checks; this profile alone does not prove cross-profile motion',
               'resource_gate': 'NOT_MEASURED', 'startup_gate': 'NOT_MEASURED'}
     service = origin = compositor = None
     identities = {}
@@ -81,19 +303,18 @@ def main():
         for name, field in (('files', 'binary_sha256'), ('files-helper', 'helper_sha256'),
                             ('files-html-helper', 'html_helper_sha256')):
             report[field] = hashlib.sha256((binary if name == 'files' else binary.parent / name).read_bytes()).hexdigest()
-        runtime = base / 'runtime'
-        runtime.mkdir(mode=0o700)
+        runtime = create_directory(base, 'runtime')
         config = base / 'headless.conf'
-        config.write_text('monitor = HEADLESS-1,1280x800@60,0x0,1\n'
-                          'misc {\n    disable_hyprland_logo = true\n    disable_splash_rendering = true\n'
-                          '    focus_on_activate = true\n}\n')
+        write_private(config, 'monitor = HEADLESS-1,1280x800@60,0x0,1\n'
+                      'misc {\n    disable_hyprland_logo = true\n    disable_splash_rendering = true\n'
+                      '    focus_on_activate = true\n}\n')
         compositor_env = {**os.environ, 'XDG_RUNTIME_DIR': str(runtime), 'HOME': str(base),
                           'XDG_CONFIG_HOME': str(base), 'AQ_BACKEND': 'headless', 'WLR_BACKENDS': 'headless',
                           'LIBGL_ALWAYS_SOFTWARE': '1', 'HYPRLAND_NO_SD_NOTIFY': '1', 'HYPRLAND_NO_SD_VARS': '1'}
         for key in ('WAYLAND_DISPLAY', 'DISPLAY', 'HYPRLAND_INSTANCE_SIGNATURE', 'WAYLAND_DEBUG',
                     'XDG_ACTIVATION_TOKEN', 'DESKTOP_STARTUP_ID'):
             compositor_env.pop(key, None)
-        with (base / 'compositor.log').open('w') as output:
+        with open_private_output(base / 'compositor.log') as output:
             compositor = subprocess.Popen(['Hyprland', '--config', str(config)], env=compositor_env,
                                           stdout=output, stderr=subprocess.STDOUT, start_new_session=True)
         identity = started(compositor.pid)
@@ -106,7 +327,8 @@ def main():
                 match = json.loads(harness.hypr(['instances', '-j'], compositor_env))
             except (ValueError, subprocess.TimeoutExpired):
                 match = []
-            match = [item for item in match if (runtime / item.get('wl_socket', '')).is_socket()]
+            match = [item for item in match if wayland_socket_name(item.get('wl_socket')) and
+                     entry_kind(runtime / item.get('wl_socket', '')) == 'socket']
             if len(match) == 1:
                 break
             time.sleep(.1)
@@ -115,12 +337,15 @@ def main():
             if compositor.poll() is None:
                 stop_tree(compositor, None)
             short_root = Path('/var/tmp/files-filemanager')
-            short_root.mkdir(mode=0o700, exist_ok=True)
-            assert short_root.is_dir() and short_root.stat().st_uid == os.getuid()
+            if entry_kind(short_root) is None:
+                create_directory(short_root.parent, short_root.name)
+            private_fd = check_private_directory(short_root)
+            os.close(private_fd)
             # Hyprland's IPC socket embeds a long instance signature; this
             # private 0700 root must stay short enough for AF_UNIX paths.
             runtime = short_root
-            assert not list((runtime / 'hypr').glob('*/.socket.sock')), 'private runtime already in use'
+            if runtime_in_use(runtime):
+                raise ValueError('private runtime already in use')
             parent_runtime = Path(os.environ['XDG_RUNTIME_DIR'])
             parent_display = os.environ['WAYLAND_DISPLAY']
             if not os.path.isabs(parent_display):
@@ -131,9 +356,11 @@ def main():
                            if key in ('HOME', 'XDG_CONFIG_HOME', 'XDG_RUNTIME_DIR', 'AQ_BACKEND',
                                       'WAYLAND_DISPLAY', 'DBUS_SESSION_BUS_ADDRESS', 'LIBGL_ALWAYS_SOFTWARE',
                                       'HYPRLAND_NO_SD_NOTIFY', 'HYPRLAND_NO_SD_VARS')]
-            command = shlex.join(['env', '-u', 'HYPRLAND_INSTANCE_SIGNATURE', '-u', 'DISPLAY', '-u', 'WAYLAND_DEBUG',
-                                  '-u', 'XDG_ACTIVATION_TOKEN', '-u', 'DESKTOP_STARTUP_ID', *assignments,
-                                  'Hyprland', '--config', str(config)]) + ' > ' + shlex.quote(str(base / 'nested.log')) + ' 2>&1'
+            invocation = shlex.join(['env', '-u', 'HYPRLAND_INSTANCE_SIGNATURE', '-u', 'DISPLAY', '-u', 'WAYLAND_DEBUG',
+                                     '-u', 'XDG_ACTIVATION_TOKEN', '-u', 'DESKTOP_STARTUP_ID', *assignments,
+                                     'Hyprland', '--config', str(config)])
+            script = 'set -C\nexec ' + invocation + ' > ' + shlex.quote(str(base / 'nested.log')) + ' 2>&1'
+            command = shlex.join(['/bin/sh', '-c', script])
             lua = f'hl.dsp.exec_cmd({json.dumps(command)}, {{ workspace = "special:files-present-check silent" }})'
             reply = harness.hypr(['dispatch', lua]).strip()
             if reply.lower() != 'ok':
@@ -146,7 +373,8 @@ def main():
                     match = json.loads(harness.hypr(['instances', '-j'], compositor_env))
                 except (ValueError, subprocess.TimeoutExpired):
                     match = []
-                match = [item for item in match if (runtime / item.get('wl_socket', '')).is_socket()]
+                match = [item for item in match if wayland_socket_name(item.get('wl_socket')) and
+                         entry_kind(runtime / item.get('wl_socket', '')) == 'socket']
                 if len(match) == 1:
                     break
                 time.sleep(.1)
@@ -154,9 +382,26 @@ def main():
             found = subprocess.run(['pgrep', '-x', '-f', f'Hyprland --config {config}'],
                                    capture_output=True, text=True, check=False).stdout.split()
             identities = {int(pid): started(int(pid)) for pid in found}
-            assert identities and all(identities.values()), 'unidentified private compositor'
+            if len(identities) != 1 or not all(identities.values()):
+                raise ValueError('unidentified private compositor')
         socket, signature = match[0]['wl_socket'], match[0]['instance']
-        assert signature != os.environ.get('HYPRLAND_INSTANCE_SIGNATURE')
+        if len(identities) != 1 or not wayland_socket_name(socket):
+            raise ValueError('invalid private compositor identity')
+        compositor_pid, compositor_start = next(iter(identities.items()))
+        if (not isinstance(signature, str) or not signature or '/' in signature or signature in ('.', '..') or
+                signature == os.environ.get('HYPRLAND_INSTANCE_SIGNATURE')):
+            raise ValueError('refusing non-private compositor signature')
+        runtime_fd = check_private_directory(runtime)
+        os.close(runtime_fd)
+        ipc_dir = open_directory(runtime / 'hypr' / signature)
+        try:
+            ipc_info = os.fstat(ipc_dir)
+            if ipc_info.st_uid != os.getuid() or stat.S_IMODE(ipc_info.st_mode) & 0o022:
+                raise ValueError('private compositor IPC directory is not secure')
+        finally:
+            os.close(ipc_dir)
+        if entry_kind(runtime / 'hypr' / signature / '.socket.sock') != 'socket':
+            raise ValueError('private compositor IPC socket is invalid')
         report['nested'] = {'socket': socket, 'pids': list(identities), 'runtime': str(runtime),
                             'backend': 'nested' if report.get('headless_attempt') else 'headless'}
         nested = {**compositor_env, 'WAYLAND_DISPLAY': socket, 'HYPRLAND_INSTANCE_SIGNATURE': signature}
@@ -176,21 +421,19 @@ def main():
             raise AssertionError('cannot verify private activation policy') from None
         report['private_focus_on_activate'] = value
         assert policy_enabled(value), 'private activation policy was not enabled'
-        home = base / 'home'
+        home = create_directory(base, 'home')
         for name in ('Downloads', 'Documents', 'Pictures', 'Music', 'Videos', 'A', 'B'):
-            (home / name).mkdir(parents=True)
+            create_directory(home, name)
         payload = home / 'A' / 'photo1.txt'
-        payload.write_bytes(b'Private first fixture\n')
-        (home / 'A' / 'photo2.txt').write_bytes(b'Private second fixture\n')
-        (home / 'A' / 'percent%name.txt').write_bytes(b'Private percent fixture\n')
-        with open(os.fsencode(home / 'A') + b'/raw-\xff\nname.txt', 'wb') as f:
-            f.write(b'Private raw fixture\n')
-        gate = base / 'worker-gate'
-        gate.mkdir(mode=0o700)
+        write_private(payload, b'Private first fixture\n')
+        write_private(home / 'A' / 'photo2.txt', b'Private second fixture\n')
+        write_private(home / 'A' / 'percent%name.txt', b'Private percent fixture\n')
+        write_private(home / 'A' / os.fsdecode(b'raw-\xff\nname.txt'), b'Private raw fixture\n')
+        gate = create_directory(base, 'worker-gate')
         for name in ('config', 'data', 'files-config', 'origin-config', 'origin-data', 'origin-files-config'):
-            (base / name).mkdir()
-        (base / 'devices.json').write_text('{"blockdevices": []}\n')
-        (base / 'shell.toml').write_text('[font]\nbase-size = 14\n')
+            create_directory(base, name)
+        write_private(base / 'devices.json', '{"blockdevices": []}\n')
+        write_private(base / 'shell.toml', '[font]\nbase-size = 14\n')
         raw, log = base / 'service.ppm', base / 'service.log'
         env = {**nested, 'HOME': str(home), 'XDG_CONFIG_HOME': str(base / 'config'),
                'XDG_DATA_HOME': str(base / 'data'), 'FILES_CONFIG_DIR': str(base / 'files-config'),
@@ -202,13 +445,13 @@ def main():
                'OMARCHY_FLTK_USER_SHELL': str(base / 'shell.toml'), 'TMPDIR': str(base),
                'MAGICK_TEMPORARY_PATH': str(base)}
         env.pop('FILES_TEST_ISOLATE_INPUT', None)
-        with log.open('w') as out:
+        with open_private_output(log) as out:
             service = subprocess.Popen([str(binary), str(home / 'A'), '--size', args.size, '--scale', '1',
                                         '--no-session', '--ui-smoke', '--ui-scene', 'rename', '--exit-after', '180'], env=env,
                                        stdout=subprocess.DEVNULL, stderr=out, start_new_session=True)
 
         def text():
-            return log.read_text(errors='replace')
+            return read_private(log).decode(errors='replace')
 
         def wait(fn, reason, timeout=20):
             end = time.monotonic() + timeout
@@ -228,28 +471,63 @@ def main():
             current = json.loads(harness.hypr(['activewindow', '-j'], nested) or '{}')
             return current.get('pid')
 
+        def validate_owned_wayland():
+            fd = check_private_directory(runtime)
+            os.close(fd)
+            if (started(compositor_pid) != compositor_start or entry_kind(runtime / socket) != 'socket' or
+                    entry_kind(runtime / 'hypr' / signature / '.socket.sock') != 'socket'):
+                raise ValueError('private compositor identity or socket changed')
+
+        def open_owned_wayland():
+            """Preconnect a verified socket; child tools inherit only this fd."""
+            validate_owned_wayland()
+            directory = check_private_directory(runtime)
+            connection = socket_module.socket(socket_module.AF_UNIX, socket_module.SOCK_STREAM)
+            try:
+                before = os.stat(socket, dir_fd=directory, follow_symlinks=False)
+                if not stat.S_ISSOCK(before.st_mode) or before.st_uid != os.getuid():
+                    raise ValueError('private Wayland entry is not an owned socket')
+                connection.settimeout(5)
+                # AF_UNIX connect has no dir_fd/O_NOFOLLOW variant. The 0700
+                # parent, lstat checks and peer/starttime/inode checks reject a
+                # changed peer before any input, but cannot make lookup atomic.
+                connection.connect(str(runtime / socket))
+                peer_pid, peer_uid, _ = struct.unpack('3i', connection.getsockopt(
+                    socket_module.SOL_SOCKET, socket_module.SO_PEERCRED, struct.calcsize('3i')))
+                after = os.stat(socket, dir_fd=directory, follow_symlinks=False)
+                if (peer_pid != compositor_pid or peer_uid != os.getuid() or
+                        not stat.S_ISSOCK(after.st_mode) or (before.st_dev, before.st_ino) != (after.st_dev, after.st_ino) or
+                        started(compositor_pid) != compositor_start):
+                    raise ValueError('private Wayland peer or socket identity changed')
+                connection.settimeout(None)
+                return connection
+            except BaseException:
+                connection.close()
+                raise
+            finally:
+                os.close(directory)
+
         def focus_own(pid):
+            validate_owned_wayland()
             client = wait(lambda: clients(pid)[0] if len(clients(pid)) == 1 else None, 'origin window')
             target = 'address:' + client['address']
             result = harness.hypr(['dispatch', f'hl.dsp.focus({{window={json.dumps(target)}}})'], nested).strip()
             if result.lower() != 'ok':
                 result = harness.hypr(['dispatch', 'focuswindow', target], nested).strip()
-            assert result.lower() == 'ok', 'cannot focus private origin'
+            if result.lower() != 'ok':
+                raise ValueError('cannot focus private window')
             wait(lambda: active() == pid, 'origin focus')
+            validate_owned_wayland()
 
         def send(action, capture=raw, source_log=log):
-            offset = len(source_log.read_text(errors='replace'))
-            pending = capture.with_suffix('.pending')
-            pending.write_text(action)
-            pending.replace(capture.with_suffix('.command'))
-            wait(lambda: f'FILES_MUTATION_COMMAND_OK {action}\n' in source_log.read_text(errors='replace')[offset:], action)
+            offset = len(read_private(source_log).decode(errors='replace'))
+            stage_command(capture.with_suffix('.command'), action)
+            wait(lambda: f'FILES_MUTATION_COMMAND_OK {action}\n' in read_private(source_log).decode(errors='replace')[offset:], action)
             return offset
 
         def send_popup(action):
             offset = len(text())
-            pending = raw.with_suffix('.pending')
-            pending.write_text(action)
-            pending.replace(raw.with_suffix('.popup-command'))
+            stage_command(raw.with_suffix('.popup-command'), action)
             wait(lambda: f'FILES_TOOLKIT_FIXTURE action={action}\n' in text()[offset:], action)
 
         def state(label):
@@ -260,49 +538,80 @@ def main():
             return value
 
         def key(*keys):
-            subprocess.run(['wtype', *keys], env=nested, check=True, timeout=10)
+            if active() != service.pid:
+                raise ValueError('refusing keyboard input to a non-owned window')
+            with open_owned_wayland() as connection:
+                tool_env = {**nested, 'WAYLAND_SOCKET': str(connection.fileno())}
+                subprocess.run(['wtype', *keys], env=tool_env, pass_fds=(connection.fileno(),), check=True, timeout=10)
+            validate_owned_wayland()
 
         def clipboard(text_value):
             # The nested socket is explicit: never access the user's clipboard.
-            subprocess.run(['wl-copy'], input=text_value, text=True, env=nested, check=True, timeout=10)
+            with open_owned_wayland() as connection:
+                tool_env = {**nested, 'WAYLAND_SOCKET': str(connection.fileno())}
+                subprocess.run(['wl-copy'], input=text_value, text=True, env=tool_env,
+                               pass_fds=(connection.fileno(),), check=True, timeout=10)
+            validate_owned_wayland()
 
         def capture(label):
-            raw.unlink(missing_ok=True)
-            raw.with_suffix('.request').touch()
+            preserve_entry(raw)
+            write_private(raw.with_suffix('.request'), b'')
             def complete():
-                if not raw.exists(): return False
-                parts = raw.read_bytes().split(b'\n', 3)
+                if entry_kind(raw) is None: return False
+                parts = read_private(raw).split(b'\n', 3)
                 if len(parts) != 4: return False
                 try: w, h = map(int, parts[1].split())
                 except ValueError: return False
                 return len(parts[3]) == w * h * 3
             wait(complete, 'frame ' + label)
             path = base / (label + '.png')
-            subprocess.run(['magick', str(raw), str(path)], env=env, check=True, timeout=15)
+            converted = subprocess.run(['magick', 'ppm:-', 'png:-'], input=read_private(raw),
+                                       stdout=subprocess.PIPE, env=env, check=True, timeout=15)
+            write_private(path, converted.stdout)
             report['captures'].append(str(path))
 
         tools = ROOT / 'scripts/tools'
         xml = tools / 'wlr-virtual-pointer-unstable-v1.xml'
         header, generated = base / 'wlr-virtual-pointer-unstable-v1-client.h', base / 'pointer-protocol.c'
+        pointer = base / 'private-sheet-pointer'
+        if any(entry_kind(path) is not None for path in (header, generated, pointer)):
+            raise ValueError('refusing to replace fixture build output')
         subprocess.run(['wayland-scanner', 'client-header', str(xml), str(header)], check=True)
         subprocess.run(['wayland-scanner', 'private-code', str(xml), str(generated)], check=True)
+        if entry_kind(header) != 'file' or entry_kind(generated) != 'file':
+            raise ValueError('fixture build output is not a regular file')
         flags = subprocess.check_output(['pkg-config', '--cflags', '--libs', 'wayland-client'], text=True).split()
-        pointer = base / 'private-sheet-pointer'
         subprocess.run(['cc', '-O2', '-Wall', '-Wextra', '-I' + str(base), '-o', str(pointer),
                         str(tools / 'private-sheet-pointer.c'), str(generated), *flags], check=True)
+        if entry_kind(pointer) != 'file':
+            raise ValueError('fixture pointer is not a regular file')
 
         def click(rect):
-            assert rect and len(rect) == 4 and rect[2] > 0 and rect[3] > 0
+            if not rect or len(rect) != 4 or rect[2] <= 0 or rect[3] <= 0:
+                raise ValueError('invalid private click rectangle')
             client = wait(lambda: clients(service.pid)[0] if len(clients(service.pid)) == 1 else None, 'owned window')
+            if (rect[0] < 0 or rect[1] < 0 or rect[0] + rect[2] > client['size'][0] or
+                    rect[1] + rect[3] > client['size'][1]):
+                raise ValueError('refusing click outside the owned window')
             monitors = json.loads(harness.hypr(['monitors', '-j'], nested))
-            assert len(monitors) == 1 and client['monitor'] == monitors[0]['id']
+            if len(monitors) != 1 or client['monitor'] != monitors[0]['id']:
+                raise ValueError('private monitor mismatch')
             monitor = monitors[0]
-            assert [monitor.get('x', 0), monitor.get('y', 0)] == [0, 0]
+            if [monitor.get('x', 0), monitor.get('y', 0)] != [0, 0]:
+                raise ValueError('unexpected private monitor origin')
             width, height = round(monitor['width'] / monitor['scale']), round(monitor['height'] / monitor['scale'])
             x, y = client['at'][0] + rect[0] + rect[2] // 2, client['at'][1] + rect[1] + rect[3] // 2
-            assert 0 <= x < width and 0 <= y < height, 'refusing click outside private monitor'
-            subprocess.run([str(pointer), str(runtime / socket), str(width), str(height), str(x), str(y), 'click'],
-                           env=nested, check=True, timeout=10)
+            if not (0 <= x < width and 0 <= y < height):
+                raise ValueError('refusing click outside private monitor')
+            validate_owned_wayland()
+            pointer_fd = open_private_executable(pointer)
+            try:
+                subprocess.run(['/proc/self/fd/' + str(pointer_fd), socket, str(compositor_pid),
+                                str(width), str(height), str(x), str(y), 'click'], env=nested,
+                               pass_fds=(pointer_fd,), check=True, timeout=10)
+            finally:
+                os.close(pointer_fd)
+            validate_owned_wayland()
 
         def click_outside(sheet_state):
             sx, sy, sw, sh = sheet_state['rect']
@@ -353,17 +662,17 @@ def main():
             return sheet(label, lambda s: not s.get('open'))
 
         def arm(phase):
-            (gate / (phase + '.arm')).touch(mode=0o600)
+            write_private(gate / (phase + '.arm'), b'')
 
         def held(phase):
-            matches = wait(lambda: list(gate.glob(phase + '-*.waiting')), phase + ' worker gate')
+            matches = wait(lambda: waiting_files(gate, phase), phase + ' worker gate')
             assert len(matches) == 1
-            (gate / (phase + '.arm')).unlink()
-            prefix = matches[0].name.removesuffix('.waiting')
+            preserve_entry(gate / (phase + '.arm'))
+            prefix = matches[0].removesuffix('.waiting')
             return prefix
 
         def release(prefix):
-            (gate / (prefix + '.release')).touch(mode=0o600)
+            write_private(gate / (prefix + '.release'), b'')
 
         # Dismiss and reopen must not preserve a stale draft or native undo state.
         send_popup('operation-notice-clock-freeze')
@@ -467,15 +776,15 @@ def main():
         assert not applying['geometry']['apply_enabled'] and not any(applying['geometry']['field_enabled'])
         key('-k', 'Escape')
         still = sheet('create-escape-blocked', lambda s: s.get('open') and s.get('applying'))
-        assert still['epoch'] == applying['epoch'] and not (home / 'A' / created_name).exists()
+        assert still['epoch'] == applying['epoch'] and entry_kind(home / 'A' / created_name) is None
         if args.size == '600x650' and still.get('close'):
             click(still['close'])
             sheet('create-close-blocked', lambda s: s.get('open') and s.get('applying'))
             click_outside(still)
             sheet('create-outside-blocked', lambda s: s.get('open') and s.get('applying'))
         release(ticket)
-        wait(lambda: (home / 'A' / created_name).is_file(), 'create file ACK')
-        assert (home / 'A' / created_name).read_bytes() == b''
+        wait(lambda: entry_kind(home / 'A' / created_name) == 'file', 'create file ACK')
+        assert read_private(home / 'A' / created_name) == b''
         closed('created-file')
         report['checks'].append('native Unicode paste and undo; create remains visible during Apply until ACK')
 
@@ -483,7 +792,7 @@ def main():
         open_sheet('create-folder')
         set_field(folder)
         key('-k', 'Return')
-        wait(lambda: (home / 'A' / folder).is_dir(), 'create folder ACK')
+        wait(lambda: entry_kind(home / 'A' / folder) == 'directory', 'create folder ACK')
         closed('created-folder')
         report['checks'].append('native create folder preserves Unicode and percent basename')
 
@@ -494,19 +803,18 @@ def main():
         wait(lambda: any('FILES_MUTATION_FINISHED id=' in line and 'success=false' in line
                          for line in text()[before_conflict:].splitlines()), 'conflict ACK')
         conflict = sheet('create-conflict', lambda s: bool(s['model']['notice_open']) or bool(s.get('error')))
-        assert (home / 'A' / 'photo1.txt').read_bytes() == b'Private first fixture\n'
+        assert read_private(home / 'A' / 'photo1.txt') == b'Private first fixture\n'
         capture('create-conflict')
         if conflict['model']['notice_open']:
             key('-k', 'Escape')
         report['checks'].append('conflicting create reports failure without changing the existing file')
 
-        raw_name = os.fsencode(home / 'A') + b'/raw-\xff\nname.txt'
+        raw_name = home / 'A' / os.fsdecode(b'raw-\xff\nname.txt')
         open_sheet('rename-raw')
         rejected = sheet('raw-name-rejected', lambda s: s.get('open') and not s.get('planning') and
                          bool(s.get('error')) and not s.get('can_apply'))
         assert 'UTF-8' in rejected['error'] and not rejected['geometry']['apply_enabled']
-        with open(raw_name, 'rb') as f:
-            assert f.read() == b'Private raw fixture\n'
+        assert read_private(raw_name) == b'Private raw fixture\n'
         capture('raw-name-rejected')
         key('-k', 'Escape')
         closed('raw-name-cancelled')
@@ -527,7 +835,7 @@ def main():
         fresh = sheet('fresh-plan-after-stale-ack', lambda s: s.get('open') and not s.get('planning') and
                       s.get('can_apply') and s.get('preview_total') == 1 and
                       s.get('geometry', {}).get('values', [''])[0] == 'fresh-{name}{dotext}')
-        assert fresh['epoch'] == newer['epoch'] and (home / 'A' / 'photo1.txt').read_bytes() == b'Private first fixture\n'
+        assert fresh['epoch'] == newer['epoch'] and read_private(home / 'A' / 'photo1.txt') == b'Private first fixture\n'
         key('-k', 'Escape')
         closed('fresh-plan-cancelled')
         report['checks'].append('a delayed old Plan ACK cannot replace the reopened dialog plan')
@@ -538,10 +846,11 @@ def main():
         sheet('single-plan', lambda s: not s.get('planning') and s.get('can_apply') and s.get('preview_total') == 1)
         capture('single-preview')
         key('-k', 'Return')
-        wait(lambda: (home / 'A' / 'single.txt').is_file(), 'single rename ACK')
-        assert (home / 'A' / 'single.txt').read_bytes() == b'Private first fixture\n'
+        wait(lambda: entry_kind(home / 'A' / 'single.txt') == 'file', 'single rename ACK')
+        assert read_private(home / 'A' / 'single.txt') == b'Private first fixture\n'
         key('-M', 'ctrl', '-k', 'z', '-m', 'ctrl')
-        wait(lambda: (home / 'A' / 'photo1.txt').is_file() and not (home / 'A' / 'single.txt').exists(), 'undo single rename')
+        wait(lambda: entry_kind(home / 'A' / 'photo1.txt') == 'file' and
+             entry_kind(home / 'A' / 'single.txt') is None, 'undo single rename')
         sheet('undo-ack', lambda s: not s['model']['mutation_busy'] and not s['model']['mutation_applied'])
         report['checks'].append('single rename plan/apply and native undo preserve bytes')
 
@@ -557,13 +866,12 @@ def main():
         assert not held_apply['geometry']['apply_enabled'] and not any(held_apply['geometry']['field_enabled'])
         capture('bulk-apply-held')
         release(apply_ticket)
-        wait(lambda: (home / 'A' / 'photo1-batch.txt').is_file() and
-             (home / 'A' / 'photo2-batch.txt').is_file(), 'bulk rename ACK')
-        assert (home / 'A' / 'photo1-batch.txt').read_bytes() == b'Private first fixture\n'
-        assert (home / 'A' / 'photo2-batch.txt').read_bytes() == b'Private second fixture\n'
-        assert (home / 'A' / 'percent%name.txt').read_bytes() == b'Private percent fixture\n'
-        with open(os.fsencode(home / 'A') + b'/raw-\xff\nname.txt', 'rb') as f:
-            assert f.read() == b'Private raw fixture\n'
+        wait(lambda: entry_kind(home / 'A' / 'photo1-batch.txt') == 'file' and
+             entry_kind(home / 'A' / 'photo2-batch.txt') == 'file', 'bulk rename ACK')
+        assert read_private(home / 'A' / 'photo1-batch.txt') == b'Private first fixture\n'
+        assert read_private(home / 'A' / 'photo2-batch.txt') == b'Private second fixture\n'
+        assert read_private(home / 'A' / 'percent%name.txt') == b'Private percent fixture\n'
+        assert read_private(raw_name) == b'Private raw fixture\n'
         report['checks'].append('bulk apply retains reviewed rows and focuses Cancel until ACK; preserves each file')
 
         # Hold a real Create ACK after the filesystem operation, then close the
@@ -574,7 +882,7 @@ def main():
         arm('ack-create')
         key('-k', 'Return')
         ticket = held('ack-create')
-        assert (home / 'A' / 'owner-close.txt').is_file()
+        assert entry_kind(home / 'A' / 'owner-close.txt') == 'file'
         before_close = sheet('owner-close-held', lambda s: s['open'] and s['applying'])
         window = clients(service.pid)
         assert len(window) == 1
@@ -616,7 +924,7 @@ def main():
         report['nested_stopped'] = bool(identities) and all(started(pid) != stamp for pid, stamp in identities.items())
         if not report['nested_stopped']:
             report['functional_gate'] = 'FAIL'
-        (base / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
+        write_private(base / 'report.json', json.dumps(report, indent=2) + '\n')
     print(json.dumps({'report': str(base / 'report.json'), 'functional_gate': report['functional_gate'],
                       'error': report.get('error')}))
     return 0 if report['functional_gate'] == 'PASS' else 1
