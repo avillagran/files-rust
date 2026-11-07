@@ -1,0 +1,155 @@
+{
+  "functional_gate": "PASS",
+  "fixture_dir": "/home/avillagran/.cache/files-test/filemanager-presentation-0a2xd_uy",
+  "checks": [
+    "explicit service maps after valid admission",
+    "invalid token requested without forcing focus",
+    "fresh native gesture token requests and reaches owned service focus",
+    "reused token dispatched; compositor focus observation recorded",
+    "close at first-map boundary skips presentation without replay",
+    "owned windows close cleanly and fixture remains unchanged"
+  ],
+  "states": [
+    {
+      "label": "initial",
+      "presentation": {
+        "pending": false,
+        "requests": 1,
+        "attempts": 1,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 1,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      }
+    },
+    {
+      "label": "invalid",
+      "presentation": {
+        "pending": false,
+        "requests": 2,
+        "attempts": 2,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      }
+    },
+    {
+      "label": "fresh",
+      "presentation": {
+        "pending": false,
+        "requests": 3,
+        "attempts": 3,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 3,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      }
+    },
+    {
+      "label": "reused",
+      "presentation": {
+        "pending": false,
+        "requests": 4,
+        "attempts": 4,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 4,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      }
+    }
+  ],
+  "binary_path": "/home/avillagran/.cache/files-m2-updates/presentation-99db7b1/source/target/release/files",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "a22e71378cfc6924e7049dcb262acc95b535c518c746a7d6b8421930770c29e6",
+  "helper_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "headless_attempt": "unavailable; see compositor.log",
+  "nested": {
+    "socket": "wayland-1",
+    "pids": [
+      1346201
+    ],
+    "runtime": "/var/tmp/files-filemanager",
+    "backend": "nested"
+  },
+  "policy_eval_response": "ok",
+  "private_focus_on_activate": {
+    "option": "misc:focus_on_activate",
+    "bool": true,
+    "set": true
+  },
+  "calls": [
+    {
+      "label": "initial-map",
+      "has_hint": false,
+      "hint_length": 0,
+      "returncode": 0
+    },
+    {
+      "label": "invalid",
+      "has_hint": true,
+      "hint_length": 21,
+      "returncode": 0
+    },
+    {
+      "label": "fresh-native",
+      "has_hint": true,
+      "hint_length": 36,
+      "returncode": 0
+    },
+    {
+      "label": "reused-native",
+      "has_hint": true,
+      "hint_length": 36,
+      "returncode": 0
+    },
+    {
+      "label": "close-on-map",
+      "has_hint": false,
+      "hint_length": 0,
+      "returncode": 0
+    }
+  ],
+  "native_token": {
+    "has_hint": true,
+    "hint_length": 36
+  },
+  "reused_token_focus": "origin",
+  "close_on_map": {
+    "requests": 1,
+    "attempts": 0,
+    "skipped": 1,
+    "pending": false
+  },
+  "nested_stopped": true
+}

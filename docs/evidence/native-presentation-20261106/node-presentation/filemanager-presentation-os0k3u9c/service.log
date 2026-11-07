@@ -1,0 +1,4 @@
+FILES_FONT=JetBrainsMono Nerd Font nerd=true
+FILES_GLASS mode=opaque opacity=1.00 overridden=true wayland=true
+FILES_FILE_MANAGER_STATUS owned
+FILES_UI_SMOKE_OK entries=7

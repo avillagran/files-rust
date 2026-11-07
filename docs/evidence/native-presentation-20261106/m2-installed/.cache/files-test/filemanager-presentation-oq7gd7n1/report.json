@@ -1,0 +1,28 @@
+{
+  "functional_gate": "FAIL",
+  "fixture_dir": "/home/avillagran/.cache/files-test/filemanager-presentation-oq7gd7n1",
+  "checks": [],
+  "states": [],
+  "binary_path": "/home/avillagran/.cache/files-m2-updates/presentation-99db7b1/source/target/release/files",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "a22e71378cfc6924e7049dcb262acc95b535c518c746a7d6b8421930770c29e6",
+  "helper_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "headless_attempt": "unavailable; see compositor.log",
+  "nested": {
+    "socket": "wayland-1",
+    "pids": [
+      1325928
+    ],
+    "runtime": "/var/tmp/files-filemanager",
+    "backend": "nested"
+  },
+  "private_focus_on_activate": {
+    "option": "misc:focus_on_activate",
+    "bool": true,
+    "set": true
+  },
+  "error": "AssertionError: private activation policy was not enabled",
+  "nested_stopped": true
+}

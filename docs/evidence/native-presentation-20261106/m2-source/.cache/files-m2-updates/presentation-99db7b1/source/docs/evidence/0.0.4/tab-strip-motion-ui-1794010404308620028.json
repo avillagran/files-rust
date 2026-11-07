@@ -1,0 +1,14 @@
+{
+  "functional_gate": "FAIL",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_path": "/home/avillagran/.cache/files-m2-updates/presentation-99db7b1/source/target/release/files",
+  "method": "Accept rendered keyed-tab indicator motion in a private Files window.\n\nThe app samples its frozen toolkit clock. This driver checks actual accent\npixels, reversals and settled reduced-motion equality in full PNG frames.\nIt does not claim native input delivery or partial-damage screen capture.",
+  "log_path": "/home/avillagran/.cache/files-m2-updates/presentation-99db7b1/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794010404308620028.txt",
+  "captures": [],
+  "binary_sha256": "a22e71378cfc6924e7049dcb262acc95b535c518c746a7d6b8421930770c29e6",
+  "helper_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "error": "RuntimeError('smoke ready: app exit 1')",
+  "exit_code": 1
+}

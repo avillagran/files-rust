@@ -1,0 +1,84 @@
+{
+  "files": [
+    {
+      "path": "node-installed/keyed-tabs/report.json",
+      "bytes": 193272,
+      "sha256": "a97a5f9a6a1d2b9d97c8a2732bafde1948717a64b497cc2449bf8ec7b47b7223"
+    },
+    {
+      "path": "node-installed/keyed-tabs/captures/seeded.png",
+      "bytes": 10331,
+      "sha256": "5239cb41b4648f5fb01d0727e3cf3fe5dfcf93b948a7df045723ac7ee81f7112"
+    },
+    {
+      "path": "node-installed/keyed-tabs/captures/right-body_rect.png",
+      "bytes": 15484,
+      "sha256": "b9cd26222b3b3548662a5e9d0babe9168b0743981d6d667cdb390bc7252912a3"
+    },
+    {
+      "path": "node-installed/keyed-tabs/captures/right-close_rect.png",
+      "bytes": 15657,
+      "sha256": "c9e637205cb0e024e8b3f9d7f35c0ace2c01ec261d53887d33b78af1bfdd8000"
+    },
+    {
+      "path": "node-installed/keyed-tabs/raw/nested.log",
+      "bytes": 34786,
+      "sha256": "0eaf0fc3727ce166f42eb5f1472a6ce667f3b042978808dcff0b363a629e5541"
+    },
+    {
+      "path": "node-installed/keyed-tabs/raw/app.log",
+      "bytes": 96779,
+      "sha256": "298ef45aaf47bb0f65923261fef35ee51977f63c8808c6fedf37ec5bc3f74773"
+    },
+    {
+      "path": "node-installed/tab-motion/report.json",
+      "bytes": 10817,
+      "sha256": "de11a52526a398cdd25fd76c48755cba9934362f8e4715b0fe47c0b04cc7e05f"
+    },
+    {
+      "path": "node-installed/tab-motion/captures/disabled-last.png",
+      "bytes": 1953864,
+      "sha256": "e47196a633cae027e8b30452ae41275d42cc33074363f841e0a36ab3e27e9f48"
+    },
+    {
+      "path": "node-installed/tab-motion/captures/first-settled.png",
+      "bytes": 1953864,
+      "sha256": "94b66be5497bb1e02b8231a2f04907ddbcadd42d5a9d8fde952f8b4d92eab546"
+    },
+    {
+      "path": "node-installed/tab-motion/captures/forward-64.png",
+      "bytes": 1953864,
+      "sha256": "e4e6655af4c02f1ccbbda8a02a8bc65cdf288e5dea70dbb457e55f83850a2520"
+    },
+    {
+      "path": "node-installed/tab-motion/captures/forward-input.png",
+      "bytes": 1953864,
+      "sha256": "45382604166617aadb247c70b651d9e0608188445b8b923bd3ffd918aa108e79"
+    },
+    {
+      "path": "node-installed/tab-motion/captures/last-settled.png",
+      "bytes": 1953864,
+      "sha256": "e47196a633cae027e8b30452ae41275d42cc33074363f841e0a36ab3e27e9f48"
+    },
+    {
+      "path": "node-installed/tab-motion/captures/reverse-48.png",
+      "bytes": 1953864,
+      "sha256": "d03d8b27b30cb6d0889243c29eb9175dabb4f35b0b9629e1030d681a510e590a"
+    },
+    {
+      "path": "node-installed/tab-motion/captures/reversed-input.png",
+      "bytes": 1953864,
+      "sha256": "0734c02027435aa230bb1432190d9752754770407f07959bd2ebfe02fa1518c8"
+    },
+    {
+      "path": "node-installed/tab-motion/captures/reversed-settled.png",
+      "bytes": 1953864,
+      "sha256": "e47196a633cae027e8b30452ae41275d42cc33074363f841e0a36ab3e27e9f48"
+    },
+    {
+      "path": "node-installed/tab-motion/raw/tab-strip-motion-ui-1794010678866389821.txt",
+      "bytes": 10303,
+      "sha256": "b707329921a8a95c5387c6b0ca3381f0d934492993d02215ae68f2beec14f633"
+    }
+  ]
+}

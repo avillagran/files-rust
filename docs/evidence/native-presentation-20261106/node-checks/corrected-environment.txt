@@ -1,0 +1,2 @@
+Private fixture root: /run/user/1000/files-presentation-checks-x_a2kfnf
+Initial suite was rejected by Trash secure-ancestor policy at root-owned writable /var/tmp. No application security policy was changed.

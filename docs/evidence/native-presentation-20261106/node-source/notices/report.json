@@ -1,0 +1,2345 @@
+{
+  "functional_gate": "PASS",
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "requested_size": "1000x650",
+  "animations": "on",
+  "fixture_dir": "/home/node/.cache/files-test/operation-notices-native-vqapfygs",
+  "checks": [
+    "native focus, replacement, reversal and browser-focus preservation",
+    "native undo, redo and undo preserve real rename history and bytes",
+    "native details opens the latest real copy report",
+    "close drains workers"
+  ],
+  "states": [
+    {
+      "label": "browser-initial",
+      "accepted": 0,
+      "anchor_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 2,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": null,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          102,
+          111,
+          99,
+          117,
+          115,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "info",
+      "accepted": 0,
+      "anchor_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          565,
+          99,
+          96,
+          33
+        ],
+        "focused": false,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 1,
+        "source": "Info",
+        "text": "Informaci\u00f3n de la operaci\u00f3n; el navegador conserva el foco",
+        "undo_rect": null,
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 2,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 1,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          102,
+          111,
+          99,
+          117,
+          115,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "replacement",
+      "accepted": 0,
+      "anchor_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          565,
+          99,
+          96,
+          33
+        ],
+        "focused": false,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 2,
+        "source": "Info",
+        "text": "Resultado actualizado; s\u00f3lo hay un aviso activo",
+        "undo_rect": null,
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 2,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 2,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          102,
+          111,
+          99,
+          117,
+          115,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "rapid-reversal",
+      "accepted": 0,
+      "anchor_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          565,
+          99,
+          96,
+          33
+        ],
+        "focused": false,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 3,
+        "source": "Info",
+        "text": "Informaci\u00f3n de la operaci\u00f3n; el navegador conserva el foco",
+        "undo_rect": null,
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 2,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 3,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          102,
+          111,
+          99,
+          117,
+          115,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "notice-focus",
+      "accepted": 0,
+      "anchor_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": false,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          565,
+          99,
+          96,
+          33
+        ],
+        "focused": true,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 3,
+        "source": "Info",
+        "text": "Informaci\u00f3n de la operaci\u00f3n; el navegador conserva el foco",
+        "undo_rect": null,
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        549,
+        8,
+        443,
+        140
+      ],
+      "generation": 2,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 3,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          102,
+          111,
+          99,
+          117,
+          115,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "escape-browser-focus",
+      "accepted": 1,
+      "anchor_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 2,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 3,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          102,
+          111,
+          99,
+          117,
+          115,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "clear",
+      "accepted": 1,
+      "anchor_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 2,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": null,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        102,
+        111,
+        99,
+        117,
+        115,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          102,
+          111,
+          99,
+          117,
+          115,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "rename-ready",
+      "accepted": 1,
+      "anchor_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        98,
+        101,
+        102,
+        111,
+        114,
+        101,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 2,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": null,
+      "rejected": 0,
+      "rename_form": {
+        "changed": true,
+        "error": "",
+        "prepared": false
+      },
+      "request_capacity": 8,
+      "selected_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        98,
+        101,
+        102,
+        111,
+        114,
+        101,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          114,
+          101,
+          110,
+          97,
+          109,
+          101,
+          45,
+          98,
+          101,
+          102,
+          111,
+          114,
+          101,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "rename-ready",
+      "accepted": 1,
+      "anchor_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        98,
+        101,
+        102,
+        111,
+        114,
+        101,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 2,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": null,
+      "rejected": 0,
+      "rename_form": {
+        "changed": true,
+        "error": "",
+        "prepared": false
+      },
+      "request_capacity": 8,
+      "selected_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        98,
+        101,
+        102,
+        111,
+        114,
+        101,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          114,
+          101,
+          110,
+          97,
+          109,
+          101,
+          45,
+          98,
+          101,
+          102,
+          111,
+          114,
+          101,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "rename-ready",
+      "accepted": 1,
+      "anchor_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        98,
+        101,
+        102,
+        111,
+        114,
+        101,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 2,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": null,
+      "rejected": 0,
+      "rename_form": {
+        "changed": false,
+        "error": "",
+        "prepared": true
+      },
+      "request_capacity": 8,
+      "selected_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        98,
+        101,
+        102,
+        111,
+        114,
+        101,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          114,
+          101,
+          110,
+          97,
+          109,
+          101,
+          45,
+          98,
+          101,
+          102,
+          111,
+          114,
+          101,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "rename",
+      "accepted": 1,
+      "anchor_raw": null,
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": true,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          658,
+          99,
+          96,
+          33
+        ],
+        "focused": false,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 4,
+        "source": "Mutation(3)",
+        "text": "Nombres actualizados",
+        "undo_rect": [
+          565,
+          99,
+          88,
+          33
+        ],
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 3,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 4,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": null,
+      "selection_raw": [],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "select-renamed",
+      "accepted": 1,
+      "anchor_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": true,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          658,
+          99,
+          96,
+          33
+        ],
+        "focused": false,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 4,
+        "source": "Mutation(3)",
+        "text": "Nombres actualizados",
+        "undo_rect": [
+          565,
+          99,
+          88,
+          33
+        ],
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 3,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 4,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          114,
+          101,
+          110,
+          97,
+          109,
+          101,
+          45,
+          97,
+          102,
+          116,
+          101,
+          114,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "unapplied-rename-preview",
+      "accepted": 1,
+      "anchor_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": true,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 3,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 4,
+      "rejected": 0,
+      "rename_form": {
+        "changed": true,
+        "error": "",
+        "prepared": false
+      },
+      "request_capacity": 8,
+      "selected_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          114,
+          101,
+          110,
+          97,
+          109,
+          101,
+          45,
+          97,
+          102,
+          116,
+          101,
+          114,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "unapplied-rename-preview",
+      "accepted": 1,
+      "anchor_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": true,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 3,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 4,
+      "rejected": 0,
+      "rename_form": {
+        "changed": true,
+        "error": "",
+        "prepared": false
+      },
+      "request_capacity": 8,
+      "selected_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          114,
+          101,
+          110,
+          97,
+          109,
+          101,
+          45,
+          97,
+          102,
+          116,
+          101,
+          114,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "unapplied-rename-preview",
+      "accepted": 1,
+      "anchor_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": true,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 3,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 4,
+      "rejected": 0,
+      "rename_form": {
+        "changed": false,
+        "error": "",
+        "prepared": true
+      },
+      "request_capacity": 8,
+      "selected_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          114,
+          101,
+          110,
+          97,
+          109,
+          101,
+          45,
+          97,
+          102,
+          116,
+          101,
+          114,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "undo-after-cancelled-preview",
+      "accepted": 1,
+      "anchor_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": true,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          658,
+          99,
+          96,
+          33
+        ],
+        "focused": false,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 4,
+        "source": "Mutation(3)",
+        "text": "Nombres actualizados",
+        "undo_rect": [
+          565,
+          99,
+          88,
+          33
+        ],
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 3,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 4,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          114,
+          101,
+          110,
+          97,
+          109,
+          101,
+          45,
+          97,
+          102,
+          116,
+          101,
+          114,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "undo-focused",
+      "accepted": 1,
+      "anchor_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": false,
+      "can_redo": false,
+      "can_undo": true,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          658,
+          99,
+          96,
+          33
+        ],
+        "focused": true,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 4,
+        "source": "Mutation(3)",
+        "text": "Nombres actualizados",
+        "undo_rect": [
+          565,
+          99,
+          88,
+          33
+        ],
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        549,
+        8,
+        443,
+        140
+      ],
+      "generation": 3,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 4,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        114,
+        101,
+        110,
+        97,
+        109,
+        101,
+        45,
+        97,
+        102,
+        116,
+        101,
+        114,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          114,
+          101,
+          110,
+          97,
+          109,
+          101,
+          45,
+          97,
+          102,
+          116,
+          101,
+          114,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "redo-ready",
+      "accepted": 2,
+      "anchor_raw": null,
+      "browser_focus": true,
+      "can_redo": true,
+      "can_undo": false,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          650,
+          99,
+          96,
+          33
+        ],
+        "focused": false,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": [
+          565,
+          99,
+          80,
+          33
+        ],
+        "revision": 5,
+        "source": "Mutation(6)",
+        "text": "Renombrado deshecho",
+        "undo_rect": null,
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 4,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 5,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": null,
+      "selection_raw": [],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "redo-focused",
+      "accepted": 2,
+      "anchor_raw": null,
+      "browser_focus": false,
+      "can_redo": true,
+      "can_undo": false,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          650,
+          99,
+          96,
+          33
+        ],
+        "focused": true,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": [
+          565,
+          99,
+          80,
+          33
+        ],
+        "revision": 5,
+        "source": "Mutation(6)",
+        "text": "Renombrado deshecho",
+        "undo_rect": null,
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        549,
+        8,
+        443,
+        140
+      ],
+      "generation": 4,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 5,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": null,
+      "selection_raw": [],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "undo-again-ready",
+      "accepted": 3,
+      "anchor_raw": null,
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": true,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          658,
+          99,
+          96,
+          33
+        ],
+        "focused": false,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 6,
+        "source": "Mutation(7)",
+        "text": "Renombrado rehecho",
+        "undo_rect": [
+          565,
+          99,
+          88,
+          33
+        ],
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 5,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 6,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": null,
+      "selection_raw": [],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "undo-again-focused",
+      "accepted": 3,
+      "anchor_raw": null,
+      "browser_focus": false,
+      "can_redo": false,
+      "can_undo": true,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": null,
+        "dismiss_rect": [
+          658,
+          99,
+          96,
+          33
+        ],
+        "focused": true,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 6,
+        "source": "Mutation(7)",
+        "text": "Renombrado rehecho",
+        "undo_rect": [
+          565,
+          99,
+          88,
+          33
+        ],
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": null,
+      "focus_rect": [
+        549,
+        8,
+        443,
+        140
+      ],
+      "generation": 5,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 6,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": null,
+      "selection_raw": [],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "copy-ready",
+      "accepted": 4,
+      "anchor_raw": [
+        99,
+        111,
+        112,
+        121,
+        45,
+        112,
+        97,
+        121,
+        108,
+        111,
+        97,
+        100,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": true,
+      "can_undo": false,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": {
+        "error": "",
+        "preparing": false
+      },
+      "copy_result": null,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 6,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 7,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        99,
+        111,
+        112,
+        121,
+        45,
+        112,
+        97,
+        121,
+        108,
+        111,
+        97,
+        100,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          99,
+          111,
+          112,
+          121,
+          45,
+          112,
+          97,
+          121,
+          108,
+          111,
+          97,
+          100,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "copy-result",
+      "accepted": 4,
+      "anchor_raw": [
+        99,
+        111,
+        112,
+        121,
+        45,
+        112,
+        97,
+        121,
+        108,
+        111,
+        97,
+        100,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": [
+          565,
+          99,
+          112,
+          33
+        ],
+        "dismiss_rect": [
+          682,
+          99,
+          96,
+          33
+        ],
+        "focused": false,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 9,
+        "source": "Copy(1)",
+        "text": "Copia #1 terminado",
+        "undo_rect": null,
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": 1,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 6,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 9,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        99,
+        111,
+        112,
+        121,
+        45,
+        112,
+        97,
+        121,
+        108,
+        111,
+        97,
+        100,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          99,
+          111,
+          112,
+          121,
+          45,
+          112,
+          97,
+          121,
+          108,
+          111,
+          97,
+          100,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "details-focused",
+      "accepted": 4,
+      "anchor_raw": [
+        99,
+        111,
+        112,
+        121,
+        45,
+        112,
+        97,
+        121,
+        108,
+        111,
+        97,
+        100,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": false,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": {
+        "close_rect": [
+          954,
+          24,
+          22,
+          22
+        ],
+        "details_rect": [
+          565,
+          99,
+          112,
+          33
+        ],
+        "dismiss_rect": [
+          682,
+          99,
+          96,
+          33
+        ],
+        "focused": true,
+        "rect": [
+          549,
+          8,
+          443,
+          140
+        ],
+        "redo_rect": null,
+        "revision": 9,
+        "source": "Copy(1)",
+        "text": "Copia #1 terminado",
+        "undo_rect": null,
+        "visible": true
+      },
+      "closing": false,
+      "copy_form": null,
+      "copy_result": 1,
+      "focus_rect": [
+        549,
+        8,
+        443,
+        140
+      ],
+      "generation": 6,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": false,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 9,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        99,
+        111,
+        112,
+        121,
+        45,
+        112,
+        97,
+        121,
+        108,
+        111,
+        97,
+        100,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          99,
+          111,
+          112,
+          121,
+          45,
+          112,
+          97,
+          121,
+          108,
+          111,
+          97,
+          100,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    },
+    {
+      "label": "copy-details",
+      "accepted": 5,
+      "anchor_raw": [
+        99,
+        111,
+        112,
+        121,
+        45,
+        112,
+        97,
+        121,
+        108,
+        111,
+        97,
+        100,
+        46,
+        116,
+        120,
+        116
+      ],
+      "browser_focus": true,
+      "can_redo": false,
+      "can_undo": false,
+      "capacity": 1,
+      "card": null,
+      "closing": false,
+      "copy_form": null,
+      "copy_result": 1,
+      "focus_rect": [
+        0,
+        0,
+        1000,
+        650
+      ],
+      "generation": 6,
+      "height": 650,
+      "legacy_feedback": false,
+      "modal": true,
+      "mutation_busy": false,
+      "owner": [
+        1,
+        1
+      ],
+      "queue_len": 0,
+      "record_revision": 10,
+      "rejected": 0,
+      "rename_form": null,
+      "request_capacity": 8,
+      "selected_raw": [
+        99,
+        111,
+        112,
+        121,
+        45,
+        112,
+        97,
+        121,
+        108,
+        111,
+        97,
+        100,
+        46,
+        116,
+        120,
+        116
+      ],
+      "selection_raw": [
+        [
+          99,
+          111,
+          112,
+          121,
+          45,
+          112,
+          97,
+          121,
+          108,
+          111,
+          97,
+          100,
+          46,
+          116,
+          120,
+          116
+        ]
+      ],
+      "width": 1000,
+      "worker_pending": false
+    }
+  ],
+  "captures": [
+    "/home/node/.cache/files-test/operation-notices-native-vqapfygs/info-start.png",
+    "/home/node/.cache/files-test/operation-notices-native-vqapfygs/info-middle.png",
+    "/home/node/.cache/files-test/operation-notices-native-vqapfygs/info-settled.png",
+    "/home/node/.cache/files-test/operation-notices-native-vqapfygs/replacement-start.png",
+    "/home/node/.cache/files-test/operation-notices-native-vqapfygs/replacement-middle.png",
+    "/home/node/.cache/files-test/operation-notices-native-vqapfygs/reversal-start.png",
+    "/home/node/.cache/files-test/operation-notices-native-vqapfygs/reversal-settled.png",
+    "/home/node/.cache/files-test/operation-notices-native-vqapfygs/rename-undo.png",
+    "/home/node/.cache/files-test/operation-notices-native-vqapfygs/copy-result.png"
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "865330c61d7c7b0e2ae2bd4725e7a36a70d5573740286901ff2db63031b2a6a1",
+  "helper_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "245571"
+    ]
+  },
+  "window_size": [
+    1000,
+    650
+  ],
+  "nested_stopped": true
+}

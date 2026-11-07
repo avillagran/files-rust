@@ -1,0 +1,8 @@
+{
+  "fixture_commit": "7652b9b",
+  "driver_sha256": "9a87925817a8c500782ecd6648bd87dd807c9725aedd7451445d596312bf7535",
+  "helper_sha256": "b6f5d964c49dc8da1837ffe790d1e816babca47f844b1aa4cd487b21557839e0",
+  "syntax": "PASS",
+  "policy_parser_cases": 7,
+  "policy_parser_gate": "PASS"
+}

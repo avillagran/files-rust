@@ -1,0 +1,56 @@
+{
+  "source_checkpoint": "99db7b13a0890822e4ae07dbf61bc07373632647",
+  "source_files_verified": 1160,
+  "source_archive_sha256": "9209e98fafb26f302dde1f1d804e270de70baf73edf8d8482f3f9b021cc75207",
+  "preserved_stale_cmake": [
+    "release/build/fltk-sys-177e96596797f1b5",
+    "release/build/fltk-sys-c3a49caeb1e019b6",
+    "release/build/fltk-sys-c5ec56d993c59a55",
+    "release/.fingerprint/fltk-acdeb401cc666edc",
+    "release/.fingerprint/fltk-c30e31b9e2cae594",
+    "release/.fingerprint/fltk-sys-177e96596797f1b5",
+    "release/.fingerprint/fltk-sys-279467ff37fc3578",
+    "release/.fingerprint/fltk-sys-c3a49caeb1e019b6",
+    "release/.fingerprint/fltk-sys-c5ec56d993c59a55",
+    "release/.fingerprint/fltk-sys-ea5bc56e7bfa880b"
+  ],
+  "build_returncode": 0,
+  "elapsed_seconds": 99.44803066400345,
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "files_sha256": "a22e71378cfc6924e7049dcb262acc95b535c518c746a7d6b8421930770c29e6",
+  "files_file": "/home/avillagran/.cache/files-m2-updates/presentation-99db7b1/source/target/release/files: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 3.7.0, BuildID[sha1]=0c040a999bf04b38dc65c2fdc3514089391c097b, stripped",
+  "files-helper_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+  "files-helper_file": "/home/avillagran/.cache/files-m2-updates/presentation-99db7b1/source/target/release/files-helper: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 3.7.0, BuildID[sha1]=e9556d580d13005df483f1044e7ab115d50bfad9, stripped",
+  "files-html-helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "files-html-helper_file": "/home/avillagran/.cache/files-m2-updates/presentation-99db7b1/source/target/release/files-html-helper: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=bef9f2f6e1e8fd32028cacf71fe187e5ba293c59, for GNU/Linux 3.7.0, not stripped",
+  "html_stamp": {
+    "archive_sha256": "82cfdc8347ebb61fbf308e29ebcb6ea5f82e894dd6a013c928deacc0446a471e",
+    "adapter_sha256": "babce060e9ec324af33f55b825a376e6a01213227bcd75e5227a8e95d2c69375",
+    "patch_sha256": "48fb04110df6590b55983495b8b657fe850557a10b335bea34361c7ca5bbecb6",
+    "binary_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+    "commands": [
+      [
+        "cmake",
+        "-S",
+        "/home/avillagran/Work/files/scripts/fixtures/html-engine",
+        "-B",
+        "/home/avillagran/.cache/files-test/html-engine/build-6fd7aaa63833c913cf1a0336e46fb2e027e4c656",
+        "-DLITEHTML_SOURCE=/home/avillagran/.cache/files-test/html-engine/patched-6fd7aaa63833c913cf1a0336e46fb2e027e4c656-babce060e9ec324a-1793093197447022691",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_SHARED_LIBS=OFF",
+        "-DLITEHTML_BUILD_TESTING=OFF",
+        "-DLITEHTML_ENABLE_LINT=OFF"
+      ],
+      [
+        "cmake",
+        "--build",
+        "/home/avillagran/.cache/files-test/html-engine/build-6fd7aaa63833c913cf1a0336e46fb2e027e4c656",
+        "--target",
+        "html-engine-probe",
+        "--parallel",
+        "1"
+      ]
+    ]
+  }
+}
