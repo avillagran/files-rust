@@ -132,7 +132,6 @@ impl State {
             .checked_add(1)
             .expect("thumbnail generation exhausted");
         self.authorized = false;
-        self.cache.clear();
         self.worker.cancel();
         for d in &mut self.demand {
             d.verified = None;
@@ -151,13 +150,13 @@ impl State {
         self.invalidate();
         self.demand.clear();
         self.directory = None;
-        self.cache.clear();
         self.viewport = Default::default();
         self.painted = 0;
         self.notice = None;
     }
     pub fn begin_close(&mut self) {
         self.suspend();
+        self.cache.clear();
         self.worker.begin_close();
     }
     pub fn close_allowed(&self) -> bool {
@@ -193,7 +192,7 @@ impl State {
                     d.failed = Some(revision);
                     d.error = Some(bounded_error(error));
                 }
-                Ok(Value::Bitmap(bitmap)) => {
+                Ok(Value::Bitmap(bitmap) | Value::Cached(bitmap)) => {
                     let revision = bitmap.source;
                     // The reservation stays exclusive across ACK and insertion;
                     // no next request can dispatch from inside this branch.
@@ -223,6 +222,9 @@ impl State {
         let mut changed = false;
         if let Some(reply) = self.worker.poll() {
             self.accept_reply(reply);
+            if let Some(warning) = self.worker.cache_warning() {
+                self.notice = Some(warning);
+            }
             changed = true;
         }
         if !may_start || !self.authorized || self.worker.busy() {
@@ -306,7 +308,7 @@ impl State {
     }
     pub fn snapshot(&mut self) -> serde_json::Value {
         let ready=self.demand.iter().filter(|d|self.authorized && d.checked.is_some_and(|t|t.elapsed()<Duration::from_secs(1))).filter_map(|d|d.verified.map(|rev|(&d.path,rev))).filter_map(|(path,rev)|self.cache.get(path,rev).map(|b|serde_json::json!({"path":format!("{:?}",path),"pixel":b.rgb.get(..3),"revision":b.source,"width":b.width,"height":b.height,"source_width":b.source_width,"source_height":b.source_height,"format":b.format}))).collect::<Vec<_>>();
-        serde_json::json!({"demand":self.count(),"ready":ready,"cached":self.cache.len(),"rgb_capacity":self.bytes(),"scratch_capacity":self.scratch_bytes(),"busy":!self.drained(),"errors":self.errors(),"notice":self.notice,"authorized":self.authorized,"painted":self.painted})
+        serde_json::json!({"demand":self.count(),"ready":ready,"cached":self.cache.len(),"rgb_capacity":self.bytes(),"scratch_capacity":self.scratch_bytes(),"busy":!self.drained(),"errors":self.errors(),"notice":self.notice,"authorized":self.authorized,"painted":self.painted,"worker":self.worker.diagnostics(),"cache_warning":self.worker.cache_warning()})
     }
     pub fn ready(&self) -> usize {
         self.demand
@@ -409,8 +411,41 @@ mod tests {
         });
         assert_eq!(s.ready(), 1);
         s.invalidate();
-        assert_eq!(s.cache.bytes(), 0);
+        assert!(s.cache.bytes() > 0);
         assert_eq!(s.ready(), 0);
+    }
+    #[test]
+    fn suspended_view_retains_rgb_but_needs_new_source_proof_before_reuse() {
+        let mut s = state();
+        active(&mut s, 1);
+        s.accept_reply(crate::thumbnail_job::Reply {
+            id: 1,
+            result: Ok(Value::Bitmap(bitmap(1))),
+        });
+        let bytes = s.bytes();
+        s.suspend();
+        assert_eq!(s.ready(), 0);
+        assert!(!s.authorized);
+        assert_eq!(s.bytes(), bytes);
+        s.demand(
+            Path::new("/fixture"),
+            [Path::new("/fixture/red.png")].into_iter(),
+        );
+        s.authorize();
+        assert_eq!(s.ready(), 0);
+        assert_eq!(
+            s.cache.revision(Path::new("/fixture/red.png")),
+            Some(revision(1))
+        );
+        active(&mut s, 2);
+        s.accept_reply(crate::thumbnail_job::Reply {
+            id: 2,
+            result: Ok(Value::Unchanged(revision(1))),
+        });
+        assert_eq!(s.ready(), 1);
+        assert_eq!(s.bytes(), bytes);
+        s.begin_close();
+        assert_eq!(s.bytes(), 0);
     }
     #[test]
     fn codec_error_is_revision_memoized_while_reprobe_reuses_no_decoder() {
@@ -492,7 +527,9 @@ mod tests {
             Rect::new(0, 0, 160, 100),
             &palette
         ));
-        assert!(s.poll(true), "dispatch the asynchronous recheck");
+        // A controller-level pending receipt needs no filesystem probe. The
+        // worker's real descriptor/cache path is covered by retained fixtures.
+        active(&mut s, 2);
         assert!(s.paint(
             &mut painter,
             Path::new("/fixture/red.png"),
@@ -508,7 +545,7 @@ mod tests {
             Rect::new(0, 0, 160, 100),
             &palette
         ));
-        assert_eq!(s.bytes(), 0);
+        assert!(s.bytes() > 0);
     }
     #[test]
     fn demand_preflight_rejects_excess_bytes_and_bounds_infinite_input() {

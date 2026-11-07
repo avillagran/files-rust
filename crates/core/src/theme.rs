@@ -117,6 +117,9 @@ fn enabled() -> bool {
 }
 #[derive(Serialize, Deserialize)]
 pub struct Preferences {
+    /// Show image and video thumbnails; explicit previews remain independent.
+    #[serde(default = "enabled")]
+    pub show_thumbnails: bool,
     /// Visible folders are measured with bounded background work unless explicitly disabled.
     #[serde(default = "enabled")]
     pub auto_folder_sizes: bool,
@@ -141,6 +144,7 @@ pub struct Preferences {
 impl Default for Preferences {
     fn default() -> Self {
         Self {
+            show_thumbnails: true,
             auto_folder_sizes: true,
             rail_pinned: false,
             rail_order: Vec::new(),
@@ -228,6 +232,21 @@ pub fn parse_preferences(s: &str) -> Result<Preferences, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn thumbnails_default_on_but_an_explicit_disabled_preference_survives() {
+        assert!(Preferences::default().show_thumbnails);
+        assert!(parse_preferences("").unwrap().show_thumbnails);
+        assert!(
+            !parse_preferences("show_thumbnails = false")
+                .unwrap()
+                .show_thumbnails
+        );
+        assert!(
+            parse_preferences("show_thumbnails = true")
+                .unwrap()
+                .show_thumbnails
+        );
+    }
     #[test]
     fn background_sizes_default_on_without_overwriting_explicit_preferences() {
         assert!(Preferences::default().auto_folder_sizes);

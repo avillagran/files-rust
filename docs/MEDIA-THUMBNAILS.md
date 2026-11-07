@@ -4,7 +4,8 @@ Grid and inspector show PNG/JPEG/WebP thumbnails and an initial video frame.
 Only the selection and up to 32 visible sources are requested, never the whole folder.
 A non-UTF-8 Unix name travels as bytes, without lossy conversion. The inspector's
 thumbnail is the same entry that Grid draws; clicking it opens Space. Video
-plays with controls in Space, not in each cell. There is no new disk cache.
+plays with controls in Space, not in each cell. Preferences can disable both image
+and video thumbnails without disabling explicitly opened previews.
 
 ## Pipeline and local memory
 
@@ -19,11 +20,11 @@ no network, no nested processes. No new decoder nor new dependency/license.
 The non-recursive parent watch reuses the MEDIA-LIFECYCLE worker: source mode
 for Space and directory mode for thumbnails. Attach before authorizing demand,
 and the job's epoch/token and ACK prevent accepting stale results. Any event
-conservatively invalidates and empties the RGBs; one FD probe per visible resource is
+conservatively revokes displayed source proof; one FD probe per visible resource is
 scheduled when its 1 s proof expires, to cover lost events. Since the flicker fix of 2026-11-04, during a periodic
 renewal the last confirmed image is kept as a visual snapshot; it is
 neither a fresh proof nor operational authority. Real invalidations
-and errors still remove the bitmap. A blocked syscall
+hide the snapshot immediately; an unavailable-source reply removes its RAM entry. A blocked syscall
 does not imply a guaranteed deadline. No symlink_metadata/stat/readdir from draw/UI.
 The final O_NOFOLLOW does not confine parent symlinks. Linux verified; the remaining adapters
 are pending. A final FIFO/directory/symlink is not read as an image.
@@ -38,7 +39,9 @@ explicitly separate from the RGB ledger. Thumbnails are rounded 8 px even with
 square corners: a CPU mask with edge coverage applied to the real image,
 including letterbox. Painter is still software and creates no widgets per cell.
 
-The cache is freed when demand is hidden/on navigation/when Space opens. Preview, du and Space
+Hidden demand, navigation and Space revoke authorization and cancel active work,
+but keep the bounded RAM LRU. A returning item needs a fresh descriptor probe
+before its cached pixels can be displayed. Closing releases the RAM cache. Preview, du and Space
 wait for the thumbnails to drain before another helper; du is deferred if needed.
 Full Space does not reuse this LRU yet: it excludes it to avoid duplicating the
 cache, keeps its earlier limits and separate pipeline/scratch buffers.
@@ -50,8 +53,8 @@ Codec failures stay tied to the revision: revalidating an unchanged file
 does not relaunch the decoder every second. Deletion/failure removes its bitmap; a replacement
 with the same name/mtime/size needs the new identity. A lost event on
 an entry outside demand is detected on reuse; instant deletion
-without an event is not promised. RAM goes away on exit; no disk TTL/collector nor sweeping of other
-caches. Saving originals in the Trash is a user operation, not a media cache.
+without an event is not promised. RAM goes away on exit. The persistent cache described below does not sweep
+other applications' caches. Saving originals in the Trash is a user operation, not a media cache.
 
 The visibility gate uses FLTK's shown/visible_r: it cancels media and changes the token,
 makes no new hidden decodes; when coming back it probes again and video returns
@@ -60,6 +63,39 @@ A readonly worker that cannot be interrupted may prevent the process from ending
 no join from the UI nor new threads to work around it. Before allowing exit in the readonly
 phase, a gate forbids any future spawn; the helper phase waits for cancel/reap.
 The probe's ACK and the permission to close are kept distinct, with no fake full drain.
+
+## Persistent cache and opt-out — 2026-11-07
+
+`show_thumbnails` defaults to true for compatibility and is persisted with the
+other preferences. Turning it off revokes visible proof, cancels admitted work
+and blocks new thumbnail demand. Explicit Space previews remain independent.
+
+The existing worker performs cache IO; draw and UI do no filesystem reads.
+`thumbnail-cache-v3` under Files' configuration root has 256 direct-mapped slots,
+each bounded to 80 KiB, plus one bounded unpublished scratch file. Hash collisions
+are misses or ordinary eviction, never identity matches. A record compares the
+full raw source path, descriptor-derived device/inode/size/mtime/ctime including
+nanoseconds, decoder-recipe version, 160px dimensions, supported format, checksum
+and 30-day age. Cache hits revalidate the same pinned source and current name.
+Changes therefore cause a new decode; a known unavailable source retires its
+owned slot with a small tombstone. Missing sources not visited while the app is
+closed are not collected immediately; stale entries cannot be reused for a new
+revision and total storage remains bounded to approximately 20 MiB.
+
+Only compatible, owned regular files in a private descriptor-pinned directory
+are accepted. Component and leaf symlinks are rejected. Unexpected/future files
+are preserved and produce an observable cache warning; they are not overwritten.
+Writes use one nonblocking cache lock and an atomic slot replacement. No fsync
+is required for disposable cached pixels. Cancellation checks before commit
+leave at most one bounded scratch file. The helper has reaped before entering
+cache-write phase; close may abandon that phase without allowing another helper
+to spawn. These local byte caps are not a process-tree PSS claim. Cache IO uses
+at most one bounded encoded record plus one 160px RGB result as temporary scratch.
+
+Private snapshots expose worker request/probe/decode/disk-hit and unavailable
+counters, independently of the RAM LRU count. New codec, persistence, invalidation,
+link-refusal, view-reuse and preference cases are prepared; their runtime
+validation is recorded separately by the integrating checkpoint.
 
 ## Functional evidence
 

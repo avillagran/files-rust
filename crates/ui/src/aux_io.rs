@@ -75,7 +75,7 @@ pub enum Request {
     SessionSave(u64, Arc<Vec<u8>>),
     Load(u64, PathBuf),
     Save(u64, PathBuf, Arc<SpatialLayout>),
-    /// revision, corners, window mode, hidden, operation bar, preview muted
+    /// Revision and the complete persisted view, sidebar and media preferences.
     Preferences(
         u64,
         Corners,
@@ -86,6 +86,7 @@ pub enum Request {
         bool,
         bool,
         Vec<String>,
+        bool,
     ),
 }
 pub enum Response {
@@ -297,6 +298,7 @@ impl AuxIo {
                         automatic,
                         pinned,
                         order,
+                        thumbnails,
                     ) => Response::Config(
                         revision,
                         files_core::persistence::update_config_values(
@@ -318,6 +320,7 @@ impl AuxIo {
                                 ("auto_folder_sizes", automatic.into()),
                                 ("rail_pinned", pinned.into()),
                                 ("rail_order", order.into()),
+                                ("show_thumbnails", thumbnails.into()),
                             ],
                         ),
                     ),

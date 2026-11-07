@@ -8,13 +8,14 @@ use std::{
     path::PathBuf,
     sync::{
         Arc, Mutex,
-        atomic::{AtomicBool, Ordering},
+        atomic::{AtomicBool, AtomicU64, Ordering},
         mpsc::{self, Receiver, SyncSender},
     },
 };
 pub enum Value {
     Unchanged(Revision),
     Bitmap(Bitmap),
+    Cached(Bitmap),
     Unavailable(Revision, String),
 }
 pub struct Reply {
@@ -35,6 +36,7 @@ enum Command {
 enum Phase {
     Idle,
     ReadOnly,
+    Cache,
     Helper,
     Stopped,
 }
@@ -42,7 +44,18 @@ struct Gate {
     phase: Phase,
     closing: bool,
 }
+#[derive(Default)]
+struct Stats {
+    requests: AtomicU64,
+    probes: AtomicU64,
+    decodes: AtomicU64,
+    disk_hits: AtomicU64,
+    missing: AtomicU64,
+    cache_errors: AtomicU64,
+    warning: Mutex<Option<String>>,
+}
 pub struct Worker {
+    stats: Arc<Stats>,
     send: SyncSender<Command>,
     result: Receiver<Reply>,
     gate: Arc<Mutex<Gate>>,
@@ -58,6 +71,8 @@ impl Worker {
             closing: false,
         }));
         let state = gate.clone();
+        let stats = Arc::new(Stats::default());
+        let counts = stats.clone();
         std::thread::Builder::new()
             .name("files-thumbnails".into())
             .spawn(move || {
@@ -70,13 +85,44 @@ impl Worker {
                         if request.cancel.load(Ordering::Acquire) {
                             return Err(std::io::Error::other("Miniatura cancelada"));
                         }
-                        let (_, revision) = files_core::media_source::open(&request.path)?;
+                        counts.probes.fetch_add(1, Ordering::Relaxed);
+                        let (source, revision) = match files_core::media_source::open(&request.path)
+                        {
+                            Ok(v) => v,
+                            Err(error) => {
+                                if error.kind() == std::io::ErrorKind::NotFound {
+                                    counts.missing.fetch_add(1, Ordering::Relaxed);
+                                }
+                                // The source name is no longer usable: retire its owned cache
+                                // slot without traversing or modifying the original directory.
+                                let _ = crate::thumbnail_disk_cache::invalidate(
+                                    &request.path,
+                                    &request.cancel,
+                                );
+                                return Err(error);
+                            }
+                        };
                         if request.cancel.load(Ordering::Acquire) {
                             return Err(std::io::Error::other("Miniatura cancelada"));
                         }
                         if request.previous == Some(revision) {
                             return Ok(Value::Unchanged(revision));
                         }
+                        match crate::thumbnail_disk_cache::load(&request.path, revision) {
+                            Ok(Some(bitmap)) => {
+                                source_revision_current(
+                                    &source,
+                                    revision,
+                                    &request.path,
+                                    &request.cancel,
+                                )?;
+                                counts.disk_hits.fetch_add(1, Ordering::Relaxed);
+                                return Ok(Value::Cached(bitmap));
+                            }
+                            Ok(None) => (),
+                            Err(error) => cache_warning(&counts, error),
+                        }
+                        source_revision_current(&source, revision, &request.path, &request.cancel)?;
                         {
                             let mut gate = state.lock().unwrap();
                             if gate.closing || request.cancel.load(Ordering::Acquire) {
@@ -86,15 +132,16 @@ impl Worker {
                             // readonly phase and then race a subsequent child spawn.
                             gate.phase = Phase::Helper;
                         }
+                        counts.decodes.fetch_add(1, Ordering::Relaxed);
                         let bitmap = if is_video(&request.path) {
                             crate::video_preview_job::thumbnail(
-                                request.path,
+                                request.path.clone(),
                                 revision,
                                 &request.cancel,
                             )
                         } else {
                             crate::image_preview_job::thumbnail(
-                                request.path,
+                                request.path.clone(),
                                 revision,
                                 &request.cancel,
                             )
@@ -103,7 +150,36 @@ impl Worker {
                             return Err(std::io::Error::other("Miniatura cancelada"));
                         }
                         Ok(match bitmap {
-                            Ok(bitmap) => Value::Bitmap(bitmap),
+                            Ok(bitmap) => {
+                                if bitmap.source != Some(revision) {
+                                    return Err(std::io::Error::other(
+                                        "La miniatura no coincide con su origen verificado",
+                                    ));
+                                }
+                                source_revision_current(
+                                    &source,
+                                    revision,
+                                    &request.path,
+                                    &request.cancel,
+                                )?;
+                                // Decoder has reaped its helper. Cache IO may be abandoned on
+                                // close; no helper can spawn after entering this phase.
+                                state.lock().unwrap().phase = Phase::Cache;
+                                if let Err(error) = crate::thumbnail_disk_cache::save(
+                                    &request.path,
+                                    &bitmap,
+                                    &request.cancel,
+                                ) {
+                                    cache_warning(&counts, error);
+                                }
+                                source_revision_current(
+                                    &source,
+                                    revision,
+                                    &request.path,
+                                    &request.cancel,
+                                )?;
+                                Value::Bitmap(bitmap)
+                            }
                             Err(error) => Value::Unavailable(revision, error.to_string()),
                         })
                     })()
@@ -123,6 +199,7 @@ impl Worker {
             })
             .expect("thumbnail worker");
         Self {
+            stats,
             send,
             result,
             gate,
@@ -147,6 +224,7 @@ impl Worker {
         {
             return false;
         }
+        self.stats.requests.fetch_add(1, Ordering::Relaxed);
         self.cancel = Some(cancel);
         self.busy = true;
         true
@@ -172,6 +250,15 @@ impl Worker {
         self.cancel = None;
         Some(reply)
     }
+    pub fn diagnostics(&self) -> serde_json::Value {
+        let s = &self.stats;
+        serde_json::json!({"requests":s.requests.load(Ordering::Relaxed),"probes":s.probes.load(Ordering::Relaxed),
+            "decodes":s.decodes.load(Ordering::Relaxed),"disk_hits":s.disk_hits.load(Ordering::Relaxed),
+            "missing":s.missing.load(Ordering::Relaxed),"cache_errors":s.cache_errors.load(Ordering::Relaxed)})
+    }
+    pub fn cache_warning(&self) -> Option<String> {
+        self.stats.warning.lock().unwrap().clone()
+    }
     pub fn busy(&self) -> bool {
         self.busy
     }
@@ -187,11 +274,36 @@ impl Worker {
     pub fn close_allowed(&self) -> bool {
         let gate = self.gate.lock().unwrap();
         gate.closing
-            && (!self.busy || matches!(gate.phase, Phase::ReadOnly | Phase::Idle | Phase::Stopped))
+            && (!self.busy
+                || matches!(
+                    gate.phase,
+                    Phase::ReadOnly | Phase::Cache | Phase::Idle | Phase::Stopped
+                ))
     }
     pub fn readonly_pending(&self) -> bool {
         self.busy && self.gate.lock().unwrap().phase == Phase::ReadOnly
     }
+}
+fn source_revision_current(
+    source: &std::fs::File,
+    revision: Revision,
+    path: &std::path::Path,
+    cancel: &AtomicBool,
+) -> std::io::Result<()> {
+    if cancel.load(Ordering::Acquire) {
+        return Err(std::io::Error::other("Miniatura cancelada"));
+    }
+    revision.revalidate(source, path)
+}
+fn cache_warning(stats: &Stats, error: std::io::Error) {
+    stats.cache_errors.fetch_add(1, Ordering::Relaxed);
+    let mut text = error.to_string();
+    let mut end = text.len().min(512);
+    while !text.is_char_boundary(end) {
+        end -= 1;
+    }
+    text.truncate(end);
+    *stats.warning.lock().unwrap() = Some(format!("Caché de miniaturas: {text}"));
 }
 impl Drop for Worker {
     fn drop(&mut self) {
@@ -222,17 +334,10 @@ mod tests {
         assert!(is_video(p));
         assert!(crate::text_preview_state::source_required(p));
     }
+    #[cfg(unix)]
     #[test]
     fn single_request_stays_busy_until_ack_and_reuses_same_worker_for_probe() {
-        static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
-        let dir = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "thumbnail-probe-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
-        std::fs::create_dir_all(&dir).unwrap();
+        let dir = crate::thumbnail_disk_cache::retained_test_directory("thumbnail-probe");
         let path = dir.join("raw.png");
         std::fs::write(&path, b"file").unwrap();
         let (_, revision) = files_core::media_source::open(&path).unwrap();
@@ -254,7 +359,7 @@ mod tests {
         }
         worker.begin_close();
         assert!(worker.close_allowed());
-        std::fs::remove_dir_all(dir).unwrap();
+        assert!(dir.join("raw.png").is_file(), "Retain all fixture data");
     }
     #[test]
     fn close_distinguishes_readonly_from_helper_phase_without_join() {
@@ -265,6 +370,7 @@ mod tests {
             closing: false,
         }));
         let worker = Worker {
+            stats: Arc::new(Stats::default()),
             send,
             result,
             gate: gate.clone(),
@@ -278,6 +384,8 @@ mod tests {
         assert!(worker.cancel.as_ref().unwrap().load(Ordering::Acquire));
         gate.lock().unwrap().phase = Phase::Helper;
         assert!(!worker.close_allowed());
+        gate.lock().unwrap().phase = Phase::Cache;
+        assert!(worker.close_allowed());
         gate.lock().unwrap().phase = Phase::Idle;
         assert!(worker.close_allowed());
     }
