@@ -201,6 +201,7 @@ pub fn status(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             if m.loaded { "" } else { " · cargando…" }
         )
     };
+    m.footer_status.clone_from(&left);
     let tips = tips_available(m, w);
     p.text(
         r(

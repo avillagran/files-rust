@@ -477,6 +477,7 @@ pub struct Hit {
 }
 pub struct Model {
     pub toolbar: crate::toolbar::State,
+    pub footer_status: String,
     pub rail_pinned: bool,
     pub rail_order: Vec<String>,
     pub auto_folder_sizes: bool,
@@ -706,6 +707,7 @@ impl Model {
         let worker = Worker::start(path.clone());
         let mut model = Self {
             toolbar: Default::default(),
+            footer_status: String::new(),
             rail_pinned: prefs.rail_pinned,
             rail_order: prefs.rail_order.clone(),
             auto_folder_sizes: prefs.auto_folder_sizes,

@@ -3463,7 +3463,7 @@ pub fn run_since(start: Instant) -> bool {
                             "path":state.path.as_os_str().as_encoded_bytes(),"loaded":state.loaded,
                             "toolbar":toolbar::marker(&state,canvas.w(),canvas.h()),"sidebar":sidebar,
                             "auto_sizes":state.auto_folder_sizes,"config_pending":state.config_dirty||state.config_in_flight.is_some(),
-                            "cache_error":state.sizes.automatic_cache_error(),"cache_hits":state.sizes.automatic_cache_hits(),
+                            "footer_status":state.footer_status,"cache_error":state.sizes.automatic_cache_error(),"cache_hits":state.sizes.automatic_cache_hits(),
                             "folders":state.visible.iter().take(64).filter_map(|&i|state.entries.get(i)).filter(|e|e.is_dir()).map(|e|serde_json::json!({
                                 "name":e.name.as_encoded_bytes(),"size":state.sizes.label(&state.path,&e.name),
                             })).collect::<Vec<_>>(),"error":state.error});
