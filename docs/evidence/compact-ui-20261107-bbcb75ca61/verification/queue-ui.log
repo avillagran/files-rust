@@ -1,0 +1,13 @@
+   Compiling fltk-sys v1.5.23
+   Compiling files-core v0.0.4 (/home/node/Work/files/crates/core)
+   Compiling fltk v1.5.23
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+   Compiling lib-fltk-omarchy v0.0.10 (/home/node/Work/files/vendor/lib-fltk-omarchy)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 33.65s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 1 test
+test size_queue::tests::provisional_cache_is_labelled_and_does_not_become_a_confirmed_sort_value ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 904 filtered out; finished in 0.00s
+

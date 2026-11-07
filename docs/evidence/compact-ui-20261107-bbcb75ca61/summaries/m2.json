@@ -1,0 +1,91 @@
+{
+  "functional_gate": "PASS",
+  "functional_scope": "private scoped release: native title and app_id, ten controls hover, Preferences > View routing, pin persistence, automatic folder size and persisted cache read, known-small Space fixture",
+  "overall_request": "INCOMPLETE_DND_BLOCKED",
+  "source_checkpoint": "03c2ad3",
+  "binary_sha256": "b048d62279cda812152f25c7ce88a1aecc8fbf00dcf0a869a93009208e78ddde",
+  "helper_sha256": "ffbe7a5be3cca5de90210029238403ef2890b9399326d5e6c59f7062709803d7",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "profiles": [
+    {
+      "path": "/home/avillagran/.cache/files-test/compact-ui-native-a5b26deb1804/report.json",
+      "sha256": "9b2d13a9243a7e2cf50df37dde30b2739eb6a2254686d798290f7f836efe2de2",
+      "size": "1000x650",
+      "animations": "on"
+    },
+    {
+      "path": "/home/avillagran/.cache/files-test/compact-ui-native-44a5e687535c/report.json",
+      "sha256": "0a54f06a5139d276977447223ed3f7c03a9230779c570c7cd7b66f181895a079",
+      "size": "1000x650",
+      "animations": "off"
+    },
+    {
+      "path": "/home/avillagran/.cache/files-test/compact-ui-native-4211e6a0b664/report.json",
+      "sha256": "8f3c0f9611da27d653451687aac17c094a7222d634e7d1595c1544f779f4f9d9",
+      "size": "700x500",
+      "animations": "on"
+    },
+    {
+      "path": "/home/avillagran/.cache/files-test/compact-ui-native-5c82ab2e5d5f/report.json",
+      "sha256": "73aa4e2081b153617ee1778618584397e7efdfc92e59bb8c595900fff0d628c6",
+      "size": "700x500",
+      "animations": "off"
+    }
+  ],
+  "comparisons": [
+    {
+      "scope": "settled Preferences control only",
+      "size": "1000x650",
+      "on_rect": [
+        852,
+        10,
+        132,
+        36
+      ],
+      "off_rect": [
+        852,
+        10,
+        132,
+        36
+      ],
+      "different_rgb_channels": 0,
+      "on_early_width": 115,
+      "on_early_animating": true,
+      "off_early_width": 132,
+      "off_early_animating": false,
+      "motion_observed": true
+    },
+    {
+      "scope": "settled Preferences control only",
+      "size": "700x500",
+      "on_rect": [
+        556,
+        10,
+        132,
+        36
+      ],
+      "off_rect": [
+        556,
+        10,
+        132,
+        36
+      ],
+      "different_rgb_channels": 0,
+      "on_early_width": 114,
+      "on_early_animating": true,
+      "off_early_width": 132,
+      "off_early_animating": false,
+      "motion_observed": true
+    }
+  ],
+  "visual_review": "All ten toolbar hovers inspected at both widths, plus grouped submenu, pin and Space; copies transferred and SHA verified.",
+  "not_tested": [
+    "native drag reorder, toolkit blocked",
+    "full-section drag",
+    "specific originally reported Space error",
+    "native system reduced-motion detection",
+    "desktop shell icon rendering",
+    "resources and startup",
+    "cache-error negative scenario on this machine"
+  ]
+}

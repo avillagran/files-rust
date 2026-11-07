@@ -1,0 +1,194 @@
+   Compiling fltk-sys v1.5.23
+    Checking fltk v1.5.23
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Checking lib-fltk-omarchy v0.0.10 (/home/node/Work/files/vendor/lib-fltk-omarchy)
+error[E0023]: this pattern has 6 fields, but the corresponding tuple variant has 9 fields
+   --> crates/ui/src/operation_bar.rs:387:34
+    |
+387 |         let Request::Preferences(rev, _, _, _, bar, _) = input.try_recv().unwrap() else {
+    |                                  ^^^  ^  ^  ^  ^^^  ^ expected 9 fields, found 6
+    |
+   ::: crates/ui/src/aux_io.rs:79:5
+    |
+ 79 |     Preferences(
+    |     ----------- tuple variant defined here
+ 80 |         u64,
+    |         ---
+ 81 |         Corners,
+    |         -------
+ 82 |         WindowMode,
+    |         ----------
+ 83 |         bool,
+    |         ----
+ 84 |         bool,
+    |         ----
+ 85 |         bool,
+    |         ----
+ 86 |         bool,
+    |         ----
+ 87 |         bool,
+    |         ----
+ 88 |         Vec<String>,
+    |         ----------- tuple variant has 9 fields
+    |
+help: use `_` to explicitly ignore each field
+    |
+387 |         let Request::Preferences(rev, _, _, _, bar, _, _, _, _) = input.try_recv().unwrap() else {
+    |                                                      +++++++++
+help: use `..` to ignore the rest of the fields
+    |
+387 -         let Request::Preferences(rev, _, _, _, bar, _) = input.try_recv().unwrap() else {
+387 +         let Request::Preferences(rev, _, _, _, bar, ..) = input.try_recv().unwrap() else {
+    |
+
+error[E0023]: this pattern has 6 fields, but the corresponding tuple variant has 9 fields
+   --> crates/ui/src/operation_bar.rs:395:34
+    |
+395 |         let Request::Preferences(next, _, _, _, bar, _) = input.try_recv().unwrap() else {
+    |                                  ^^^^  ^  ^  ^  ^^^  ^ expected 9 fields, found 6
+    |
+   ::: crates/ui/src/aux_io.rs:79:5
+    |
+ 79 |     Preferences(
+    |     ----------- tuple variant defined here
+ 80 |         u64,
+    |         ---
+ 81 |         Corners,
+    |         -------
+ 82 |         WindowMode,
+    |         ----------
+ 83 |         bool,
+    |         ----
+ 84 |         bool,
+    |         ----
+ 85 |         bool,
+    |         ----
+ 86 |         bool,
+    |         ----
+ 87 |         bool,
+    |         ----
+ 88 |         Vec<String>,
+    |         ----------- tuple variant has 9 fields
+    |
+help: use `_` to explicitly ignore each field
+    |
+395 |         let Request::Preferences(next, _, _, _, bar, _, _, _, _) = input.try_recv().unwrap() else {
+    |                                                       +++++++++
+help: use `..` to ignore the rest of the fields
+    |
+395 -         let Request::Preferences(next, _, _, _, bar, _) = input.try_recv().unwrap() else {
+395 +         let Request::Preferences(next, _, _, _, bar, ..) = input.try_recv().unwrap() else {
+    |
+
+error[E0023]: this pattern has 6 fields, but the corresponding tuple variant has 9 fields
+   --> crates/ui/src/spatial_view.rs:746:34
+    |
+746 |         let Request::Preferences(rev, _, _, _, _, _) = input.try_recv().unwrap() else {
+    |                                  ^^^  ^  ^  ^  ^  ^ expected 9 fields, found 6
+    |
+   ::: crates/ui/src/aux_io.rs:79:5
+    |
+ 79 |     Preferences(
+    |     ----------- tuple variant defined here
+ 80 |         u64,
+    |         ---
+ 81 |         Corners,
+    |         -------
+ 82 |         WindowMode,
+    |         ----------
+ 83 |         bool,
+    |         ----
+ 84 |         bool,
+    |         ----
+ 85 |         bool,
+    |         ----
+ 86 |         bool,
+    |         ----
+ 87 |         bool,
+    |         ----
+ 88 |         Vec<String>,
+    |         ----------- tuple variant has 9 fields
+    |
+help: use `_` to explicitly ignore each field
+    |
+746 |         let Request::Preferences(rev, _, _, _, _, _, _, _, _) = input.try_recv().unwrap() else {
+    |                                                    +++++++++
+help: use `..` to ignore the rest of the fields
+    |
+746 -         let Request::Preferences(rev, _, _, _, _, _) = input.try_recv().unwrap() else {
+746 +         let Request::Preferences(rev, ..) = input.try_recv().unwrap() else {
+    |
+
+error[E0023]: this pattern has 6 fields, but the corresponding tuple variant has 9 fields
+   --> crates/ui/src/spatial_view.rs:760:34
+    |
+760 |         let Request::Preferences(latest, corners, mode, _, _, _) = input.try_recv().unwrap() else {
+    |                                  ^^^^^^  ^^^^^^^  ^^^^  ^  ^  ^ expected 9 fields, found 6
+    |
+   ::: crates/ui/src/aux_io.rs:79:5
+    |
+ 79 |     Preferences(
+    |     ----------- tuple variant defined here
+ 80 |         u64,
+    |         ---
+ 81 |         Corners,
+    |         -------
+ 82 |         WindowMode,
+    |         ----------
+ 83 |         bool,
+    |         ----
+ 84 |         bool,
+    |         ----
+ 85 |         bool,
+    |         ----
+ 86 |         bool,
+    |         ----
+ 87 |         bool,
+    |         ----
+ 88 |         Vec<String>,
+    |         ----------- tuple variant has 9 fields
+    |
+help: use `_` to explicitly ignore each field
+    |
+760 |         let Request::Preferences(latest, corners, mode, _, _, _, _, _, _) = input.try_recv().unwrap() else {
+    |                                                                +++++++++
+help: use `..` to ignore the rest of the fields
+    |
+760 -         let Request::Preferences(latest, corners, mode, _, _, _) = input.try_recv().unwrap() else {
+760 +         let Request::Preferences(latest, corners, mode, ..) = input.try_recv().unwrap() else {
+    |
+
+error[E0382]: the type `Rc` does not implement `Copy`
+    --> crates/ui/src/lib.rs:3438:81
+     |
+1367 |     let rail_state = rail_state.clone();
+     |         ---------- this move could be avoided by cloning the original `Rc`, which is inexpensive
+...
+1370 |     canvas.draw(move |f| {
+     |                 -------- value moved into closure here
+...
+1438 |                 if drifted || rail.items != rail_state.borrow().items {
+     |                                             ---------- variable moved due to use in closure
+...
+3438 |                     let sidebar_marker=(command.trim()=="usability-state").then(|| {
+     |                                                                                 ^^ value borrowed here after move
+3439 |                         let rail=rail_state.borrow();
+     |                                  ---------- borrow occurs due to use in closure
+     |
+     = note: consider using `Rc::clone`
+help: consider cloning the value before moving it into the closure
+     |
+1370 ~     let value = rail_state.clone();
+1371 ~     canvas.draw(move |f| {
+1372 |         if !painted && trace {
+ ...
+1438 |                 };
+1439 ~                 if drifted || rail.items != value.borrow().items {
+     |
+
+For more information about this error, try `rustc --explain E0382`.
+error: could not compile `files-ui` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+Some errors have detailed explanations: E0023, E0382.
+For more information about an error, try `rustc --explain E0023`.
+error: could not compile `files-ui` (lib test) due to 5 previous errors

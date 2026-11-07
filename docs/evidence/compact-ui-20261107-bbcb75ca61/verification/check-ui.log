@@ -1,0 +1,19 @@
+   Compiling fltk-sys v1.5.23
+    Checking files-core v0.0.4 (/home/node/Work/files/crates/core)
+error: failed to run custom build command for `fltk-sys v1.5.23`
+
+Caused by:
+  process didn't exit successfully: `/home/node/Work/files/target/debug/build/fltk-sys-64fc375ab775ca21/build-script-main` (exit status: 101)
+  --- stdout
+  cargo:rerun-if-changed=build
+
+  --- stderr
+
+  thread 'main' (3068206) panicked at /home/node/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.23/build/main.rs:51:13:
+  CMake was not found. It's needed to build fltk and cfltk. 
+  Perhaps you would prefer to use a bundled version of fltk. 
+              You would need to enable the fltk-bundled feature.
+              Or if you have an installation of FLTK 1.4 and a working fltk-config executable, you can use the fltk-config feature.
+              Features can be enabled in your Cargo.toml or from the command line using the --features=fltk/fltk-bundled argument to cargo.
+  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: build failed, waiting for other jobs to finish...

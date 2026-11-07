@@ -1,0 +1,1166 @@
+{
+  "files": {
+    "README.md": {
+      "bytes": 2960,
+      "sha256": "5cf890487e626c62fc4a315ead79f6f76c997e6e3866c11ad15dde6e467e0f8d"
+    },
+    "harness/manifest.json": {
+      "bytes": 1409,
+      "sha256": "f6ef9818b8532b6d301a4904c7806f5db57b6f27092097885adb05b31fcc0008"
+    },
+    "harness/scripts/compact-ui-native-check.py": {
+      "bytes": 38906,
+      "sha256": "25d4727fe45b25e31e6d16491e1c46a43ec24995d4cebb60e5d4774f1936b97e"
+    },
+    "harness/scripts/compare-compact-motion.py": {
+      "bytes": 2594,
+      "sha256": "198767abe5996fb9c2ad6454359ce0d9df826ba61d280598c849f52184369d42"
+    },
+    "harness/scripts/tools/compact-persistent-pointer.c": {
+      "bytes": 4999,
+      "sha256": "0264bdb8102870d44ed273527eb25d3bd7f649856f1efc6016591177ca9d1b02"
+    },
+    "harness/scripts/tools/persistent-keyboard.c": {
+      "bytes": 14651,
+      "sha256": "b7162218c4a1c10736abcb42ad27b0f86778905d7add4b1842431683bb789245"
+    },
+    "harness/scripts/tools/virtual-keyboard-unstable-v1.xml": {
+      "bytes": 4886,
+      "sha256": "7ad7870003ecd592cae47dc19d277a609b7f18fd7b7be012623cf3225a7294f5"
+    },
+    "harness/scripts/tools/wlr-virtual-pointer-unstable-v1.xml": {
+      "bytes": 6895,
+      "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524"
+    },
+    "m2/4211e6a0b664/compositor.log": {
+      "bytes": 151,
+      "sha256": "8d9739ac59d05ebb1df1dbe1dd6845d76caf471dbb0ebb8519e0dcdaa1033d7a"
+    },
+    "m2/4211e6a0b664/home-title.png": {
+      "bytes": 39080,
+      "sha256": "35ffbb914ffaf97e0be477a6684b8652e1f764fccb90a3576d3a19c6f09c52e8"
+    },
+    "m2/4211e6a0b664/hover-control-0.png": {
+      "bytes": 29866,
+      "sha256": "e535d1bfc14a97cd5ef62576c55a5a9066ed517c91b4ee4635b42ba50582cb43"
+    },
+    "m2/4211e6a0b664/hover-control-1.png": {
+      "bytes": 29859,
+      "sha256": "a27bbdb7cc3085e7bfffedcf6ae98c8e8377cdda3e9904b931709eee969ac92b"
+    },
+    "m2/4211e6a0b664/hover-control-2.png": {
+      "bytes": 29873,
+      "sha256": "4ffba8ded9a67e4194c677960d093012a77c5fd259bff3ec5ecd7e93d98ea139"
+    },
+    "m2/4211e6a0b664/hover-control-3.png": {
+      "bytes": 29789,
+      "sha256": "0f9ac57fe3c69a6dd618cb8a6dbae02487aae7d282704790a90314cdf1c6b29e"
+    },
+    "m2/4211e6a0b664/hover-control-4.png": {
+      "bytes": 29829,
+      "sha256": "0514209d25fac4a87700f4287c7ed764b6aa90127d37b2b6c9f21213da618f8b"
+    },
+    "m2/4211e6a0b664/hover-control-5.png": {
+      "bytes": 30081,
+      "sha256": "38f744e11f33a58224a5b2a73da1863d3090c9847b9b47b0f767b617f78c41e1"
+    },
+    "m2/4211e6a0b664/hover-control-6.png": {
+      "bytes": 30123,
+      "sha256": "ca8bcbcf24d0eefbf58f0cefdec2a4322cf6e22bc4c514f3b907493d0b373b49"
+    },
+    "m2/4211e6a0b664/hover-control-7.png": {
+      "bytes": 30127,
+      "sha256": "c0641eff5cae950402666aa1d26654809384b59fb612b176763d952a5cc53070"
+    },
+    "m2/4211e6a0b664/hover-control-8.png": {
+      "bytes": 30009,
+      "sha256": "f708c48174b9a9bd3faedb487a7f84839629c48621a493673ccedd771e837cde"
+    },
+    "m2/4211e6a0b664/hover-control-9.png": {
+      "bytes": 29928,
+      "sha256": "54eda40b84aa639a02e76191871bf5d7f09e9f8f09c2e2bd9e3f3140df7563d1"
+    },
+    "m2/4211e6a0b664/hover-settled.png": {
+      "bytes": 29938,
+      "sha256": "41654915ffe32f1956551c8b32ddc13a1d1bbb9c98368c882f667c0f438302ce"
+    },
+    "m2/4211e6a0b664/initial.png": {
+      "bytes": 29193,
+      "sha256": "26013917204aa4ca1f9b9c7fa1c80eae767911a7e09b0ce73238b62266164ea5"
+    },
+    "m2/4211e6a0b664/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "m2/4211e6a0b664/pin-restored.png": {
+      "bytes": 43554,
+      "sha256": "c0d3ba3baa4bb77fb1ba59c9a21ebb12805fc5ac16ea1a00328238743d3225a9"
+    },
+    "m2/4211e6a0b664/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "m2/4211e6a0b664/preferences-view-submenu.png": {
+      "bytes": 49474,
+      "sha256": "0048e3bca0be7451fd2b6ebcd4a3b6a283a7e4f9e476ff7e40037c1dfe0e2bd4"
+    },
+    "m2/4211e6a0b664/report.json": {
+      "bytes": 248245,
+      "sha256": "8f3c0f9611da27d653451687aac17c094a7222d634e7d1595c1544f779f4f9d9"
+    },
+    "m2/4211e6a0b664/service-restarted.log": {
+      "bytes": 34651,
+      "sha256": "35eb90bd24472b57b854698df2b174c0a73757db85c158a9693d54ab88f3e08c"
+    },
+    "m2/4211e6a0b664/service.log": {
+      "bytes": 304900,
+      "sha256": "162653b94c653ea928297727e45a2c8a154e71d4f7bc277a7b7ea190febe479e"
+    },
+    "m2/4211e6a0b664/sidebar-pinned.png": {
+      "bytes": 35792,
+      "sha256": "9dfa439b4bcc323cfb981ed10a7190efb081ebeb617c077fd4971cb861054e39"
+    },
+    "m2/4211e6a0b664/space-ready.png": {
+      "bytes": 43554,
+      "sha256": "c0d3ba3baa4bb77fb1ba59c9a21ebb12805fc5ac16ea1a00328238743d3225a9"
+    },
+    "m2/44a5e687535c/compositor.log": {
+      "bytes": 151,
+      "sha256": "ce5349ebbb9565f16f6f23a7c634c03c3507a5e3eaf6daa06c45cc2d46272275"
+    },
+    "m2/44a5e687535c/home-title.png": {
+      "bytes": 56917,
+      "sha256": "dfa187982929b9feabed20705e28328b4dcbc6d5c5716aefeb800960ef249973"
+    },
+    "m2/44a5e687535c/hover-control-0.png": {
+      "bytes": 47316,
+      "sha256": "6e00bf7a2d803925b0c36925f6868320a62b20ddf01680725d96698d9fa06827"
+    },
+    "m2/44a5e687535c/hover-control-1.png": {
+      "bytes": 47349,
+      "sha256": "1767b99fc001f54822310567a6bdf0515b8204c7dbd0ca3d390ebe7da15f2b38"
+    },
+    "m2/44a5e687535c/hover-control-2.png": {
+      "bytes": 47313,
+      "sha256": "2d703420e8945dcd62a4969e43f87a87201a92c3b97c4f53c02487ae79ad3e89"
+    },
+    "m2/44a5e687535c/hover-control-3.png": {
+      "bytes": 47126,
+      "sha256": "da85717ece2cbcd3960d2fbca96cd3bf053c199853979a094a5c9fdccf05c901"
+    },
+    "m2/44a5e687535c/hover-control-4.png": {
+      "bytes": 47285,
+      "sha256": "d97e5f0fd152a5450aca104e74e1febf46ff43fc4fb0770f47d761992e61e52d"
+    },
+    "m2/44a5e687535c/hover-control-5.png": {
+      "bytes": 47483,
+      "sha256": "e07e436dcbbbc0bee109c82368117d81af42ad318ba0ffd92e67d05ada7778f0"
+    },
+    "m2/44a5e687535c/hover-control-6.png": {
+      "bytes": 47420,
+      "sha256": "d77da2ac75b2f57811fb7c797fbca010016ea8b983685c27953ca57138df6f0a"
+    },
+    "m2/44a5e687535c/hover-control-7.png": {
+      "bytes": 47413,
+      "sha256": "af2db9e9cb5ca56295bbde417e7a7e154626632e4a136a5e24eadb1c14bb257b"
+    },
+    "m2/44a5e687535c/hover-control-8.png": {
+      "bytes": 47345,
+      "sha256": "d24c75a60c4543e14a69189d3959b1aff359a66da3b2f7fa53275d9d81d2f0a0"
+    },
+    "m2/44a5e687535c/hover-control-9.png": {
+      "bytes": 47489,
+      "sha256": "a08e59e27af8cbd9a10a6a11bf73504e42f39a0c9d99e1811e4755a8b6f47bbc"
+    },
+    "m2/44a5e687535c/hover-settled.png": {
+      "bytes": 47657,
+      "sha256": "9aed31074cc69cafdefcff3b04cf346030ba09847fba00e4f8815ef1c88e152b"
+    },
+    "m2/44a5e687535c/initial.png": {
+      "bytes": 46550,
+      "sha256": "0c4388146abd32443b0872c28d9499440f49988f32993031e6b4ab6318e98132"
+    },
+    "m2/44a5e687535c/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "m2/44a5e687535c/pin-restored.png": {
+      "bytes": 65490,
+      "sha256": "444e32d8329cc90f5d587c6cfba53044cc4dcc7bb707058711c52ec3c213508b"
+    },
+    "m2/44a5e687535c/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "m2/44a5e687535c/preferences-view-submenu.png": {
+      "bytes": 67065,
+      "sha256": "8a5f22f0418156f6924db2ac8c48ed2e9903d87c43434df50840537b82128c2f"
+    },
+    "m2/44a5e687535c/report.json": {
+      "bytes": 253544,
+      "sha256": "0a54f06a5139d276977447223ed3f7c03a9230779c570c7cd7b66f181895a079"
+    },
+    "m2/44a5e687535c/service-restarted.log": {
+      "bytes": 34861,
+      "sha256": "17d214979580fe1e1b6a87d63ce007cb42053e08c15f050b5c598ba8c7b25945"
+    },
+    "m2/44a5e687535c/service.log": {
+      "bytes": 118941,
+      "sha256": "42b1ac95a7bcded14284be3e95dcb3cf82c07f410386f10d9f3f497c5bd3eb93"
+    },
+    "m2/44a5e687535c/sidebar-pinned.png": {
+      "bytes": 57090,
+      "sha256": "1bc57e1ce5ee3b626b71e3f08660aa2bf9a80b976fb0313055c55eef39acbd55"
+    },
+    "m2/44a5e687535c/space-ready.png": {
+      "bytes": 65490,
+      "sha256": "444e32d8329cc90f5d587c6cfba53044cc4dcc7bb707058711c52ec3c213508b"
+    },
+    "m2/5c82ab2e5d5f/compositor.log": {
+      "bytes": 151,
+      "sha256": "330a03dcd7a2f1035ce9f12d949446cd04cb6e5b9662badd19839f3450d64189"
+    },
+    "m2/5c82ab2e5d5f/home-title.png": {
+      "bytes": 39169,
+      "sha256": "49064e82cbf1105689d9f75ea61d95975d9a448366ebbe12afd10d90627a90b1"
+    },
+    "m2/5c82ab2e5d5f/hover-control-0.png": {
+      "bytes": 29726,
+      "sha256": "cefc047a189a38c2f4b8217430b10fd594d655ae868b553453d4f3a8755ad839"
+    },
+    "m2/5c82ab2e5d5f/hover-control-1.png": {
+      "bytes": 29711,
+      "sha256": "f464f7f21a13809916a1bbaeece798c837111e37dd8085332b0063a948f37f96"
+    },
+    "m2/5c82ab2e5d5f/hover-control-2.png": {
+      "bytes": 29722,
+      "sha256": "6e3f56fba9450a3d4ff297f008cdfd02b090ed93456a7f703f39a5198854c8d9"
+    },
+    "m2/5c82ab2e5d5f/hover-control-3.png": {
+      "bytes": 29638,
+      "sha256": "13b5296685bab27f8aca3c3b9d6819b0050d7510795dcaf0b7f81a5855bf6a64"
+    },
+    "m2/5c82ab2e5d5f/hover-control-4.png": {
+      "bytes": 29678,
+      "sha256": "844534e0efdade73a37882fe117d5260a168165e33a9ad7e2ebe8a37ccc00e4e"
+    },
+    "m2/5c82ab2e5d5f/hover-control-5.png": {
+      "bytes": 29890,
+      "sha256": "fddec1d426e78d0080b176050cff97d2037575366a1251b68a670f8c5d3e4231"
+    },
+    "m2/5c82ab2e5d5f/hover-control-6.png": {
+      "bytes": 29932,
+      "sha256": "baa7346b87d1bee7a3b73625e0b7dffe2f2c71a63cf56cad47847d204290fbbb"
+    },
+    "m2/5c82ab2e5d5f/hover-control-7.png": {
+      "bytes": 30133,
+      "sha256": "fa3082ae67f00636749f0ff9220b09381dc22ae9f66fd94cbe6c313a65ddc5f4"
+    },
+    "m2/5c82ab2e5d5f/hover-control-8.png": {
+      "bytes": 30075,
+      "sha256": "3ca0f9843d94c6d5129baf621b6020137395b3ec0b9da9f027c1818231a5199d"
+    },
+    "m2/5c82ab2e5d5f/hover-control-9.png": {
+      "bytes": 29996,
+      "sha256": "87461382b58b25fdba561d99489e1c0a4b389fd2aacd0042dd303910fa3525cc"
+    },
+    "m2/5c82ab2e5d5f/hover-settled.png": {
+      "bytes": 29798,
+      "sha256": "4c95b54a6cc50b4d205737d0039434b62be69f428b161f32437c1b088c0ad913"
+    },
+    "m2/5c82ab2e5d5f/initial.png": {
+      "bytes": 29054,
+      "sha256": "96d6513ba25fa4f59085ec260b15c2385b430301df2cbaec81b8595940234c75"
+    },
+    "m2/5c82ab2e5d5f/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "m2/5c82ab2e5d5f/pin-restored.png": {
+      "bytes": 43399,
+      "sha256": "8cc6053b7bf3bd114b7253e6a4c9e02518ba47dd03bebd6d73a55a49c8090278"
+    },
+    "m2/5c82ab2e5d5f/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "m2/5c82ab2e5d5f/preferences-view-submenu.png": {
+      "bytes": 49501,
+      "sha256": "c6fe15b1ce86f8c46063d99d35e91c736ebfb95e3cbd494db2a3788f8501527d"
+    },
+    "m2/5c82ab2e5d5f/report.json": {
+      "bytes": 248348,
+      "sha256": "73aa4e2081b153617ee1778618584397e7efdfc92e59bb8c595900fff0d628c6"
+    },
+    "m2/5c82ab2e5d5f/service-restarted.log": {
+      "bytes": 34681,
+      "sha256": "ee564bead9308698cbe48dcb6e089d22de282c6ee3684a8d3f0a8ddede126a8a"
+    },
+    "m2/5c82ab2e5d5f/service.log": {
+      "bytes": 118391,
+      "sha256": "b659a9d2d806ad50e9e4845a00597726f60e855d1995c790b4048046d42b21ec"
+    },
+    "m2/5c82ab2e5d5f/sidebar-pinned.png": {
+      "bytes": 38155,
+      "sha256": "b6c1d2246d28ea92c368500562cce54cfabad6ad0d8259dc1699fdf3d9b50d63"
+    },
+    "m2/5c82ab2e5d5f/space-ready.png": {
+      "bytes": 43399,
+      "sha256": "8cc6053b7bf3bd114b7253e6a4c9e02518ba47dd03bebd6d73a55a49c8090278"
+    },
+    "m2/6c4b3408a19d/compositor.log": {
+      "bytes": 151,
+      "sha256": "ce5349ebbb9565f16f6f23a7c634c03c3507a5e3eaf6daa06c45cc2d46272275"
+    },
+    "m2/6c4b3408a19d/home-title.png": {
+      "bytes": 57134,
+      "sha256": "3b965cf7605404a9fae0589a479f952e5521212f9be4bc7923d3e38bf3717349"
+    },
+    "m2/6c4b3408a19d/hover-control-0.png": {
+      "bytes": 47322,
+      "sha256": "534ca65dd015ca166577677a5bdfd182b9c79cdf4c5a5ecc23e9fe6e5818c6d2"
+    },
+    "m2/6c4b3408a19d/hover-control-1.png": {
+      "bytes": 47339,
+      "sha256": "69ae95af33318cc2858fc3a9094e04c95f9aabc3720f9ebf44f95e809579813f"
+    },
+    "m2/6c4b3408a19d/hover-control-2.png": {
+      "bytes": 47244,
+      "sha256": "109c6fb3f0095089ed195b423f83d166010801b445782225277329e06af74c18"
+    },
+    "m2/6c4b3408a19d/hover-control-3.png": {
+      "bytes": 46973,
+      "sha256": "9b35a317139c992943bf90b36c5a6da5bb78e6a2e6def3fb7c5b07eb31602855"
+    },
+    "m2/6c4b3408a19d/hover-control-4.png": {
+      "bytes": 46990,
+      "sha256": "b464f4b4bf556ba90a6c7120e25c33f906d015556b92b5f8ca88f9badc83fa61"
+    },
+    "m2/6c4b3408a19d/hover-control-5.png": {
+      "bytes": 47222,
+      "sha256": "cc057d59b79b0e84980378e6ac60965fd8aa8afb4aad1f220b47e658a5359907"
+    },
+    "m2/6c4b3408a19d/hover-control-6.png": {
+      "bytes": 47298,
+      "sha256": "6d4733bd91ece26fad7dcfa50b2f62e27421e12056597ffc837f133b1f338747"
+    },
+    "m2/6c4b3408a19d/hover-control-7.png": {
+      "bytes": 47254,
+      "sha256": "eb03ebc3a769bac481911289b265b9d03b6167435950d3865f3a6bce5e91a647"
+    },
+    "m2/6c4b3408a19d/hover-control-8.png": {
+      "bytes": 47208,
+      "sha256": "ef89bf89451950902e40d7d1fcd20eb7c6e9cffa4c001f98112c9a1cd817550b"
+    },
+    "m2/6c4b3408a19d/hover-control-9.png": {
+      "bytes": 47269,
+      "sha256": "e832d847cc342d44f600f3ce94b1fe17414726f847b0fac4f0c71568e3ad646b"
+    },
+    "m2/6c4b3408a19d/hover-settled.png": {
+      "bytes": 47663,
+      "sha256": "c48bdc861f88d5a326e6a18872f240665c3656dffaf56b669eb6d7dd59fd47a2"
+    },
+    "m2/6c4b3408a19d/initial.png": {
+      "bytes": 46556,
+      "sha256": "0d5e6be0c41e7a7cc2e1ddb9113c1420c28a5589b87ae413594c0c23095800e4"
+    },
+    "m2/6c4b3408a19d/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "m2/6c4b3408a19d/pin-restored.png": {
+      "bytes": 65433,
+      "sha256": "61c9fc6cf8c1315a6e335c65b994dd98e23bac1dd980b9134ad2f6c01d2ca1aa"
+    },
+    "m2/6c4b3408a19d/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "m2/6c4b3408a19d/preferences-view-submenu.png": {
+      "bytes": 67287,
+      "sha256": "86126b1ed155e57d3ce0076921cc60c03107d2befaba6fdb251f8e562a967db8"
+    },
+    "m2/6c4b3408a19d/report.json": {
+      "bytes": 253465,
+      "sha256": "d91bea90b5ae1798e2f564f7b1a5c70ba6dc07d3b1bd5870cbaede1bbc43243c"
+    },
+    "m2/6c4b3408a19d/service-restarted.log": {
+      "bytes": 34851,
+      "sha256": "6fb01cc42ddb4ee722b1efba8ca141cac1419dc3e547e6c066542c20c0e0a92e"
+    },
+    "m2/6c4b3408a19d/service.log": {
+      "bytes": 299697,
+      "sha256": "dce9a04694fb834427cb085d070240a0b9ccb239094262fa42b42f09eb3cf3ae"
+    },
+    "m2/6c4b3408a19d/sidebar-pinned.png": {
+      "bytes": 57194,
+      "sha256": "0bc8f25748b8ff6e4ccb4542dc28164dc8245faf59e7c2fc2069fa251c266029"
+    },
+    "m2/6c4b3408a19d/space-ready.png": {
+      "bytes": 65433,
+      "sha256": "61c9fc6cf8c1315a6e335c65b994dd98e23bac1dd980b9134ad2f6c01d2ca1aa"
+    },
+    "m2/a5b26deb1804/compositor.log": {
+      "bytes": 151,
+      "sha256": "330a03dcd7a2f1035ce9f12d949446cd04cb6e5b9662badd19839f3450d64189"
+    },
+    "m2/a5b26deb1804/home-title.png": {
+      "bytes": 57030,
+      "sha256": "a1c22547441d36634a2244b75e1ae874e73422284eb4751383071fa2ce2e95e4"
+    },
+    "m2/a5b26deb1804/hover-control-0.png": {
+      "bytes": 47150,
+      "sha256": "f1e105447e8f236c193f9086a5caee555fcb67b0558ffd489e564048a1d2f3e8"
+    },
+    "m2/a5b26deb1804/hover-control-1.png": {
+      "bytes": 47349,
+      "sha256": "b186538a896fd0d8ffb1a456449938544bd1790ff11fd9c01e0775940296fd49"
+    },
+    "m2/a5b26deb1804/hover-control-2.png": {
+      "bytes": 47216,
+      "sha256": "c5694547119f22cf735387e6b1d21d2a43318c8557d242cd1927e5d8ff4add22"
+    },
+    "m2/a5b26deb1804/hover-control-3.png": {
+      "bytes": 46981,
+      "sha256": "20f70391882cb5adcba974d74b53f7d93d178553bd9f83d9e93d3e3f3b357caa"
+    },
+    "m2/a5b26deb1804/hover-control-4.png": {
+      "bytes": 47182,
+      "sha256": "754839490f7421ee7303632537890e0afc9b4221e4b25072494472ff114fdd96"
+    },
+    "m2/a5b26deb1804/hover-control-5.png": {
+      "bytes": 47421,
+      "sha256": "7c6256b270c8ce73b9c5e0b65f16e73f5879bbc0ecce13cec74e0c87768533a7"
+    },
+    "m2/a5b26deb1804/hover-control-6.png": {
+      "bytes": 47442,
+      "sha256": "8667236e71cd98e153aebdbcf73b62a0a7bbfdb7b75fb0d26d796c0b4057dcaf"
+    },
+    "m2/a5b26deb1804/hover-control-7.png": {
+      "bytes": 47383,
+      "sha256": "010b9d8d7c97e910feabe9a5fd4d1643d2e2aca1d6dbddf13cb7c54b966bfec0"
+    },
+    "m2/a5b26deb1804/hover-control-8.png": {
+      "bytes": 47083,
+      "sha256": "ec8b9bd3fef79bffddcb287fd162e7593f231dba405f37d80a58b872d2c7eef0"
+    },
+    "m2/a5b26deb1804/hover-control-9.png": {
+      "bytes": 47168,
+      "sha256": "8d8a6623ac8b07a9e5c646410a72dcbe2b50e39d4fd1edccef42da5aa5e25353"
+    },
+    "m2/a5b26deb1804/hover-settled.png": {
+      "bytes": 47491,
+      "sha256": "597751a268e1911f399dd609acf6c8c6e0ce6900f177dd88f15922938f4229ee"
+    },
+    "m2/a5b26deb1804/initial.png": {
+      "bytes": 46384,
+      "sha256": "7ef35fe8c568e54ab8527580747aec59219bd57cffcccdcc8f0789d7cebd6ae4"
+    },
+    "m2/a5b26deb1804/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "m2/a5b26deb1804/pin-restored.png": {
+      "bytes": 65433,
+      "sha256": "04da5cddaac35dfe3421e1b68b366f973135f2445d75dd2030db50de3df4d096"
+    },
+    "m2/a5b26deb1804/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "m2/a5b26deb1804/preferences-view-submenu.png": {
+      "bytes": 67229,
+      "sha256": "eaec6af4a0f5b0b35db5d92dbcc05087e43841d42209d76f22f32cf3bfbfff89"
+    },
+    "m2/a5b26deb1804/report.json": {
+      "bytes": 252349,
+      "sha256": "9b2d13a9243a7e2cf50df37dde30b2739eb6a2254686d798290f7f836efe2de2"
+    },
+    "m2/a5b26deb1804/service-restarted.log": {
+      "bytes": 34861,
+      "sha256": "061fa5628fc700eb6ed9cd560e2fdb8ddde8e207bc40a31a4349d6f1078409a5"
+    },
+    "m2/a5b26deb1804/service.log": {
+      "bytes": 289204,
+      "sha256": "fd6089004f3d826a44f289ef1843cc1d7c49c19d1a97d453081f07527cad55c2"
+    },
+    "m2/a5b26deb1804/sidebar-pinned.png": {
+      "bytes": 54519,
+      "sha256": "349b2c0bef34c1e645d14845fb47d1ea85abfb6c0183232d7c823f5b3400a35f"
+    },
+    "m2/a5b26deb1804/space-ready.png": {
+      "bytes": 65433,
+      "sha256": "04da5cddaac35dfe3421e1b68b366f973135f2445d75dd2030db50de3df4d096"
+    },
+    "node/cache-negative/463bf4bbdc66/cache-warning.png": {
+      "bytes": 46210,
+      "sha256": "b4d3b9e341508cb2301357f4962a3168b23dd6f6a9ab39ab6ac92c3d316f483e"
+    },
+    "node/cache-negative/463bf4bbdc66/compositor.log": {
+      "bytes": 151,
+      "sha256": "1dd99806f889e2899e9b276b72347cd7bee5ee5a7a6a7e1d7d26cf737176d4e9"
+    },
+    "node/cache-negative/463bf4bbdc66/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/cache-negative/463bf4bbdc66/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/cache-negative/463bf4bbdc66/report.json": {
+      "bytes": 16630,
+      "sha256": "44e6c903d47cff2915d6998fa739778cc7d9534b7f39afdeb0ee89b33b519561"
+    },
+    "node/cache-negative/463bf4bbdc66/service.log": {
+      "bytes": 13846,
+      "sha256": "cb565cd7193e2dc44166896c9c2038fb2967efa8465c57fbe311e55135384f61"
+    },
+    "node/failures-970/23fe8595f735/compositor.log": {
+      "bytes": 151,
+      "sha256": "84ccb44670103a9a2d5a505965315f6e042a4670f86caa5f9e41f3e07229a9b6"
+    },
+    "node/failures-970/23fe8595f735/home-title.png": {
+      "bytes": 57497,
+      "sha256": "3000c3ea01714c28b54110e3ae03fdc24b4336e0651ca92517dce50badde0e9d"
+    },
+    "node/failures-970/23fe8595f735/hover-settled.png": {
+      "bytes": 47799,
+      "sha256": "f1ead8cd3748bf1137c4dad253eb899945e6d710becc4de22322e570da9ad9d0"
+    },
+    "node/failures-970/23fe8595f735/initial.png": {
+      "bytes": 46708,
+      "sha256": "6209f89a79b09fa2c624d4b8e51ab2cb5ad8e1ff935a35e88d349e3bbea4699a"
+    },
+    "node/failures-970/23fe8595f735/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/failures-970/23fe8595f735/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/failures-970/23fe8595f735/preferences-view-submenu.png": {
+      "bytes": 59102,
+      "sha256": "2ea980b437bb6b7216378e40be4923f64f3709bac1a310b6c1fe44924993b168"
+    },
+    "node/failures-970/23fe8595f735/report.json": {
+      "bytes": 67507,
+      "sha256": "2789eaf8592fc532eef5e5cf71604652fe5fc3963fa0473eca13110a5f5a7eb8"
+    },
+    "node/failures-970/23fe8595f735/service-restarted.log": {
+      "bytes": 3527,
+      "sha256": "141fc2e3faedf6435e42b8115c68e73ad26df83a3b34fa77bf580f331c759900"
+    },
+    "node/failures-970/23fe8595f735/service.log": {
+      "bytes": 52590,
+      "sha256": "e3e9c3240ebf2391acdec5e3f44b2d29c10a00c443f5a8d4043422ec8e44b177"
+    },
+    "node/failures-970/23fe8595f735/sidebar-pinned.png": {
+      "bytes": 57894,
+      "sha256": "3eaacd890dee80c6b83de7d45619a01e935c19d8598c27ec8f49b58d60edb349"
+    },
+    "node/failures-970/29a2f441c60b/compositor.log": {
+      "bytes": 151,
+      "sha256": "855d859783adec3f605ed87dbe3b9c6dbc412968e7265c948d1b721c897a7419"
+    },
+    "node/failures-970/29a2f441c60b/initial.png": {
+      "bytes": 46754,
+      "sha256": "a8d70094a02292de5fefdfba02dc2acc78d3d32e079d6b2186ceb6979a8d3e2d"
+    },
+    "node/failures-970/29a2f441c60b/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/failures-970/29a2f441c60b/report.json": {
+      "bytes": 15834,
+      "sha256": "32a2534802c6de519caa8991dbeebacf961ee0523da25fb5fa461d044b0d0101"
+    },
+    "node/failures-970/29a2f441c60b/service.log": {
+      "bytes": 778481,
+      "sha256": "7948848162e3991cef649c730d1215451b2f6938f8110362e9a60da2281a2821"
+    },
+    "node/postinstalled/abb4ca550cac/compositor.log": {
+      "bytes": 151,
+      "sha256": "f47ce6a5c63957a410cc4172afc3b4a125b034d1ec0afbf4e939dd8d179c3ac5"
+    },
+    "node/postinstalled/abb4ca550cac/home-title.png": {
+      "bytes": 57300,
+      "sha256": "6ad28a3372fd24d404a68e3a7115bd69698776c05af456cc87ee1ad46c5b08f5"
+    },
+    "node/postinstalled/abb4ca550cac/hover-control-0.png": {
+      "bytes": 47332,
+      "sha256": "8543a3442b8fa389850173982aa83c548e96981e330308d517adb56bc579c01b"
+    },
+    "node/postinstalled/abb4ca550cac/hover-control-1.png": {
+      "bytes": 47509,
+      "sha256": "bb114c7680fb8b5830e7d3fa941770ef0f0045b9630ac3a698280209ac2c0b37"
+    },
+    "node/postinstalled/abb4ca550cac/hover-control-2.png": {
+      "bytes": 47300,
+      "sha256": "f975b2321c8d440eed3600115c90a3c84adec24ccff5af4e6f05bde4d07e17b0"
+    },
+    "node/postinstalled/abb4ca550cac/hover-control-3.png": {
+      "bytes": 47177,
+      "sha256": "5ad82748470957de947adda6a75b83139328d988918fdbf0e077fe3186ad4d66"
+    },
+    "node/postinstalled/abb4ca550cac/hover-control-4.png": {
+      "bytes": 47294,
+      "sha256": "7c4f2c921941e16ef225b4529b2125eb29c52640f09a56fcafbcc7e5a210dd3c"
+    },
+    "node/postinstalled/abb4ca550cac/hover-control-5.png": {
+      "bytes": 47439,
+      "sha256": "d174a77af28086072f2540b39bb1165ab9eeae7f7e43842ac4e1d86daf273113"
+    },
+    "node/postinstalled/abb4ca550cac/hover-control-6.png": {
+      "bytes": 47513,
+      "sha256": "077dec82661f3ad01cfe991ccf2435ae09eb4e09177774c6332f4ed0cd56d506"
+    },
+    "node/postinstalled/abb4ca550cac/hover-control-7.png": {
+      "bytes": 47530,
+      "sha256": "861318c0e3eceaab4dabb2fcccad3d4b8bc1e0a71cafb0617fbad8bb947c2795"
+    },
+    "node/postinstalled/abb4ca550cac/hover-control-8.png": {
+      "bytes": 47133,
+      "sha256": "1c19aaefdec1d99973e6dc965a9718cbcb63764998afb8a1c3b789c68bfd0499"
+    },
+    "node/postinstalled/abb4ca550cac/hover-control-9.png": {
+      "bytes": 47284,
+      "sha256": "a711188fb253cc077559f2d72cf3f484fea32290f07109587dc5e38298fecd52"
+    },
+    "node/postinstalled/abb4ca550cac/hover-settled.png": {
+      "bytes": 47675,
+      "sha256": "a9b7bc0d6ff36985633b370fff7de3d6ce7f4ced0f413ecba5e8d09e89ae3f1a"
+    },
+    "node/postinstalled/abb4ca550cac/initial.png": {
+      "bytes": 46567,
+      "sha256": "7fb260337c55909dfb59be334f15fc75313fccb177265a2b4903cb77c25f6cfc"
+    },
+    "node/postinstalled/abb4ca550cac/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/postinstalled/abb4ca550cac/pin-restored.png": {
+      "bytes": 65612,
+      "sha256": "6ac7c2d0f7ff3e73ed05dcfe533d05f0428bf942e6ad300c643d435c6e17b7d7"
+    },
+    "node/postinstalled/abb4ca550cac/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/postinstalled/abb4ca550cac/preferences-view-submenu.png": {
+      "bytes": 66167,
+      "sha256": "5ef43dd6865b1f5f6f7990d64b8221ec8e47009440780fa35f0fc753e6a96828"
+    },
+    "node/postinstalled/abb4ca550cac/report.json": {
+      "bytes": 248417,
+      "sha256": "68f37b70a51f9f856eed9bbd68daaf2266dd1eeec2a9047fa3056587685b70fe"
+    },
+    "node/postinstalled/abb4ca550cac/service-restarted.log": {
+      "bytes": 33851,
+      "sha256": "6a02902950e8cb1153f0b4561a1b932ab6f33ced196cc46ee669fcffad1f3973"
+    },
+    "node/postinstalled/abb4ca550cac/service.log": {
+      "bytes": 307579,
+      "sha256": "3297ccbc9910421b0d16579a6ef4593c75058d8abd1dd9dd46fc796a3e35c9f8"
+    },
+    "node/postinstalled/abb4ca550cac/sidebar-pinned.png": {
+      "bytes": 57301,
+      "sha256": "ef8764bb990811b7201bb52888eda573f847f536d723af606e4874b940da1af8"
+    },
+    "node/postinstalled/abb4ca550cac/space-ready.png": {
+      "bytes": 65612,
+      "sha256": "6ac7c2d0f7ff3e73ed05dcfe533d05f0428bf942e6ad300c643d435c6e17b7d7"
+    },
+    "node/source-03/97698c856711/compositor.log": {
+      "bytes": 151,
+      "sha256": "203dc6fd7a8b9d1c58268219f13d269d2da9c2188730e2eafb61f84e08730e09"
+    },
+    "node/source-03/97698c856711/home-title.png": {
+      "bytes": 57075,
+      "sha256": "12278323eea5120fcca11bb0a50d97b12b200c10d556e1f25c59e8d826217237"
+    },
+    "node/source-03/97698c856711/hover-control-0.png": {
+      "bytes": 47407,
+      "sha256": "9c328d16f23d3c0f36d7d27549934b4c9ccb2518cbf32dcd0f5fd49a18f1061e"
+    },
+    "node/source-03/97698c856711/hover-control-1.png": {
+      "bytes": 47387,
+      "sha256": "fb584b28feebaace4f24958bd8a1bec56fce60ebd266eacebaec32b5e5e079b2"
+    },
+    "node/source-03/97698c856711/hover-control-2.png": {
+      "bytes": 47193,
+      "sha256": "55a0cf3f6f8e0c366909cf4015b350541df2330736a1bb677d507a61dece330a"
+    },
+    "node/source-03/97698c856711/hover-control-3.png": {
+      "bytes": 47073,
+      "sha256": "76ab1fe195c66ff6f6e57502271465c26adb22474eb4713af6b282d5bb7a15d0"
+    },
+    "node/source-03/97698c856711/hover-control-4.png": {
+      "bytes": 47325,
+      "sha256": "034a9c6d0c3f5545b67bf417da8fd8a7e188e6b09bc566949c18eab1320017f3"
+    },
+    "node/source-03/97698c856711/hover-control-5.png": {
+      "bytes": 47479,
+      "sha256": "a56af02100233486ce1dbec46a4348f6c46356530dbe0baf5635216e5bb3eee2"
+    },
+    "node/source-03/97698c856711/hover-control-6.png": {
+      "bytes": 47509,
+      "sha256": "b8eaa23e089056cffbce2be9f0d2d8281062e9753216d7270b57120b5189d42b"
+    },
+    "node/source-03/97698c856711/hover-control-7.png": {
+      "bytes": 47294,
+      "sha256": "9d19cb7660b4d9e7f332a30993eceae85b2a153bfbef9bec83e5cb418f3344f0"
+    },
+    "node/source-03/97698c856711/hover-control-8.png": {
+      "bytes": 47116,
+      "sha256": "6dd50500ffe219be9371dc53be933d4b3c39da9b86ebd73be0086da4c3b72561"
+    },
+    "node/source-03/97698c856711/hover-control-9.png": {
+      "bytes": 47284,
+      "sha256": "ccec4298f8bb84e0e82850ce048a2fc6102d0e2d73c43f243f60e3d07a934bd7"
+    },
+    "node/source-03/97698c856711/hover-settled.png": {
+      "bytes": 47748,
+      "sha256": "68373bf6b929dfe0a682856a57f31fd096bff0fa08e6051c85e52adcfeb9a74d"
+    },
+    "node/source-03/97698c856711/initial.png": {
+      "bytes": 46641,
+      "sha256": "84a683c4ce010d25bb7888f14b750cb4d5fee3208b73af6e405dbf07f0c77c4c"
+    },
+    "node/source-03/97698c856711/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/source-03/97698c856711/pin-restored.png": {
+      "bytes": 65500,
+      "sha256": "7e525af2a16d43f54562ab621cfe66a3c8d8642bc455c978397ec89fb98a8e0a"
+    },
+    "node/source-03/97698c856711/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/source-03/97698c856711/preferences-view-submenu.png": {
+      "bytes": 66630,
+      "sha256": "774a269fd98e84ea0e19db490f070adec217341615dd9b70b345668720a21b48"
+    },
+    "node/source-03/97698c856711/report.json": {
+      "bytes": 247248,
+      "sha256": "413a5f68742dfb4625fb35446f7b019e5b9b4d67dc3c03871ecf45bc57cb2e91"
+    },
+    "node/source-03/97698c856711/service-restarted.log": {
+      "bytes": 33851,
+      "sha256": "17190ebfa7c5498133d9873c2efab7952a32351b31fc05229aab8775794baeb8"
+    },
+    "node/source-03/97698c856711/service.log": {
+      "bytes": 310492,
+      "sha256": "164ff5f44073c662878014a254f34ee2673acfb278c79c1ede4101ce69552b40"
+    },
+    "node/source-03/97698c856711/sidebar-pinned.png": {
+      "bytes": 57181,
+      "sha256": "efd066db65739550bab3453da942a145900beb15d4b457c2d272b0e565e397d8"
+    },
+    "node/source-03/97698c856711/space-ready.png": {
+      "bytes": 65500,
+      "sha256": "7e525af2a16d43f54562ab621cfe66a3c8d8642bc455c978397ec89fb98a8e0a"
+    },
+    "node/source-03/a060e6652780/compositor.log": {
+      "bytes": 151,
+      "sha256": "a6a237ce755a0ddfd3f50f93547d90c484919487b24ddc4f4ad76c4e29668e28"
+    },
+    "node/source-03/a060e6652780/home-title.png": {
+      "bytes": 57154,
+      "sha256": "69a9880266a24bcc0a2ffd88cfea955e95dcee0e66bf20a542913465ec5f1cbb"
+    },
+    "node/source-03/a060e6652780/hover-control-0.png": {
+      "bytes": 47356,
+      "sha256": "785123c66bce9350e587534a837e54608769ed260e886a39235e618d9236f3c0"
+    },
+    "node/source-03/a060e6652780/hover-control-1.png": {
+      "bytes": 47389,
+      "sha256": "6dc1fafb7f2e55595925fd76c1ac1f2fe6e2fe1f4ec81ca446be22a39308f85a"
+    },
+    "node/source-03/a060e6652780/hover-control-2.png": {
+      "bytes": 47352,
+      "sha256": "8faa25742199766eca536c6febac374dbdba88172f313989f9004cbb43a926c0"
+    },
+    "node/source-03/a060e6652780/hover-control-3.png": {
+      "bytes": 47164,
+      "sha256": "6aebb0b57139d40d33f57f844e7f09117ab045826ed50821bcee51dd57638d34"
+    },
+    "node/source-03/a060e6652780/hover-control-4.png": {
+      "bytes": 47324,
+      "sha256": "0022e5e11f7c4bb5778b45ff731f9a6e50503b75b858d192e66f5f2e046d42ba"
+    },
+    "node/source-03/a060e6652780/hover-control-5.png": {
+      "bytes": 47523,
+      "sha256": "a35b14917a598af442f5eb631eed3f340fdabf64139f2cfbb82990210d6e9eb8"
+    },
+    "node/source-03/a060e6652780/hover-control-6.png": {
+      "bytes": 47675,
+      "sha256": "95e1ad8d6c3a5c8014f0a7a5018aed2b5f3f0ad56d7b5d9685692aff521cac06"
+    },
+    "node/source-03/a060e6652780/hover-control-7.png": {
+      "bytes": 47668,
+      "sha256": "fa74a886e71775aca484d4d250c8ae5c507c537d7f2ce086366076d6e0648f3d"
+    },
+    "node/source-03/a060e6652780/hover-control-8.png": {
+      "bytes": 47601,
+      "sha256": "26cf90a851277cf256220b3ecfb786a86ae73c23687d9b65e917abb77b41bdcd"
+    },
+    "node/source-03/a060e6652780/hover-control-9.png": {
+      "bytes": 47743,
+      "sha256": "eb6a72a4aa7abfe96bb0ba4080351653a8766dc80e62eca70c252a3de3ca1399"
+    },
+    "node/source-03/a060e6652780/hover-settled.png": {
+      "bytes": 47697,
+      "sha256": "ba195a7f4c7ded679dbacedb511df81df7a102d4d484b86c048f62b2eaafa543"
+    },
+    "node/source-03/a060e6652780/initial.png": {
+      "bytes": 46588,
+      "sha256": "b8bea6e154a3bdf76ca0b9daf4c3f8f5f72cc511eebfc4504ee8e6c7f8204e3e"
+    },
+    "node/source-03/a060e6652780/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/source-03/a060e6652780/pin-restored.png": {
+      "bytes": 65520,
+      "sha256": "fdd954e179390338987f787a29d369771c1fc2a5ca9901f7163c3a7246451e19"
+    },
+    "node/source-03/a060e6652780/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/source-03/a060e6652780/preferences-view-submenu.png": {
+      "bytes": 66982,
+      "sha256": "efb227ca2220117125675809883d5e3cd2740effe93c8f5e652ff6c49f1a64df"
+    },
+    "node/source-03/a060e6652780/report.json": {
+      "bytes": 248495,
+      "sha256": "86ef7d5191136c15fff8b91d128bcaa4afadd63af5a212c8e2da99121a96a306"
+    },
+    "node/source-03/a060e6652780/service-restarted.log": {
+      "bytes": 33871,
+      "sha256": "4387e823dd748a19d5edcf500dcc694cf8bf6f3e9dd600eb7279ae779bb5aa79"
+    },
+    "node/source-03/a060e6652780/service.log": {
+      "bytes": 118928,
+      "sha256": "da30bf80eb7eb6feea403de17557eabb57369d0bb195caa35d4e4bab9d5f241c"
+    },
+    "node/source-03/a060e6652780/sidebar-pinned.png": {
+      "bytes": 57396,
+      "sha256": "5030fa151fa04d646748af987c49176db6518db94f689adddd0be347067babb7"
+    },
+    "node/source-03/a060e6652780/space-ready.png": {
+      "bytes": 65520,
+      "sha256": "fdd954e179390338987f787a29d369771c1fc2a5ca9901f7163c3a7246451e19"
+    },
+    "node/source-03/b8e82f9f33c7/compositor.log": {
+      "bytes": 151,
+      "sha256": "ebe72deee9c71dbe43b2e8630b6cc7681bde8916c2e2d088e260159f8d6cb6f3"
+    },
+    "node/source-03/b8e82f9f33c7/home-title.png": {
+      "bytes": 39223,
+      "sha256": "21fc41350495f73afb258736e566f69483ed3d2a07687a51ac19071f4610c7b0"
+    },
+    "node/source-03/b8e82f9f33c7/hover-control-0.png": {
+      "bytes": 29933,
+      "sha256": "f4b85c8cb0f7089c1256198174a7680f74b361e2f0674e89adc58c54f8ab36ca"
+    },
+    "node/source-03/b8e82f9f33c7/hover-control-1.png": {
+      "bytes": 29919,
+      "sha256": "3d0d1defa0ea2405fa66f66bb688ebe0621c24661716ad932ca9e54c9d249015"
+    },
+    "node/source-03/b8e82f9f33c7/hover-control-2.png": {
+      "bytes": 29931,
+      "sha256": "d2c9d2853882ed0ec44c57f287f25e0510887dc5d055c6f01105808af8df10da"
+    },
+    "node/source-03/b8e82f9f33c7/hover-control-3.png": {
+      "bytes": 29851,
+      "sha256": "19f1fa9933828b07720f66eb3db774440e40c78617df6c8d374d1a633e947434"
+    },
+    "node/source-03/b8e82f9f33c7/hover-control-4.png": {
+      "bytes": 29888,
+      "sha256": "a1b1e77ba88e7f553c373abd565fa26be374e2343b812058c5c7e83eff80ffb6"
+    },
+    "node/source-03/b8e82f9f33c7/hover-control-5.png": {
+      "bytes": 30101,
+      "sha256": "68fe2fcde7aebe44657a682e0945c9ae5af483d8b5f10e0fc84e1293ad381622"
+    },
+    "node/source-03/b8e82f9f33c7/hover-control-6.png": {
+      "bytes": 30141,
+      "sha256": "55677620b178e037fca531a3af91d8efc77b8bde2bc31978a66c350f4fd3c0dd"
+    },
+    "node/source-03/b8e82f9f33c7/hover-control-7.png": {
+      "bytes": 30138,
+      "sha256": "6a9488043b6e76c4f778053bfd5270dd0ed379d70c37e442c6df99beaab74816"
+    },
+    "node/source-03/b8e82f9f33c7/hover-control-8.png": {
+      "bytes": 30085,
+      "sha256": "84f8a6a98adae5da2d9a9e1a8cff0455fafa940c21a998a3e87a730171b24d03"
+    },
+    "node/source-03/b8e82f9f33c7/hover-control-9.png": {
+      "bytes": 30004,
+      "sha256": "d7def00b8f88fdd8b7c67ed51ba81d2fc0311b3b4f2b2a953ab41777c06eaa1d"
+    },
+    "node/source-03/b8e82f9f33c7/hover-settled.png": {
+      "bytes": 30008,
+      "sha256": "3139f32b633b8a424a127938e618dd5aad87aa680f02249a03f8c76f28457382"
+    },
+    "node/source-03/b8e82f9f33c7/initial.png": {
+      "bytes": 29261,
+      "sha256": "0d39a1c5a5fad99e4cfab74d86b2bfe8ff1c07a15f09e5d0b27504be06e02b6a"
+    },
+    "node/source-03/b8e82f9f33c7/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/source-03/b8e82f9f33c7/pin-restored.png": {
+      "bytes": 43507,
+      "sha256": "1ecca3d9f10a58b304a43b6d58c47fb5cdf049670d19d25026faec8724b6d91d"
+    },
+    "node/source-03/b8e82f9f33c7/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/source-03/b8e82f9f33c7/preferences-view-submenu.png": {
+      "bytes": 49330,
+      "sha256": "a4dff6f0aef249b625981812760bfc4ac0e067f2a0f412c04912dde66ee24096"
+    },
+    "node/source-03/b8e82f9f33c7/report.json": {
+      "bytes": 243299,
+      "sha256": "73509f498353f72a7dda727cf7865e0e2e516b58db40d17f53bb670b8be45d38"
+    },
+    "node/source-03/b8e82f9f33c7/service-restarted.log": {
+      "bytes": 33691,
+      "sha256": "6e264282942959a9c04d9dbe9f86727629ac408e86b0944072e80a55f2659930"
+    },
+    "node/source-03/b8e82f9f33c7/service.log": {
+      "bytes": 118351,
+      "sha256": "26e483c2768fd070974388348ef4c129a6049df5c0180996f063ddfb15c87c17"
+    },
+    "node/source-03/b8e82f9f33c7/sidebar-pinned.png": {
+      "bytes": 38161,
+      "sha256": "389c4e3c22d4c5f1f8ab5aad2dc6c061ed664c7c375bc6bac26afe71ca66b905"
+    },
+    "node/source-03/b8e82f9f33c7/space-ready.png": {
+      "bytes": 43507,
+      "sha256": "1ecca3d9f10a58b304a43b6d58c47fb5cdf049670d19d25026faec8724b6d91d"
+    },
+    "node/source-03/de313ec9168e/compositor.log": {
+      "bytes": 151,
+      "sha256": "43657661bbde6862ee3b392328e5dcecb4efc873ddde7da154f48278fb669f8d"
+    },
+    "node/source-03/de313ec9168e/home-title.png": {
+      "bytes": 39203,
+      "sha256": "16934dd9c022977aefde8726191b1f7352c6103a269721cfb646a55802db9ded"
+    },
+    "node/source-03/de313ec9168e/hover-control-0.png": {
+      "bytes": 29934,
+      "sha256": "6dcff870a6a98ff17ec83e69e781a13a74231f382fdb1364cec86f8a3583ae4d"
+    },
+    "node/source-03/de313ec9168e/hover-control-1.png": {
+      "bytes": 29895,
+      "sha256": "e307a8361bcc3079904fde3b7a07c0ce44029f2fbfe05547f708955109176807"
+    },
+    "node/source-03/de313ec9168e/hover-control-2.png": {
+      "bytes": 29911,
+      "sha256": "8aa9bbf878285c5124885fabf81eb058b66d4d0c447ac81a681d1639a513ddfb"
+    },
+    "node/source-03/de313ec9168e/hover-control-3.png": {
+      "bytes": 29828,
+      "sha256": "558cd5bf4f3a4ded2b791b11002919c9593f926d8298ecc9b41b121ba3df2a38"
+    },
+    "node/source-03/de313ec9168e/hover-control-4.png": {
+      "bytes": 29885,
+      "sha256": "211a3a53f599208eadab9b4cb7d20fa990a604cfccf78389419a179d7d2523f8"
+    },
+    "node/source-03/de313ec9168e/hover-control-5.png": {
+      "bytes": 30096,
+      "sha256": "3fc08c6105798853a08f92a61c098f8263f97fa01a54dccf5ad7cf7e10ac6a5a"
+    },
+    "node/source-03/de313ec9168e/hover-control-6.png": {
+      "bytes": 30138,
+      "sha256": "dbb2c4d21f035adb4786f28ae9ecc1871b4ab848e9a0a0451a46cb8b24a116ed"
+    },
+    "node/source-03/de313ec9168e/hover-control-7.png": {
+      "bytes": 30188,
+      "sha256": "e88ab07a68dbca3cc78a117fe3f300e38233f47c1cf8d819e4cf43cca9542c49"
+    },
+    "node/source-03/de313ec9168e/hover-control-8.png": {
+      "bytes": 30134,
+      "sha256": "932934e169e75136b8bc3016c669f77fb0f34950ab123669ddd23cb6c999ec61"
+    },
+    "node/source-03/de313ec9168e/hover-control-9.png": {
+      "bytes": 30055,
+      "sha256": "5f26ce39bf756cf597ab9e7d4b8f31c654258e8a10598b72a79cbdd0e0e79390"
+    },
+    "node/source-03/de313ec9168e/hover-settled.png": {
+      "bytes": 30009,
+      "sha256": "1232de34f15f279d6ff6730ea3ee21e65a680772aced599d805bb8eb7a8165ba"
+    },
+    "node/source-03/de313ec9168e/initial.png": {
+      "bytes": 29260,
+      "sha256": "77243c2cf32622b68ac37e5d6eab086ae519367a1a80b3d2af96dca143fc2423"
+    },
+    "node/source-03/de313ec9168e/keyboard.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/source-03/de313ec9168e/pin-restored.png": {
+      "bytes": 43507,
+      "sha256": "54516d717e2cb9b64ee3b0f560cc903bb1258ad6cea7ef758baa7a36fc2dd956"
+    },
+    "node/source-03/de313ec9168e/pointer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node/source-03/de313ec9168e/preferences-view-submenu.png": {
+      "bytes": 49306,
+      "sha256": "754af3e457dc5d53af02ed60e668b5c0ba67a484be1adaad8455f0a264f61261"
+    },
+    "node/source-03/de313ec9168e/report.json": {
+      "bytes": 243105,
+      "sha256": "da27617a44b7eafcaede74c18f391e5f5148be079ab0254db118c9a4cdc70c20"
+    },
+    "node/source-03/de313ec9168e/service-restarted.log": {
+      "bytes": 30386,
+      "sha256": "c229ba2a15d3f91a00bfd4320df07e5e17f2c84e9814b5e42ff0b97a37a27aad"
+    },
+    "node/source-03/de313ec9168e/service.log": {
+      "bytes": 319483,
+      "sha256": "b1f5dd4d74131b4833e58cabb37f06311bb076f211d7b1a1404f5f3ee9a11567"
+    },
+    "node/source-03/de313ec9168e/sidebar-pinned.png": {
+      "bytes": 38135,
+      "sha256": "7b0d6a397483dad8dcf80522df03a374e8d239e27418becbb1e00b17273b4faf"
+    },
+    "node/source-03/de313ec9168e/space-ready.png": {
+      "bytes": 43507,
+      "sha256": "54516d717e2cb9b64ee3b0f560cc903bb1258ad6cea7ef758baa7a36fc2dd956"
+    },
+    "receipts/m2-identity.json": {
+      "bytes": 632,
+      "sha256": "208b2847714dd606fab6190a64b06ebfd4795c0a013dcf70b35684d3484614f7"
+    },
+    "receipts/m2-installed.json": {
+      "bytes": 2615,
+      "sha256": "d9ca514d3cc77c9e702dbe8aca58e53f35829e889383a103ec5926352c494087"
+    },
+    "receipts/node-identity.json": {
+      "bytes": 552,
+      "sha256": "535faf1fe39f12ec1943f46c47e1d21c8305c2a19801cd512a266f9694bf272c"
+    },
+    "receipts/node-installed.json": {
+      "bytes": 2102,
+      "sha256": "9b0d3d4c062c896991bfc4d1e94115853cb184bf3e4e207ee0d6c5f6880bc49b"
+    },
+    "summaries/m2.json": {
+      "bytes": 2932,
+      "sha256": "00fb46ae5b79ba8f872faf141ec7007242330d918f6970a42e7de08c81c1ffb0"
+    },
+    "summaries/node.json": {
+      "bytes": 3135,
+      "sha256": "01816a2275267936c57bcffda350fd8de31498a9db57138048aee545b712fea0"
+    },
+    "summaries/source-manifest-03c2ad3.json": {
+      "bytes": 277606,
+      "sha256": "7b114729c51e8a44da9162a81a580628382d65159fefddfe68a3df58234afd3c"
+    },
+    "verification/build-result.json": {
+      "bytes": 4048,
+      "sha256": "675ba88483c7997c075ae89e4406911ae12afc06dd7e67747608cd8ccae7915f"
+    },
+    "verification/build.log": {
+      "bytes": 794,
+      "sha256": "a7e35ea88f5718e5ebbdfe76fc1c6742d51a238c624acfddb81452daa7113f00"
+    },
+    "verification/cache-core.log": {
+      "bytes": 762,
+      "sha256": "33a449d6e692347247edc475aecd71e15cb7baaecb08e2df45b4e0b434fbf28b"
+    },
+    "verification/check-ui-cmake-path.log": {
+      "bytes": 7222,
+      "sha256": "e5f6bac07167c052984b55ceda54f9a717bb13b8bf3fc00b3d361bc34da529a0"
+    },
+    "verification/check-ui-integrated.log": {
+      "bytes": 433,
+      "sha256": "149dba20c2688cddf2dfc9807db57451eaa83061de30db097b9c4bbf513b010e"
+    },
+    "verification/check-ui-real-cmake.log": {
+      "bytes": 987,
+      "sha256": "9563367015b099d76716230f4e8c3770d171e53683fac871b891600b4d4e64fe"
+    },
+    "verification/check-ui.log": {
+      "bytes": 1113,
+      "sha256": "c4512814ba62e32cbca144727b4122b77c96355fc7a0425659951329fbab7030"
+    },
+    "verification/clippy-final.log": {
+      "bytes": 200,
+      "sha256": "b7291b654d50ec0147630f5bf5ab9ba5bbd2e81a9f754b9a631d7d6d2265a852"
+    },
+    "verification/clippy-polish.log": {
+      "bytes": 200,
+      "sha256": "935224cbd696c31677d29025ea3527881272f22242a0f07506a3418ce1aae32e"
+    },
+    "verification/clippy-release-input.log": {
+      "bytes": 200,
+      "sha256": "91800a2f290f9ff0f14bfc033149a669eb013c3f5494f9353d0320443b07337f"
+    },
+    "verification/clippy.log": {
+      "bytes": 2293,
+      "sha256": "63743b7c15edaf083549a505f221e97294e716273694432aaec99e9d40faf900"
+    },
+    "verification/geometry-ui.log": {
+      "bytes": 366,
+      "sha256": "e731b259a4f72bc97c9335f2f584d731f04dd9fb17b85068926918e4175ed742"
+    },
+    "verification/identity-node-installed.json": {
+      "bytes": 552,
+      "sha256": "535faf1fe39f12ec1943f46c47e1d21c8305c2a19801cd512a266f9694bf272c"
+    },
+    "verification/identity-private.json": {
+      "bytes": 684,
+      "sha256": "690a7b8feae116b0ba7ebc76cf56d0e21d374b6735d69aeb3b6aa25f9318c821"
+    },
+    "verification/order-ui.log": {
+      "bytes": 422,
+      "sha256": "d9baf6a51dc1801bdc2b6a91e130379b32e373e2c127a4834473c3b74df7dee7"
+    },
+    "verification/prefs-core.log": {
+      "bytes": 364,
+      "sha256": "1c18d7f1f9d40487a0ad1e6c2f782360efc6dbecaf674df35dc9f4d86103cb2c"
+    },
+    "verification/queue-ui.log": {
+      "bytes": 644,
+      "sha256": "90afc49d27ff6488b5f972817872e19b065baeb4472c200ad1effda70980bea0"
+    },
+    "verification/release-polish.log": {
+      "bytes": 191,
+      "sha256": "bd9bfaa4d347cebd9897a4596c14978d8f4f7dfc39230d5327517d4a2da32fd7"
+    },
+    "verification/release.log": {
+      "bytes": 471,
+      "sha256": "91bcfd0453d0de7eb83e432cf020c5ae615036d8f274e4d20b6dd2fc0cf11a73"
+    },
+    "verification/resume-ui.log": {
+      "bytes": 609,
+      "sha256": "5e6babcd1c1ad1e7801b91e76c9c97ec5db463a20f1c877292295f6eb9ba34cb"
+    },
+    "verification/settings-after.json": {
+      "bytes": 2215,
+      "sha256": "e263d34bb237dee66d29927d5833cf38d1a0c38a3744fcd252afb45368c7aed6"
+    },
+    "verification/space-helper.log": {
+      "bytes": 1182,
+      "sha256": "3a0c90e1ff15a82b3f0fba6c5be22ed4167c76f1a95d92d035e97c8cf0a3d838"
+    },
+    "verification/summary.json": {
+      "bytes": 789,
+      "sha256": "88572e85e0801148273764327470050567fb44ac5d105afc0fa1046d8d14764f"
+    }
+  },
+  "count": 290,
+  "total_bytes": 14400267
+}

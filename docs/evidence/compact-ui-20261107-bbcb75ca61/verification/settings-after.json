@@ -1,0 +1,50 @@
+[
+  {
+    "path": "/home/avillagran/.config/files/config.toml",
+    "baseline_sha256": "36383052a1f04ccb6fe5f122e2e67f03fb87aeaf9fe93e9581ff4f31e6d8fe9e",
+    "current_sha256": "36383052a1f04ccb6fe5f122e2e67f03fb87aeaf9fe93e9581ff4f31e6d8fe9e",
+    "matches": true
+  },
+  {
+    "path": "/home/avillagran/.config/files/session.bin",
+    "baseline_sha256": "bf44903de9bbd4add969a9409b03b6a12edc865d7ff293fc16146ab80c0ea4f9",
+    "current_sha256": "bf44903de9bbd4add969a9409b03b6a12edc865d7ff293fc16146ab80c0ea4f9",
+    "matches": true
+  },
+  {
+    "path": "/home/avillagran/.config/files/layouts/0d922b96b215a0a5.toml",
+    "baseline_sha256": "e0f3277c2f15261378b7aa49496828016358163df7236397f825f1b00a0932e7",
+    "current_sha256": "e0f3277c2f15261378b7aa49496828016358163df7236397f825f1b00a0932e7",
+    "matches": true
+  },
+  {
+    "path": "/home/avillagran/.config/files/layouts/32d393d1817c5e72.toml",
+    "baseline_sha256": "1cbf77da02414f7c97e6a895b9a65fefaae10c41c91bdf869111a56df40d0a21",
+    "current_sha256": "1cbf77da02414f7c97e6a895b9a65fefaae10c41c91bdf869111a56df40d0a21",
+    "matches": true
+  },
+  {
+    "path": "/home/avillagran/.config/files/layouts/35201e16dc621286.toml",
+    "baseline_sha256": "c17250785358f5cb71cc8624ecfef3fc85d20ba3f386a987d0d8bc9224bb1772",
+    "current_sha256": "c17250785358f5cb71cc8624ecfef3fc85d20ba3f386a987d0d8bc9224bb1772",
+    "matches": true
+  },
+  {
+    "path": "/home/avillagran/.config/mimeapps.list",
+    "baseline_sha256": "9f1c34cc010e997bf8e95e88cf68dcc7bee4fa60514254a35684e7192e86d6d0",
+    "current_sha256": "9f1c34cc010e997bf8e95e88cf68dcc7bee4fa60514254a35684e7192e86d6d0",
+    "matches": true
+  },
+  {
+    "path": "/home/avillagran/.config/hyprland-mimeapps.list",
+    "baseline_sha256": "d9fa7aff0d4006789fb673b2a4b50cd83c51b8287f8ad15ce7549ca6605cc649",
+    "current_sha256": "d9fa7aff0d4006789fb673b2a4b50cd83c51b8287f8ad15ce7549ca6605cc649",
+    "matches": true
+  },
+  {
+    "path": "/home/avillagran/.local/share/applications/mimeapps.list",
+    "baseline_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "current_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "matches": true
+  }
+]

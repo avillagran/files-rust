@@ -1,0 +1,9 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 2 tests
+test sidebar_order::tests::raw_paths_do_not_collapse_to_the_same_key ... ok
+test sidebar_order::tests::move_retains_absent_rows_and_other_sections ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 903 filtered out; finished in 0.00s
+

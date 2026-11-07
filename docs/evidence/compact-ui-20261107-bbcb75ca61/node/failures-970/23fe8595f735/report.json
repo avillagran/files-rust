@@ -1,0 +1,3079 @@
+{
+  "functional_gate": "FAIL",
+  "fixture_dir": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735",
+  "checks": [
+    "a visible fixture folder receives an automatic size without cache error",
+    "native pointer reveals the right-anchored Preferences label",
+    "native keyboard routes through Preferences > View to toggle automatic sizes",
+    "native pointer pins the sidebar and preference save completes",
+    "native window title follows navigation"
+  ],
+  "states": [
+    {
+      "label": "initial",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "name": [
+            78,
+            101,
+            115,
+            116,
+            101,
+            100
+          ],
+          "size": null
+        }
+      ],
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        99,
+        111,
+        109,
+        112,
+        97,
+        99,
+        116,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        50,
+        51,
+        102,
+        101,
+        56,
+        53,
+        57,
+        53,
+        102,
+        55,
+        51,
+        53,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65
+      ],
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": [
+              0,
+              365,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": [
+              0,
+              405,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra lateral",
+            "rect": [
+              0,
+              503,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              543,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "space": {
+        "state": "closed"
+      },
+      "title": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home/A",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              668,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 1,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              708,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 2,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              748,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 3,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              788,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 4,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              828,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 5,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              868,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 6,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              908,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 7,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              948,
+              10,
+              36,
+              36
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "automatic-size",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "name": [
+            78,
+            101,
+            115,
+            116,
+            101,
+            100
+          ],
+          "size": "\u2211 21 B"
+        }
+      ],
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        99,
+        111,
+        109,
+        112,
+        97,
+        99,
+        116,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        50,
+        51,
+        102,
+        101,
+        56,
+        53,
+        57,
+        53,
+        102,
+        55,
+        51,
+        53,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65
+      ],
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": [
+              0,
+              365,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": [
+              0,
+              405,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra lateral",
+            "rect": [
+              0,
+              503,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              543,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "space": {
+        "state": "closed"
+      },
+      "title": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home/A",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              668,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 1,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              708,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 2,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              748,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 3,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              788,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 4,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              828,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 5,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              868,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 6,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              908,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 7,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              948,
+              10,
+              36,
+              36
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "hover-early",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "name": [
+            78,
+            101,
+            115,
+            116,
+            101,
+            100
+          ],
+          "size": "\u2211 21 B"
+        }
+      ],
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        99,
+        111,
+        109,
+        112,
+        97,
+        99,
+        116,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        50,
+        51,
+        102,
+        101,
+        56,
+        53,
+        57,
+        53,
+        102,
+        55,
+        51,
+        53,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65
+      ],
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": [
+              0,
+              365,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": [
+              0,
+              405,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra lateral",
+            "rect": [
+              0,
+              503,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              543,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "space": {
+        "state": "closed"
+      },
+      "title": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home/A",
+      "toolbar": {
+        "animating": true,
+        "enabled": true,
+        "hot": 7,
+        "items": [
+          {
+            "index": 0,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              582,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 1,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              622,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 2,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              662,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 3,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              702,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 4,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              742,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 5,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              782,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 6,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              822,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 7,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              862,
+              10,
+              122,
+              36
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "hover-settled",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "name": [
+            78,
+            101,
+            115,
+            116,
+            101,
+            100
+          ],
+          "size": "\u2211 21 B"
+        }
+      ],
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        99,
+        111,
+        109,
+        112,
+        97,
+        99,
+        116,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        50,
+        51,
+        102,
+        101,
+        56,
+        53,
+        57,
+        53,
+        102,
+        55,
+        51,
+        53,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65
+      ],
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": [
+              0,
+              365,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": [
+              0,
+              405,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra lateral",
+            "rect": [
+              0,
+              503,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              543,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "space": {
+        "state": "closed"
+      },
+      "title": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home/A",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": 7,
+        "items": [
+          {
+            "index": 0,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              572,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 1,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              612,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 2,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              652,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 3,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              692,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 4,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              732,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 5,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              772,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 6,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              812,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 7,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              852,
+              10,
+              132,
+              36
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "auto-size-disabled-via-submenu",
+      "app_id": "files",
+      "auto_sizes": false,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": true,
+      "error": "",
+      "folders": [
+        {
+          "name": [
+            78,
+            101,
+            115,
+            116,
+            101,
+            100
+          ],
+          "size": "\u2211 21 B"
+        }
+      ],
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        99,
+        111,
+        109,
+        112,
+        97,
+        99,
+        116,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        50,
+        51,
+        102,
+        101,
+        56,
+        53,
+        57,
+        53,
+        102,
+        55,
+        51,
+        53,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65
+      ],
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": [
+              0,
+              365,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": [
+              0,
+              405,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra lateral",
+            "rect": [
+              0,
+              503,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              543,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "space": {
+        "state": "closed"
+      },
+      "title": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home/A",
+      "toolbar": {
+        "animating": true,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              651,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 1,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              691,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 2,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              731,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 3,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              771,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 4,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              811,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 5,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              851,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 6,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              891,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 7,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              931,
+              10,
+              53,
+              36
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "preferences-control",
+      "app_id": "files",
+      "auto_sizes": false,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "name": [
+            78,
+            101,
+            115,
+            116,
+            101,
+            100
+          ],
+          "size": "\u2211 21 B"
+        }
+      ],
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        99,
+        111,
+        109,
+        112,
+        97,
+        99,
+        116,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        50,
+        51,
+        102,
+        101,
+        56,
+        53,
+        57,
+        53,
+        102,
+        55,
+        51,
+        53,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65
+      ],
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": [
+              0,
+              365,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": [
+              0,
+              405,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra lateral",
+            "rect": [
+              0,
+              503,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              543,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "space": {
+        "state": "closed"
+      },
+      "title": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home/A",
+      "toolbar": {
+        "animating": true,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              665,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 1,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              705,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 2,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              745,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 3,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              785,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 4,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              825,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 5,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              865,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 6,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              905,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 7,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              945,
+              10,
+              39,
+              36
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "auto-size-reenabled-via-submenu",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "name": [
+            78,
+            101,
+            115,
+            116,
+            101,
+            100
+          ],
+          "size": "\u2211 21 B"
+        }
+      ],
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        99,
+        111,
+        109,
+        112,
+        97,
+        99,
+        116,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        50,
+        51,
+        102,
+        101,
+        56,
+        53,
+        57,
+        53,
+        102,
+        55,
+        51,
+        53,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65
+      ],
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": [
+              0,
+              365,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": [
+              0,
+              405,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra lateral",
+            "rect": [
+              0,
+              503,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              543,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "space": {
+        "state": "closed"
+      },
+      "title": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home/A",
+      "toolbar": {
+        "animating": true,
+        "enabled": true,
+        "hot": 7,
+        "items": [
+          {
+            "index": 0,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              663,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 1,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              703,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 2,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              743,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 3,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              783,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 4,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              823,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 5,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              863,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 6,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              903,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 7,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              943,
+              10,
+              41,
+              36
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "pinned",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "name": [
+            78,
+            101,
+            115,
+            116,
+            101,
+            100
+          ],
+          "size": "\u2211 21 B"
+        }
+      ],
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        99,
+        111,
+        109,
+        112,
+        97,
+        99,
+        116,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        50,
+        51,
+        102,
+        101,
+        56,
+        53,
+        57,
+        53,
+        102,
+        55,
+        51,
+        53,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65
+      ],
+      "sidebar": {
+        "expanded": true,
+        "pinned": true,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              132,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              132,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              132,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              132,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              132,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              132,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              132,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": [
+              0,
+              365,
+              132,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": [
+              0,
+              405,
+              132,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Desfijar barra lateral",
+            "rect": [
+              0,
+              503,
+              132,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              543,
+              132,
+              40
+            ]
+          }
+        ],
+        "width": 132
+      },
+      "space": {
+        "state": "closed"
+      },
+      "title": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home/A",
+      "toolbar": {
+        "animating": true,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              650,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 1,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              690,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 2,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              730,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 3,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              770,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 4,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              810,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 5,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              850,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 6,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              890,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 7,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              930,
+              10,
+              54,
+              36
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "label": "home",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "name": [
+            65
+          ],
+          "size": null
+        },
+        {
+          "name": [
+            66
+          ],
+          "size": null
+        },
+        {
+          "name": [
+            68,
+            111,
+            99,
+            117,
+            109,
+            101,
+            110,
+            116,
+            115
+          ],
+          "size": null
+        },
+        {
+          "name": [
+            68,
+            111,
+            119,
+            110,
+            108,
+            111,
+            97,
+            100,
+            115
+          ],
+          "size": null
+        },
+        {
+          "name": [
+            77,
+            117,
+            115,
+            105,
+            99
+          ],
+          "size": null
+        },
+        {
+          "name": [
+            80,
+            105,
+            99,
+            116,
+            117,
+            114,
+            101,
+            115
+          ],
+          "size": null
+        },
+        {
+          "name": [
+            86,
+            105,
+            100,
+            101,
+            111,
+            115
+          ],
+          "size": null
+        }
+      ],
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        99,
+        111,
+        109,
+        112,
+        97,
+        99,
+        116,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        50,
+        51,
+        102,
+        101,
+        56,
+        53,
+        57,
+        53,
+        102,
+        55,
+        51,
+        53,
+        47,
+        104,
+        111,
+        109,
+        101
+      ],
+      "sidebar": {
+        "expanded": true,
+        "pinned": true,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              170,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              170,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              170,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              170,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              170,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              170,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              170,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": [
+              0,
+              365,
+              170,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f636f6d706163742d75692d6e61746976652d3233666538353935663733352f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": [
+              0,
+              405,
+              170,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Desfijar barra lateral",
+            "rect": [
+              0,
+              503,
+              170,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              543,
+              170,
+              40
+            ]
+          }
+        ],
+        "width": 170
+      },
+      "space": {
+        "state": "closed"
+      },
+      "title": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              668,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 1,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              708,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 2,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              748,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 3,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              788,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 4,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              828,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 5,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              868,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 6,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              908,
+              10,
+              36,
+              36
+            ]
+          },
+          {
+            "index": 7,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              948,
+              10,
+              36,
+              36
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "requested_size": "1000x650",
+  "animations": "on",
+  "captures": [
+    "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/initial.png",
+    "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/hover-settled.png",
+    "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/preferences-view-submenu.png",
+    "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/sidebar-pinned.png",
+    "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home-title.png"
+  ],
+  "animation_comparison": "NOT_COMPARED",
+  "scope": "native input and private mutation fixtures; executable paths and compositor-owned paths are outside fixture file checks; this profile alone does not prove cross-profile motion",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "757424777a9ce2326f55a257c99b26e11707b939f31349c3a3146adfcdc00355",
+  "helper_sha256": "9185191d3205b14a4343c785eaf4923b8da5cf4d498ce133332422a0a0ef9188",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "nested": {
+    "socket": "wayland-1",
+    "pid": 3183426,
+    "runtime": "/tmp/f-4de8d751ab1a",
+    "backend": "private-sway-headless"
+  },
+  "motion_and_hyprland": "NOT_RUN",
+  "window_size": [
+    1000,
+    624
+  ],
+  "native_window": {
+    "name": "/home/node/.cache/files-test/compact-ui-native-23fe8595f735/home/A",
+    "app_id": "files",
+    "rect": {
+      "x": 140,
+      "y": 89,
+      "width": 1000,
+      "height": 624
+    },
+    "pid": 3183470
+  },
+  "actual_canvas_width": 996,
+  "hover_early_width": 122,
+  "hover_early_animating": true,
+  "error": "AssertionError: usability-state",
+  "nested_stopped": true
+}

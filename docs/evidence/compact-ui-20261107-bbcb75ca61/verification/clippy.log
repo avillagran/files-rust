@@ -1,0 +1,39 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Checking files-core v0.0.4 (/home/node/Work/files/crates/core)
+    Checking files-helper v0.0.4 (/home/node/Work/files/crates/helper)
+error: this pattern is unneeded as the `..` pattern can match that element
+   --> crates/ui/src/operation_bar.rs:387:53
+    |
+387 |         let Request::Preferences(rev, _, _, _, bar, _, ..) = input.try_recv().unwrap() else {
+    |                                                     ^^^ help: remove it
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#unneeded_wildcard_pattern
+    = note: `-D clippy::unneeded-wildcard-pattern` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::unneeded_wildcard_pattern)]`
+
+error: this pattern is unneeded as the `..` pattern can match that element
+   --> crates/ui/src/operation_bar.rs:395:54
+    |
+395 |         let Request::Preferences(next, _, _, _, bar, _, ..) = input.try_recv().unwrap() else {
+    |                                                      ^^^ help: remove it
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#unneeded_wildcard_pattern
+
+error: these patterns are unneeded as the `..` pattern can match those elements
+   --> crates/ui/src/spatial_view.rs:746:39
+    |
+746 |         let Request::Preferences(rev, _, _, _, _, _, ..) = input.try_recv().unwrap() else {
+    |                                       ^^^^^^^^^^^^^^^ help: remove them
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#unneeded_wildcard_pattern
+
+error: these patterns are unneeded as the `..` pattern can match those elements
+   --> crates/ui/src/spatial_view.rs:760:57
+    |
+760 |         let Request::Preferences(latest, corners, mode, _, _, _, ..) = input.try_recv().unwrap()
+    |                                                         ^^^^^^^^^ help: remove them
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#unneeded_wildcard_pattern
+
+    Checking files-app v0.0.4 (/home/node/Work/files/crates/app)
+error: could not compile `files-ui` (lib test) due to 4 previous errors

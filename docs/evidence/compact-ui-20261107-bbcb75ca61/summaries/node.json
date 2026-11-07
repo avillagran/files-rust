@@ -1,0 +1,94 @@
+{
+  "functional_gate": "PASS",
+  "functional_scope": "private scoped release: native title and app_id, ten controls hover, Preferences > View routing, pin persistence, automatic folder size and persisted cache read, known-small Space fixture; incompatible cache warning and preserved bytes",
+  "overall_request": "INCOMPLETE_DND_BLOCKED",
+  "source_checkpoint": "03c2ad3",
+  "binary_sha256": "f8027bdb5044c9b6c9de9c79443c899f8bdcf83fa1761adc22267912ccd1c035",
+  "helper_sha256": "9185191d3205b14a4343c785eaf4923b8da5cf4d498ce133332422a0a0ef9188",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "profiles": [
+    {
+      "path": "/home/node/.cache/files-test/compact-ui-native-97698c856711/report.json",
+      "sha256": "413a5f68742dfb4625fb35446f7b019e5b9b4d67dc3c03871ecf45bc57cb2e91",
+      "size": "1000x650",
+      "animations": "on"
+    },
+    {
+      "path": "/home/node/.cache/files-test/compact-ui-native-a060e6652780/report.json",
+      "sha256": "86ef7d5191136c15fff8b91d128bcaa4afadd63af5a212c8e2da99121a96a306",
+      "size": "1000x650",
+      "animations": "off"
+    },
+    {
+      "path": "/home/node/.cache/files-test/compact-ui-native-de313ec9168e/report.json",
+      "sha256": "da27617a44b7eafcaede74c18f391e5f5148be079ab0254db118c9a4cdc70c20",
+      "size": "700x500",
+      "animations": "on"
+    },
+    {
+      "path": "/home/node/.cache/files-test/compact-ui-native-b8e82f9f33c7/report.json",
+      "sha256": "73509f498353f72a7dda727cf7865e0e2e516b58db40d17f53bb670b8be45d38",
+      "size": "700x500",
+      "animations": "off"
+    }
+  ],
+  "cache_negative": {
+    "path": "/home/node/.cache/files-test/compact-ui-native-463bf4bbdc66/report.json",
+    "sha256": "44e6c903d47cff2915d6998fa739778cc7d9534b7f39afdeb0ee89b33b519561"
+  },
+  "comparisons": [
+    {
+      "scope": "settled Preferences control only",
+      "size": "1000x650",
+      "on_rect": [
+        852,
+        10,
+        132,
+        36
+      ],
+      "off_rect": [
+        852,
+        10,
+        132,
+        36
+      ],
+      "different_rgb_channels": 0,
+      "on_early_width": 114,
+      "on_early_animating": true,
+      "off_early_width": 132,
+      "off_early_animating": false,
+      "motion_observed": true
+    },
+    {
+      "scope": "settled Preferences control only",
+      "size": "700x500",
+      "on_rect": [
+        556,
+        10,
+        132,
+        36
+      ],
+      "off_rect": [
+        556,
+        10,
+        132,
+        36
+      ],
+      "different_rgb_channels": 0,
+      "on_early_width": 114,
+      "on_early_animating": true,
+      "off_early_width": 132,
+      "off_early_animating": false,
+      "motion_observed": true
+    }
+  ],
+  "visual_review": "All ten toolbar hovers inspected at both widths; grouped submenu, pin, and Space inspected. Cache warning is visible but includes truncated English diagnostic.",
+  "not_tested": [
+    "native drag reorder, toolkit blocked",
+    "full-section drag",
+    "specific originally reported Space error",
+    "native system reduced-motion detection",
+    "desktop shell icon rendering",
+    "resources and startup"
+  ]
+}

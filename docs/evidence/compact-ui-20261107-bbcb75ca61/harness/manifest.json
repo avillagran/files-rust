@@ -1,0 +1,32 @@
+{
+  "scripts/compact-ui-native-check.py": {
+    "sha256": "25d4727fe45b25e31e6d16491e1c46a43ec24995d4cebb60e5d4774f1936b97e",
+    "bytes": 38906,
+    "source": "scripts/compact-ui-native-check.py"
+  },
+  "scripts/compare-compact-motion.py": {
+    "sha256": "198767abe5996fb9c2ad6454359ce0d9df826ba61d280598c849f52184369d42",
+    "bytes": 2594,
+    "source": "scripts/compare-compact-motion.py"
+  },
+  "scripts/tools/compact-persistent-pointer.c": {
+    "sha256": "0264bdb8102870d44ed273527eb25d3bd7f649856f1efc6016591177ca9d1b02",
+    "bytes": 4999,
+    "source": "scripts/tools/compact-persistent-pointer.c"
+  },
+  "scripts/tools/persistent-keyboard.c": {
+    "sha256": "b7162218c4a1c10736abcb42ad27b0f86778905d7add4b1842431683bb789245",
+    "bytes": 14651,
+    "source": "docs/evidence/mutation-sheets-20261107-m2/retained-acceptance/overlay/scripts/tools/persistent-keyboard.c"
+  },
+  "scripts/tools/wlr-virtual-pointer-unstable-v1.xml": {
+    "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524",
+    "bytes": 6895,
+    "source": "scripts/tools/wlr-virtual-pointer-unstable-v1.xml"
+  },
+  "scripts/tools/virtual-keyboard-unstable-v1.xml": {
+    "sha256": "7ad7870003ecd592cae47dc19d277a609b7f18fd7b7be012623cf3225a7294f5",
+    "bytes": 4886,
+    "source": "docs/evidence/mutation-sheets-20261107-m2/retained-acceptance/overlay/scripts/tools/virtual-keyboard-unstable-v1.xml"
+  }
+}

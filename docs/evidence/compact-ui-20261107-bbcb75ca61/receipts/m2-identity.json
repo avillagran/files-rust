@@ -1,0 +1,16 @@
+{
+  "files": [
+    {
+      "path": "/home/avillagran/.local/share/icons/hicolor/scalable/apps/files.svg",
+      "old_sha256": null,
+      "sha256": "0458377ca82efdc2555470ec6f6a5af363f960fa189eb1d0016f1439fb30c5d6"
+    },
+    {
+      "path": "/home/avillagran/.local/share/applications/files.desktop",
+      "old_sha256": "3f6cd27980bfd8717fcfc5bded6777398a8a9b788543f8aae9d909531f0df66d",
+      "sha256": "29b28125482a46329856abaf29461ad2bbe70c9fccdb8f43770b022a33d08260"
+    }
+  ],
+  "backup": "/home/avillagran/.local/share/files/identity-backups/1794032817793968066",
+  "associations": "handler entry only; defaults untouched"
+}

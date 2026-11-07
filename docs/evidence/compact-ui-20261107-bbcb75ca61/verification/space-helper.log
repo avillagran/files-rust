@@ -1,0 +1,17 @@
+   Compiling files-core v0.0.4 (/home/node/Work/files/crates/core)
+   Compiling files-helper v0.0.4 (/home/node/Work/files/crates/helper)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.94s
+     Running unittests src/main.rs (target/debug/deps/files_helper-a992e5e1d785f59e)
+
+running 8 tests
+test space_scan::platform::tests::errors_are_bounded_before_formatting ... ok
+test space_scan::platform::tests::empty_directory_is_complete_but_zero_time_is_not ... ok
+test space_scan::platform::tests::depth_and_visit_caps_never_promote_partial_bytes_to_complete ... ok
+test space_scan::platform::tests::name_and_node_caps_stop_without_claiming_zero_omissions ... ok
+test space_scan::platform::tests::stat_failure_and_directory_replacement_are_errors_not_measured_totals ... ok
+test space_scan::platform::tests::no_symlink_cycles_external_follow_or_hardlink_deduplication ... ok
+test space_scan::platform::tests::true_weights_empty_and_lossless_names ... ok
+test space_scan::platform::tests::large_subtree_cannot_hide_later_siblings_or_consume_their_whole_budget ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 106 filtered out; finished in 0.00s
+

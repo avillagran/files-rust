@@ -1,0 +1,11 @@
+    Checking files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+warning: function `movable` is never used
+   --> crates/ui/src/places_sidebar.rs:465:8
+    |
+465 | pub fn movable(key: &str, parent: &str) -> bool {
+    |        ^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `files-ui` (lib) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.95s

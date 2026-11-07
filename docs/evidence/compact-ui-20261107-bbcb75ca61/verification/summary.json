@@ -1,0 +1,21 @@
+{
+  "source_checkpoint": "03c2ad3a5681232d1f7841802c536fa767742d8f",
+  "targeted_tests": {
+    "space-helper.log": 8,
+    "cache-core.log": 4,
+    "prefs-core.log": 1,
+    "queue-ui.log": 1,
+    "geometry-ui.log": 1,
+    "order-ui.log": 2,
+    "resume-ui.log": 3
+  },
+  "total_passed": 20,
+  "full_suite": "NOT_RUN: legacy fixture cleanup remains outside approved safe scopes",
+  "clippy": "workspace all-targets -D warnings PASS; clippy-polish.log",
+  "node_release": "PASS; release-polish.log",
+  "m2_release": "PASS; build-result.json",
+  "overall_request": "INCOMPLETE_DND_BLOCKED",
+  "toolkit_coordination": "Authentication required; request prepared but not delivered",
+  "original_space_error": "not reproduced; exact message requested",
+  "resources_and_startup": "NOT_MEASURED"
+}

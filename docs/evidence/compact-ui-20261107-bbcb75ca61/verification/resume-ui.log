@@ -1,0 +1,11 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 21.20s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 3 tests
+test automatic_sizes::tests::explicit_stop_does_not_gain_a_view_resume_intent ... ok
+test automatic_sizes::tests::explicit_stop_revokes_an_existing_temporary_view_resume_intent ... ok
+test automatic_sizes::tests::view_yield_resumes_only_automatic_work_after_the_old_ack ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 905 filtered out; finished in 0.00s
+

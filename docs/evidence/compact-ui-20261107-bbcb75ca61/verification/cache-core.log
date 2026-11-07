@@ -1,0 +1,12 @@
+   Compiling files-core v0.0.4 (/home/node/Work/files/crates/core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.89s
+     Running unittests src/lib.rs (target/debug/deps/files_core-f77305030d0996e7)
+
+running 4 tests
+test folder_size_cache::tests::codec_and_age_are_bounded_without_reinterpreting_future_or_stale_values ... ok
+test folder_size_cache::tests::codec_retains_raw_paths_and_zero_is_a_real_observation ... ok
+test folder_size_cache::tests::links_remain_inside_the_fixture_and_are_never_followed_for_sizes_or_cache ... ok
+test folder_size_cache::tests::persisted_observation_reloads_but_replaced_directory_identity_does_not ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 734 filtered out; finished in 0.00s
+
