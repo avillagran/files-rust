@@ -1,7 +1,7 @@
 {
   "repository": "https://github.com/avillagran/lib-fltk-omarchy",
-  "base_commit": "a029d45c1fc63f99763f9836d1af0c817ab82ffd",
-  "fix_commit": "0f680890cba7038fa0519be19d159eed4f433a25",
+  "base_commit": "0f680890cba7038fa0519be19d159eed4f433a25",
+  "fix_commit": "767235b79d9f6fd5ef9b20495585d5d2e21cc141",
   "status": "local committed upstream checkpoint, untagged; no vendor patches",
-  "scope": "Exact 0f68089 export: persistent non-modal notices with stable app-owned actions, per-window stacks, focus restoration, live text and toolkit motion. Retains keyed tabs and the repeated-activation reveal fix from a029d45. Optional GPU, accessibility, images, playback, QR and Mermaid features remain disabled in Files."
+  "scope": "Exact 767235b export: public native::present for application-owned top-level windows, explicit startup/activation hints, platform activation outcomes and bounded private-queue Wayland handshakes. Includes the committed xdg-activation license, platform implementations, probes and prior tracked evidence. Retains persistent notices and keyed tabs from 0f68089. Optional GPU, accessibility, images, playback, QR and Mermaid features remain disabled in Files."
 }

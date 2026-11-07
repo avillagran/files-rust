@@ -172,6 +172,7 @@ mod video_stream_job;
 mod view;
 mod wheel_scroll;
 mod window_chrome;
+mod window_presentation;
 mod window_scene;
 mod worker;
 use fltk::{
@@ -1338,6 +1339,8 @@ pub fn run_since(start: Instant) -> bool {
     let fixture_rail = rail_state.clone();
     let tab_strip = tab_strip::Strip::new(size.0, isolate_fixture_input, fixture_dispatch.clone());
     let mut operation_notices = operation_notices::Manager::default();
+    let close_requested = Rc::new(Cell::new(false));
+    let mut window_presentation = window_presentation::Manager::new(close_requested.clone());
     let notice_input = operation_notices.inbox();
     model.borrow_mut().toolkit_feedback = true;
     win.end();
@@ -1800,7 +1803,6 @@ pub fn run_since(start: Instant) -> bool {
         }
         false
     });
-    let close_requested = Rc::new(Cell::new(false));
     let close = close_requested.clone();
     let close_trace = std::env::var_os("FILES_CLOSE_TRACE").is_some();
     win.set_callback(move |_| {
@@ -1966,6 +1968,27 @@ pub fn run_since(start: Instant) -> bool {
             break;
         }
         fltk_omarchy::task::drain();
+        // Observe the native close latch before an external request can map
+        // or activate a window. The callback itself never borrows Model.
+        let callback_close = close_requested.replace(false);
+        let close_dirty = callback_close
+            || auto_exit.is_some_and(|s| start.elapsed() >= Duration::from_secs(s))
+                && !model.borrow().closing;
+        if close_dirty {
+            let mut m = model.borrow_mut();
+            m.closing = true;
+            if close_trace {
+                eprintln!("FILES_CLOSE_REQUEST callback={callback_close}");
+            }
+            auto_exit = None;
+            m.mutations.cancel();
+        }
+        window_presentation.pump(&model, &mut win, &mut canvas, paint_revision.get());
+        if win.was_deleted() || canvas.was_deleted() {
+            eprintln!("FILES_BACKEND_WIDGET_LOST phase=presentation; cancelling and draining");
+            runtime_failed = true;
+            break;
+        }
         let feedback_dirty = operation_notices.drain(&model);
         let desired_corners = omarchy_theme::corners(model.borrow().corners);
         if fltk_omarchy::theme::corners() != desired_corners {
@@ -1998,7 +2021,7 @@ pub fn run_since(start: Instant) -> bool {
         }
         m.set_media_visible(win.shown() && win.visible_r());
         let strip_dirty = tab_strip.drain(&mut m);
-        let mut dirty = m.pump() || changed || strip_dirty || feedback_dirty;
+        let mut dirty = m.pump() || changed || strip_dirty || feedback_dirty || close_dirty;
         {
             let Model {
                 operation_feedback,
@@ -2052,18 +2075,6 @@ pub fn run_since(start: Instant) -> bool {
                 m.generation
             );
             readiness_emitted = Some((m.generation, m.view));
-        }
-        let callback_close = close_requested.replace(false);
-        if callback_close
-            || auto_exit.is_some_and(|s| start.elapsed() >= Duration::from_secs(s)) && !m.closing
-        {
-            m.closing = true;
-            if close_trace {
-                eprintln!("FILES_CLOSE_REQUEST callback={callback_close}");
-            }
-            auto_exit = None;
-            m.mutations.cancel();
-            dirty = true;
         }
         if m.closing
             && let Some(job) = &m.du_job
@@ -2152,6 +2163,7 @@ pub fn run_since(start: Instant) -> bool {
             clean_hidden = true;
             drop(m);
             operation_notices.close();
+            window_presentation.close();
             win.hide();
             continue;
         }
@@ -2226,14 +2238,36 @@ pub fn run_since(start: Instant) -> bool {
             model.borrow_mut().toolkit_feedback = feedback_managed;
             canvas.redraw();
         }
-        if external.present && !model.borrow().closing {
-            waiting_for_external = false;
-            win.show();
-            let _ = canvas.take_focus();
-            if !isolate_fixture_input {
-                model.borrow_mut().native_transfer.enable(&win);
+        if let Some(intent) = external.present {
+            let hidden = !win.shown();
+            if window_presentation.schedule(
+                intent,
+                &model,
+                &mut win,
+                &mut canvas,
+                paint_revision.get(),
+            ) {
+                waiting_for_external = false;
+                if hidden
+                    && toolkit_fixture
+                    && std::env::var_os("FILES_TEST_PRESENTATION_CLOSE_ON_MAP").is_some()
+                {
+                    // Exercise the real close callback at the deferred-map
+                    // boundary without posting synthetic native activation.
+                    win.do_callback();
+                }
+                if hidden && !isolate_fixture_input {
+                    model.borrow_mut().native_transfer.enable(&win);
+                }
+                window_presentation.pump(&model, &mut win, &mut canvas, paint_revision.get());
             }
-            canvas.redraw();
+        }
+        if win.was_deleted() || canvas.was_deleted() {
+            eprintln!(
+                "FILES_BACKEND_WIDGET_LOST phase=presentation_admission; cancelling and draining"
+            );
+            runtime_failed = true;
+            break;
         }
         if toolkit_fixture
             && !smoke
@@ -2280,7 +2314,8 @@ pub fn run_since(start: Instant) -> bool {
                         win.redraw();
                     }
                     "file-manager-state" => {
-                        let value = file_manager.marker(&model.borrow());
+                        let mut value = file_manager.marker(&model.borrow());
+                        value["presentation"] = window_presentation.marker();
                         eprintln!("FILES_FILE_MANAGER_STATE {value}");
                     }
                     "file-manager-protect" => model.borrow_mut().action(Action::Help),
@@ -3571,6 +3606,13 @@ pub fn run_since(start: Instant) -> bool {
     }
     file_manager.stop();
     operation_notices.close();
+    window_presentation.close();
+    if toolkit_fixture {
+        eprintln!(
+            "FILES_WINDOW_PRESENTATION_FINAL {}",
+            window_presentation.marker()
+        );
+    }
     if runtime_failed {
         // A real display/poll failure must not terminate an in-flight rollback.
         // No replacement jobs or UI waits are started while draining.

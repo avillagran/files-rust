@@ -7,6 +7,7 @@ use crate::{
 use files_core::file_manager::{Method, Request};
 use std::{
     ffi::OsString,
+    fmt,
     path::{Path, PathBuf},
     time::{Duration, Instant},
 };
@@ -331,6 +332,140 @@ mod tests {
         assert!(controller.drained());
         assert_eq!(controller.status(), "disabled");
         assert_eq!(controller.accepted, 0);
+        assert!(controller.pump(&mut m).present.is_none());
+        m.closing = true;
+        assert!(controller.pump(&mut m).present.is_none());
+    }
+    #[test]
+    fn admitted_presentation_owns_exact_opaque_context_and_the_new_view() {
+        let f = Fixture::new();
+        let mut m = f.model();
+        let previous_owner = m.pane_owner();
+        let previous_generation = m.generation;
+        let opaque = "  opaque+%2F_ñ_TIME17  ";
+        let request = Request::from_uris(
+            Method::ShowItems,
+            &[format!("file://{}", f.0.join("B/ordinary.txt").display())],
+            opaque,
+        )
+        .unwrap();
+        m.external_locations(&request.groups(), false).unwrap();
+        let intent = PresentationIntent::fixture_admitted(&m, request.method, request.startup_id);
+        assert_ne!(m.pane_owner(), previous_owner);
+        assert_ne!(m.generation, previous_generation);
+        assert_eq!(intent.owner, m.pane_owner());
+        assert_eq!(intent.generation, m.generation);
+        assert_eq!(intent.startup_id().as_bytes(), opaque.as_bytes());
+        assert!(
+            intent.is_current(&m),
+            "initial loading is not a foreign edit"
+        );
+        let diagnostic = format!("{intent:?}");
+        assert!(diagnostic.contains("has_startup_id: true"));
+        assert!(!diagnostic.contains("opaque") && !diagnostic.contains("TIME17"));
+        let empty = PresentationIntent::admitted(&m, Method::ShowFolders, String::new());
+        assert_eq!(empty.startup_id(), "");
+        assert!(format!("{empty:?}").contains("has_startup_id: false"));
+    }
+    #[test]
+    fn presentation_rejects_later_refresh_navigation_edit_or_close() {
+        let f = Fixture::new();
+        let mut m = f.model();
+        let make =
+            |m: &Model| PresentationIntent::admitted(m, Method::ShowFolders, "context".into());
+        let before_refresh = make(&m);
+        m.refresh_current();
+        assert!(!before_refresh.is_current(&m));
+        ready(&mut m);
+        let before_navigation = make(&m);
+        m.navigate(f.0.join("B"));
+        assert!(!before_navigation.is_current(&m));
+        ready(&mut m);
+        let intent = make(&m);
+        m.editing = true;
+        assert!(!intent.is_current(&m));
+        m.editing = false;
+        m.help = Some(Default::default());
+        assert!(!intent.is_current(&m));
+        m.help = None;
+        m.settings = true;
+        assert!(!intent.is_current(&m));
+        m.settings = false;
+        m.closing = true;
+        assert!(!intent.is_current(&m));
+    }
+    fn properties_ready(m: &mut Model) {
+        let deadline = Instant::now() + Duration::from_secs(10);
+        loop {
+            m.pump();
+            if m.properties_dialog.as_ref().is_some_and(|d| !d.pending) {
+                return;
+            }
+            assert!(
+                Instant::now() < deadline,
+                "properties inspection did not settle"
+            );
+            std::thread::yield_now();
+        }
+    }
+    #[test]
+    fn presentation_allows_only_its_own_properties_inspection_pending_or_settled() {
+        let f = Fixture::new();
+        let mut m = f.model();
+        m.open_properties_paths(vec![f.0.join("A/ordinary.txt")])
+            .unwrap();
+        let intent = PresentationIntent::admitted(&m, Method::ShowItemProperties, "context".into());
+        let id = m.properties_dialog.as_ref().unwrap().id;
+        assert!(m.mutations.busy && m.properties_dialog.as_ref().unwrap().pending);
+        assert!(
+            !available(&m),
+            "ordinary navigation does not bypass the inspector"
+        );
+        assert!(intent.is_current(&m), "the admitted inspector is expected");
+        properties_ready(&mut m);
+        assert!(!m.mutations.busy);
+        assert!(intent.is_current(&m));
+        m.help = Some(Default::default());
+        assert!(
+            !intent.is_current(&m),
+            "a competing surface must still block"
+        );
+        m.help = None;
+        m.settings = true;
+        assert!(!intent.is_current(&m));
+        m.settings = false;
+        m.editing = true;
+        assert!(!intent.is_current(&m));
+        m.editing = false;
+        m.properties_dialog.as_mut().unwrap().applying = true;
+        assert!(!intent.is_current(&m));
+        m.properties_dialog.as_mut().unwrap().applying = false;
+        m.properties_dialog.as_mut().unwrap().close_after = true;
+        assert!(!intent.is_current(&m));
+        m.properties_dialog.as_mut().unwrap().close_after = false;
+        assert!(intent.is_current(&m));
+        m.reload_properties();
+        assert_ne!(m.properties_dialog.as_ref().unwrap().id, id);
+        assert!(!intent.is_current(&m), "reload is a different inspection");
+        properties_ready(&mut m);
+        let current = PresentationIntent::admitted(&m, Method::ShowItemProperties, String::new());
+        assert!(current.is_current(&m));
+        m.close_properties();
+        assert!(
+            !current.is_current(&m),
+            "dismissed inspection cannot be presented later"
+        );
+    }
+    #[test]
+    fn browser_presentation_does_not_borrow_an_unrelated_properties_modal() {
+        let f = Fixture::new();
+        let mut m = f.model();
+        let intent = PresentationIntent::admitted(&m, Method::ShowItems, "context".into());
+        m.open_properties_paths(vec![f.0.join("A/ordinary.txt")])
+            .unwrap();
+        assert!(!intent.is_current(&m));
+        properties_ready(&mut m);
+        assert!(!intent.is_current(&m));
     }
     #[test]
     fn raw_cli_parent_components_are_preserved_for_kernel_symlink_resolution() {
@@ -369,8 +504,105 @@ impl Reveal {
 #[derive(Default)]
 pub struct Effects {
     pub dirty: bool,
-    pub present: bool,
+    pub present: Option<PresentationIntent>,
     pub fatal: Option<String>,
+}
+
+/// One accepted UI request's explicit activation context. Consume it at the
+/// presentation boundary; it is not durable approval and must not be replayed.
+pub struct PresentationIntent {
+    startup_id: String,
+    owner: (u64, u64),
+    generation: u64,
+    properties: Option<u64>,
+}
+impl fmt::Debug for PresentationIntent {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("PresentationIntent")
+            .field("has_startup_id", &!self.startup_id.is_empty())
+            .field("owner", &self.owner)
+            .field("generation", &self.generation)
+            .field("properties", &self.properties)
+            .finish()
+    }
+}
+impl PresentationIntent {
+    fn admitted(m: &Model, method: Method, startup_id: String) -> Self {
+        Self {
+            startup_id,
+            owner: m.pane_owner(),
+            generation: m.generation,
+            properties: (method == Method::ShowItemProperties).then(|| {
+                m.properties_dialog
+                    .as_ref()
+                    .expect("admitted properties dialog")
+                    .id
+            }),
+        }
+    }
+
+    #[cfg(test)]
+    pub(crate) fn fixture_admitted(m: &Model, method: Method, startup_id: String) -> Self {
+        Self::admitted(m, method, startup_id)
+    }
+
+    /// Preserve opaque request bytes rather than importing launch environment.
+    pub fn startup_id(&self) -> &str {
+        &self.startup_id
+    }
+
+    /// Recheck immediately before a native call, including after first mapping.
+    /// The broker has already acknowledged admission, so its bus ticket is no
+    /// longer an appropriate activation guard at this boundary.
+    pub fn is_current(&self, m: &Model) -> bool {
+        self.owner == m.pane_owner()
+            && self.generation == m.generation
+            && match self.properties {
+                None => available(m),
+                Some(id) => own_properties_available(m, id),
+            }
+    }
+}
+
+/// Properties admission creates its own modal and read-only Inspect request.
+/// Exclude only those two expected blockers; every competing surface still
+/// prevents a delayed presentation from taking over the current interaction.
+fn own_properties_available(m: &Model, id: u64) -> bool {
+    let Some(dialog) = m.properties_dialog.as_ref().filter(|d| d.id == id) else {
+        return false;
+    };
+    m.mutation_id == id
+        && !dialog.applying
+        && !dialog.close_after
+        && (!m.mutations.busy || dialog.pending)
+        && !m.closing
+        && !m.copy_busy()
+        && !m.mutation_applied
+        && !m.delete.busy()
+        && m.delete.confirm.is_none()
+        && m.open_with.is_none()
+        && m.trash_browser.is_none()
+        && m.comparison.is_none()
+        && m.checksums.is_none()
+        && m.sftp.form.is_none()
+        && m.saved_searches.panel.is_none()
+        && m.bookmarks.panel.is_none()
+        && m.commands.is_none()
+        && !m.search.visible
+        && m.size_panel.is_none()
+        && m.help.is_none()
+        && !m.recovery_catalog.open
+        && !m.notice_open
+        && m.copy_form.is_none()
+        && !m.preview.visible()
+        && m.rename_dialog.is_none()
+        && m.tab_context.is_none()
+        && !m.breadcrumbs.open
+        && !m.settings
+        && !m.actions_menu
+        && m.context_menu.is_none()
+        && !m.editing
+        && !m.filter_edit.active
 }
 pub struct Controller {
     server: Option<Server>,
@@ -383,7 +615,7 @@ pub struct Controller {
     pub last_error: String,
 }
 pub fn available(m: &Model) -> bool {
-    !crate::tab_gestures::blocked(m) && !m.copy_busy() && !m.mutation_applied
+    !crate::tab_gestures::blocked(m) && !m.copy_busy() && !m.mutation_applied && !m.delete.busy()
 }
 pub fn cli_request(method: Method, operands: &[PathBuf], cwd: &Path) -> Result<Request, String> {
     if operands.is_empty() || operands.len() > files_core::file_manager::MAX_URIS {
@@ -542,7 +774,11 @@ impl Controller {
             effects.dirty = true;
             if accepted {
                 self.fresh = false;
-                effects.present = true;
+                effects.present = Some(PresentationIntent::admitted(
+                    m,
+                    work.request.method,
+                    work.request.startup_id,
+                ));
             } else if work.id.is_none() {
                 effects.fatal = Some(self.last_error.clone());
             }
