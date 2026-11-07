@@ -1229,6 +1229,7 @@ fn tile(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
         p.rect(r(rect.x + 4, rect.y + 8, 2, (rect.h - 16).max(0)), c.accent);
     }
     folder(p, rect.x + 12, rect.y + 22, c.blue);
+    p.clip(inner);
     let e = &m.entries[i];
     p.text(
         r(rect.x + 54, rect.y + 10, rect.w - 64, 24),
@@ -1238,7 +1239,8 @@ fn tile(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
         false,
         false,
     );
-    let summary = m.sizes.detail(&m.path, &e.name).unwrap_or_else(|| {
+    // Cards share the compact listing label; verbose progress belongs in the inspector.
+    let summary = m.sizes.label(&m.path, &e.name).unwrap_or_else(|| {
         m.summaries
             .get(&i)
             .map(|summary| summary.label())
@@ -1266,6 +1268,7 @@ fn tile(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
         false,
         false,
     );
+    p.unclip();
     hit(m, rect, Action::Entry(i));
     m.visible.push(i);
 }
@@ -1836,6 +1839,32 @@ mod inspector_tabs_tests {
             metadata: None,
             stat_attempted: true,
         }
+    }
+    #[test]
+    fn folder_card_keeps_size_observations_on_one_compact_line() {
+        let mut m = Model::new("/fixture-folder-card".into());
+        m.worker.suspend();
+        m.entries.push(files_core::listing::Entry {
+            name: "Folder".into(),
+            kind: files_core::listing::Kind::Directory,
+            metadata: None,
+            stat_attempted: true,
+        });
+        m.sizes.bind_automatic_root(&m.path);
+        m.sizes.automatic.cached.insert(
+            "Folder".into(),
+            files_core::folder_size_cache::Observation {
+                bytes: 2048,
+                entries: 3,
+                at: SystemTime::now(),
+            },
+        );
+        let mut painter = Recorder::default();
+        tile(&mut painter, &mut m, 0, r(0, 0, 240, 74));
+        assert!(painter.text.iter().all(|(_, text)| !text.contains('\n')));
+        let summary = painter.text.iter().find(|(rect, _)| rect.y == 34).unwrap();
+        assert!(summary.1.starts_with('≈'));
+        assert!(!summary.1.contains("observación"));
     }
     #[test]
     fn empty_listing_messages_distinguish_loading_errors_filters_and_folders() {
