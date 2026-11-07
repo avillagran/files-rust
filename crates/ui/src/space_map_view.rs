@@ -102,7 +102,13 @@ impl Geometry {
                 (size.0, height),
                 show_hidden,
             );
-            self.map_height = height;
+            // Keep a compact diagnostic and usable rows when exact geometry
+            // cannot be represented; do not discard positive measured items.
+            self.map_height = if self.error.is_some() {
+                height.min(50)
+            } else {
+                height
+            };
             let needed = self.excluded.len().min(3) as i32;
             if needed <= rows {
                 break;
@@ -150,13 +156,16 @@ impl Geometry {
                 self.mapped[node] = Some(i);
             }
         }
+        let layout_failed = self.error.is_some();
         self.excluded = report
             .nodes
             .iter()
             .enumerate()
             .filter(|(_, n)| {
                 (show_hidden || n.name.first() != Some(&b'.'))
-                    && (n.status != NodeStatus::Complete || n.bytes.is_none_or(|b| b == 0))
+                    && (layout_failed
+                        || n.status != NodeStatus::Complete
+                        || n.bytes.is_none_or(|b| b == 0))
             })
             .map(|(i, _)| i)
             .collect();
@@ -931,6 +940,26 @@ mod tests {
             })
             .collect();
         (report, entries)
+    }
+    #[test]
+    fn layout_failure_keeps_measured_entries_in_a_usable_fallback_list() {
+        let (report, entries) = fixture();
+        let mut geometry = Geometry::default();
+        // The pure layout explicitly rejects dimensions beyond its numeric
+        // contract. The view must retain every file instead of losing targets.
+        assert!(geometry.prepare(&report, &entries, 1, 2, (20_000, 300), false));
+        assert!(geometry.error.is_some());
+        assert!(geometry.areas.is_empty());
+        assert_eq!(geometry.excluded.len(), report.nodes.len());
+        assert_eq!(geometry.navigation_indices().len(), entries.len());
+        assert!(geometry.map_height <= 50);
+        assert_eq!(report.total_bytes, 14);
+        assert!(
+            entries
+                .iter()
+                .enumerate()
+                .all(|(i, _)| geometry.contains_entry(i))
+        );
     }
     #[test]
     fn positive_only_tiny_blocks_get_rows_without_inflating_area_and_cache_navigation() {

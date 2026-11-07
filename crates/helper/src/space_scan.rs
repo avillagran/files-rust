@@ -337,7 +337,7 @@ mod platform {
         }
         Ok(())
     }
-    fn entry(fd: i32, name: &CStr, budget: &mut Budget) -> (SpaceNode, Option<Issue>) {
+    fn inspect_entry(fd: i32, name: &CStr) -> (SpaceNode, Option<libc::stat>, Option<Issue>) {
         // The immediate-name budget was checked by the caller before this clone.
         let mut node = SpaceNode {
             name: name.to_bytes().to_vec(),
@@ -354,6 +354,7 @@ mod platform {
             Err(error) => {
                 return (
                     node,
+                    None,
                     Some(Issue::io("No se pudo leer la entrada inmediata", error)),
                 );
             }
@@ -363,17 +364,11 @@ mod platform {
         let result = match node.kind {
             NodeKind::File => file_bytes(&stat, &mut counts),
             NodeKind::Directory => {
-                counts.directories = 1;
-                match child_directory(fd, name, &stat) {
-                    Ok(directory) => walk(vec![directory], budget, &mut counts),
-                    Err(error) => {
-                        node.directories = 1;
-                        return (
-                            node,
-                            Some(Issue::io("No se pudo abrir la carpeta inmediata", error)),
-                        );
-                    }
-                }
+                // Retain every admitted immediate child before descending. A
+                // large first subtree must not hide later files and folders.
+                node.directories = 1;
+                node.status = NodeStatus::Partial;
+                return (node, Some(stat), None);
             }
             NodeKind::Symlink | NodeKind::Other => Ok(()),
         };
@@ -384,11 +379,81 @@ mod platform {
             Ok(()) => {
                 node.status = NodeStatus::Complete;
                 node.bytes = Some(counts.bytes);
-                (node, None)
+                (node, None, None)
             }
             Err(issue) => {
                 node.status = NodeStatus::Partial;
-                (node, Some(issue))
+                (node, None, Some(issue))
+            }
+        }
+    }
+    fn measure_directory(
+        fd: i32,
+        node: &mut SpaceNode,
+        expected: &libc::stat,
+        budget: &mut Budget,
+        remaining: usize,
+    ) -> Option<Issue> {
+        if let Err(issue) = budget.time() {
+            return Some(issue);
+        }
+        let name = CString::new(node.name.as_slice()).expect("validated child component");
+        let directory = match child_directory(fd, &name, expected) {
+            Ok(directory) => directory,
+            Err(error) => {
+                node.status = NodeStatus::Error;
+                return Some(Issue::io("No se pudo abrir la carpeta inmediata", error));
+            }
+        };
+        // Distribute the remaining cooperative budget among admitted siblings.
+        // There is still only one helper and at most one depth-bounded walk.
+        let remaining = remaining.max(1) as u32;
+        let visits = budget.limits.visited.saturating_sub(budget.visited);
+        let share = (visits / u64::from(remaining)).max(1).min(visits);
+        let elapsed = budget.started.elapsed();
+        let time = budget.limits.elapsed.saturating_sub(elapsed) / remaining;
+        let mut slice = Budget {
+            limits: Limits {
+                visited: budget.visited + share,
+                elapsed: elapsed.saturating_add(time).min(budget.limits.elapsed),
+                ..budget.limits
+            },
+            started: budget.started,
+            visited: budget.visited,
+            names: budget.names,
+            errors_reserved: budget.errors_reserved,
+        };
+        let mut counts = Counts {
+            directories: 1,
+            ..Counts::default()
+        };
+        let result = walk(vec![directory], &mut slice, &mut counts);
+        budget.visited = slice.visited;
+        node.observed_bytes = counts.bytes;
+        node.files = counts.files;
+        node.directories = counts.directories;
+        match result {
+            Ok(()) => {
+                node.status = NodeStatus::Complete;
+                node.bytes = Some(counts.bytes);
+                None
+            }
+            Err(mut issue) => {
+                if issue.stop_all
+                    && budget.time().is_ok()
+                    && budget.visited < budget.limits.visited
+                    && matches!(
+                        issue.reason,
+                        "Tiempo de cálculo de espacio agotado"
+                            | "Límite de entradas de espacio alcanzado"
+                    )
+                {
+                    issue = Issue::io(
+                        "Medición parcial para repartir el presupuesto entre carpetas",
+                        io::Error::other("Las demás carpetas conservan su turno"),
+                    );
+                }
+                Some(issue)
             }
         }
     }
@@ -454,6 +519,7 @@ mod platform {
             reason: None,
             omitted_children: None,
         };
+        let mut pending = Vec::new();
         loop {
             if let Err(issue) = budget.time() {
                 reason(&mut report, &issue);
@@ -485,7 +551,7 @@ mod platform {
                 reason(&mut report, &issue);
                 break;
             }
-            let (mut node, issue) = entry(fd, name, &mut budget);
+            let (mut node, directory, issue) = inspect_entry(fd, name);
             let mut stop = false;
             if let Some(issue) = issue {
                 reason(&mut report, &issue);
@@ -495,26 +561,43 @@ mod platform {
                 }
                 stop = issue.stop_all || node.error.is_none();
             }
-            let Some(observed) = report.observed_bytes.checked_add(node.observed_bytes) else {
-                reason(
-                    &mut report,
-                    &Issue::limit("Suma observada de espacio fuera de rango"),
-                );
-                break;
-            };
-            let Some(total) = report.total_bytes.checked_add(node.bytes.unwrap_or(0)) else {
-                reason(
-                    &mut report,
-                    &Issue::limit("Suma completa de espacio fuera de rango"),
-                );
-                break;
-            };
-            report.observed_bytes = observed;
-            report.total_bytes = total;
+            if let Some(stat) = directory {
+                pending.push((report.nodes.len(), stat));
+            }
             report.nodes.push(node);
             if stop {
                 break;
             }
+        }
+        let directories = pending.len();
+        for (rank, (index, expected)) in pending.iter().enumerate() {
+            let issue = measure_directory(
+                root.fd(),
+                &mut report.nodes[*index],
+                expected,
+                &mut budget,
+                directories - rank,
+            );
+            if let Some(issue) = issue {
+                reason(&mut report, &issue);
+                report.nodes[*index].error = budget.error(&issue);
+                if report.nodes[*index].error.is_none() {
+                    report.reason = Some("Presupuesto agregado de diagnósticos de Espacio agotado; recorrido detenido".into());
+                    break;
+                }
+            }
+        }
+        // Sum only after enumeration and measurement; pending nodes remain
+        // explicitly unknown, while measured lower bounds remain available.
+        for node in &report.nodes {
+            report.observed_bytes = report
+                .observed_bytes
+                .checked_add(node.observed_bytes)
+                .ok_or("Suma observada de espacio fuera de rango")?;
+            report.total_bytes = report
+                .total_bytes
+                .checked_add(node.bytes.unwrap_or(0))
+                .ok_or("Suma completa de espacio fuera de rango")?;
         }
         report.visited = budget.visited;
         Ok(report)
@@ -531,20 +614,57 @@ mod platform {
         impl Fixture {
             fn new() -> Self {
                 static NEXT: AtomicU64 = AtomicU64::new(0);
-                let base = files_core::theme::home().join(".cache/files-test");
-                fs::create_dir_all(&base).unwrap();
-                let path = base.join(format!(
-                    "space-scan-{}-{}",
+                let base = std::path::PathBuf::from(
+                    std::env::var_os("TMPDIR").expect("space tests require a private TMPDIR"),
+                );
+                assert!(base.is_absolute());
+                let mut parent = file(unsafe {
+                    libc::open(
+                        c"/".as_ptr(),
+                        libc::O_RDONLY | libc::O_DIRECTORY | libc::O_CLOEXEC,
+                    )
+                })
+                .unwrap();
+                for component in base.components() {
+                    match component {
+                        std::path::Component::RootDir => (),
+                        std::path::Component::Normal(name) => {
+                            let name = CString::new(name.as_bytes()).unwrap();
+                            parent = file(unsafe {
+                                libc::openat(
+                                    parent.as_raw_fd(),
+                                    name.as_ptr(),
+                                    libc::O_RDONLY
+                                        | libc::O_DIRECTORY
+                                        | libc::O_NOFOLLOW
+                                        | libc::O_CLOEXEC,
+                                )
+                            })
+                            .unwrap();
+                        }
+                        _ => panic!("private TMPDIR must not contain traversal components"),
+                    }
+                }
+                let metadata = stat_fd(&parent).unwrap();
+                assert_eq!(metadata.st_uid, unsafe { libc::geteuid() });
+                assert_eq!(metadata.st_mode & 0o077, 0, "TMPDIR must be private");
+                let name = format!(
+                    "space-scan-{}-{}-{}",
                     std::process::id(),
+                    std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .unwrap()
+                        .as_nanos(),
                     NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
-                fs::create_dir(&path).unwrap();
-                Self(path)
-            }
-        }
-        impl Drop for Fixture {
-            fn drop(&mut self) {
-                let _ = fs::remove_dir_all(&self.0);
+                );
+                let component = CString::new(name.as_bytes()).unwrap();
+                assert_eq!(
+                    unsafe { libc::mkdirat(parent.as_raw_fd(), component.as_ptr(), 0o700) },
+                    0
+                );
+                // No Drop cleanup: every fixture, including link targets, remains
+                // inside the exclusive test run for inspection after failures.
+                Self(base.join(name))
             }
         }
         fn defaults(path: &Path) -> SpaceReport {
@@ -639,8 +759,38 @@ mod platform {
                 assert_eq!(report.nodes[0].bytes, None);
                 assert!(matches!(report.nodes[0].status, NodeStatus::Partial));
                 assert_eq!(report.total_bytes, 0);
-                assert_eq!(report.omitted_children, None);
+                assert_eq!(report.omitted_children, Some(0));
             }
+        }
+        #[test]
+        fn large_subtree_cannot_hide_later_siblings_or_consume_their_whole_budget() {
+            let f = Fixture::new();
+            fs::create_dir(f.0.join("large")).unwrap();
+            for index in 0..20 {
+                fs::write(f.0.join("large").join(index.to_string()), [1u8]).unwrap();
+            }
+            fs::create_dir(f.0.join("small")).unwrap();
+            fs::write(f.0.join("small/data"), [2u8; 3]).unwrap();
+            fs::write(f.0.join("direct"), [3u8; 7]).unwrap();
+            let report = scan(
+                &f.0,
+                Limits {
+                    visited: 8,
+                    ..Limits::default()
+                },
+            )
+            .unwrap();
+            files_core::space_map::validate_report(&report).unwrap();
+            assert!(!report.complete);
+            assert_eq!(report.nodes.len(), 3);
+            assert_eq!(report.omitted_children, Some(0));
+            assert!(report.visited <= 8);
+            let child = |name: &[u8]| report.nodes.iter().find(|n| n.name == name).unwrap();
+            assert_eq!(child(b"small").bytes, Some(3));
+            assert_eq!(child(b"direct").bytes, Some(7));
+            assert_eq!(child(b"large").status, NodeStatus::Partial);
+            assert_eq!(child(b"large").bytes, None);
+            assert!(child(b"large").observed_bytes > 0);
         }
         #[test]
         fn name_and_node_caps_stop_without_claiming_zero_omissions() {
@@ -674,7 +824,8 @@ mod platform {
             fs::create_dir(f.0.join("child")).unwrap();
             assert!(child_directory(root.fd(), c"child", &before).is_err());
             let mut budget = Budget::new(Limits::default());
-            let (node, issue) = entry(-1, c"fixture-missing", &mut budget);
+            let (node, directory, issue) = inspect_entry(-1, c"fixture-missing");
+            assert!(directory.is_none());
             assert!(matches!(node.status, NodeStatus::Error));
             assert!(node.bytes.is_none());
             assert_eq!(node.observed_bytes, 0);
