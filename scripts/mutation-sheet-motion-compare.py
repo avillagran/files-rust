@@ -64,6 +64,10 @@ class CaptureRoot:
             for part in relative.parent.parts:
                 child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC,
                                 dir_fd=directory)
+                metadata = os.fstat(child)
+                if metadata.st_uid != os.geteuid() or stat.S_IMODE(metadata.st_mode) & 0o022:
+                    os.close(child)
+                    raise ValueError('capture subdirectory is writable by another user')
                 os.close(directory)
                 directory = child
             descriptor = os.open(relative.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC,
@@ -71,6 +75,7 @@ class CaptureRoot:
             with os.fdopen(descriptor, 'rb') as source:
                 metadata = os.fstat(source.fileno())
                 if (not stat.S_ISREG(metadata.st_mode) or metadata.st_uid != os.geteuid()
+                        or stat.S_IMODE(metadata.st_mode) & 0o022
                         or metadata.st_size > limit):
                     raise ValueError('capture input must be a bounded regular file owned by this user')
                 data = source.read(limit + 1)
