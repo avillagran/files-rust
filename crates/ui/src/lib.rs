@@ -220,6 +220,7 @@ fn input(m: &mut Model, text: &str) {
 
 fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
     if matches!(ev, Event::Push | Event::KeyDown | Event::Shortcut) {
+        m.cancel_parent_return_focus();
         m.text_paste.invalidate();
         m.wheel_scroll.cancel();
     }
@@ -412,6 +413,7 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             changed
         }
         Event::MouseWheel => {
+            m.cancel_parent_return_focus();
             m.folder_restore = None;
             if m.operation_bar && app::event_y() >= h - 32 - crate::operation_bar::HEIGHT {
                 return true;
