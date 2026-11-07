@@ -1,0 +1,67 @@
+{
+  "source_checkpoint": "e4dab48caca8b4977dade49dc9e957810f95ea39",
+  "stage": "built-not-installed-or-native-accepted",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "source_archive_sha256": "1c4ac27abd876f7d2d4beb3cea4eed743bff765d9cc031c1d81561290726784b",
+  "source_archive_bytes": 23736320,
+  "source_manifest_sha256": "0d49fc6a97c29f9958df27a5179e7a5ea9c592c5e6b86ca198c63904dd8a266f",
+  "native_cache_source": "/home/avillagran/.cache/files-m2-updates/sheets-7ec4ed5/source/target",
+  "native_cache_apparent_bytes": 946755149,
+  "disk_free_before_bytes": 7320772608,
+  "source_files_verified": 1036,
+  "source_path_set_verified_before_build": true,
+  "preserved_stale_cmake": [
+    "release/build/fltk-sys-177e96596797f1b5",
+    "release/build/fltk-sys-c3a49caeb1e019b6",
+    "release/build/fltk-sys-c5ec56d993c59a55",
+    "release/.fingerprint/fltk-acdeb401cc666edc",
+    "release/.fingerprint/fltk-sys-177e96596797f1b5",
+    "release/.fingerprint/fltk-sys-279467ff37fc3578",
+    "release/.fingerprint/fltk-sys-c3a49caeb1e019b6",
+    "release/.fingerprint/fltk-sys-c5ec56d993c59a55",
+    "release/.fingerprint/fltk-sys-ea5bc56e7bfa880b"
+  ],
+  "build_returncode": 0,
+  "elapsed_seconds": 110.16544411401264,
+  "source_files_after_build_verified": 1036,
+  "source_archive_after_build_verified": true,
+  "files_sha256": "445570ece0749548677250c74d33b0f420b8fdece68b603c93bbd6ad6ac350ca",
+  "files_file": "/home/avillagran/.cache/files-m2-updates/sheets-e4dab48/source/target/release/files: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 3.7.0, BuildID[sha1]=696c72b5a2c43c868197256fd8ffa62c42848887, stripped",
+  "files-helper_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+  "files-helper_file": "/home/avillagran/.cache/files-m2-updates/sheets-e4dab48/source/target/release/files-helper: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 3.7.0, BuildID[sha1]=e9556d580d13005df483f1044e7ab115d50bfad9, stripped",
+  "files-html-helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "files-html-helper_file": "/home/avillagran/.cache/files-m2-updates/sheets-e4dab48/source/target/release/files-html-helper: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=bef9f2f6e1e8fd32028cacf71fe187e5ba293c59, for GNU/Linux 3.7.0, not stripped",
+  "files-html-helper.LICENSES_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+  "files-html-helper.build.json_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+  "html_stamp": {
+    "archive_sha256": "82cfdc8347ebb61fbf308e29ebcb6ea5f82e894dd6a013c928deacc0446a471e",
+    "adapter_sha256": "babce060e9ec324af33f55b825a376e6a01213227bcd75e5227a8e95d2c69375",
+    "patch_sha256": "48fb04110df6590b55983495b8b657fe850557a10b335bea34361c7ca5bbecb6",
+    "binary_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+    "commands": [
+      [
+        "cmake",
+        "-S",
+        "/home/avillagran/Work/files/scripts/fixtures/html-engine",
+        "-B",
+        "/home/avillagran/.cache/files-test/html-engine/build-6fd7aaa63833c913cf1a0336e46fb2e027e4c656",
+        "-DLITEHTML_SOURCE=/home/avillagran/.cache/files-test/html-engine/patched-6fd7aaa63833c913cf1a0336e46fb2e027e4c656-babce060e9ec324a-1793093197447022691",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_SHARED_LIBS=OFF",
+        "-DLITEHTML_BUILD_TESTING=OFF",
+        "-DLITEHTML_ENABLE_LINT=OFF"
+      ],
+      [
+        "cmake",
+        "--build",
+        "/home/avillagran/.cache/files-test/html-engine/build-6fd7aaa63833c913cf1a0336e46fb2e027e4c656",
+        "--target",
+        "html-engine-probe",
+        "--parallel",
+        "1"
+      ]
+    ]
+  },
+  "reused_native_html_recipe_verified": true
+}

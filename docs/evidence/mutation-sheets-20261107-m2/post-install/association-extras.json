@@ -1,0 +1,12 @@
+[
+  {
+    "path": ".config/hyprland-mimeapps.list",
+    "sha256": "d9fa7aff0d4006789fb673b2a4b50cd83c51b8287f8ad15ce7549ca6605cc649",
+    "baseline_matches": true
+  },
+  {
+    "path": ".local/share/applications/mimeapps.list",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline_matches": true
+  }
+]

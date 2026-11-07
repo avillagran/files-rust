@@ -1,0 +1,66 @@
+{
+  "source_checkpoint": "7ec4ed54e6344dab5ba814063bb68315fc21c202",
+  "stage": "built-not-installed-or-native-accepted",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "source_archive_sha256": "5601d422d65990238d100d9efd2871a44bdf00b75b65493e44df0e8cb2006f7e",
+  "source_archive_bytes": 23715840,
+  "source_manifest_sha256": "3e55cc6c19d6217556deb9f4b80c96b44b7279429d6ac70c8ed5968017938303",
+  "native_cache_source": "/home/avillagran/.cache/files-m2-updates/sheets-f1ce00c/source/target",
+  "native_cache_apparent_bytes": 943922765,
+  "disk_free_before_bytes": 7473246208,
+  "source_files_verified": 1032,
+  "source_path_set_verified_before_build": true,
+  "preserved_stale_cmake": [
+    "release/build/fltk-sys-177e96596797f1b5",
+    "release/build/fltk-sys-c3a49caeb1e019b6",
+    "release/build/fltk-sys-c5ec56d993c59a55",
+    "release/.fingerprint/fltk-acdeb401cc666edc",
+    "release/.fingerprint/fltk-sys-177e96596797f1b5",
+    "release/.fingerprint/fltk-sys-279467ff37fc3578",
+    "release/.fingerprint/fltk-sys-c3a49caeb1e019b6",
+    "release/.fingerprint/fltk-sys-c5ec56d993c59a55",
+    "release/.fingerprint/fltk-sys-ea5bc56e7bfa880b"
+  ],
+  "build_returncode": 0,
+  "elapsed_seconds": 89.91294780699536,
+  "source_files_after_build_verified": 1032,
+  "source_archive_after_build_verified": true,
+  "library_discovery": "CMAKE_LIBRARY_PATH=/usr/lib, matching native pkg-config pango libdir",
+  "prior_failure": "build-result-cached-negative-checks.json",
+  "files_sha256": "f5bb1e2db4dfa524e363970560df9e4690dfd4183afa24f62194f6f1e06b72a8",
+  "files-helper_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+  "files-html-helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "files-html-helper.LICENSES_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+  "files-html-helper.build.json_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+  "html_stamp": {
+    "archive_sha256": "82cfdc8347ebb61fbf308e29ebcb6ea5f82e894dd6a013c928deacc0446a471e",
+    "adapter_sha256": "babce060e9ec324af33f55b825a376e6a01213227bcd75e5227a8e95d2c69375",
+    "patch_sha256": "48fb04110df6590b55983495b8b657fe850557a10b335bea34361c7ca5bbecb6",
+    "binary_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+    "commands": [
+      [
+        "cmake",
+        "-S",
+        "/home/avillagran/Work/files/scripts/fixtures/html-engine",
+        "-B",
+        "/home/avillagran/.cache/files-test/html-engine/build-6fd7aaa63833c913cf1a0336e46fb2e027e4c656",
+        "-DLITEHTML_SOURCE=/home/avillagran/.cache/files-test/html-engine/patched-6fd7aaa63833c913cf1a0336e46fb2e027e4c656-babce060e9ec324a-1793093197447022691",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_SHARED_LIBS=OFF",
+        "-DLITEHTML_BUILD_TESTING=OFF",
+        "-DLITEHTML_ENABLE_LINT=OFF"
+      ],
+      [
+        "cmake",
+        "--build",
+        "/home/avillagran/.cache/files-test/html-engine/build-6fd7aaa63833c913cf1a0336e46fb2e027e4c656",
+        "--target",
+        "html-engine-probe",
+        "--parallel",
+        "1"
+      ]
+    ]
+  },
+  "reused_native_html_recipe_verified": true
+}

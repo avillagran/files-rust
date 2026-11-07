@@ -1,7 +1,10 @@
 # Controlled mutation sheets: suspended validation
 
-This checkpoint is **not a validated or installed release**. NODE and ARM
-M2 retain the earlier asynchronous-presentation installation.
+This report records the suspended validation as of November 6. It is **not a
+complete release acceptance**. On November 7 the user requested an M2 test
+installation; the later native backend repair, private acceptance and M2
+installation are recorded in [the separate M2 report](../mutation-sheets-20261107-m2/README.md).
+NODE retains the earlier asynchronous-presentation installation.
 
 Files source `f310421` introduces native create/rename sheets, bounded draft
 admission and preview presentation, editable planning, and retained UI while

@@ -1,0 +1,124 @@
+{
+  "source_checkpoint": "e4dab48caca8b4977dade49dc9e957810f95ea39",
+  "artifacts_baseline": {
+    "files": "4e6b3ee79506f0382701f6c4ef23cd537927da40d75d53395445e065dcd8a063",
+    "files-helper": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+    "files-html-helper": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+    "files-html-helper.LICENSES": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+    "files-html-helper.build.json": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838"
+  },
+  "artifacts_postinstall": {
+    "files": "445570ece0749548677250c74d33b0f420b8fdece68b603c93bbd6ad6ac350ca",
+    "files-helper": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+    "files-html-helper": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+    "files-html-helper.LICENSES": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+    "files-html-helper.build.json": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838"
+  },
+  "settings_hashes_baseline_and_postinstall": {
+    "config.toml": "36383052a1f04ccb6fe5f122e2e67f03fb87aeaf9fe93e9581ff4f31e6d8fe9e",
+    "session.bin": "bf44903de9bbd4add969a9409b03b6a12edc865d7ff293fc16146ab80c0ea4f9",
+    "layouts/0d922b96b215a0a5.toml": "e0f3277c2f15261378b7aa49496828016358163df7236397f825f1b00a0932e7",
+    "layouts/32d393d1817c5e72.toml": "1cbf77da02414f7c97e6a895b9a65fefaae10c41c91bdf869111a56df40d0a21",
+    "layouts/35201e16dc621286.toml": "c17250785358f5cb71cc8624ecfef3fc85d20ba3f386a987d0d8bc9224bb1772",
+    "mimeapps.list": "9f1c34cc010e997bf8e95e88cf68dcc7bee4fa60514254a35684e7192e86d6d0"
+  },
+  "user_process_observed_during_and_after": 4039310,
+  "failed_attempts": [
+    {
+      "fixture": "02e513ff24a5",
+      "report_sha256": "116c5974993dc9a95c9e02b9a5226003a70361eef39e6124e40ef1bb7421389c",
+      "error": "AssertionError: mutation-sheet-state: owned process exited",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-02e513ff24a5/report.json"
+    },
+    {
+      "fixture": "10fb8957dace",
+      "report_sha256": "1b5a3046abba244b2f188549566c9b9aaf6b2fdfea5caef6ff47e0c33866d81a",
+      "error": "AssertionError: persistent private keyboard unavailable",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-10fb8957dace/report.json"
+    },
+    {
+      "fixture": "215e45cb0d8d",
+      "report_sha256": "8001baddf2f2dbd10c5ed3538a95f51fc4e59f8ef0c292a65a73616fd4f63a2c",
+      "error": "AssertionError: field-value",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-215e45cb0d8d/report.json"
+    },
+    {
+      "fixture": "265b51fd43a6",
+      "report_sha256": "18ad0f19ac0aee49cbafc52e0b39384896974a7eb2606a379c232dffd2ece035",
+      "error": "AssertionError: private headless compositor unavailable; see compositor.log",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-265b51fd43a6/report.json"
+    },
+    {
+      "fixture": "3c142e40281a",
+      "report_sha256": "3113d84fb2ec4860f5e65756e97ebf3108d5a45b69feaa812e3f3d4069f3e290",
+      "error": "AssertionError: private headless compositor unavailable; see compositor.log",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-3c142e40281a/report.json"
+    },
+    {
+      "fixture": "6932fe6f2526",
+      "report_sha256": "85d05ad0196b121c0bc7347382a711031f91f228bfd3cba56ebc71a74d374508",
+      "error": "AssertionError: cover-selection",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-6932fe6f2526/report.json"
+    },
+    {
+      "fixture": "758773bd86c5",
+      "report_sha256": "eea330802ddb79a0dc06fdc275f843c8d0445120cbb0d35ef0c243747aafabd0",
+      "error": "AssertionError: private headless compositor unavailable; see compositor.log",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-758773bd86c5/report.json"
+    },
+    {
+      "fixture": "7c01f4c5c1fd",
+      "report_sha256": "4eefccbd7b1a415aeb267b74d16a359107b6975042ab7e16de5ef602075ff323",
+      "error": "AssertionError: undo single rename",
+      "checks": [
+        "native keyboard edits and caret selection with a single persistent device",
+        "Escape restores browser and a new opening does not reuse a stale draft",
+        "native Unicode paste and undo; create remains visible during Apply until ACK",
+        "native create folder preserves Unicode and percent basename",
+        "conflicting create reports failure without changing the existing file",
+        "raw non-UTF-8 basename is reported and preserved without lossy rename",
+        "a delayed old Plan ACK cannot replace the reopened dialog plan"
+      ],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-7c01f4c5c1fd/report.json"
+    },
+    {
+      "fixture": "8c48ca31c998",
+      "report_sha256": "c9aa0f1d37246df3ead85e2060a639b156ef16ab2b71267409299e1b46204120",
+      "error": "AssertionError: field-value",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-8c48ca31c998/report.json"
+    },
+    {
+      "fixture": "a386b3b021d0",
+      "report_sha256": "c3efa0319d997ca3589a960f947939a5fea7fd3551982e5807944475804d532f",
+      "error": "AssertionError: private headless compositor unavailable; see compositor.log",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-a386b3b021d0/report.json"
+    },
+    {
+      "fixture": "a51545e0ca8b",
+      "report_sha256": "4533eea1ec696ece653cedd611c1f826a0b979c6b49d08d3b48190c40a0073d4",
+      "error": "AssertionError: private window startup",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-a51545e0ca8b/report.json"
+    },
+    {
+      "fixture": "b806a68db529",
+      "report_sha256": "66e27e0da3accd5f4df26d4f5f217095350fd89ccd662cdaea39ed8a53e4887f",
+      "error": "AssertionError: cover-selection",
+      "checks": [],
+      "source_report": "/home/avillagran/.cache/files-test/mutation-sheet-native-b806a68db529/report.json"
+    }
+  ],
+  "regression_zero_keymap": "NOT_RUN for patched candidate; static fix and native acceptance passed",
+  "visual_review": "create-ready and single-preview in candidate run f1595efd71df reviewed; legible Sheet, no duplicate or cut controls",
+  "visual_node_copy": "/var/tmp/files-m2-visual-f1595efd71df/",
+  "scope": "private Sway native input; motion and Hyprland not run; resource and startup gates not measured"
+}

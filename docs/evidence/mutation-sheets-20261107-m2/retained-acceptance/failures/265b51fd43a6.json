@@ -1,0 +1,19 @@
+{
+  "functional_gate": "FAIL",
+  "fixture_dir": "/home/avillagran/.cache/files-test/mutation-sheet-native-265b51fd43a6",
+  "checks": [],
+  "states": [],
+  "binary_path": "/home/avillagran/.cache/files-m2-updates/sheets-7ec4ed5/source/target/release/files",
+  "requested_size": "1000x650",
+  "animations": "on",
+  "captures": [],
+  "animation_comparison": "NOT_COMPARED",
+  "scope": "native input and private mutation fixtures; executable paths and compositor-owned paths are outside fixture file checks; this profile alone does not prove cross-profile motion",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "f5bb1e2db4dfa524e363970560df9e4690dfd4183afa24f62194f6f1e06b72a8",
+  "helper_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "error": "AssertionError: private headless compositor unavailable; see compositor.log",
+  "nested_stopped": true
+}

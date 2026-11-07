@@ -1,0 +1,47 @@
+{
+  "source_checkpoint": "e4dab48caca8b4977dade49dc9e957810f95ea39",
+  "functional_gate": "PASS",
+  "validation_report": "/home/avillagran/.cache/files-m2-updates/sheets-e4dab48/scoped-acceptance.json",
+  "backup": "/home/avillagran/.cache/files-m2-updates/sheets-e4dab48/installation-1794028830317813925/backup",
+  "files": [
+    {
+      "name": "files",
+      "old_sha256": "4e6b3ee79506f0382701f6c4ef23cd537927da40d75d53395445e065dcd8a063",
+      "backup_sha256": "4e6b3ee79506f0382701f6c4ef23cd537927da40d75d53395445e065dcd8a063",
+      "release_sha256": "445570ece0749548677250c74d33b0f420b8fdece68b603c93bbd6ad6ac350ca",
+      "installed_sha256": "445570ece0749548677250c74d33b0f420b8fdece68b603c93bbd6ad6ac350ca"
+    },
+    {
+      "name": "files-helper",
+      "old_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+      "backup_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+      "release_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+      "installed_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d"
+    },
+    {
+      "name": "files-html-helper",
+      "old_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "backup_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "release_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "installed_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "old_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "backup_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "release_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "installed_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b"
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "old_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "backup_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "release_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "installed_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838"
+    }
+  ],
+  "scope": "M2 private functional acceptance; all five backed up and individually atomically replaced; existing processes untouched",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "full_regression_gate": "NOT_RUN"
+}

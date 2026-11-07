@@ -1,0 +1,18 @@
+{
+  "files": {
+    "scripts/memcheck.py": "554285242a4423be431461d73b79613549688e21eaa952bdfd2850b4f17fe430",
+    "scripts/mutation-sheet-nested-check.py": "0d1003276be2708d71fdd8d56c2cea3c07dfc7f26587fa2a8ddae0d267e63b1d",
+    "scripts/preview-copy-nested-check.py": "d65899472ffc6a3442105614a8bcd0ea8d10de5c190bfa06788bdf63bd76d513",
+    "scripts/process_metrics.py": "b4f48eff65907bc0e9220a7ff491bb4cf70858c2283a167607f538f68cc0001c",
+    "scripts/tools/persistent-keyboard.c": "b7162218c4a1c10736abcb42ad27b0f86778905d7add4b1842431683bb789245",
+    "scripts/tools/private-sheet-pointer.c": "93e994869f0480c6ebec2851e9a0ec0caed5e30823da8af032038a927539f3b5",
+    "scripts/tools/virtual-keyboard-unstable-v1.xml": "7ad7870003ecd592cae47dc19d277a609b7f18fd7b7be012623cf3225a7294f5",
+    "scripts/tools/wlr-virtual-pointer-unstable-v1.xml": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524",
+    "scripts/tools/wtype-v0.4.c": "713597abfc049196864ffcc041bb6683c761b71d68ed2da86cdcfc6b7ed3d244"
+  },
+  "changes": [
+    "v14 waits for single rename ACK, Sheet close and browser focus before Ctrl+Z",
+    "private Sway and persistent keyboard",
+    "fixtures preserved"
+  ]
+}

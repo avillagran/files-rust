@@ -1,0 +1,33 @@
+{
+  "functional_gate": "PASS",
+  "binary_sha256": "445570ece0749548677250c74d33b0f420b8fdece68b603c93bbd6ad6ac350ca",
+  "helper_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "source_checkpoint": "e4dab48caca8b4977dade49dc9e957810f95ea39",
+  "report_path": "/home/avillagran/.cache/files-test/mutation-sheet-native-f1595efd71df/report.json",
+  "report_sha256": "fb6d87bc91832b9d4c684444f570d2569b02d4a55200a449b2b573a425d2746e",
+  "checks": [
+    "native keyboard edits and caret selection with a single persistent device",
+    "Escape restores browser and a new opening does not reuse a stale draft",
+    "native Unicode paste and undo; create remains visible during Apply until ACK",
+    "native create folder preserves Unicode and percent basename",
+    "conflicting create reports failure without changing the existing file",
+    "raw non-UTF-8 basename is reported and preserved without lossy rename",
+    "a delayed old Plan ACK cannot replace the reopened dialog plan",
+    "single rename plan/apply and native undo preserve bytes",
+    "private Sway native keyboard create, folder, cancel, ACK and single rename passed"
+  ],
+  "compositor": "private Sway headless",
+  "nested_stopped": true,
+  "window_size": [
+    1000,
+    624
+  ],
+  "visual_review": "PASS: create-ready and single-preview inspected, legible and no duplicate sheet or clipped controls",
+  "limitations": [
+    "single Sway profile only",
+    "motion and Hyprland NOT_RUN",
+    "resource and startup gates NOT_MEASURED",
+    "not a full release gate"
+  ]
+}

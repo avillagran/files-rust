@@ -1,0 +1,30 @@
+{
+  "functional_gate": "FAIL",
+  "fixture_dir": "/home/avillagran/.cache/files-test/mutation-sheet-native-10fb8957dace",
+  "checks": [],
+  "states": [],
+  "binary_path": "/home/avillagran/.cache/files-m2-updates/sheets-7ec4ed5/source/target/release/files",
+  "requested_size": "1000x650",
+  "animations": "on",
+  "captures": [],
+  "animation_comparison": "NOT_COMPARED",
+  "scope": "native input and private mutation fixtures; executable paths and compositor-owned paths are outside fixture file checks; this profile alone does not prove cross-profile motion",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "f5bb1e2db4dfa524e363970560df9e4690dfd4183afa24f62194f6f1e06b72a8",
+  "helper_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "nested": {
+    "socket": "wayland-1",
+    "pid": 4022342,
+    "runtime": "/tmp/f-c58cc9f552c4",
+    "backend": "private-sway-headless"
+  },
+  "motion_and_hyprland": "NOT_RUN",
+  "window_size": [
+    1000,
+    624
+  ],
+  "error": "AssertionError: persistent private keyboard unavailable",
+  "nested_stopped": true
+}
