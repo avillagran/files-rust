@@ -101,15 +101,19 @@ def decode_rgb(encoded, width, height, x, y):
     try:
         errors = os.memfd_create('sheet-compare-errors', os.MFD_CLOEXEC)
         def child_limits():
-            _, hard = resource.getrlimit(resource.RLIMIT_FSIZE)
-            maximum = cap if hard == resource.RLIM_INFINITY else min(cap, hard)
-            resource.setrlimit(resource.RLIMIT_FSIZE, (maximum, maximum))
+            for kind, wanted in ((resource.RLIMIT_FSIZE, cap),
+                                 (resource.RLIMIT_AS, 1024 * 1024 * 1024),
+                                 (resource.RLIMIT_CPU, 10)):
+                _, hard = resource.getrlimit(kind)
+                maximum = wanted if hard == resource.RLIM_INFINITY else min(wanted, hard)
+                resource.setrlimit(kind, (maximum, maximum))
         command = ['magick', '-limit', 'memory', '128MiB', '-limit', 'map', '0',
                    '-limit', 'disk', '0', '-limit', 'thread', '2', 'png:-',
                    '-crop', f'{width}x{height}+{x}+{y}', '+repage', '-alpha', 'off',
                    '-depth', '8', 'rgb:-']
         try:
             result = subprocess.run(command, input=encoded, stdout=output, stderr=errors,
+                                    env={**os.environ, 'MAGICK_OCL_DEVICE': 'OFF', 'OMP_NUM_THREADS': '2'},
                                     preexec_fn=child_limits, timeout=15, check=False)
         except subprocess.TimeoutExpired as exc:
             os.lseek(errors, 0, os.SEEK_SET)
