@@ -15,6 +15,11 @@ candidate `23a5b7f` remains in an isolated toolkit worktree and was **not**
 exported into Files. A static correction to its active TextField border is
 recorded separately as `f2fdc2b`; it has not been executed.
 
+Static harness repair `d2bfb5a` creates a new private retained root, rejects
+symlink/reparse components, and replaces five tree and six exact-file cleanup
+sites with preservation by rename. It has not been compiled or tested. The
+repair was presented for explicit user authorization before any resumption.
+
 ## Retained candidate results
 
 - NODE candidate `d734ce7` compiled and passed one native 1000 by 650
