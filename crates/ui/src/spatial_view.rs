@@ -162,6 +162,7 @@ impl Model {
             && self.saves.drain_state() == crate::save_queue::DrainState::Idle
     }
     pub fn select_entry(&mut self, i: usize, toggle: bool, extend: bool) {
+        self.cancel_parent_return_focus();
         self.folder_restore = None;
         self.text_paste.invalidate();
         self.columns.deferred_menu = None;

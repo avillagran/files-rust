@@ -1,6 +1,124 @@
 //! Browser key navigation. No event globals, filesystem work or per-key order clone.
 use crate::model::{Model, View};
 use fltk::enums::Key;
+use std::{
+    collections::VecDeque,
+    ffi::OsString,
+    path::{Path, PathBuf},
+};
+
+const RETURN_POSITIONS: usize = 16;
+
+struct Position {
+    owner: (u64, u64),
+    parent: PathBuf,
+    child: OsString,
+    view: View,
+    dual: bool,
+    scroll: i32,
+}
+struct PendingReturn {
+    owner: (u64, u64),
+    generation: u64,
+    parent: PathBuf,
+    child: OsString,
+    position: Option<Position>,
+}
+#[derive(Default)]
+pub(crate) struct ParentReturn {
+    positions: VecDeque<Position>,
+    pending: Option<PendingReturn>,
+}
+impl ParentReturn {
+    pub(crate) fn rebind_refresh(&mut self, owner: (u64, u64), path: &Path, old: u64, new: u64) {
+        if let Some(pending) = &mut self.pending
+            && pending.owner == owner
+            && pending.parent == path
+            && pending.generation == old
+        {
+            pending.generation = new;
+        }
+    }
+}
+impl Model {
+    pub(crate) fn cancel_parent_return_focus(&mut self) {
+        self.parent_return.pending = None;
+    }
+    pub(crate) fn remember_parent_return_position(&mut self, next: &Path) {
+        self.cancel_parent_return_focus();
+        if !self.loaded || next.parent() != Some(self.path.as_path()) {
+            return;
+        }
+        let Some(child) = next.file_name() else {
+            return;
+        };
+        if self.path.as_os_str().len() > 4096 || child.len() > 4096 {
+            return;
+        }
+        let owner = self.pane_owner();
+        self.parent_return
+            .positions
+            .retain(|p| p.owner != owner || p.parent != self.path || p.child != child);
+        if self.parent_return.positions.len() == RETURN_POSITIONS {
+            self.parent_return.positions.pop_front();
+        }
+        self.parent_return.positions.push_back(Position {
+            owner,
+            parent: self.path.clone(),
+            child: child.to_owned(),
+            view: self.view,
+            dual: self.dual.enabled,
+            scroll: self.scroll.max(0),
+        });
+    }
+    pub(crate) fn pump_parent_return_focus(&mut self) -> bool {
+        let Some(pending) = self.parent_return.pending.as_ref() else {
+            return false;
+        };
+        if self.closing
+            || !self.error.is_empty()
+            || pending.owner != self.pane_owner()
+            || pending.generation != self.generation
+            || pending.parent != self.path
+        {
+            self.cancel_parent_return_focus();
+            return false;
+        }
+        if !self.loaded || self.selection_refreshing() {
+            return false;
+        }
+        let pending = self
+            .parent_return
+            .pending
+            .take()
+            .expect("ready parent return");
+        let target = self
+            .order
+            .iter()
+            .copied()
+            .find(|&i| self.entries[i].name == pending.child && self.entries[i].is_dir());
+        if let Some(index) = target {
+            self.select_entry(index, false, false);
+            if let Some(position) = pending.position
+                && position.view == self.view
+                && position.dual == self.dual.enabled
+            {
+                self.scroll = position.scroll;
+            }
+            // Painting reveals only as much as necessary in the current
+            // geometry after applying the retained scroll.
+            self.search_reveal = true;
+        } else {
+            // A renamed or removed child must not select its new neighbour.
+            self.selection.clear();
+            self.selected = None;
+            self.anchor = None;
+            self.preserve_empty_selection = true;
+        }
+        true
+    }
+}
+
 /// Context-sensitive F5, shared by the real event dispatcher and owned fixtures.
 pub fn f5_action(m: &Model) -> crate::model::Action {
     if crate::selection_tools::is_map(m) {
@@ -15,9 +133,31 @@ pub fn f5(m: &mut Model) {
 /// Listing focus: parent navigation, even when a retained filter is nonempty.
 /// Focused input consumes Backspace before reaching this browser handler.
 pub fn backspace(m: &mut Model) {
-    if let Some(parent) = m.path.parent() {
-        m.navigate(parent.to_path_buf());
+    let Some(parent) = m.path.parent().map(Path::to_path_buf) else {
+        return;
+    };
+    let Some(child) = m.path.file_name().map(std::ffi::OsStr::to_owned) else {
+        return;
+    };
+    let owner = m.pane_owner();
+    let generation = m.generation;
+    m.navigate(parent.clone());
+    if m.path != parent || m.generation == generation || m.pane_owner() != owner {
+        return;
     }
+    let position = m
+        .parent_return
+        .positions
+        .iter()
+        .position(|p| p.owner == owner && p.parent == parent && p.child == child)
+        .and_then(|index| m.parent_return.positions.remove(index));
+    m.parent_return.pending = Some(PendingReturn {
+        owner,
+        generation: m.generation,
+        parent,
+        child,
+        position,
+    });
 }
 /// Saturating rank movement; an unfocused Down starts at the first row, Up at last.
 pub fn target(order: &[usize], selected: Option<usize>, delta: i32) -> Option<usize> {
@@ -137,5 +277,136 @@ mod tests {
         assert_eq!(target(&a, Some(2), i32::MAX), Some(2));
         assert_eq!(target(&a, Some(4), -200), Some(0));
         assert_eq!(target(&a, Some(7), 200), Some(2));
+    }
+    #[cfg(unix)]
+    mod parent_returns {
+        use super::*;
+        use files_core::listing::{Entry, Kind};
+        use std::os::unix::ffi::OsStringExt;
+        fn fixture() -> PathBuf {
+            let root = crate::thumbnail_disk_cache::retained_test_directory("parent-return");
+            std::fs::create_dir(root.join("A")).unwrap();
+            std::fs::create_dir(root.join("A/B")).unwrap();
+            std::fs::create_dir(root.join("A/B/Leaf")).unwrap();
+            root
+        }
+        fn model(path: PathBuf) -> Model {
+            let mut m = Model::new(path);
+            let (tx, _) = std::sync::mpsc::sync_channel(4);
+            let (_, rx) = std::sync::mpsc::channel();
+            m.aux = crate::aux_io::AuxIo { tx, rx };
+            m.view = View::List;
+            m.auto_folder_sizes = false;
+            m
+        }
+        fn listing(m: &mut Model, names: &[OsString]) {
+            m.entries = names
+                .iter()
+                .cloned()
+                .map(|name| Entry {
+                    name,
+                    kind: Kind::Directory,
+                    metadata: None,
+                    stat_attempted: true,
+                })
+                .collect();
+            m.loaded = true;
+            m.rebuild();
+        }
+        fn focused(m: &Model) -> Option<&std::ffi::OsStr> {
+            m.selected
+                .and_then(|i| m.entries.get(i))
+                .map(|e| e.name.as_os_str())
+        }
+        #[test]
+        fn enter_then_parent_restores_exact_raw_child_and_retained_scroll() {
+            let root = fixture();
+            let raw = OsString::from_vec(b"Folder20-\xff\n".to_vec());
+            std::fs::create_dir(root.join("A").join(&raw)).unwrap();
+            let mut names = (0..100)
+                .map(|n| OsString::from(format!("Folder{n:02}")))
+                .collect::<Vec<_>>();
+            names[20] = raw.clone();
+            let mut m = model(root.join("A"));
+            listing(&mut m, &names);
+            m.select_entry(20, false, false);
+            m.scroll = 500;
+            m.open_selected();
+            assert_eq!(m.path, root.join("A").join(&raw));
+            backspace(&mut m);
+            assert_eq!(m.path, root.join("A"));
+            assert!(!m.pump_parent_return_focus(), "wait for the parent listing");
+            names.swap(20, 73);
+            listing(&mut m, &names);
+            assert!(m.pump_parent_return_focus());
+            assert_eq!(focused(&m), Some(raw.as_os_str()));
+            assert_eq!(m.selected, m.anchor);
+            assert_eq!(m.selection.iter().copied().collect::<Vec<_>>(), vec![73]);
+            assert_eq!(m.scroll, 500);
+            assert!(m.search_reveal);
+            crate::view::reveal_selection(&mut m, 1000, 650);
+            assert_eq!(
+                m.scroll, 500,
+                "retain scroll when the child is already visible"
+            );
+        }
+        #[test]
+        fn pending_parent_focus_rebinds_refresh_and_rejects_changed_owner_or_generation() {
+            for change in 0..3 {
+                let root = fixture();
+                let mut m = model(root.join("A/B"));
+                backspace(&mut m);
+                if change == 0 {
+                    m.refresh_current();
+                } else if change == 1 {
+                    m.generation = m.generation.wrapping_add(1);
+                } else {
+                    m.tabs.active = m.tabs.fresh_id();
+                }
+                listing(&mut m, &["other".into(), "B".into()]);
+                m.refresh_selection = None;
+                if change == 0 {
+                    assert!(m.pump_parent_return_focus());
+                    assert_eq!(focused(&m), Some(std::ffi::OsStr::new("B")));
+                } else {
+                    let before = m.selected;
+                    assert!(!m.pump_parent_return_focus());
+                    assert_eq!(m.selected, before);
+                }
+                assert!(m.parent_return.pending.is_none());
+            }
+        }
+        #[test]
+        fn rapid_multilevel_parent_navigation_keeps_only_the_latest_child() {
+            let root = fixture();
+            let mut m = model(root.join("A/B/Leaf"));
+            backspace(&mut m);
+            backspace(&mut m);
+            assert_eq!(m.path, root.join("A"));
+            listing(&mut m, &["Leaf".into(), "B".into()]);
+            assert!(m.pump_parent_return_focus());
+            assert_eq!(focused(&m), Some(std::ffi::OsStr::new("B")));
+            m.load_location(PathBuf::from("/"));
+            let generation = m.generation;
+            backspace(&mut m);
+            assert_eq!(m.path, Path::new("/"));
+            assert_eq!(m.generation, generation, "root is a no-op");
+        }
+        #[test]
+        fn explicit_selection_or_missing_child_never_restores_a_neighbour() {
+            let root = fixture();
+            let mut m = model(root.join("A/B"));
+            backspace(&mut m);
+            listing(&mut m, &["B".into(), "other".into()]);
+            m.select_entry(1, false, false);
+            assert!(!m.pump_parent_return_focus());
+            assert_eq!(focused(&m), Some(std::ffi::OsStr::new("other")));
+            m.navigate(root.join("A/B"));
+            backspace(&mut m);
+            listing(&mut m, &["other".into()]);
+            assert!(m.pump_parent_return_focus());
+            assert!(m.selected.is_none() && m.anchor.is_none() && m.selection.is_empty());
+            assert!(m.preserve_empty_selection);
+        }
     }
 }

@@ -637,6 +637,7 @@ pub struct Model {
     /// Transient visibility for an explicit external reveal, never a preference.
     pub reveal_hidden: bool,
     pub external_reveal: Option<crate::file_manager_ui::Reveal>,
+    pub(crate) parent_return: crate::keyboard_nav::ParentReturn,
     pub operation_bar: bool,
     /// True when config.toml says whether previews start muted.
     pub preview_muted_configured: bool,
@@ -856,6 +857,7 @@ impl Model {
             show_hidden: prefs.show_hidden,
             reveal_hidden: false,
             external_reveal: None,
+            parent_return: Default::default(),
             operation_bar: prefs.operation_bar,
             preview_muted_configured: prefs.preview_muted.is_some(),
             grid_zoom: 1.0,
@@ -971,6 +973,8 @@ impl Model {
         self.reset_space_map();
         let owner = self.pane_owner();
         let next_generation = self.generation.wrapping_add(1);
+        self.parent_return
+            .rebind_refresh(owner, &self.path, self.generation, next_generation);
         if let Some(reveal) = &mut self.external_reveal
             && reveal.owner == owner
             && reveal.generation == self.generation
@@ -1035,6 +1039,7 @@ impl Model {
         }
     }
     pub(crate) fn load_location(&mut self, path: PathBuf) {
+        self.remember_parent_return_position(&path);
         self.reveal_hidden = false;
         self.external_reveal = None;
         self.search.close();
@@ -1921,6 +1926,7 @@ impl Model {
         {
             viewport.restore(self);
         }
+        dirty |= self.pump_parent_return_focus();
         self.request_stats();
         dirty |= self.pump_clipboard();
         dirty |= self.pump_native_transfer();
@@ -2101,6 +2107,7 @@ impl Model {
         self.move_browser_focus(delta, false, false);
     }
     pub fn move_browser_focus(&mut self, delta: i32, extend: bool, keep_marks: bool) {
+        self.cancel_parent_return_focus();
         self.folder_restore = None;
         self.text_paste.invalidate();
         self.columns.deferred_menu = None;
@@ -2306,6 +2313,7 @@ impl Model {
         }
     }
     pub fn mark_and_advance(&mut self) {
+        self.cancel_parent_return_focus();
         self.folder_restore = None;
         if self.selection_refreshing() {
             return;
@@ -2588,6 +2596,7 @@ impl Model {
         }
 
         if !matches!(a, Action::None) {
+            self.cancel_parent_return_focus();
             self.cancel_outgoing_drag();
             self.native_transfer.cancel_pending();
             self.text_paste.invalidate();
@@ -2601,6 +2610,7 @@ impl Model {
                 | Action::PaneSort(..)
                 | Action::DualPane
         ) {
+            self.cancel_parent_return_focus();
             self.folder_restore = None;
         }
         self.session.restore_allowed = false;
