@@ -181,7 +181,7 @@ impl Manager {
             "focus_field":c.fields.iter().position(|f| app::focus().is_some_and(|w| w.as_widget_ptr()==f.input().as_widget_ptr())),
             "values":c.fields.iter().map(TextField::value).collect::<Vec<_>>()
             ,"field_enabled":c.fields.iter().map(|f|f.input().active_r()).collect::<Vec<_>>()
-            ,"apply_enabled":c.apply.active_r(),"status":c.status.text()
+            ,"apply_enabled":c.apply.active_r(),"cancel_enabled":c.cancel.active_r(),"status":c.status.text()
             ,"control_count":{"fields":c.fields.len(),"buttons":if c.case.is_some(){4}else{2},"preview":usize::from(c.preview.is_some())}
         }));
         serde_json::json!({
