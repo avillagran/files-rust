@@ -1,0 +1,36 @@
+{
+  "binary_source_checkpoint": "8b69160d22ad18416fee46b67995918e48c30a27",
+  "compiled_sources_unchanged": true,
+  "overlay_verified_on_m2": true,
+  "files": [
+    {
+      "path": "scripts/filemanager-presentation-async-check.py",
+      "bytes": 30692,
+      "sha256": "a9ae9d0de49b212fca7904e65c268c9bb6fd2d03523b4c5ce8dfaab8f76fda32",
+      "binary_checkpoint_sha256": null,
+      "scope": "test fixture overlay; not compiled into the application"
+    },
+    {
+      "path": "scripts/filemanager-presentation-check.py",
+      "bytes": 25167,
+      "sha256": "210a16b5dc77fa90cbbf361ed656c7ae9a650855a15b274136fe9ab39d2c99b5",
+      "binary_checkpoint_sha256": "9a87925817a8c500782ecd6648bd87dd807c9725aedd7451445d596312bf7535",
+      "scope": "test fixture overlay; not compiled into the application"
+    },
+    {
+      "path": "scripts/tools/wayland-activation-proxy.py",
+      "bytes": 11338,
+      "sha256": "b6721d99c77ddee181630eebd8094ca89c985eafee43a52d41cda5a16b474211",
+      "binary_checkpoint_sha256": null,
+      "scope": "test fixture overlay; not compiled into the application"
+    },
+    {
+      "path": "scripts/tools/private-hover.c",
+      "bytes": 1929,
+      "sha256": "f6a7259d07e8032939bbcd8b3b8889a2987411fef6cbdaa316b997c89c7edeef",
+      "binary_checkpoint_sha256": null,
+      "scope": "test fixture overlay; not compiled into the application"
+    }
+  ],
+  "fixture_checkpoint": "fd1915d44d1371be350ccb0319c6f9072a01d3f1"
+}

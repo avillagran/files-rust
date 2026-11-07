@@ -1,0 +1,339 @@
+{
+  "files": [
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/regression-logs/direct-ui.log",
+      "sha256": "c7db5950381bc1f2f4d2300c8c17d53a7e636c112bb323450fd7aa353a17588d",
+      "bytes": 558
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/regression-logs/filemanager1-nested-check.log",
+      "sha256": "cd458e362d98efa31092e293f74524c7c4a2ae4512bd1c56e10a0b328b3ba9d5",
+      "bytes": 132
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/regression-logs/keyed-tabs-nested-check.log",
+      "sha256": "5cd61e04f8b99b127436edc13714eb6e53e723c651546e42ca72550bfdd6ddaa",
+      "bytes": 130
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/regression-logs/operation-notices-nested-check.log",
+      "sha256": "eedbbb48e0714bd80a83eb803c05a798b450fd1789ab91d8ab6a84acef342e0c",
+      "bytes": 137
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/regression-logs/preview-copy-nested-check.log",
+      "sha256": "1c70e4ca596284b43d8ba986db3a46c9aab0d6a6682d049304779e8d323e4479",
+      "bytes": 135
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/regression-logs/sidebar-drop-nested-check.log",
+      "sha256": "3e79320fac0c30b87d4c6e9c0624b99795ecee2e6e083d3080df32760dd54747",
+      "bytes": 136
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/regression-wrapper.py",
+      "sha256": "edbbb4abfa4324ce299b516d3a0d26e404806ded11ddc4ae58facee12de88fb9",
+      "bytes": 1160
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-1794014074469811851-shots/disabled-last.png",
+      "sha256": "05e9c02b18c9489b5e2ad9f1167424b45b1aee36b201783ce1f8cdf94237d1a6",
+      "bytes": 1950863
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-1794014074469811851-shots/first-settled.png",
+      "sha256": "48ead8399681ceadd27c8c1b344e6eb33770d6d3a154f6afef71f66ad43b7a21",
+      "bytes": 1950863
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-1794014074469811851-shots/forward-64.png",
+      "sha256": "3ada752580a216b9f15cd08c27355849774141854499ac2856c2d6b4a2f2ab89",
+      "bytes": 1950863
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-1794014074469811851-shots/forward-input.png",
+      "sha256": "b251336a1981f4c5ef5d2370dd81b70b14ce3dd1fc4159bade6c5377e0c5326b",
+      "bytes": 1950863
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-1794014074469811851-shots/last-settled.png",
+      "sha256": "05e9c02b18c9489b5e2ad9f1167424b45b1aee36b201783ce1f8cdf94237d1a6",
+      "bytes": 1950863
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-1794014074469811851-shots/reverse-48.png",
+      "sha256": "eeddfa98c97aa1c061b1ac28bfc5d432f87c1c4854d870b6ff790c1897385ef8",
+      "bytes": 1950863
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-1794014074469811851-shots/reversed-input.png",
+      "sha256": "3036b960b938fb11d6273ae0ae2900047b7362ae728a4dd6bc95a3155e9f4111",
+      "bytes": 1950863
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-1794014074469811851-shots/reversed-settled.png",
+      "sha256": "05e9c02b18c9489b5e2ad9f1167424b45b1aee36b201783ce1f8cdf94237d1a6",
+      "bytes": 1950863
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794014074469811851.json",
+      "sha256": "f4ef1cc83475fee867a94348f97613cbf62c0177146e99502e6f3822d22ee60d",
+      "bytes": 11612
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794014074469811851.txt",
+      "sha256": "203d4f851b55f1a341f8078f94f82303378803ae5082790645e9a21fc2122fb1",
+      "bytes": 9975
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/columns-keyboard-range-1794014078472199302.png",
+      "sha256": "84b9c52a95bdf5b5c9a75174b895ae60ffc52822e3c9ec93eee93666e6c0ad45",
+      "bytes": 47700
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/ctrl-focus-and-additive-range-1794014075871627202.png",
+      "sha256": "de45cf1aad95685f9de575e6b36d9f682ab1ebff5790d3759446239c1e92d1c8",
+      "bytes": 46599
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/dual-focused-end-small-window-1794014080131266311.png",
+      "sha256": "748472a0600210e0651d955164c992feda226822321691013f8e4a8e8adf9b4f",
+      "bytes": 32034
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/grid-independent-focus-1794014079442461509.png",
+      "sha256": "332f3d281ff4f6748298e8602420da09f5aaa67484aa772ace340c4a3b49f37a",
+      "bytes": 39409
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/groups-visual-last-and-reveal-1794014076538324777.png",
+      "sha256": "603227437776ca92af2c227325667109d97d58a6cf4847f6ac6c299d7997fd9f",
+      "bytes": 60719
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/groups-visual-range-1794014076627345143.png",
+      "sha256": "e2a62416bda1de56ec29630db4cfa15c8e5773f5416116453a1531291bbd13af",
+      "bytes": 45129
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/keyboard-nav-ui-1794014080664715334.json",
+      "sha256": "eec63094ad4fe1b4b62f12ad6d4487552c98348c5aedfa742233114df551f140",
+      "bytes": 2815031
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/keyboard-range-copy-review-1794014076206822331.png",
+      "sha256": "1ea7ec38b106c09d40e45f35463ff44d9ce7bd68f19333d432ac8684d4d4ae79",
+      "bytes": 47292
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/list-end-range-1794014075744541443.png",
+      "sha256": "bd267eeb6b8de6b73b6c8997bf15c92a9e2e907bdc833303ea456335643563f7",
+      "bytes": 58677
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/list-page-range-1794014076038901466.png",
+      "sha256": "4415dc86e9e05506ef6ebd3c4202196b1d5acd00c4ab501c8556bdf0fba4515d",
+      "bytes": 55587
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/treemap-additive-range-and-reveal-1794014080337313438.png",
+      "sha256": "33295523c6ed830322d23010b19073b974a60befe10743fb0f13eda9584cb10a",
+      "bytes": 37753
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/treemap-additive-range-retains-distant-mark-1794014080496615540.png",
+      "sha256": "2707a280e72b677b7d139281081f3281463d7e30d52a183607f22a22c77a64e3",
+      "bytes": 38817
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/preview-copy-20261105/source-1794014046007778774.json",
+      "sha256": "c5de5ffdf5f96073f86aa68e505ca1496d12b91253bb45394074c642235f674e",
+      "bytes": 1691
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/preview-copy-20261105/source-copied-notice-1794014056456319922.png",
+      "sha256": "409faedb8082e4f14f3bd3d541700e8b27b8131e68896a325a5fbbc709ae7c3e",
+      "bytes": 22080
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/preview-copy-20261105/source-empty-selection-notice-1794014051985824793.png",
+      "sha256": "4e1dc09cd173fd63456c4f4a342a4509e379396d8b02ad02a520ae296cfa3f02",
+      "bytes": 21959
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/sidebar-drop-20261105/source-1794014060387647913.json",
+      "sha256": "886ea05bafc9c22718dad3eb6ce32eb5cafdc9d78993d235fd5cf1c96e06d424",
+      "bytes": 4078
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/sidebar-drop-20261105/source-source-after-drag-1794014067752905029.png",
+      "sha256": "fb08d18a520ee93febd0a7ab0183a4865cc6e96a3d051ee49dc8bde23e9bcad3",
+      "bytes": 24336
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/sidebar-drop-20261105/source-target-before-1794014063369349006.png",
+      "sha256": "415f0f8ad72afe9aa326e7106d4209c3a073b6a077dea2ede71dec89c5c15f0a",
+      "bytes": 13907
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/docs/evidence/sidebar-drop-20261105/source-target-review-1794014067923832291.png",
+      "sha256": "51f33c5797ce8086857e39ab8388556f693e1073320d374a01e191c50a31b495",
+      "bytes": 28308
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/scripts/filemanager-presentation-async-check.py",
+      "sha256": "a9ae9d0de49b212fca7904e65c268c9bb6fd2d03523b4c5ce8dfaab8f76fda32",
+      "bytes": 30692
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/scripts/filemanager-presentation-check.py",
+      "sha256": "210a16b5dc77fa90cbbf361ed656c7ae9a650855a15b274136fe9ab39d2c99b5",
+      "bytes": 25167
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/scripts/tools/presentation-token-origin.c",
+      "sha256": "b6f5d964c49dc8da1837ffe790d1e816babca47f844b1aa4cd487b21557839e0",
+      "bytes": 6836
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/scripts/tools/private-hover.c",
+      "sha256": "f6a7259d07e8032939bbcd8b3b8889a2987411fef6cbdaa316b997c89c7edeef",
+      "bytes": 1929
+    },
+    {
+      "path": ".cache/files-m2-updates/async-8b69160/source/scripts/tools/wayland-activation-proxy.py",
+      "sha256": "b6721d99c77ddee181630eebd8094ca89c985eafee43a52d41cda5a16b474211",
+      "bytes": 11338
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-3mysw8at/compositor.log",
+      "sha256": "44ea26e9b8ba5af9d9a522e509b2ec1c2458a73cc684cc5845706ca902e06ffa",
+      "bytes": 3034
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-3mysw8at/nested.log",
+      "sha256": "6f36304da9c5350f3950eed5e3d8ea32f9413514d4abbe1d3631a5c9aeaf8288",
+      "bytes": 10984
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-3mysw8at/origin.log",
+      "sha256": "10c53c94087ed9435bc8c82ebe3daa5a23d530a08a147575e07f93d106141d50",
+      "bytes": 794
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-3mysw8at/proxy.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-3mysw8at/report.json",
+      "sha256": "c8007f01c6001c3e61c0724511557b75417c0b8602fb90961ce52c48478a152b",
+      "bytes": 22507
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-3mysw8at/service.log",
+      "sha256": "64a8ad9d9e75c3e9fb8fa88e5d0843bbc90263021c98179b3fe455ac9ffb6e7d",
+      "bytes": 38843
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-4sikk6uk/close-on-map.log",
+      "sha256": "84509055bc0b51eb7af8cb9ac170136fcc1248ee32911c18a76e71ecc3930584",
+      "bytes": 960
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-4sikk6uk/compositor.log",
+      "sha256": "9d71b379cc3d3995febdfd81f40be5603b8d68e33d1b29cbca4d04d37b347afe",
+      "bytes": 3034
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-4sikk6uk/nested.log",
+      "sha256": "3e51077c28623877951c1cdf6ab1426fd4df11f03bd0f55e76df6e5d01b458e5",
+      "bytes": 7076
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-4sikk6uk/origin.log",
+      "sha256": "fdcd7fb67c3e714662d831c5cebe06084ca6fc116c07bf7129e2ad0262ba8b14",
+      "bytes": 794
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-4sikk6uk/report.json",
+      "sha256": "ba2405c59d5f87641555db0c86badbf949e79310db46c7549e395816a5ae2c46",
+      "bytes": 3801
+    },
+    {
+      "path": ".cache/files-test/filemanager-presentation-4sikk6uk/service.log",
+      "sha256": "940476c0dcc5d7f0e87afd79fa58cab00311b0354ee09129db2535d932e1462e",
+      "bytes": 5951
+    },
+    {
+      "path": ".cache/files-test/filemanager1-native-awq3ff_r/duplicate.log",
+      "sha256": "ff71a36eb6e59c6e01178e51b96c46e7a71e2fcd2a13f59eae9e69ee61fb05e1",
+      "bytes": 692
+    },
+    {
+      "path": ".cache/files-test/filemanager1-native-awq3ff_r/nested.log",
+      "sha256": "04208bfe5d67754005bc1fe5225a561e69984e04cf1335630695dca162aa418a",
+      "bytes": 3173
+    },
+    {
+      "path": ".cache/files-test/filemanager1-native-awq3ff_r/properties.log",
+      "sha256": "2ead1f4075aefa2e25bfc2fc85bf7c72870995b55e90b734f092854dd8e06cbd",
+      "bytes": 3707
+    },
+    {
+      "path": ".cache/files-test/filemanager1-native-awq3ff_r/report.json",
+      "sha256": "24242622bc5fafad5b8cd1cdd488b6381fb33dc2a813bc9bffad884f84482507",
+      "bytes": 91517
+    },
+    {
+      "path": ".cache/files-test/filemanager1-native-awq3ff_r/select.log",
+      "sha256": "0e1d7759da3a526503afc7536a02bc4a71edf0d4cb42c614b04f5f4d721688fd",
+      "bytes": 2117
+    },
+    {
+      "path": ".cache/files-test/filemanager1-native-awq3ff_r/service.log",
+      "sha256": "1d00908dfd52adf50822084c64e6d6cfe7a1ff635c7703ebb2abb9fe4e0356f5",
+      "bytes": 40843
+    },
+    {
+      "path": ".cache/files-test/filemanager1-native-awq3ff_r/show-folders.log",
+      "sha256": "bf4ce07390ce4364b2b2d7743c8693779fac831c32f33c875d6ef47e1a65b35e",
+      "bytes": 2129
+    },
+    {
+      "path": ".cache/files-test/keyed-tabs-native-xx6fwmv9/app.log",
+      "sha256": "a60e3a4d87ae06ba2f00e3e57149b31e61242d7d2e56081fbd731aca1d9582a0",
+      "bytes": 99117
+    },
+    {
+      "path": ".cache/files-test/keyed-tabs-native-xx6fwmv9/nested.log",
+      "sha256": "6f4881e7cff54593bab68721d17fbf22deda29fb53d62429a1aa68c0f1a166d7",
+      "bytes": 25916
+    },
+    {
+      "path": ".cache/files-test/keyed-tabs-native-xx6fwmv9/report.json",
+      "sha256": "95702fdcd005e9251550bd02e5ccb18ecd92dfccaacf7f5a1eae1d8127624889",
+      "bytes": 197862
+    },
+    {
+      "path": ".cache/files-test/operation-notices-native-lhgmg7sf/app.log",
+      "sha256": "22b4f0382ba712915055218c0cd91552ed99180f229938d4c46bdf486e8dd66c",
+      "bytes": 22454
+    },
+    {
+      "path": ".cache/files-test/operation-notices-native-lhgmg7sf/nested.log",
+      "sha256": "130157ba2e90d380edb7c39179eff55ee092f27cae53fd9d9a90078c1b1a5c1d",
+      "bytes": 24585
+    },
+    {
+      "path": ".cache/files-test/operation-notices-native-lhgmg7sf/report.json",
+      "sha256": "ec2bdac3293493474c88c2900b1e8c5aae3932dc5ca746538863b45f99baf264",
+      "bytes": 41426
+    },
+    {
+      "path": ".cache/files-test/regression-compositor-5w1jm24c/nested.log",
+      "sha256": "cbc438769ee8b056f167c075ace8855819bb1fb6aecc4a03b7c062b00136c3fc",
+      "bytes": 3175
+    }
+  ]
+}

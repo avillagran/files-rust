@@ -1,0 +1,30 @@
+{
+  "gate": "PASS",
+  "files": [
+    {
+      "name": "files",
+      "installed_sha256": "d4c563a603f13a1f50bb2ac2592c447698e82821df91d7fb9b49885806b50930",
+      "backup_sha256": "865330c61d7c7b0e2ae2bd4725e7a36a70d5573740286901ff2db63031b2a6a1"
+    },
+    {
+      "name": "files-helper",
+      "installed_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241",
+      "backup_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241"
+    },
+    {
+      "name": "files-html-helper",
+      "installed_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+      "backup_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "installed_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "backup_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b"
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "installed_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd",
+      "backup_sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd"
+    }
+  ]
+}

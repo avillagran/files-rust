@@ -1,0 +1,17 @@
+{
+  "functional_gate": "PASS",
+  "fixture_dir": "/home/node/.cache/files-test/wayland-proxy-check-vi2ro81l",
+  "socket_fixture": "/var/tmp/files-filemanager/pc-e58pilvp",
+  "checks": [
+    "fragmented client framing identifies the activation token object",
+    "done and delete_id remain ordered while other events flow; recycled ID is retired",
+    "SCM_RIGHTS descriptor survives forwarding",
+    "FDs mixed with retained token event fail closed",
+    "failed bind leaves an existing socket untouched",
+    "normal cleanup removes only sockets owned by the proxy"
+  ],
+  "sources": {
+    "scripts/wayland-activation-proxy-check.py": "545b3cfb83ac801456254626f43eb11000c3f49f8ed2ee5ce93f2ba0c643c9ad",
+    "scripts/tools/wayland-activation-proxy.py": "b6721d99c77ddee181630eebd8094ca89c985eafee43a52d41cda5a16b474211"
+  }
+}

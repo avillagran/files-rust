@@ -1,0 +1,10 @@
+FILES_FONT=JetBrainsMono Nerd Font nerd=true
+FILES_GLASS mode=opaque opacity=1.00 overridden=true wayland=true
+FILES_UI_SMOKE_OK entries=0
+FILES_FIRST_PAINT_US=39918
+FILES_TOOLKIT_FIXTURE action=close
+FILES_CLOSE_WAIT saves_ready=false mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false
+FILES_CLOSE_WAIT saves_ready=true mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false
+FILES_CLOSE_DRAINED
+FILES_WINDOW_PRESENTATION_FINAL {"attempts":0,"cancelled_native":0,"dispatches":0,"errors":0,"last":null,"native_polls":0,"pending":false,"pending_stage":null,"requests":0,"skipped":0,"superseded":0}
+FILES_GLASS_STATS glass_fills=0 opaque_fills=289 regions_cleared=0 regions_restored=0

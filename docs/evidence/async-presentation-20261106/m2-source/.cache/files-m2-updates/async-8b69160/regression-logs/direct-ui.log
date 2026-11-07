@@ -1,0 +1,5 @@
+tab-strip-motion-ui-check exit= 0 {"report": "/home/avillagran/.cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794014074469811851.json", "functional_gate": "PASS", "error": null}
+ 
+keyboard-nav-ui-check exit= 0 /home/avillagran/.cache/files-m2-updates/async-8b69160/source/docs/evidence/keyboard-nav/keyboard-nav-ui-1794014080664715334.json
+ 
+compositor {"fixture": "/home/avillagran/.cache/files-test/regression-compositor-5w1jm24c", "parent_socket": "wayland-1", "nested": {"socket": "wayland-2", "pid": ["1866039"]}}

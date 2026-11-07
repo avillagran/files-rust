@@ -1,0 +1,935 @@
+{
+  "functional_gate": "PASS",
+  "fixture_dir": "/home/node/.cache/files-test/filemanager-presentation-1m5gekfx",
+  "checks": [
+    "explicit service maps after valid admission",
+    "native input, UI pump, paint, polling and sidebar animation advance while token reply is held",
+    "modal cancels pending native request; delayed reply cannot dispatch",
+    "navigation cancels pending native request; delayed reply cannot dispatch",
+    "replacement cancels older native request without replaying its delayed reply",
+    "close cancels pending native request and drains without replay"
+  ],
+  "states": [
+    {
+      "label": "initial",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 3,
+        "requests": 1,
+        "attempts": 1,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 1,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 26,
+        "paint_revision": 2,
+        "native_key_events": 0,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "initial-settled",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 3,
+        "requests": 1,
+        "attempts": 1,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 1,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 34,
+        "paint_revision": 3,
+        "native_key_events": 0,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "initial-settled",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 3,
+        "requests": 1,
+        "attempts": 1,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 1,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 49,
+        "paint_revision": 4,
+        "native_key_events": 0,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "initial-settled",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 3,
+        "requests": 1,
+        "attempts": 1,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 1,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 69,
+        "paint_revision": 8,
+        "native_key_events": 0,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "liveness",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 11,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 116,
+        "paint_revision": 12,
+        "native_key_events": 0,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "liveness-progress",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 25,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 130,
+        "paint_revision": 14,
+        "native_key_events": 1,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "sidebar-animated",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 36,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 141,
+        "paint_revision": 15,
+        "native_key_events": 1,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "sidebar-animated",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 52,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 157,
+        "paint_revision": 16,
+        "native_key_events": 1,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "sidebar-animated",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 67,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 172,
+        "paint_revision": 17,
+        "native_key_events": 1,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "sidebar-animated",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 83,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 188,
+        "paint_revision": 18,
+        "native_key_events": 1,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "sidebar-animated",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 98,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 203,
+        "paint_revision": 19,
+        "native_key_events": 1,
+        "sidebar_width": 52
+      }
+    },
+    {
+      "label": "sidebar-animated",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 116,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 221,
+        "paint_revision": 24,
+        "native_key_events": 1,
+        "sidebar_width": 123
+      }
+    },
+    {
+      "label": "sidebar-expanded",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 125,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 230,
+        "paint_revision": 27,
+        "native_key_events": 1,
+        "sidebar_width": 149
+      }
+    },
+    {
+      "label": "sidebar-expanded",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 144,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 1,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 249,
+        "paint_revision": 33,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "liveness-completed",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 152,
+        "requests": 2,
+        "attempts": 2,
+        "dispatches": 2,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 258,
+        "paint_revision": 36,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "modal-cancel",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 160,
+        "requests": 3,
+        "attempts": 3,
+        "dispatches": 2,
+        "cancelled_native": 0,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 3,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 276,
+        "paint_revision": 40,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "modal-cancelled",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 169,
+        "requests": 3,
+        "attempts": 3,
+        "dispatches": 2,
+        "cancelled_native": 1,
+        "superseded": 0,
+        "skipped": 1,
+        "errors": 0,
+        "last": {
+          "sequence": 3,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "stale",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 293,
+        "paint_revision": 42,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "modal-late-reply",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 169,
+        "requests": 3,
+        "attempts": 3,
+        "dispatches": 2,
+        "cancelled_native": 1,
+        "superseded": 0,
+        "skipped": 1,
+        "errors": 0,
+        "last": {
+          "sequence": 3,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "stale",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 331,
+        "paint_revision": 43,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "navigation-cancel",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 177,
+        "requests": 4,
+        "attempts": 4,
+        "dispatches": 2,
+        "cancelled_native": 1,
+        "superseded": 0,
+        "skipped": 1,
+        "errors": 0,
+        "last": {
+          "sequence": 4,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 357,
+        "paint_revision": 48,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "navigation-cancelled",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 185,
+        "requests": 4,
+        "attempts": 4,
+        "dispatches": 2,
+        "cancelled_native": 2,
+        "superseded": 0,
+        "skipped": 2,
+        "errors": 0,
+        "last": {
+          "sequence": 4,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "stale",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 525,
+        "paint_revision": 121,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "navigation-late-reply",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 185,
+        "requests": 4,
+        "attempts": 4,
+        "dispatches": 2,
+        "cancelled_native": 2,
+        "superseded": 0,
+        "skipped": 2,
+        "errors": 0,
+        "last": {
+          "sequence": 4,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "stale",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 567,
+        "paint_revision": 124,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "return-to-A",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 186,
+        "requests": 5,
+        "attempts": 5,
+        "dispatches": 3,
+        "cancelled_native": 2,
+        "superseded": 0,
+        "skipped": 2,
+        "errors": 0,
+        "last": {
+          "sequence": 5,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 590,
+        "paint_revision": 128,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "return-to-A",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 186,
+        "requests": 5,
+        "attempts": 5,
+        "dispatches": 3,
+        "cancelled_native": 2,
+        "superseded": 0,
+        "skipped": 2,
+        "errors": 0,
+        "last": {
+          "sequence": 5,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 614,
+        "paint_revision": 129,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "return-to-A",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 186,
+        "requests": 5,
+        "attempts": 5,
+        "dispatches": 3,
+        "cancelled_native": 2,
+        "superseded": 0,
+        "skipped": 2,
+        "errors": 0,
+        "last": {
+          "sequence": 5,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 638,
+        "paint_revision": 130,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "return-to-A",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 186,
+        "requests": 5,
+        "attempts": 5,
+        "dispatches": 3,
+        "cancelled_native": 2,
+        "superseded": 0,
+        "skipped": 2,
+        "errors": 0,
+        "last": {
+          "sequence": 5,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 661,
+        "paint_revision": 134,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "replacement-old",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 194,
+        "requests": 6,
+        "attempts": 6,
+        "dispatches": 3,
+        "cancelled_native": 2,
+        "superseded": 0,
+        "skipped": 2,
+        "errors": 0,
+        "last": {
+          "sequence": 6,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 679,
+        "paint_revision": 138,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "replacement-cancelled",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 206,
+        "requests": 7,
+        "attempts": 7,
+        "dispatches": 4,
+        "cancelled_native": 3,
+        "superseded": 1,
+        "skipped": 2,
+        "errors": 0,
+        "last": {
+          "sequence": 7,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 697,
+        "paint_revision": 142,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "replacement-late-reply",
+      "presentation": {
+        "pending": false,
+        "pending_stage": null,
+        "native_polls": 206,
+        "requests": 7,
+        "attempts": 7,
+        "dispatches": 4,
+        "cancelled_native": 3,
+        "superseded": 1,
+        "skipped": 2,
+        "errors": 0,
+        "last": {
+          "sequence": 7,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 735,
+        "paint_revision": 143,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    },
+    {
+      "label": "close-cancel",
+      "presentation": {
+        "pending": true,
+        "pending_stage": "native",
+        "native_polls": 214,
+        "requests": 8,
+        "attempts": 8,
+        "dispatches": 4,
+        "cancelled_native": 3,
+        "superseded": 1,
+        "skipped": 2,
+        "errors": 0,
+        "last": {
+          "sequence": 8,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "pending-native",
+          "backend": null,
+          "error": null
+        }
+      },
+      "ui": {
+        "pump_revision": 754,
+        "paint_revision": 147,
+        "native_key_events": 1,
+        "sidebar_width": 170
+      }
+    }
+  ],
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "d4c563a603f13a1f50bb2ac2592c447698e82821df91d7fb9b49885806b50930",
+  "helper_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "headless_attempt": "unavailable; see compositor.log",
+  "nested": {
+    "socket": "wayland-1",
+    "pids": [
+      880627
+    ],
+    "runtime": "/var/tmp/files-filemanager",
+    "backend": "nested"
+  },
+  "policy_eval_response": "other",
+  "private_focus_on_activate": {
+    "option": "misc:focus_on_activate",
+    "int": 1,
+    "set": true
+  },
+  "calls": [
+    {
+      "label": "initial-map",
+      "has_hint": false,
+      "hint_length": 0,
+      "returncode": 0
+    },
+    {
+      "label": "liveness",
+      "has_hint": false,
+      "hint_length": 0,
+      "returncode": 0
+    },
+    {
+      "label": "modal-cancel",
+      "has_hint": false,
+      "hint_length": 0,
+      "returncode": 0
+    },
+    {
+      "label": "navigation-cancel",
+      "has_hint": false,
+      "hint_length": 0,
+      "returncode": 0
+    },
+    {
+      "label": "return-to-A",
+      "has_hint": true,
+      "hint_length": 21,
+      "returncode": 0
+    },
+    {
+      "label": "replacement-old",
+      "has_hint": false,
+      "hint_length": 0,
+      "returncode": 0
+    },
+    {
+      "label": "replacement-new",
+      "has_hint": true,
+      "hint_length": 21,
+      "returncode": 0
+    },
+    {
+      "label": "close-cancel",
+      "has_hint": false,
+      "hint_length": 0,
+      "returncode": 0
+    }
+  ],
+  "scope": "private Wayland proxy delays token.done; native input and UI progress while pending; compositor sees proxy credentials; no activation-grant or production PID identity claim",
+  "service_process_pid": 880649,
+  "proxy_process_pid": 880647,
+  "close_final": {
+    "pending": false,
+    "cancelled_native": 4,
+    "dispatches": 4
+  },
+  "nested_stopped": true
+}

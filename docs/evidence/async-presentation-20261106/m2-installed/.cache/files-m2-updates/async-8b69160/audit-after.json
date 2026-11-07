@@ -1,0 +1,67 @@
+{
+  "files": [
+    {
+      "name": "files",
+      "backup_sha256": "a22e71378cfc6924e7049dcb262acc95b535c518c746a7d6b8421930770c29e6",
+      "installed_sha256": "4e6b3ee79506f0382701f6c4ef23cd537927da40d75d53395445e065dcd8a063",
+      "backup_matches": true,
+      "installed_matches": true
+    },
+    {
+      "name": "files-helper",
+      "backup_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+      "installed_sha256": "cfedd7bf64a3f252374fc220da66ceb9d6bff4312019ee02c8b8c5973ca92d0d",
+      "backup_matches": true,
+      "installed_matches": true
+    },
+    {
+      "name": "files-html-helper",
+      "backup_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "installed_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "backup_matches": true,
+      "installed_matches": true
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "backup_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "installed_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "backup_matches": true,
+      "installed_matches": true
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "backup_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "installed_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "backup_matches": true,
+      "installed_matches": true
+    }
+  ],
+  "config": [
+    {
+      "name": "config.toml",
+      "sha256": "36383052a1f04ccb6fe5f122e2e67f03fb87aeaf9fe93e9581ff4f31e6d8fe9e",
+      "unchanged": true
+    },
+    {
+      "name": "session.bin",
+      "sha256": "bf44903de9bbd4add969a9409b03b6a12edc865d7ff293fc16146ab80c0ea4f9",
+      "unchanged": true
+    },
+    {
+      "name": "layouts/32d393d1817c5e72.toml",
+      "sha256": "1cbf77da02414f7c97e6a895b9a65fefaae10c41c91bdf869111a56df40d0a21",
+      "unchanged": true
+    },
+    {
+      "name": "layouts/35201e16dc621286.toml",
+      "sha256": "c17250785358f5cb71cc8624ecfef3fc85d20ba3f386a987d0d8bc9224bb1772",
+      "unchanged": true
+    },
+    {
+      "name": "layouts/0d922b96b215a0a5.toml",
+      "sha256": "e0f3277c2f15261378b7aa49496828016358163df7236397f825f1b00a0932e7",
+      "unchanged": true
+    }
+  ],
+  "pass": true
+}

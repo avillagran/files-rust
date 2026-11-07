@@ -1,0 +1,3 @@
+tab-strip-motion-ui-check exit= 0 {"report": "/home/avillagran/.cache/files-m2-updates/async-8b69160/source/docs/evidence/0.0.4/tab-strip-motion-ui-1794014148668937483.json", "functional_gate": "PASS", "error": null}
+ 
+compositor {"fixture": "/home/avillagran/.cache/files-test/regression-compositor-wstnfrnh", "parent_socket": "wayland-1", "nested": {"socket": "wayland-2", "pid": ["1879586"]}}

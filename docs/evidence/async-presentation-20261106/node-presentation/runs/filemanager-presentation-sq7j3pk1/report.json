@@ -1,0 +1,155 @@
+{
+  "functional_gate": "PASS",
+  "fixture_dir": "/home/node/.cache/files-test/filemanager-presentation-sq7j3pk1",
+  "checks": [
+    "explicit service maps after valid admission",
+    "invalid token requested without forcing focus",
+    "fresh native gesture token requests and reaches owned service focus",
+    "reused token dispatched; compositor focus observation recorded",
+    "close at first-map boundary skips presentation without replay",
+    "owned windows close cleanly and fixture remains unchanged"
+  ],
+  "states": [
+    {
+      "label": "initial",
+      "presentation": {
+        "pending": false,
+        "requests": 1,
+        "attempts": 1,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 1,
+          "has_startup_id": false,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      }
+    },
+    {
+      "label": "invalid",
+      "presentation": {
+        "pending": false,
+        "requests": 2,
+        "attempts": 2,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 2,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      }
+    },
+    {
+      "label": "fresh",
+      "presentation": {
+        "pending": false,
+        "requests": 3,
+        "attempts": 3,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 3,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      }
+    },
+    {
+      "label": "reused",
+      "presentation": {
+        "pending": false,
+        "requests": 4,
+        "attempts": 4,
+        "superseded": 0,
+        "skipped": 0,
+        "errors": 0,
+        "last": {
+          "sequence": 4,
+          "has_startup_id": true,
+          "visible": true,
+          "status": "requested",
+          "backend": "wayland",
+          "error": null
+        }
+      }
+    }
+  ],
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "d4c563a603f13a1f50bb2ac2592c447698e82821df91d7fb9b49885806b50930",
+  "helper_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "headless_attempt": "unavailable; see compositor.log",
+  "nested": {
+    "socket": "wayland-1",
+    "pids": [
+      883188
+    ],
+    "runtime": "/var/tmp/files-filemanager",
+    "backend": "nested"
+  },
+  "policy_eval_response": "other",
+  "private_focus_on_activate": {
+    "option": "misc:focus_on_activate",
+    "int": 1,
+    "set": true
+  },
+  "calls": [
+    {
+      "label": "initial-map",
+      "has_hint": false,
+      "hint_length": 0,
+      "returncode": 0
+    },
+    {
+      "label": "invalid",
+      "has_hint": true,
+      "hint_length": 21,
+      "returncode": 0
+    },
+    {
+      "label": "fresh-native",
+      "has_hint": true,
+      "hint_length": 36,
+      "returncode": 0
+    },
+    {
+      "label": "reused-native",
+      "has_hint": true,
+      "hint_length": 36,
+      "returncode": 0
+    },
+    {
+      "label": "close-on-map",
+      "has_hint": false,
+      "hint_length": 0,
+      "returncode": 0
+    }
+  ],
+  "native_token": {
+    "has_hint": true,
+    "hint_length": 36
+  },
+  "reused_token_focus": "origin",
+  "close_on_map": {
+    "requests": 1,
+    "attempts": 0,
+    "skipped": 1,
+    "pending": false
+  },
+  "nested_stopped": true
+}
