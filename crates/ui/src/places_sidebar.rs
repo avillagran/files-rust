@@ -64,6 +64,8 @@ pub struct Rail {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Kind {
     Header,
+    /// Toggle between a pinned rail and automatic collapse.
+    Pin,
     Favorites,
     /// Recently used files (XDG recently-used.xbel), opened as a menu.
     Recent,
@@ -78,6 +80,22 @@ pub enum Kind {
 }
 
 impl Rail {
+    /// Current visible sibling keys in a named section, in rendered order.
+    pub fn section_keys(&self, parent: &str) -> Vec<String> {
+        let Some(start) = self
+            .items
+            .iter()
+            .position(|item| item.key == parent && item.header)
+        else {
+            return Vec::new();
+        };
+        self.items[start + 1..]
+            .iter()
+            .take_while(|item| !item.header && !item.footer)
+            .map(|item| item.key.clone())
+            .collect()
+    }
+
     fn push(
         &mut self,
         item: SidebarItem,
@@ -102,10 +120,7 @@ impl Rail {
     }
 }
 
-/// Bookmarks shown in the rail (the first eight, as before).
-pub const MAX_BOOKMARKS: usize = 8;
-
-pub fn rail(m: &Model) -> Rail {
+pub fn rail(m: &Model, pinned: bool, order: &[String]) -> Rail {
     let mut out = Rail {
         active: usize::MAX,
         ..Rail::default()
@@ -127,23 +142,28 @@ pub fn rail(m: &Model) -> Rail {
         None,
         Kind::Recent,
     );
-    for (i, place) in m.places.iter().enumerate() {
+    out.push(
+        SidebarItem::header("Lugares").key("h:places"),
+        None,
+        None,
+        Kind::Header,
+    );
+    let place_keys: Vec<_> = m
+        .places
+        .iter()
+        .map(|place| crate::sidebar_order::place_key(&place.path, &place.label))
+        .collect();
+    for i in crate::sidebar_order::ordered_indices(&place_keys, order) {
+        let place = &m.places[i];
         activate(&mut out, m.path == place.path);
         out.push(
-            SidebarItem::new(place_glyph(i), &place.label)
-                .key(&format!("place:{}", place.path.display())),
+            SidebarItem::new(place_glyph(i), &place.label).key(&place_keys[i]),
             Some(Action::Navigate(place.path.clone())),
             None,
             Kind::Place(place.path.clone()),
         );
     }
-    let marks: Vec<_> = m
-        .bookmarks
-        .document
-        .rows
-        .iter()
-        .take(MAX_BOOKMARKS)
-        .collect();
+    let marks: Vec<_> = m.bookmarks.document.rows.iter().collect();
     if !marks.is_empty() {
         out.push(
             SidebarItem::header("Marcadores").key("h:marks"),
@@ -155,8 +175,7 @@ pub fn rail(m: &Model) -> Rail {
     for mark in marks {
         activate(&mut out, m.path == mark.path);
         out.push(
-            SidebarItem::new(bookmark_glyph(), &mark.label)
-                .key(&format!("mark:{}", mark.path.display())),
+            SidebarItem::new(bookmark_glyph(), &mark.label).key(&format!("mark:{}", mark.id)),
             Some(Action::Navigate(mark.path.clone())),
             None,
             Kind::Bookmark(mark.path.clone()),
@@ -173,7 +192,14 @@ pub fn rail(m: &Model) -> Rail {
         );
     }
     let busy = m.devices.busy_node();
-    for d in &m.devices.list {
+    let device_keys: Vec<_> = m
+        .devices
+        .list
+        .iter()
+        .map(|d| crate::sidebar_order::path_key("dev", &d.node))
+        .collect();
+    for i in crate::sidebar_order::ordered_indices(&device_keys, order) {
+        let d = &m.devices.list[i];
         let mounted = d.mount.is_some();
         activate(
             &mut out,
@@ -186,7 +212,7 @@ pub fn rail(m: &Model) -> Rail {
             (false, _) => "sin montar".into(),
         };
         let mut item = SidebarItem::new(device_glyph(d.removable), &d.title())
-            .key(&format!("dev:{}", d.node.display()))
+            .key(&device_keys[i])
             .detail(&detail)
             .busy(is_busy);
         if let (true, Some(free)) = (mounted, d.free)
@@ -223,6 +249,21 @@ pub fn rail(m: &Model) -> Rail {
             },
         );
     }
+    out.push(
+        SidebarItem::new(
+            crate::fonts::icon("\u{f08d}", "P"),
+            if pinned {
+                "Desfijar barra lateral"
+            } else {
+                "Fijar barra lateral"
+            },
+        )
+        .key("pin")
+        .footer(),
+        None,
+        None,
+        Kind::Pin,
+    );
     out.push(
         SidebarItem::new(trash_glyph(), "Papelera")
             .key("trash")
@@ -347,21 +388,26 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
             PopupItem::new(trash_glyph(), "Abrir Papelera"),
             Pick::Run(vec![Action::OpenTrash]),
         )),
-        Some(Kind::Header) | None => {}
+        Some(Kind::Header | Kind::Pin) | None => {}
     }
     let _ = m;
     out
 }
 
-/// Moves the bookmark of `path` to position `to` among the bookmarks (the
-/// rail shows the first ones in document order, so its index is theirs).
-pub fn move_bookmark(m: &mut Model, path: &Path, to: usize) -> bool {
+/// Moves the bookmark identified by its stable key to `to` in document order.
+pub fn move_bookmark(m: &mut Model, key: &str, to: usize) -> bool {
+    let Some(id) = key
+        .strip_prefix("mark:")
+        .and_then(|s| s.parse::<u64>().ok())
+    else {
+        return false;
+    };
     let entry = m
         .bookmarks
         .document
         .rows
         .iter()
-        .find(|e| e.path == path)
+        .find(|e| e.id == id)
         .cloned();
     match entry {
         Some(expected) if m.bookmarks.can_request() => {
@@ -383,7 +429,14 @@ pub fn move_bookmark(m: &mut Model, path: &Path, to: usize) -> bool {
 
 /// The rail rows that may be dragged to reorder (bookmarks, among themselves).
 pub fn movable(key: &str, parent: &str) -> bool {
-    key.starts_with("mark:") && parent == "h:marks"
+    match parent {
+        "h:marks" => key
+            .strip_prefix("mark:")
+            .is_some_and(|id| id.parse::<u64>().is_ok()),
+        "h:places" => key.starts_with("place:"),
+        "h:devices" => key.starts_with("dev:"),
+        _ => false,
+    }
 }
 
 /// Runs a rail menu pick on the model.
@@ -495,15 +548,22 @@ mod tests {
     fn rail_pairs_every_row_with_its_action_and_ends_with_trash() {
         let mut m = Model::new("/fixture-rail".into());
         m.loaded = true;
-        let rail = rail(&m);
+        let rail = rail(&m, false, &[]);
         assert_eq!(rail.items.len(), rail.actions.len());
         assert_eq!(rail.items.len(), rail.secondary.len());
         assert!(matches!(rail.actions[0], Some(Action::Bookmarks)));
         let last = rail.items.len() - 1;
         assert!(rail.items[last].footer);
         assert!(matches!(rail.actions[last], Some(Action::OpenTrash)));
+        let pin = last - 1;
+        assert_eq!(rail.kinds[pin], Kind::Pin);
+        assert!(rail.items[pin].footer);
+        assert_eq!(rail.items[pin].label, "Fijar barra lateral");
+        let pinned = super::rail(&m, true, &[]);
+        assert_eq!(pinned.items[pin].key, rail.items[pin].key);
+        assert_eq!(pinned.items[pin].label, "Desfijar barra lateral");
         for ((item, action), kind) in rail.items.iter().zip(&rail.actions).zip(&rail.kinds) {
-            let window_only = matches!(kind, Kind::Recent);
+            let window_only = matches!(kind, Kind::Recent | Kind::Pin);
             assert_eq!(
                 item.header || window_only,
                 action.is_none(),
@@ -548,21 +608,27 @@ mod tests {
             device("/dev/sdz1", Some("/fixture-rail/usb"), true),
             device("/dev/sdy2", None, false),
         ];
-        let rail = rail(&m);
+        let rail = rail(&m, false, &[]);
         let at = |key: &str| rail.items.iter().position(|i| i.key == key).unwrap();
-        let mark = at("mark:/fixture-rail/work");
+        let mark = at("mark:7");
         assert_eq!(rail.kinds[mark - 1], Kind::Header);
         assert_eq!(
             labels(&menu(&m, &rail, mark)),
             ["Abrir", "Abrir en pestaña nueva", "Quitar de favoritos"]
         );
-        let usb = at("dev:/dev/sdz1");
+        let usb = at(&crate::sidebar_order::path_key(
+            "dev",
+            Path::new("/dev/sdz1"),
+        ));
         assert_eq!(
             labels(&menu(&m, &rail, usb)),
             ["Abrir", "Abrir en pestaña nueva", "Desmontar", "Expulsar"]
         );
         assert!((rail.items[usb].usage.unwrap() - 0.6).abs() < 1e-9);
-        let datos = at("dev:/dev/sdy2");
+        let datos = at(&crate::sidebar_order::path_key(
+            "dev",
+            Path::new("/dev/sdy2"),
+        ));
         assert!(rail.items[datos].dimmed && rail.items[datos].secondary_icon.is_empty());
         assert_eq!(
             labels(&menu(&m, &rail, datos)),
@@ -572,17 +638,20 @@ mod tests {
         assert!(menu(&m, &rail, at("h:devices")).is_empty());
         assert_eq!(rail.drop_dir(mark), Some(Path::new("/fixture-rail/work")));
         assert_eq!(rail.drop_dir(usb), Some(Path::new("/fixture-rail/usb")));
-        for key in ["fav", "trash", "h:devices", "dev:/dev/sdy2"] {
+        for key in ["fav", "trash", "h:devices"] {
             assert_eq!(rail.drop_dir(at(key)), None, "{key}");
         }
+        assert_eq!(rail.drop_dir(datos), None);
     }
 
     #[test]
     fn only_bookmarks_move_and_only_among_themselves() {
-        assert!(movable("mark:/a", "h:marks"));
-        assert!(!movable("mark:/a", "h:devices"));
-        assert!(!movable("place:/home", ""));
-        assert!(!movable("dev:/dev/sdz1", "h:devices"));
+        assert!(movable("mark:7", "h:marks"));
+        assert!(!movable("mark:7", "h:devices"));
+        assert!(!movable("mark:/a", "h:marks"));
+        assert!(!movable("place:aa", ""));
+        assert!(movable("place:aa", "h:places"));
+        assert!(movable("dev:aa", "h:devices"));
         assert!(!movable("trash", ""));
     }
 
@@ -594,8 +663,8 @@ mod tests {
             return;
         };
         m.path = first;
-        let rail = rail(&m);
-        assert_eq!(rail.active, 2);
-        assert!(matches!(&rail.actions[2], Some(Action::Navigate(p)) if *p == m.path));
+        let rail = rail(&m, false, &[]);
+        assert_eq!(rail.active, 3);
+        assert!(matches!(&rail.actions[3], Some(Action::Navigate(p)) if *p == m.path));
     }
 }

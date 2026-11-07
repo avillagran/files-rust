@@ -103,7 +103,11 @@ def main():
         assert s['visible'] and not s['expanded'] and not s['rail'], s
         assert s['rect'][:3] == [0, 90, 52] and s['rect'][3] > 0, s
         assert s['keys'][0] == 'fav' and s['keys'][-1] == 'trash', s
-        downloads = f'place:{home/"Downloads"}'
+        def path_key(section, path):
+            return f'{section}:{os.fsencode(path).hex()}'
+        def place_key(path, label):
+            return path_key('place', path) + '00' + label.encode().hex()
+        downloads = place_key(home/'Downloads', 'Descargas')
         assert downloads in s['keys'], (downloads, s['keys'])
         collapsed = capture('collapsed')
 
@@ -136,13 +140,14 @@ def main():
         assert any(el.get('key') for el in visible), visible
         result['toolkit_tree'] = tree
         s = result['states']['downloads']
-        assert {'h:devices', 'dev:/dev/sdz1', 'dev:/dev/sdy2'} <= set(s['keys']), s['keys']
-        click = command('sidebar-click:dev:/dev/sdz1', 'FILES_TOOLKIT_SIDEBAR_CLICK key=dev:/dev/sdz1')
+        usb_key, disk_key = path_key('dev', '/dev/sdz1'), path_key('dev', '/dev/sdy2')
+        assert {'h:devices', usb_key, disk_key} <= set(s['keys']), s['keys']
+        click = command(f'sidebar-click:{usb_key}', f'FILES_TOOLKIT_SIDEBAR_CLICK key={usb_key}')
         assert 'rect=Some(' in click, click
         wait(lambda: state('device')['path'] == str(pen), 'open the mounted stick')
-        assert result['states']['device']['active'] == 'dev:/dev/sdz1', result['states']['device']
+        assert result['states']['device']['active'] == usb_key, result['states']['device']
         capture('device')
-        click = command('sidebar-secondary:dev:/dev/sdz1', 'FILES_TOOLKIT_SIDEBAR_CLICK key=dev:/dev/sdz1')
+        click = command(f'sidebar-secondary:{usb_key}', f'FILES_TOOLKIT_SIDEBAR_CLICK key={usb_key}')
         assert 'rect=Some(' in click, click
         wait(lambda: calls.exists() and '/dev/sdz1' in calls.read_text(), 'eject reached udisksctl')
         result['udisks_calls'] = calls.read_text().splitlines()
@@ -150,7 +155,7 @@ def main():
 
         # Context menu of a place: End + Enter picks its last entry, "Abrir en
         # pestaña nueva" (a new tab, then the place).
-        documents = f'place:{home/"Documents"}'
+        documents = place_key(home/'Documents', 'Documentos')
         opened = command(f'sidebar-context:{documents}', 'FILES_TOOLKIT_SIDEBAR_MENU')
         assert 'entries=2' in opened, opened
         time.sleep(.1); capture('context-menu')
@@ -206,16 +211,18 @@ def main():
         # Bookmarks: add Descargas and Música from the Favoritos row menu
         # (End + Enter = "Añadir esta carpeta a favoritos"), then drag Música
         # above Descargas; the saved order follows.
-        def bookmark_here(place):
+        def bookmark_here(place, path):
+            before = {k for k in state('marks-before-add')['keys'] if k.startswith('mark:')}
             command(f'sidebar-click:{place}', f'FILES_TOOLKIT_SIDEBAR_CLICK key={place}')
-            wait(lambda: state('nav')['path'] == place.split(':', 1)[1], 'navigate ' + place)
+            wait(lambda: state('nav')['path'] == str(path), 'navigate ' + place)
             command('sidebar-context:fav', 'FILES_TOOLKIT_SIDEBAR_MENU')
             command('end'); picked = command('pick', 'FILES_TOOLKIT_SIDEBAR_PICK')
             assert 'BookmarkAdd' in picked, picked
-            wait(lambda: f'mark:{place.split(":", 1)[1]}' in state('marks')['keys'], 'bookmark ' + place)
-        music = f'place:{home/"Music"}'
-        bookmark_here(downloads); bookmark_here(music)
-        mark_d, mark_m = f'mark:{home/"Downloads"}', f'mark:{home/"Music"}'
+            wait(lambda: len({k for k in state('marks')['keys'] if k.startswith('mark:')} - before) == 1, 'bookmark ' + place)
+            return ({k for k in state('marks')['keys'] if k.startswith('mark:')} - before).pop()
+        music = place_key(home/'Music', 'Música')
+        mark_d = bookmark_here(downloads, home/'Downloads')
+        mark_m = bookmark_here(music, home/'Music')
         keys = state('marks-before')['keys']
         assert keys.index(mark_d) < keys.index(mark_m), keys
         capture('bookmarks-before')
