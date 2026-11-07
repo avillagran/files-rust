@@ -1,0 +1,140 @@
+{
+  "started_utc": "2026-11-07T02:14:00.764416+00:00",
+  "state": "passed",
+  "steps": [
+    {
+      "name": "cpu-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib",
+        "widgets::disabled_tests::"
+      ],
+      "exit_code": 0,
+      "seconds": 42.56
+    },
+    {
+      "name": "default-check",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--all-targets"
+      ],
+      "exit_code": 0,
+      "seconds": 12.54
+    },
+    {
+      "name": "all-features-check",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--all-features"
+      ],
+      "exit_code": 0,
+      "seconds": 59.88
+    },
+    {
+      "name": "windows-check",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-pc-windows-msvc",
+        "--all-targets",
+        "--all-features"
+      ],
+      "exit_code": 0,
+      "seconds": 25.37
+    },
+    {
+      "name": "mac-arm-check",
+      "command": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-apple-darwin",
+        "--all-targets",
+        "--all-features"
+      ],
+      "exit_code": 0,
+      "seconds": 15.07
+    },
+    {
+      "name": "msrv-check",
+      "command": [
+        "cargo",
+        "+1.80",
+        "check",
+        "--locked",
+        "--offline",
+        "--all-targets"
+      ],
+      "exit_code": 0,
+      "seconds": 19.46
+    },
+    {
+      "name": "library-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 101,
+      "seconds": 10.19
+    },
+    {
+      "name": "library-tests-short-tmp",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "--lib"
+      ],
+      "exit_code": 0,
+      "seconds": 0.77,
+      "tmpdir": "/run/user/1000/tkd-xbhhmz7p"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--offline",
+        "--all-targets",
+        "--",
+        "-D",
+        "clippy::correctness",
+        "-D",
+        "clippy::suspicious"
+      ],
+      "exit_code": 0,
+      "seconds": 7.47,
+      "tmpdir": "/run/user/1000/tkd-xbhhmz7p"
+    }
+  ],
+  "finished_utc": "2026-11-07T02:18:36.335678+00:00",
+  "short_private_root": "/run/user/1000/tkd-xbhhmz7p",
+  "commit": "23a5b7f5496f9887c631bd033259b8f922474685",
+  "base_commit": "dd481f1c7b29a06c0eedeb61780c112f3e603679",
+  "library_tests": {
+    "passed": 288,
+    "failed": 0,
+    "ignored": 1
+  },
+  "updated_utc": "2026-11-07T02:19:48.836159+00:00"
+}

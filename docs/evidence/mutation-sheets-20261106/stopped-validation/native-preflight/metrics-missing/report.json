@@ -1,0 +1,34 @@
+{
+  "functional_gate": "FAIL",
+  "fixture_dir": "/home/node/.cache/files-test/mutation-sheet-native-_ok_bnv9",
+  "checks": [],
+  "states": [],
+  "binary_path": "/home/node/Work/files/.cargo/tmp/mutation-candidate-d734/bin/files",
+  "requested_size": "1000x650",
+  "animations": "on",
+  "captures": [],
+  "animation_comparison": "NOT_COMPARED",
+  "scope": "native input and real private mutation fixtures; this profile alone does not prove cross-profile motion",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "c8dc9437c35ddc7214b56ab019bdc033a6ce58ad08387efe32bf7c88e3a2a72f",
+  "helper_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "headless_attempt": "unavailable; see compositor.log",
+  "nested": {
+    "socket": "wayland-1",
+    "pids": [
+      1365870
+    ],
+    "runtime": "/var/tmp/files-filemanager",
+    "backend": "nested"
+  },
+  "policy_eval_response": "other",
+  "private_focus_on_activate": {
+    "option": "misc:focus_on_activate",
+    "int": 1,
+    "set": true
+  },
+  "error": "AssertionError: private listing loaded",
+  "nested_stopped": true
+}

@@ -1,0 +1,84 @@
+    Checking files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+error: this `if` statement can be collapsed
+   --> crates/ui/src/mutation_sheets.rs:272:29
+    |
+272 | / ...                   if !submit_bad.get() {
+273 | | ...                       if let Some(stamp) = submit_stamp.get() {
+274 | | ...                           submit.request(stamp, Action::Apply);
+275 | | ...                       }
+276 | | ...                   }
+    | |_______________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+272 ~                             if !submit_bad.get()
+273 ~                                 && let Some(stamp) = submit_stamp.get() {
+274 |                                     submit.request(stamp, Action::Apply);
+275 ~                                 }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/ui/src/mutation_sheets.rs:356:25
+    |
+356 | /                         if !bad.get() {
+357 | |                             if let Some(s) = stamp.get() {
+358 | |                                 q.request(s, Action::Apply);
+359 | |                             }
+360 | |                         }
+    | |_________________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+356 ~                         if !bad.get()
+357 ~                             && let Some(s) = stamp.get() {
+358 |                                 q.request(s, Action::Apply);
+359 ~                             }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/ui/src/mutation_sheets.rs:386:13
+    |
+386 | /             if matches!(
+387 | |                 reason,
+388 | |                 SheetDismiss::Escape | SheetDismiss::ClickOutside | SheetDismiss::CloseButton
+389 | |             ) {
+...   |
+393 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+389 ~             )
+390 ~                 && let Some(s) = dismiss_stamp.get() {
+391 |                     dismiss_inbox.request(s, Action::Dismiss);
+392 ~                 }
+    |
+
+error: this `if` statement can be collapsed
+    --> crates/ui/src/lib.rs:1515:13
+     |
+1515 | /             if e == Event::Paste {
+1516 | |                 if let Ok(mut state) = m.try_borrow_mut() {
+...    |
+1522 | |             }
+     | |_____________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#collapsible_if
+help: collapse nested if block
+     |
+1515 ~             if e == Event::Paste
+1516 ~                 && let Ok(mut state) = m.try_borrow_mut() {
+1517 |                     // Drain an old asynchronous FL_PASTE receipt without
+ ...
+1520 |                     state.text_paste.receive(&None);
+1521 ~                 }
+     |
+
+error: could not compile `files-ui` (lib) due to 4 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `files-ui` (lib test) due to 4 previous errors

@@ -1,0 +1,43 @@
+{
+  "source_checkpoint": "d734ce7",
+  "results": [
+    {
+      "name": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "-p",
+        "files-ui",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.937
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "seconds": 8.078
+    },
+    {
+      "name": "release",
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "seconds": 75.674
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "command": [
+    "/home/node/.cargo/bin/cargo",
+    "test",
+    "--workspace"
+  ],
+  "started_utc": "2026-11-07T01:56:53.514933+00:00",
+  "state": "passed",
+  "roots": {
+    "TMPDIR": "/run/user/1000/files-sheet-check-45t6xmqd",
+    "FILES_CONFIG_DIR": "/run/user/1000/files-sheet-check-45t6xmqd/config",
+    "XDG_DATA_HOME": "/run/user/1000/files-sheet-check-45t6xmqd/data"
+  },
+  "log": "/run/user/1000/files-sheet-check-45t6xmqd/workspace-tests.log",
+  "exit_code": 0,
+  "elapsed_seconds": 63.52,
+  "finished_utc": "2026-11-07T01:57:57.034994+00:00",
+  "unfiltered_results": [
+    {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0
+    },
+    {
+      "passed": 730,
+      "failed": 0,
+      "ignored": 3,
+      "measured": 0
+    },
+    {
+      "passed": 113,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0
+    },
+    {
+      "passed": 901,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0
+    },
+    {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0
+    },
+    {
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0,
+      "measured": 0
+    }
+  ],
+  "total_unfiltered_passed": 1744,
+  "mutation_sheet_contract_passed": 10,
+  "warnings": 0
+}

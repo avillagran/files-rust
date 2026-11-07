@@ -1,0 +1,7 @@
+   Compiling lib-fltk-omarchy v0.0.10 (/home/node/Work/lib-fltk-omarchy-disabled-baseline)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.44s
+     Running tests/ui.rs (/home/node/Work/lib-fltk-omarchy-files-disabled/target/debug/deps/ui-3db014b606a8e60a)
+XOpenIM() failed
+sheet GPU Some("NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2"): shader_frames=10, captures=0, uploads=0, parent_draws=0, cached_idle_frames=0, remaining_overlay_bytes=0
+ok   scene sheet GPU: retained modal input, parity, warm reopening and hidden resource release
+all ui checks passed

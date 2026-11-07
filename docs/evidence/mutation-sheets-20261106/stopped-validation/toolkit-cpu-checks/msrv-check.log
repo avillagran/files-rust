@@ -1,0 +1,26 @@
+   Compiling find-msvc-tools v0.1.15
+   Compiling shlex v2.0.1
+   Compiling proc-macro2 v1.0.107
+   Compiling crossbeam-utils v0.8.23
+   Compiling cc v1.10.0
+   Compiling zmij v1.0.23
+   Compiling serde_core v1.0.229
+   Compiling unicode-ident v1.0.27
+   Compiling serde_json v1.0.154
+    Checking bitflags v2.13.2
+   Compiling pulldown-cmark v0.13.6
+   Compiling libc v0.2.191
+   Compiling cmake v0.1.58
+    Checking memchr v2.8.3
+    Checking crossbeam-channel v0.5.17
+   Compiling minipaste v0.1.0
+    Checking itoa v1.0.18
+    Checking once_cell v1.21.4
+    Checking unicase v2.10.0
+    Checking ttf-parser v0.25.1
+    Checking unicode-bidi v0.3.18
+    Checking unicode-segmentation v1.12.0
+   Compiling fltk-sys v1.5.23
+    Checking fltk v1.5.23
+    Checking lib-fltk-omarchy v0.0.10 (/home/node/Work/lib-fltk-omarchy-files-disabled)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 19.37s

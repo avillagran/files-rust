@@ -1,0 +1,370 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling serde_core v1.0.229
+   Compiling winnow v0.7.15
+   Compiling pin-project-lite v0.2.17
+   Compiling parking v2.2.1
+   Compiling endi v1.1.1
+   Compiling futures-core v0.3.34
+   Compiling bitflags v2.13.2
+   Compiling quote v1.0.47
+   Compiling syn v3.0.9
+   Compiling syn v2.0.119
+   Compiling toml_edit v0.23.10+spec-1.0.0
+   Compiling static_assertions v1.1.0
+   Compiling cfg-if v1.0.5
+   Compiling futures-io v0.3.34
+   Compiling fastrand v2.5.0
+   Compiling concurrent-queue v2.5.0
+   Compiling event-listener v5.4.2
+   Compiling proc-macro-crate v3.4.0
+   Compiling event-listener-strategy v0.5.4
+   Compiling libc v0.2.191
+   Compiling futures-lite v2.6.1
+   Compiling linux-raw-sys v0.12.1
+   Compiling slab v0.4.12
+   Compiling rustix v1.1.6
+   Compiling polling v3.11.0
+   Compiling errno v0.3.14
+   Compiling async-task v4.7.1
+   Compiling signal-hook-registry v1.4.8
+   Compiling async-io v2.6.0
+   Compiling async-channel v2.5.0
+   Compiling uuid v1.20.0
+   Compiling atomic-waker v1.1.2
+   Compiling piper v0.2.5
+   Compiling async-signal v0.2.13
+   Compiling memoffset v0.9.1
+   Compiling tracing-core v0.1.36
+   Compiling async-lock v3.4.1
+   Compiling serde_derive v1.0.229
+   Compiling siphasher v1.0.4
+   Compiling async-process v2.5.0
+   Compiling async-trait v0.1.92
+   Compiling enumflags2_derive v0.7.12
+   Compiling tracing-attributes v0.1.31
+   Compiling serde_repr v0.1.21
+   Compiling serde v1.0.229
+   Compiling zvariant_utils v3.2.1
+   Compiling enumflags2 v0.7.12
+   Compiling quick-xml v0.36.2
+   Compiling tracing v0.1.44
+   Compiling zvariant_derive v5.8.0
+   Compiling nix v0.30.1
+   Compiling blocking v1.7.0
+   Compiling async-executor v1.14.1
+   Compiling async-broadcast v0.7.2
+   Compiling ordered-stream v0.2.0
+   Compiling hex v0.4.3
+   Compiling phf_shared v0.14.0
+   Compiling simd-adler32 v0.3.10
+   Compiling phf_generator v0.14.0
+   Compiling foldhash v0.2.0
+   Compiling adler2 v2.0.1
+   Compiling hashbrown v0.17.1
+   Compiling phf_macros v0.14.0
+   Compiling accesskit v0.25.0
+   Compiling crc32fast v1.5.3
+   Compiling zvariant v5.8.0
+   Compiling accesskit_consumer v0.39.0
+   Compiling zbus_names v4.2.0
+   Compiling zbus_xml v5.0.2
+   Compiling zbus_macros v5.12.0
+   Compiling zbus-lockstep v0.5.2
+   Compiling phf v0.14.0
+   Compiling miniz_oxide v0.9.1
+   Compiling futures-macro v0.3.34
+   Compiling zbus-lockstep-macros v0.5.2
+   Compiling futures-task v0.3.34
+   Compiling flate2 v1.1.10
+   Compiling fltk-sys v1.5.23
+   Compiling miniz_oxide v0.8.9
+   Compiling fdeflate v0.3.7
+   Compiling minipaste v0.1.0
+   Compiling weezl v0.1.12
+   Compiling zune-core v0.5.3
+   Compiling quick-error v2.0.1
+   Compiling byteorder-lite v0.1.0
+   Compiling serde_json v1.0.154
+   Compiling futures-util v0.3.34
+   Compiling pulldown-cmark v0.13.6
+   Compiling image-webp v0.2.4
+   Compiling fltk v1.5.23
+   Compiling gif v0.14.2
+   Compiling zune-jpeg v0.5.15
+   Compiling png v0.18.1
+   Compiling zbus v5.12.0
+   Compiling glow v0.16.0
+   Compiling qrcode v0.14.1
+   Compiling atspi-common v0.13.0
+   Compiling atspi-proxies v0.13.0
+   Compiling atspi v0.29.0
+   Compiling accesskit_atspi_common v0.20.0
+   Compiling accesskit_unix v0.23.0
+   Compiling lib-fltk-omarchy v0.0.10 (/home/node/Work/lib-fltk-omarchy-files-disabled)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 53.78s
+     Running tests/ui.rs (target/debug/deps/ui-3db014b606a8e60a)
+XOpenIM() failed
+ok   theme loads omarchy colors and shell tokens
+ok   primary button is painted with the accent
+ok   text field two-way binding and placeholder
+ok   toggle, switch, slider, button group follow their State
+ok   button click, bound text and enabled state
+ok   virtual list builds only visible rows of 1 000 000
+ok   menu overlay opens on top and filter ranks
+ok   notification toast is stacked and counted
+ok   task progress/done run on the UI thread; cancel stops work
+ok   corner preference: square vs rounded button corner pixel
+ok   popup menu, tab bar, searchable filter, window mode parse
+ok   operation toast pause/cancel callbacks
+ok   bindings live as long as the widget, not the Rust handle
+ok   opening a layer while a dropdown is open does not crash
+ok   popup menu: 12 entries in 800x440 at a large font clamp, scroll and stay usable
+ok   popup menu fits 800x440 at font sizes 12, 18 and 24
+ok   popup menu lifecycle: Esc, click outside, close(), deleted window
+ok   keyboard panels: dual pane in one canvas, path field, app Ctrl+Tab once, menus
+ok   gfx View: paint with alpha, area limit, budget, hit shape, keyboard, pause, theme
+ok   label bound before fit keeps its text width
+ok   transitions: Omarchy durations, intermediate colors, timer stops, can be turned off
+ok   portable shaders: same pixels as sl eval, backend choice, display rate on the CPU
+ok   issue #6: app shortcuts reach the window while a popup is open; j/k only unmodified
+ok   issue #7: keyboard panel focus events are synchronous, ordered and carry the panel
+ok   file manager pieces: overflowing tabs, bounded help, localized toast, popup card
+ok   virtual table and tree on keyboard panels; native gesture guard
+ok   real clicks (fltk event path) on every clickable control: no re-entrancy panic
+ok   keyboard only: Tab order, arrows, shortcuts, focus comes back
+ok   data models: rows redraw by item, scroll anchored on insert above, selection by key, feeds coalesce
+ok   live theme switch: omarchy-theme-set style rename is picked up
+ok   theme: partial writes keep the last valid theme, recovery and overrides apply
+ok   platform: Mod+, shortcut, built-in light/dark theme, theme dir override
+ok   i18n: switching the locale re-labels bound widgets live
+ok   i18n: Arabic and CJK render; start-aligned labels follow RTL
+ok   i18n: toolkit overlays draw their own strings translated
+ok   rtl: header, rows, toggles mirror live (no rebuild); direction(Ltr) override; plain Flex rows
+ok   rtl: Left/Right follow the screen (tabs, button group, slider, grid panel, tree); Tab goes start to end
+ok   rtl: list scrollbar, popup menu glyphs, toast corner, rich text bidi
+ok   rich text: bold ink, code chip, link underline, code surface, selection color
+ok   rich text: 5 000 messages are virtual; sticks to the bottom while streaming; keys scroll
+ok   rich text: links by click and by Tab / Enter, copy button stop, Ctrl+A, Esc
+ok   rich text: a theme change re-colors without parsing or laying out again
+ok   rich text: bind_markdown follows appends and replacements; sender() from a thread
+ok   rich label: inline markdown, natural size, link click
+ok   tooltip: hover shows the Omarchy tooltip after 400 ms, styled by the theme
+ok   tooltip: the next one shows at once while one is up; a click hides it
+ok   tooltip: live theme switch (omarchy-theme-set), black themes, corners
+ok   tooltip: tooltips.json shape and border are read live; invalid keeps the last
+ok   tooltip: after a dialog, in a second window, plain fltk widgets, glass
+ok   tooltip: canvases with one tooltip per region, large widgets, wrapping
+ok   tooltip: bound text relabels a shown tooltip; right to left aligns right
+ok   tooltip: stays the accessible description; the surface is not exposed
+ok   text area: typing, Enter, word undo, grapheme Backspace through the key path
+ok   text area: caret and selection pixels, placeholder, focus ring colors
+ok   text area: auto-grows from min to max lines, then scrolls with the caret in view
+ok   text area: Tab leaves, Ctrl+Tab inserts when configured; read-only; clipboard
+ok   composer: Enter submits, Shift+Enter is a new line, busy shows stop
+ok   composer: completion list at the caret, Down + Enter inserts a chip, Esc closes
+ok   composer: async completions, stale answers ignored; files from paste; attachment chips
+     perf: paste 98 KB 18.768264ms, typing 77.585µs/key, typing at the start of one 97 KB paragraph 6.689857ms/key
+ok   text area: 100 KB paste and typing latency stay interactive
+ok   composer: Up/Down prompt history keeps the draft, expanded editor swaps Enter and Mod+Enter (hint), attach button and Mod+Shift+A, bottom-row slots in Tab order and mirrored
+tabs-host-initial: native/fresh max_rgb_delta=0
+tabs-host-hover: native/fresh max_rgb_delta=0
+tabs-host-hover-cleared: native/fresh max_rgb_delta=0
+tabs-host-motion-start: native/fresh max_rgb_delta=0
+tabs-host-motion-middle: native/fresh max_rgb_delta=0
+tabs-host-motion-end: native/fresh max_rgb_delta=0
+ok   tabs keyed: plain FLTK background host clears hover and every animated native frame
+ok   tabs keyed: activating the same selected key reveals it after independent cursor scrolling
+ok   tabs keyed: accessible IDs survive rename/reorder and focus does not activate
+ok   tabs keyed: composite pane/tab keys and actual close hit geometry under scroll/RTL
+ok   tabs keyed: reentrant context, deferred model diffs, snapshot IDs and RTL cursor reorder
+ok   tabs keyed: auxiliary buttons never select or fire primary close; context targets identity
+ok   tabs keyed: model patches/moves/removal preserve selection; gestures cancel stale IDs
+ok   tabs keyed: drag and keyboard reorder cursor without selecting; stable insertion requests
+ok   notices: action IDs, primary release ownership, keyboard and exact focus restoration
+ok   notices: stacks belong to a window, close gaps, coexist with legacy notifications
+ok   notices: live labels, action wrapping, resize and RTL use actual geometry
+ok   notices: persistence, callback reentry and captured resources end with the native widget
+ok   notices: accessible action IDs, focus versus activation and close name
+ok   presentation: validate before mapping, reject child/deleted/worker targets
+ok   presentation async: validation before mapping
+ok   presentation async: cancellation and lease lifecycle
+ok   presentation async: completed result is cached
+ok   presentation async: hidden and deleted pending targets
+ok   sheet guard: rebinding during State notification ignores an already queued old callback
+ok   sheet guard: OwnerHidden cannot reopen from callbacks or trap input before the owner returns
+ok   sheet guard: busy State rejects native-path user actions without focus/retention changes; owner close bypasses
+ok   sheet guard: state changes between press/release cannot commit a blocked outside gesture
+ok   sheet guard: rejected Escape preserves reversal phase and release starts only at eventual hidden state
+ok   sheet guard: rebinding, weak lifetime and owner hide/deletion bypass busy input policy
+ok   sheet: lazy build, warm reuse, exact 30-second release and app-owned draft reconstruction
+ok   sheet: modal focus, stacked popup, primary release ownership and owner destruction
+ok   sheet: retained fade reversals, reduced motion, resize and live RTL title
+ok   sheet: weak content actions, reentrant reopen, keep-content and final-owner drop
+ok   sheet: child hide callback may release retained controls without a borrow conflict
+ok   sheet a11y: named live dialog, translated close and retained hiding
+ok   motion: a sidebar's width slides (190 ms), ends on FLTK's layout; off jumps
+ok   motion: a window resize mid-way snaps to the final layout and keeps fixed sizes
+ok   motion: set_visible collapses and fades out, show grows in; first layout and RTL flips are not animated
+ok   motion: popups fade in (180 ms) and out (120 ms); focus comes back at once
+ok   motion: the tab indicator slides (160 ms)
+ok   motion: list rows (model) make room, arrive and leave; last frame = no animation
+ok   motion: tree branches open and close (200 ms); last frame = no animation
+ok   sidebar: hover intent (350 ms), leave grace, keyboard (focus expands, arrows, Enter, Esc), pin
+ok   sidebar files: headers, detail rows two lines tall when expanded, usage bars (accent, urgent), secondary button, dimmed and disabled
+ok   sidebar files: clicks (activate, header folds, disabled, secondary with tooltip, right click context) with app indexes
+ok   sidebar files: keyboard skips plain headers, disabled and folded rows; Enter/Left/Right fold; Delete = secondary; Menu and Shift+F10 = context
+ok   sidebar files: set_items keeps selection, cursor and folded sections by key; rows arrive, leave and slide (frozen clock); instant when off
+ok   sidebar files: section fold animates (rows below slide, 200 ms)
+ok   sidebar files: drop target highlight, accept filter, on_drop and on_drop_files with the item index
+ok   sidebar files: busy spinner is static with animations off and turns (one frame per tick) when on
+ok   sidebar files: rows scroll (wheel, keyboard keeps the cursor in view), footers stay
+ok   sidebar files: nested in a Group inside the body: push hover-expand (frozen clock) moves the content, overlay layer at the offset rail, pinned
+ok   navtree: o3 tree order, folded parent summary, tree keys (Right opens / first child, Left closes / parent), type-ahead, activate
+ok   navtree: hover-only actions, section '+' action, Delete = first action, Menu key, context and the menu helper
+ok   navtree: search filters and ranks, highlights matches, keeps ancestors, opens folded parents; Down from the field, Enter opens the first
+ok   navtree: drag to reorder among siblings and into another parent, drop line, accept filter
+ok   navtree: live updates repaint only rows in view, keep selection and the first row in view; pause holds them
+     5000 rows: rebuild 9.536945ms, first draw (snapshot) 61.105529ms, 60 patches 257.784µs, structural change + rebuild 6.87199ms
+ok   navtree: 5 000 rows: rebuild, draw and live patches stay bounded, only rows in view are drawn
+ok   navtree: reveal opens ancestors and scrolls (animated, 120 ms); scroll_to
+ok   navtree: the edge drags the width (min/max, State<i32>), presence hidden/rail/expanded, side Right
+ok   navtree: header and footer widgets (search) show when expanded (push) and ride in the overlay panel
+ok   navtree: custom renderer (own height and paint), right to left mirrors and swaps Left/Right
+ok   navtree: o3 cards (82 px, three lines) and slim rows, status text replaced by hover/cursor actions, tree guides, Delete
+ok   navtree: action menu (right-click, Menu, Shift+F10) lists the row's actions without on_context
+ok   navtree: hover preview card opens after 500 ms beside the row, stays while on the card, closes 140 ms after leaving, on scroll and on keys
+ok   navtree: shelf resizer sets the shelf height (keys ±20, Home resets, drag up grows, range), Slider role
+ok   popup submenus: keys open and close levels, nested paths, ids, disabled entries skipped
+ok   popup submenus: hover opens after 200 ms (animation clock), aim keeps it, clicks
+ok   popup submenus: beside the entry, flip near the right edge, clamp to the window, right to left
+ok   popup submenus: the card is drawn (animations off), chevrons on the trailing side
+ok   popup submenus: with animations on a submenu fades in and out; keys keep working
+ok   split: drag resizes the pane, clamps to the range, two-way State
+ok   split: keys move the grip on the screen; Home/End/Enter
+ok   split: a pane after the grip, a right-to-left row and a column
+ok   split: the focus ring draws the grip in the accent
+ok   chart: bars, highlighted bar, keys, select, right to left
+ok   chart: meter colors and expected mark, ring arc
+ok   chart: line chart cursor, guide and fixed range
+ok   shortcuts: table runs commands, conditions, rebind, repeat
+ok   shortcuts: the focused control keeps its keys; Suspend; reentrant callbacks
+ok   shortcuts: record the next key as a spec; Escape cancels
+ok   disabled controls: primary and native fields recover exact pixels and editing state
+ok   disabled controls: deactivate, parent disable and warm Sheet revoke stale presses
+ok   list: reorder by dragging (threshold, drop line) and Alt+Up/Down
+ok   list: the wheel goes to the scroll area around it at the list's edges
+ok   rich text: the wheel goes to the scroll area around it at its end
+ok   paint: font weights (semibold has at least regular's ink) and letter spacing
+ok   qr: dark modules on a light card with the quiet zone
+ok   text field mask: typed literals, paste, dropped letters, bound state
+ok   rich text: a settled streaming tail hides open markers; finish gives the exact text
+ok   rich text: on_far_from_bottom reports only beyond its threshold; follow_end returns
+ok   rich text: word pacing holds a partial word from a sender for at most 80 ms
+ok   composer: page keys scroll the transcript while the text fits
+ok   task::Latest: debounced, latest wins, slow older answers are dropped
+ok   rich text: chip links draw as accent pills and still open
+ok   i18n: follows Omarchy's Setup > Language file, unless the app picked a language
+ok   Omarchy keys: ? opens the shortcut overlay, q in a field types, Q asks with unsaved work
+ok   layer: capture, real opacity, effect on the picture, cross-fade
+ok   scene nodes order: raising and hits respect nested scopes; callbacks update their surface
+ok   scene nodes GL order: scoped raises retain uploads and focus chrome
+ok   scene nodes CPU: stable updates match fresh recording and clear damage caches
+ok   scene nodes GPU: culled and zero-alpha keys move without preparation or upload
+ok   scene images: shared resampling is independent of destination and outer clipping
+ok   scene motion: frozen frames, retarget, painter invalidation and deferred completion
+ok   scene motion: static CPU scene paces, settles on reduced motion/hide, then idles
+ok   scene motion GL: frozen parity, no uploads/parent redraws and completion idles
+ok   scene capture GPU: mapped portable View uses a fresh CPU reference without native printing
+ok   scene overlay GPU: unsupported native descendants fall back and closing them restores GPU
+ok   scene overlay GPU: frozen enter/exit phases, stacked layers and full removal
+ok   scene overlay GPU: CPU widgets receive native-child clicks; static texture is retained while shader animates
+ok   scene overlay GPU: actual help/scrim pixels match CPU with GPU still active
+notice GPU Some("NVIDIA GeForce RTX 3070 Ti/PCIe/SSE2"): shader_frames=13, recaptures=0, uploads=0, parent_draws=0, idle_frames=0, remaining_overlay_bytes=0
+ok   scene notice GPU: app-owned actions, live text, retained overlay and full release
+FAIL scene sheet GPU: retained modal input, parity, warm reopening and hidden resource release: scene-sheet-reopened: complete real GL/CPU max RGB delta 13
+ok   scene lifecycle GPU: zero width/height stops frames and releases resources; positive area recovers
+ok   scene atlas GPU: distinct filtered images share a batch without edge bleed
+ok   scene batching GPU: ordered solids/images, clip and shader barriers, retained keyed updates
+ok   scene residency GPU: painter revisions reuse immutable images and programs; content and hide invalidate
+ok   scene surface bounded shader: final phase, restart, explicit time and reduced motion
+ok   scene surface CPU: retained painter, coordinates, invalidation, snapshots and keyboard
+ok   scene surface clock: paced frames stop when hidden or motion is disabled
+ok   scene surface GPU: managed lifecycle, snapshots and retained shader time
+ok   scene: isolated group opacity, translation, nested layers and live backdrop
+ok   scene: immediate/replay pixel parity and clipped damage
+ok   lava reference: live language, rounded cards and mirrored completion target
+ok   lava reference: pointer reorder, detached preview, falling removal and gap
+ok   lava reference: keyboard pick/drop, reorder, cancel and reset
+ok   lava reference GPU: drag/fall runs without preparing static cards; effect stops
+ok   scroll blit: moved pixels + exposed strip == full repaint (down and up)
+ok   stream blit: growing the last message while following moves pixels == full repaint
+ok   stream pace: pushes between paced frames are painted together, content exact
+ok   bottom slack: a shrinking inset does not dip the rows; the room goes after growth stops
+ok   icons: every Lucide / o3 fixture parses; tinted pixels at the icon's place; theme restyles live; raster cache
+ok   media: contain, cover and letterbox pixels; rounded corners; placeholder and error state
+ok   media: animated GIF frames follow the animation clock; first frame with animations off
+ok   media: viewer opens over the window, zooms, pans, copies; Esc closes and focus comes back
+ok   playback: without ffmpeg the player says so and Play is disabled (theme colors)
+ok   playback: video probes when shown, autoplays, paces frames, pauses with Space and reaps ffmpeg
+ok   playback: seeking (Right/Left ±5 s, Home, End, slider) shows the frame there; M toggles the global mute
+ok   playback: plays to the end (Ended, Play starts over); hidden, deleted and stop_all players end their processes
+ok   playback: audio player (no autoplay), plays to the end; no audio output gives a notice and silent video
+ok   playback: a larger player restarts the stream at the larger size
+ok   transcript: keyed messages, embed painter, visibility callbacks, height change keeps the view
+ok   transcript: follow the end stops on scroll up and resumes; bottom inset; prepend and anchors keep the view
+ok   transcript: code header and table footer actions by Tab/Enter/Space and click, built-in copies
+ok   transcript: custom link schemes, inline code paths as links, activatable embeds, hosted widget
+ok   transcript: images are requested in view, sized placeholders, then pixels; alt text until then
+ok   transcript: find highlights every match, F3 / Shift+F3 move; selection rect and programmatic select
+ok   transcript: bind_model follows a ListModel by key (updates stream, inserts, removals)
+ok   diff: unified rows, add/delete tints from the theme, word highlight, virtualized
+ok   diff: keys: n/p and Alt+Down hunks, Mod+Right files, Enter and Left/Right fold, Space collapses a file
+ok   diff: split pairs removed/added lines side by side; wrap grows rows; shared horizontal offset
+ok   diff: Shift+Down selects lines, Mod+C copies text or a patch; mouse drag selects
+ok   diff: find highlights every match, F3 walks them and unfolds; Esc clears
+ok   diff: expand context: hunk header button and e ask the app; lines arrive with numbers; the end of a file
+ok   diff: mouse: hunk header click folds, file header click collapses, wheel scrolls
+ok   diff: file tree shows folders and counts, drives the view and follows Mod+Right
+ok   diff: line numbers select by file, side and number; Shift+click extends; gutter drag; the range survives split, fold, wrap and more context
+ok   diff: comment button on the hovered and cursor line (accent), click or Enter call on_comment with the line or the range
+ok   diff: annotations reserve rows under lines, painted or hosting a widget; heights change with the view anchored; hidden with their line
+ok   diff: Tab goes from the diff into hosted annotation widgets in display order, Shift+Tab back; Escape returns to the annotated line
+ok   diff: code stays left to right in a right-to-left language
+ok   frame: shared-memory frames reach the screen 1:1, letterboxed, RGBA zero-copy and BGRA
+ok   frame: keys go to the producer except Tab and Esc; clicks, wheel and hover map to frame pixels; resize and copy
+ok   frame: content size and clipboard messages, producer exit, PNG/BMP frame files
+ok   testkit: tree lists widgets and list rows with names, rects, focus; JSON
+ok   testkit: a transcript exposes rows near its viewport, inside the view
+ok   testkit: a script types, clicks by name, presses Mod+K, wheels a list and checks; failures are reported
+     (testkit_demo example not built: skipped)
+ok   testkit: OMARCHY_FLTK_SCRIPT runs an example app headlessly and writes tree and report
+ok   testkit gate: a deliberately jumping widget fails; toolkit layout motion passes
+ok   testkit gate: RichText streaming, follow_end and prepend keep messages from jumping
+ok   testkit gate: NavTree rows below an arriving row glide down without jumps or pops
+fltk-omarchy: the UI thread waited 80 ms (0 ms CPU) in a callback set at tests/testkit_ui/mod.rs:341:37: move blocking work into a Task
+ok   testkit: frame log writes one JSON line per painted frame; a sleeping click warns
+ok   mermaid: MermaidView nodes, edge and arrowhead pixels; theme restyle; cached picture
+ok   mermaid: RichText draws closed fences natively, Show source toggles, open fences stay code
+ok   a11y: sample window tree (roles, names, values, states, focus)
+ok   a11y: menus, dialogs, toasts and announcements appear in the tree
+ok   a11y: table, tree, keyboard panels and plain fltk widgets
+ok   a11y: mirrored bounds in a right-to-left language
+ok   a11y: rich text is a document of the blocks near the view (roles, links, code, tables, stream, scroll)
+ok   a11y: text area value/caret, composer completion list with active descendant, send/stop names
+ok   a11y: sidebar is a tab list with its expanded state and selected item
+ok   a11y: sidebar headings, secondary button named by its tooltip, disabled row, detail as description
+ok   a11y: o3 cards describe overline, status, note, meta and icon badges; shelf resizer is a named Slider
+ok   a11y: navtree is a Tree of TreeItems with level, position, expanded, selected; actions are named buttons
+ok   a11y: submenu entries have a popup and expanded state; the submenu is a menu named after its entry
+ok   a11y: icons are decorative unless named; icon buttons are named by their tooltip
+ok   a11y: images are named or decorative; the viewer is a modal dialog with named buttons
+ok   a11y: players expose named buttons, a position slider with the time, the state
+ok   a11y: transcript embeds, images and block actions are nodes
+ok   a11y: diff rows near the viewport read as added/removed lines; hunks and files expand
+ok   a11y: diff comment buttons are named after the lines and file; painted annotations are read; Click comments
+ok   a11y: a FrameView is a named, focusable Document (or Image)
+ui checks FAILED
+error: test failed, to rerun pass `--test ui`
+
+Caused by:
+  process didn't exit successfully: `/home/node/Work/lib-fltk-omarchy-files-disabled/target/debug/deps/ui-3db014b606a8e60a` (exit status: 1)

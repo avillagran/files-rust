@@ -1,0 +1,31 @@
+{
+  "source_checkpoint": "d68fe48",
+  "results": [
+    {
+      "name": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "-p",
+        "files-ui",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.951
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 101,
+      "seconds": 8.393
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "root": "/run/user/1000/files-sheet-check-45t6xmqd",
+  "commands": [
+    "cargo check -p files-ui",
+    "cargo clippy --workspace --all-targets -- -D warnings",
+    "cargo test --workspace",
+    "cargo build --release --locked --offline"
+  ]
+}

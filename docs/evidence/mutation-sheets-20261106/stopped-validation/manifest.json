@@ -1,0 +1,636 @@
+{
+  "files": [
+    {
+      "bytes": 679,
+      "path": "initial-files/build-result.json",
+      "sha256": "1fde4d5f08748dfb9e6c29d0968e4e0a4987577f91307c18f3c4c9962e9ff07e",
+      "source": "/run/user/1000/files-sheet-check-45t6xmqd/build-result.json"
+    },
+    {
+      "bytes": 809,
+      "path": "initial-files/check.log",
+      "sha256": "0577bbba0b03e5710cc97fffe3b2af555c65751138c545a0282e5a727a793b60",
+      "source": "/run/user/1000/files-sheet-check-45t6xmqd/check.log"
+    },
+    {
+      "bytes": 200,
+      "path": "initial-files/clippy.log",
+      "sha256": "1fc0ac97660660d0ef2b23a7f7bec86fbf874b8a4894dc739131701c9c88d72f",
+      "source": "/run/user/1000/files-sheet-check-45t6xmqd/clippy.log"
+    },
+    {
+      "bytes": 0,
+      "path": "initial-files/fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/run/user/1000/files-sheet-check-45t6xmqd/fmt.log"
+    },
+    {
+      "bytes": 479,
+      "path": "initial-files/initial-build-result.json",
+      "sha256": "412bd2735a15b515cd55292ccc9f61d6ca8a69973641a0e566db8d6845a76100",
+      "source": "/run/user/1000/files-sheet-check-45t6xmqd/initial-build-result.json"
+    },
+    {
+      "bytes": 3391,
+      "path": "initial-files/initial-clippy.log",
+      "sha256": "8ea6346be41d920b138c962eb1a0b4e326864eaee92d5ecc446bf1888e3a448e",
+      "source": "/run/user/1000/files-sheet-check-45t6xmqd/initial-clippy.log"
+    },
+    {
+      "bytes": 248,
+      "path": "initial-files/recipe.json",
+      "sha256": "5b3b8c7aaa43065854efcd1d8847478b7b02d1a5359bbdd54584cc3e998535ad",
+      "source": "/run/user/1000/files-sheet-check-45t6xmqd/recipe.json"
+    },
+    {
+      "bytes": 277,
+      "path": "initial-files/release.log",
+      "sha256": "384d39601f14747c161c3acf816089903e2af842aaff05a971c08906a7fb6a1f",
+      "source": "/run/user/1000/files-sheet-check-45t6xmqd/release.log"
+    },
+    {
+      "bytes": 1233,
+      "path": "initial-files/workspace-tests-status.json",
+      "sha256": "9f587b171406a2e2583800efedb8c0e30a50aa926cdc33cd008afc04cb156126",
+      "source": "/run/user/1000/files-sheet-check-45t6xmqd/workspace-tests-status.json"
+    },
+    {
+      "bytes": 176121,
+      "path": "initial-files/workspace-tests.log",
+      "sha256": "6de280a0a15c95269d81a00432efd706d360f45876198ae7a6075c8808be7b66",
+      "source": "/run/user/1000/files-sheet-check-45t6xmqd/workspace-tests.log"
+    },
+    {
+      "bytes": 200,
+      "path": "close-files/clippy.log",
+      "sha256": "0915f55c40de92fe439b846f571c4229b5ab2fb3142d8e944f70d5e11e74d2b8",
+      "source": "/run/user/1000/files-sheet-close-check-kbaprpzs/clippy.log"
+    },
+    {
+      "bytes": 0,
+      "path": "close-files/fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/run/user/1000/files-sheet-close-check-kbaprpzs/fmt.log"
+    },
+    {
+      "bytes": 282,
+      "path": "close-files/result.json",
+      "sha256": "cb074225066fcdc50caf3858e5ba7302cc7cdb93723d7b68a0d4c34bda8d2230",
+      "source": "/run/user/1000/files-sheet-close-check-kbaprpzs/result.json"
+    },
+    {
+      "bytes": 176034,
+      "path": "close-files/tests.log",
+      "sha256": "d78318abb6d4df167022c80bb690bd8a0b941f8060bc98ca4fdbd47832b74006",
+      "source": "/run/user/1000/files-sheet-close-check-kbaprpzs/tests.log"
+    },
+    {
+      "bytes": 26122,
+      "path": "toolkit-ui/ui-all-features.log",
+      "sha256": "90427bd2722bf58760a4deab27ac9e75a739402134f20e34b8288a743dd2b5f7",
+      "source": "/run/user/1000/tkd-lamcqehz/ui-all-features.log"
+    },
+    {
+      "bytes": 18047,
+      "path": "toolkit-ui/ui-default.log",
+      "sha256": "75e9f21a605cb0ca9f655514052ee4cba6c36e57a807ced6df78ed52cdf60839",
+      "source": "/run/user/1000/tkd-lamcqehz/ui-default.log"
+    },
+    {
+      "bytes": 468,
+      "path": "toolkit-ui/xvfb.log",
+      "sha256": "ce9e61fee3ccfc8bbabe2fb0634f46fce6e9c0696671619329830838251852be",
+      "source": "/run/user/1000/tkd-lamcqehz/xvfb.log"
+    },
+    {
+      "bytes": 572,
+      "path": "toolkit-baseline/baseline.log",
+      "sha256": "ff691cee6922f65e14c5b07d7d65103c7ddf68532ad00e0723af16d790eb5192",
+      "source": "/run/user/1000/tkd-cj6l09u6/baseline.log"
+    },
+    {
+      "bytes": 432,
+      "path": "toolkit-baseline/candidate.log",
+      "sha256": "51138758f144a7535a84e7182ae8509ff625cc6bd21afbbf8559fd20435c1287",
+      "source": "/run/user/1000/tkd-cj6l09u6/candidate.log"
+    },
+    {
+      "bytes": 468,
+      "path": "toolkit-baseline/xvfb.log",
+      "sha256": "ce9e61fee3ccfc8bbabe2fb0634f46fce6e9c0696671619329830838251852be",
+      "source": "/run/user/1000/tkd-cj6l09u6/xvfb.log"
+    },
+    {
+      "bytes": 1856,
+      "path": "toolkit-candidate/candidate.log",
+      "sha256": "2b04e8e5da14523a4a27fff747fd5b6c33a00f175ac91b4963e3b341cff78e34",
+      "source": "/run/user/1000/tkd-_6xjk4c5/candidate.log"
+    },
+    {
+      "bytes": 468,
+      "path": "toolkit-candidate/xvfb.log",
+      "sha256": "ce9e61fee3ccfc8bbabe2fb0634f46fce6e9c0696671619329830838251852be",
+      "source": "/run/user/1000/tkd-_6xjk4c5/xvfb.log"
+    },
+    {
+      "bytes": 3495,
+      "path": "native-preflight/metrics-missing/compositor.log",
+      "sha256": "68f2c05ce4814f9aa6a80e2c6fedf535e9edabb55ea64d26ab2567a3283a533c",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-_ok_bnv9/compositor.log"
+    },
+    {
+      "bytes": 4972,
+      "path": "native-preflight/metrics-missing/nested.log",
+      "sha256": "25c9c1cb7906e65e901c57dc850477bc3099e4b206a1a01b80a5730fd4d8588e",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-_ok_bnv9/nested.log"
+    },
+    {
+      "bytes": 1227,
+      "path": "native-preflight/metrics-missing/report.json",
+      "sha256": "100c183eae539df2ded5ea056556c01eb4e1a45aa0f38f3d27272723b53302c0",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-_ok_bnv9/report.json"
+    },
+    {
+      "bytes": 166,
+      "path": "native-preflight/metrics-missing/service.log",
+      "sha256": "e11f991819d6354da5b5f8b16d3c6b86c759518db585abbce442127f04df588a",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-_ok_bnv9/service.log"
+    },
+    {
+      "bytes": 3837,
+      "path": "native-preflight/unicode-offset/close-middle.png",
+      "sha256": "60f95f744ce9188d05c0d251d8a247a398df362557600704c5478b22bbadd89c",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/close-middle.png"
+    },
+    {
+      "bytes": 10586,
+      "path": "native-preflight/unicode-offset/close-start.png",
+      "sha256": "36d4119bb3450502d7d314d09e3aa5734c87330dfdbc4de7ec68c9e497879f2d",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/close-start.png"
+    },
+    {
+      "bytes": 3496,
+      "path": "native-preflight/unicode-offset/compositor.log",
+      "sha256": "59cd29e3dd798d497a259a6620f098a14b0ce05ee4a7ce205a1c383382369a06",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/compositor.log"
+    },
+    {
+      "bytes": 11530,
+      "path": "native-preflight/unicode-offset/create-draft.png",
+      "sha256": "e2ef8c17134488f45c421bde21d8e0f8a6d0ed58b8c4e16fa063b6e5ee949c6e",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/create-draft.png"
+    },
+    {
+      "bytes": 30256,
+      "path": "native-preflight/unicode-offset/nested.log",
+      "sha256": "bc04a44e2564b3cec6e29dd3dfb92aa5fbda8007de901ff7fdd8894522383e4f",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/nested.log"
+    },
+    {
+      "bytes": 11275,
+      "path": "native-preflight/unicode-offset/open-middle.png",
+      "sha256": "75e22d3fa1583c76f5ab40b0ffb663007771e6b535a0c7cb5837227c870e05a1",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/open-middle.png"
+    },
+    {
+      "bytes": 11291,
+      "path": "native-preflight/unicode-offset/open-settled.png",
+      "sha256": "676c38e04f9811e1b860e53432dcdf2b4a9f7fa12837132a195a9788808d3a2b",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/open-settled.png"
+    },
+    {
+      "bytes": 15492,
+      "path": "native-preflight/unicode-offset/open-start.png",
+      "sha256": "a4b0735525244d37d47c51bec62ed99ca33c365049f52d87c6f7f4735ef7fb00",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/open-start.png"
+    },
+    {
+      "bytes": 16453,
+      "path": "native-preflight/unicode-offset/raw-and-percent-listing.png",
+      "sha256": "9e47c67a99ba1db3beb50be5a5c3cecba39d997b486f1fa0c59241bdba66c8ba",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/raw-and-percent-listing.png"
+    },
+    {
+      "bytes": 11275,
+      "path": "native-preflight/unicode-offset/reopen-middle.png",
+      "sha256": "daeae56a12e2a9155de7852222beed0488704b2437300d97efe043d524d0575e",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/reopen-middle.png"
+    },
+    {
+      "bytes": 11291,
+      "path": "native-preflight/unicode-offset/reopen-settled.png",
+      "sha256": "98bf05a1cc53ba26fe586456a9c604d9366d6aadff964923003d17627614e1da",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/reopen-settled.png"
+    },
+    {
+      "bytes": 3768,
+      "path": "native-preflight/unicode-offset/reopen-start.png",
+      "sha256": "ad72240dd96d4150bb2a395940b07251ca32566b819fd71eb4d57a4d8485e9e4",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/reopen-start.png"
+    },
+    {
+      "bytes": 24980,
+      "path": "native-preflight/unicode-offset/report.json",
+      "sha256": "b907e249cb9ded307cb5d34223d26bc354c72ade4a8af6d333c02f4e8dfd1d1b",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/report.json"
+    },
+    {
+      "bytes": 14833,
+      "path": "native-preflight/unicode-offset/service.log",
+      "sha256": "44701d127726fe8988192afe7529b39fb03801c9b504a994cbc0c53b276f2f4d",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-sfgn0r7f/service.log"
+    },
+    {
+      "bytes": 36075,
+      "path": "native-preflight/undo-group/close-middle.png",
+      "sha256": "9ba81fe0e7a36922bb02debb5ee60d22839db0ee81f57561a223280de8def34d",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/close-middle.png"
+    },
+    {
+      "bytes": 36904,
+      "path": "native-preflight/undo-group/close-start.png",
+      "sha256": "ed738bb0d219540db2a4686716332d6b315eb6a739a6ee2c8a93bec61d4ceaca",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/close-start.png"
+    },
+    {
+      "bytes": 3495,
+      "path": "native-preflight/undo-group/compositor.log",
+      "sha256": "84e0a91c0bbea0ea60628aa44237e4c56ee3d00383da86ea25dc111e52178c9f",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/compositor.log"
+    },
+    {
+      "bytes": 36419,
+      "path": "native-preflight/undo-group/create-draft.png",
+      "sha256": "47391ac6d0c08daa577eb6a7b389503083414080ebd7500708704514f481b02d",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/create-draft.png"
+    },
+    {
+      "bytes": 32005,
+      "path": "native-preflight/undo-group/nested.log",
+      "sha256": "3cb659f8c09ef91f0e02150456c7e7498101ec94432c9465ba1dc1db2de7627e",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/nested.log"
+    },
+    {
+      "bytes": 36342,
+      "path": "native-preflight/undo-group/open-middle.png",
+      "sha256": "b527a5ec510dec8368a9af7f0d9bbce86b30a194be68ac76270f75a3af45ee89",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/open-middle.png"
+    },
+    {
+      "bytes": 36105,
+      "path": "native-preflight/undo-group/open-settled.png",
+      "sha256": "8ea565784b4d0848345a17462a3808cc2fc6c69d48a76982db28ac0ca1220abb",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/open-settled.png"
+    },
+    {
+      "bytes": 32474,
+      "path": "native-preflight/undo-group/open-start.png",
+      "sha256": "4bdfe044f20d876f94627d861212d5294ae0acc1e98380461bf89d1dcb56f82a",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/open-start.png"
+    },
+    {
+      "bytes": 35062,
+      "path": "native-preflight/undo-group/raw-and-percent-listing.png",
+      "sha256": "69f9743a9147044bee3a11d8b4d98b32bd17afb0a5be525899492c8c6d747576",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/raw-and-percent-listing.png"
+    },
+    {
+      "bytes": 36342,
+      "path": "native-preflight/undo-group/reopen-middle.png",
+      "sha256": "a0cae85bcb4d263a125571364b0b42bdca8ba2b258b3b0c5a4a9a8b9cc4d91c0",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/reopen-middle.png"
+    },
+    {
+      "bytes": 36105,
+      "path": "native-preflight/undo-group/reopen-settled.png",
+      "sha256": "71e01e95161b5b0426eddafc292d47451151f81b89d97f5acdcb147337cd62d4",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/reopen-settled.png"
+    },
+    {
+      "bytes": 33519,
+      "path": "native-preflight/undo-group/reopen-start.png",
+      "sha256": "3709a49bb704f4cf93cabba0a4143a6cf5f173521eea9bd16cac1cb3c8624a11",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/reopen-start.png"
+    },
+    {
+      "bytes": 430227,
+      "path": "native-preflight/undo-group/report.json",
+      "sha256": "478e76c0b3d0d413ad9ec2b74cad69da2cad52cce0b6dbdb8520319b2a0e230e",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/report.json"
+    },
+    {
+      "bytes": 230199,
+      "path": "native-preflight/undo-group/service.log",
+      "sha256": "5f76524be410e53724ee978143249fd8598da8afd60876f3006b350856489f9b",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-zcpohscl/service.log"
+    },
+    {
+      "bytes": 40129,
+      "path": "native-preflight/candidate-pass/bulk-preview.png",
+      "sha256": "42904ddad13cc6ffa3b04a2ce00e12f578da89c17f420f0f555fa23d111f89f1",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/bulk-preview.png"
+    },
+    {
+      "bytes": 36164,
+      "path": "native-preflight/candidate-pass/close-middle.png",
+      "sha256": "77a2b2a5c9d3323e26f539c4033bfe7c8c27e8d20cf9ea493c569c12d30b2df4",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/close-middle.png"
+    },
+    {
+      "bytes": 37158,
+      "path": "native-preflight/candidate-pass/close-start.png",
+      "sha256": "08d2f44f41d70534593b400cae70541a17927d9d8263a076f80c07ff9400f1aa",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/close-start.png"
+    },
+    {
+      "bytes": 3495,
+      "path": "native-preflight/candidate-pass/compositor.log",
+      "sha256": "03e7cace80611a11edade94b05cc2ef3f107ec1ac6ad3c51ff63af66ea12e7a6",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/compositor.log"
+    },
+    {
+      "bytes": 29638,
+      "path": "native-preflight/candidate-pass/create-conflict.png",
+      "sha256": "f4b2d6116b8a0e8e7e094ef385b85c32ca5c769968e141cac3183e51ae1d001a",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/create-conflict.png"
+    },
+    {
+      "bytes": 36750,
+      "path": "native-preflight/candidate-pass/create-draft.png",
+      "sha256": "728dffc17693deff2cee64236ab544df15641c529e6d693a110504db5a78f985",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/create-draft.png"
+    },
+    {
+      "bytes": 37048,
+      "path": "native-preflight/candidate-pass/create-ready.png",
+      "sha256": "41d0d21068c3026790edd277ff29177ea8b82ec7a73109a148f378bea3d57c22",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/create-ready.png"
+    },
+    {
+      "bytes": 78961,
+      "path": "native-preflight/candidate-pass/nested.log",
+      "sha256": "bbd982ffd24a7375beb61fece93568de77654226918a6d07482d8582f015115a",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/nested.log"
+    },
+    {
+      "bytes": 36707,
+      "path": "native-preflight/candidate-pass/open-middle.png",
+      "sha256": "8c0ddfbd1a8acf7b6453018dc771b34e1219c6021e486834d1a97d85f2e7f580",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/open-middle.png"
+    },
+    {
+      "bytes": 36482,
+      "path": "native-preflight/candidate-pass/open-settled.png",
+      "sha256": "f394f687354f041f49cb93ad64677bc94891743994b434a07365dd7626b19cb2",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/open-settled.png"
+    },
+    {
+      "bytes": 32542,
+      "path": "native-preflight/candidate-pass/open-start.png",
+      "sha256": "d04f81290dbcd884811a2d4b5685793c0221ec809a1ba8b8eb39b747f5eef166",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/open-start.png"
+    },
+    {
+      "bytes": 35059,
+      "path": "native-preflight/candidate-pass/raw-and-percent-listing.png",
+      "sha256": "ca7c92a27df2d513c72a9ca8bc8b4a2d6eac55b2d73606b7507294573f050079",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/raw-and-percent-listing.png"
+    },
+    {
+      "bytes": 38277,
+      "path": "native-preflight/candidate-pass/raw-name-rejected.png",
+      "sha256": "73d9f47d3093d4ffec7b1228cdcffde5ce91ab4947352b52f5aa5630b9cd4a6b",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/raw-name-rejected.png"
+    },
+    {
+      "bytes": 36707,
+      "path": "native-preflight/candidate-pass/reopen-middle.png",
+      "sha256": "222743085cbb8178e243100a77aa2e380d9d9ead80430990c330b1a0c44135df",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/reopen-middle.png"
+    },
+    {
+      "bytes": 36482,
+      "path": "native-preflight/candidate-pass/reopen-settled.png",
+      "sha256": "811a9c27c0cbd62114496672efd25de1a6b7f133a1b8686134e6ea210f865403",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/reopen-settled.png"
+    },
+    {
+      "bytes": 33630,
+      "path": "native-preflight/candidate-pass/reopen-start.png",
+      "sha256": "c0c07748ab2dcd5cc8af1673d5681a8760b6272cbd8d87678fe5a41a3e5bc816",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/reopen-start.png"
+    },
+    {
+      "bytes": 102170,
+      "path": "native-preflight/candidate-pass/report.json",
+      "sha256": "37c8f72016f315085552b80f241e8e50024b6a66e8ed277310aef82f47eea058",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/report.json"
+    },
+    {
+      "bytes": 54092,
+      "path": "native-preflight/candidate-pass/service.log",
+      "sha256": "3b8a27787736d2edbcc26c8bc6c55675feead5662528362d5da5dfee4db41c2f",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/service.log"
+    },
+    {
+      "bytes": 37509,
+      "path": "native-preflight/candidate-pass/single-preview.png",
+      "sha256": "3ec7ef5a5d756f395f5a3372852de068d36ef6026944a14b85392def4afcbf4f",
+      "source": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/single-preview.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "toolkit-current-shots/scene-sheet-guard-rejected-cpu.png",
+      "sha256": "f34207ce9d9be00005849e62eba6cc50cd17ce2567a1d6a7ad03992eb07734dc",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/test-ui/shots/scene-sheet-guard-rejected-cpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "toolkit-current-shots/scene-sheet-guard-rejected-gpu.png",
+      "sha256": "1e87834fa47551a3f1144baa7ff28e36980f66c9df2e9bfdf4132ada641fcbf2",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/test-ui/shots/scene-sheet-guard-rejected-gpu.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "toolkit-current-shots/scene-sheet-open-cpu.png",
+      "sha256": "f34207ce9d9be00005849e62eba6cc50cd17ce2567a1d6a7ad03992eb07734dc",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/test-ui/shots/scene-sheet-open-cpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "toolkit-current-shots/scene-sheet-open-gpu.png",
+      "sha256": "1e87834fa47551a3f1144baa7ff28e36980f66c9df2e9bfdf4132ada641fcbf2",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/test-ui/shots/scene-sheet-open-gpu.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "toolkit-current-shots/scene-sheet-reopened-cpu.png",
+      "sha256": "cdef9a74aeac6ed5882178f4f0ec6bf3a50ddf5b287580502a2977653cec6771",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/test-ui/shots/scene-sheet-reopened-cpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "toolkit-current-shots/scene-sheet-reopened-gpu.png",
+      "sha256": "b7ac04624c8dfb2643d588595ff30aee4fc39c78a283854f72a5955b43e0cb24",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/test-ui/shots/scene-sheet-reopened-gpu.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "toolkit-current-shots/scene-sheet-update-cpu.png",
+      "sha256": "d1de2764aa9f8a3181a21bb54a09e4ddc38a38158061f203e3c95470d4e0e9a7",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/test-ui/shots/scene-sheet-update-cpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "toolkit-current-shots/scene-sheet-update-gpu.png",
+      "sha256": "ad7aef85e682ec4eaba3f88013cd51dc99e82d81344653242fda4fb63a86dec9",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/test-ui/shots/scene-sheet-update-gpu.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "baseline-current-shots/scene-sheet-closing-cpu.png",
+      "sha256": "eed576d2979bf048a1039dfdd47932bbd56fb3cc216ef40f4563240210499092",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-closing-cpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "baseline-current-shots/scene-sheet-closing-gpu.png",
+      "sha256": "60a5d1c103ef4061645042b8a885029503476ad608f76042e95afa05865974c1",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-closing-gpu.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "baseline-current-shots/scene-sheet-guard-rejected-cpu.png",
+      "sha256": "f34207ce9d9be00005849e62eba6cc50cd17ce2567a1d6a7ad03992eb07734dc",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-guard-rejected-cpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "baseline-current-shots/scene-sheet-guard-rejected-gpu.png",
+      "sha256": "1e87834fa47551a3f1144baa7ff28e36980f66c9df2e9bfdf4132ada641fcbf2",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-guard-rejected-gpu.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "baseline-current-shots/scene-sheet-open-cpu.png",
+      "sha256": "f34207ce9d9be00005849e62eba6cc50cd17ce2567a1d6a7ad03992eb07734dc",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-open-cpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "baseline-current-shots/scene-sheet-open-gpu.png",
+      "sha256": "1e87834fa47551a3f1144baa7ff28e36980f66c9df2e9bfdf4132ada641fcbf2",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-open-gpu.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "baseline-current-shots/scene-sheet-reopened-cpu.png",
+      "sha256": "cdef9a74aeac6ed5882178f4f0ec6bf3a50ddf5b287580502a2977653cec6771",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-reopened-cpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "baseline-current-shots/scene-sheet-reopened-gpu.png",
+      "sha256": "3f253e736e78d14ea33efbf7ae4f05ad99b3c573796f479364638de1626c9b46",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-reopened-gpu.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "baseline-current-shots/scene-sheet-reversal-cpu.png",
+      "sha256": "f11af1186dba09e53d63a04443cf12c2bd8bc46df1bbd77ae46f5db54432d3c3",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-reversal-cpu.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "baseline-current-shots/scene-sheet-reversal-finished-cpu.png",
+      "sha256": "cdef9a74aeac6ed5882178f4f0ec6bf3a50ddf5b287580502a2977653cec6771",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-reversal-finished-cpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "baseline-current-shots/scene-sheet-reversal-finished-gpu.png",
+      "sha256": "3f253e736e78d14ea33efbf7ae4f05ad99b3c573796f479364638de1626c9b46",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-reversal-finished-gpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "baseline-current-shots/scene-sheet-reversal-gpu.png",
+      "sha256": "8c4852129ce80e7239c1b18fd715d8584feaaee79f89dd934c5f46bd5d662a73",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-reversal-gpu.png"
+    },
+    {
+      "bytes": 781743,
+      "path": "baseline-current-shots/scene-sheet-update-cpu.png",
+      "sha256": "d1de2764aa9f8a3181a21bb54a09e4ddc38a38158061f203e3c95470d4e0e9a7",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-update-cpu.png"
+    },
+    {
+      "bytes": 801719,
+      "path": "baseline-current-shots/scene-sheet-update-gpu.png",
+      "sha256": "ad7aef85e682ec4eaba3f88013cd51dc99e82d81344653242fda4fb63a86dec9",
+      "source": "/home/node/Work/lib-fltk-omarchy-disabled-baseline/build/test-ui/shots/scene-sheet-update-gpu.png"
+    },
+    {
+      "bytes": 3726,
+      "path": "toolkit-cpu-checks/all-features-check.log",
+      "sha256": "5753cadbec94c715739fc9d022ec775ba903b621574c0d3cac548b47a1c87e77",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/disabled-controls-check/all-features-check.log"
+    },
+    {
+      "bytes": 1425,
+      "path": "toolkit-cpu-checks/cpu-tests.log",
+      "sha256": "95e52a8e1d1e56fa4665a5bf5ccab85f0429b29dadcd064c9ce2d9050f9d3b29",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/disabled-controls-check/cpu-tests.log"
+    },
+    {
+      "bytes": 699,
+      "path": "toolkit-cpu-checks/default-check.log",
+      "sha256": "7639a253985aff3cdda11fe75203033ccfa6a1357e5d1254e8390940b38d1a92",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/disabled-controls-check/default-check.log"
+    },
+    {
+      "bytes": 19658,
+      "path": "toolkit-cpu-checks/library-tests-short-tmp.log",
+      "sha256": "2d21f9baaee9318bfcb04483416e30370f2dc3c5ba4434fcb76cb51e8a70f7d1",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/disabled-controls-check/library-tests-short-tmp.log"
+    },
+    {
+      "bytes": 21975,
+      "path": "toolkit-cpu-checks/library-tests.log",
+      "sha256": "770c790f0c363cd4698a0f6bd0d74308284d72c40b8acb1a369b70061c523fcf",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/disabled-controls-check/library-tests.log"
+    },
+    {
+      "bytes": 22179,
+      "path": "toolkit-cpu-checks/lint.log",
+      "sha256": "d5d37651f7e8be5931d91bb33dd36678b655247c49334240b082d7cbfdc7d231",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/disabled-controls-check/lint.log"
+    },
+    {
+      "bytes": 1581,
+      "path": "toolkit-cpu-checks/mac-arm-check.log",
+      "sha256": "0ef9a05b78f185870c8655a5b84f71fae73b9547dbb1f518672cab65ecd99cd9",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/disabled-controls-check/mac-arm-check.log"
+    },
+    {
+      "bytes": 912,
+      "path": "toolkit-cpu-checks/msrv-check.log",
+      "sha256": "103d2760bf73db715905486645705bb044b8a636d11e55588ef77c91445cced7",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/disabled-controls-check/msrv-check.log"
+    },
+    {
+      "bytes": 2804,
+      "path": "toolkit-cpu-checks/status.json",
+      "sha256": "0ca0fdfa94d6f8323a7b5dcbc2ebf49f0876223ca88d6f02209fb5bdf00fdfb7",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/disabled-controls-check/status.json"
+    },
+    {
+      "bytes": 2096,
+      "path": "toolkit-cpu-checks/windows-check.log",
+      "sha256": "780fb87ad3ad7d7b1fa511606b0a27c1d9be923531349d23cecabebbb825892b",
+      "source": "/home/node/Work/lib-fltk-omarchy-files-disabled/build/disabled-controls-check/windows-check.log"
+    }
+  ],
+  "scope": "Retained existing logs and images after recursive toolkit fixture cleanup was discovered. Current shots may replace earlier runs and are not attributed to erased runs. Native Files preflight is candidate d734 only; final source f310421 remains unvalidated.",
+  "status": "STOPPED; no new tests or installation authorized after detection"
+}

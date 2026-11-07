@@ -1,0 +1,48 @@
+   Compiling zbus v5.12.0
+   Compiling phf v0.14.0
+   Compiling accesskit_consumer v0.39.0
+   Compiling zmij v1.0.23
+   Compiling crc32fast v1.5.3
+   Compiling fltk-sys v1.5.23
+   Compiling miniz_oxide v0.9.1
+   Compiling futures-macro v0.3.34
+   Compiling serde_json v1.0.154
+   Compiling futures-task v0.3.34
+   Compiling pulldown-cmark v0.13.6
+   Compiling flate2 v1.1.10
+   Compiling miniz_oxide v0.8.9
+   Compiling atspi-common v0.13.0
+   Compiling futures-util v0.3.34
+   Compiling fdeflate v0.3.7
+   Compiling atspi-proxies v0.13.0
+   Compiling atspi v0.29.0
+   Compiling accesskit_atspi_common v0.20.0
+   Compiling crossbeam-channel v0.5.17
+   Compiling minipaste v0.1.0
+   Compiling weezl v0.1.12
+   Compiling zune-core v0.5.3
+   Compiling ttf-parser v0.25.1
+   Compiling unicase v2.10.0
+   Compiling quick-error v2.0.1
+   Compiling byteorder-lite v0.1.0
+   Compiling itoa v1.0.18
+   Compiling image-webp v0.2.4
+   Compiling zune-jpeg v0.5.15
+   Compiling gif v0.14.2
+   Compiling accesskit_unix v0.23.0
+   Compiling png v0.18.1
+   Compiling unicode-segmentation v1.12.0
+   Compiling glow v0.16.0
+   Compiling unicode-bidi v0.3.18
+   Compiling qrcode v0.14.1
+   Compiling fltk v1.5.23
+   Compiling lib-fltk-omarchy v0.0.10 (/home/node/Work/lib-fltk-omarchy-files-disabled)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 56.45s
+     Running tests/ui.rs (target-candidate-verification/debug/deps/ui-3db014b606a8e60a)
+XOpenIM() failed
+FAIL scene sheet GPU: retained modal input, parity, warm reopening and hidden resource release: scene-sheet-reopened: complete real GL/CPU max RGB delta 13
+ui checks FAILED
+error: test failed, to rerun pass `--test ui`
+
+Caused by:
+  process didn't exit successfully: `/home/node/Work/lib-fltk-omarchy-files-disabled/target-candidate-verification/debug/deps/ui-3db014b606a8e60a` (exit status: 1)

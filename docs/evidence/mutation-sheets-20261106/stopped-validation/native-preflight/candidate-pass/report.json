@@ -1,0 +1,5442 @@
+{
+  "functional_gate": "PASS",
+  "fixture_dir": "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_",
+  "checks": [
+    "native Tab stays within Sheet; Escape returns focus to browser",
+    "Escape restores browser and a new opening does not reuse a stale draft",
+    "native Unicode paste and undo; create remains visible during Apply until ACK",
+    "native create folder preserves Unicode and percent basename",
+    "conflicting create reports failure without changing the existing file",
+    "raw non-UTF-8 basename is reported and preserved without lossy rename",
+    "a delayed old Plan ACK cannot replace the reopened dialog plan",
+    "single rename plan/apply and native undo preserve bytes",
+    "bulk rename plan/apply preserves each file"
+  ],
+  "states": [
+    {
+      "label": "create-file",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 1,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 1,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "tab-trap",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 1,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 1,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "tab-trap",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 1,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 1,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "tab-trap",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 1,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 1,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "tab-trap",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 1,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 1,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "tab-trap",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 1,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 1,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "tab-trap",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 1,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 1,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "tab-trap-escaped",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 1,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          false
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": null,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": null,
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 1,
+        "notice_open": false
+      },
+      "open": false,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "browser-focus-after-escape",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 1,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          false
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": null,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": null,
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 1,
+        "notice_open": false
+      },
+      "open": false,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "create-file",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 2,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 2,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "field-value",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 2,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "draft-only.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 2,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 1
+    },
+    {
+      "label": "create-escaped",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 2,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          false
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "draft-only.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": null,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": null,
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 2,
+        "notice_open": false
+      },
+      "open": false,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 1
+    },
+    {
+      "label": "create-file",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 3,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 3,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "field-value",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 3,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "caf\u00e9%report.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 3,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 1
+    },
+    {
+      "label": "typed-suffix",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 3,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "caf\u00e9%report.txtx"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 3,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 2
+    },
+    {
+      "label": "native-undo",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 3,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 3,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 3
+    },
+    {
+      "label": "field-value",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 3,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "caf\u00e9%report.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 3,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 4
+    },
+    {
+      "label": "create-applying",
+      "applying": true,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": false,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": false,
+      "epoch": 3,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          false
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Aplicando cambios\u2026 Esperando confirmaci\u00f3n",
+        "values": [
+          "caf\u00e9%report.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 4,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": true,
+        "mutation_busy": true,
+        "mutation_id": 4,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 4
+    },
+    {
+      "label": "create-escape-blocked",
+      "applying": true,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": false,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": false,
+      "epoch": 3,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          503,
+          426,
+          156,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          false
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Aplicando cambios\u2026 Esperando confirmaci\u00f3n",
+        "values": [
+          "caf\u00e9%report.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 4,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": true,
+        "mutation_busy": true,
+        "mutation_id": 4,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 4
+    },
+    {
+      "label": "created-file",
+      "applying": true,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": false,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": false,
+      "epoch": 3,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          467,
+          426,
+          192,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          false
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Aplicando cambios\u2026 Esperando confirmaci\u00f3n",
+        "values": [
+          "caf\u00e9%report.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": null,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": null,
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 4,
+        "notice_open": false
+      },
+      "open": false,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 4
+    },
+    {
+      "label": "create-folder",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 4,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "Created"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "folder",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 5,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "field-value",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 4,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "Carpeta%\u00f1"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "folder",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 5,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 1
+    },
+    {
+      "label": "created-folder",
+      "applying": true,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": false,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": false,
+      "epoch": 4,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          557,
+          426,
+          102,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          false
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Aplicando cambios\u2026 Esperando confirmaci\u00f3n",
+        "values": [
+          "Carpeta%\u00f1"
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": null,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": null,
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 6,
+        "notice_open": false
+      },
+      "open": false,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 1
+    },
+    {
+      "label": "create-file",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 5,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "created.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 7,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 0
+    },
+    {
+      "label": "field-value",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 5,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          569,
+          426,
+          90,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          true
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Escribe un nombre y pulsa Crear",
+        "values": [
+          "photo1.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "file",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 7,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 1
+    },
+    {
+      "label": "create-conflict",
+      "applying": true,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": false,
+      "close": [
+        708,
+        191,
+        26,
+        33
+      ],
+      "dismissible": false,
+      "epoch": 5,
+      "error": "",
+      "geometry": {
+        "apply": [
+          668,
+          426,
+          66,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          552,
+          426,
+          107,
+          33
+        ],
+        "case": null,
+        "control_count": {
+          "buttons": 2,
+          "fields": 1,
+          "preview": 0
+        },
+        "field_enabled": [
+          false
+        ],
+        "fields": [
+          [
+            279,
+            291,
+            426,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": null,
+        "regex": null,
+        "scroll": [
+          266,
+          268,
+          468,
+          105
+        ],
+        "status": "Aplicando cambios\u2026 Esperando confirmaci\u00f3n",
+        "values": [
+          "photo1.txt"
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": null,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": null,
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 8,
+        "notice_open": true
+      },
+      "open": false,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        250,
+        175,
+        500,
+        300
+      ],
+      "revision": 1
+    },
+    {
+      "label": "rename-raw",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 6,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 9,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 9,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 0
+    },
+    {
+      "label": "raw-name-rejected",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 6,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 9,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 9,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 0
+    },
+    {
+      "label": "raw-name-rejected",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 6,
+      "error": "El lote seleccionado contiene nombres no UTF-8; no se convertir\u00e1n con p\u00e9rdida",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "El lote seleccionado contiene nombres no UTF-8; no se convertir\u00e1n con p\u00e9rdida",
+        "values": [
+          "{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 10,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 10,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 0
+    },
+    {
+      "label": "raw-name-cancelled",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 6,
+      "error": "El lote seleccionado contiene nombres no UTF-8; no se convertir\u00e1n con p\u00e9rdida",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "El lote seleccionado contiene nombres no UTF-8; no se convertir\u00e1n con p\u00e9rdida",
+        "values": [
+          "{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": null,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": null,
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 10,
+        "notice_open": false
+      },
+      "open": false,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 0
+    },
+    {
+      "label": "rename-single",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 7,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 11,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 11,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 0
+    },
+    {
+      "label": "field-value",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 7,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "old-{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": true,
+        "mutation_id": 12,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "old-plan-cancelled",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 7,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "old-{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": null,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": null,
+        "mutation_applied": false,
+        "mutation_busy": true,
+        "mutation_id": 12,
+        "notice_open": false
+      },
+      "open": false,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "reopened-rename",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 8,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 13,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": true,
+        "mutation_id": 13,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 0
+    },
+    {
+      "label": "field-value",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 8,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "fresh-{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": true,
+        "mutation_id": 13,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "fresh-plan-after-stale-ack",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 8,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "fresh-{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": true,
+        "mutation_id": 13,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "fresh-plan-after-stale-ack",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 8,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "fresh-{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 13,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "fresh-plan-after-stale-ack",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 8,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "1 cambios \u00b7 revisa los nombres antes de aplicar",
+        "values": [
+          "fresh-{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 14,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 14,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 1,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "fresh-plan-cancelled",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 8,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "1 cambios \u00b7 revisa los nombres antes de aplicar",
+        "values": [
+          "fresh-{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": null,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": null,
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 14,
+        "notice_open": false
+      },
+      "open": false,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 1,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "rename-single",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 9,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "{name}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 15,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 15,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 0
+    },
+    {
+      "label": "field-value",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 9,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "single{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 15,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "single-plan",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 9,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "single{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 15,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "single-plan",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 9,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "single{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 15,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "single-plan",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 9,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "1 cambios \u00b7 revisa los nombres antes de aplicar",
+        "values": [
+          "single{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 16,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 16,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 1,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "undo-ack",
+      "applying": true,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": false,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": false,
+      "epoch": 9,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          640,
+          581,
+          127,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": null,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Aplicando cambios\u2026 Esperando confirmaci\u00f3n",
+        "values": [
+          "single{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": true,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": null,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": null,
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 18,
+        "notice_open": false
+      },
+      "open": false,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "rename-preview",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 10,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "image-{n:03}{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 19,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 0
+    },
+    {
+      "label": "field-value",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 10,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "{name}-batch{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 19,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "bulk-plan",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 10,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "{name}-batch{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 19,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "bulk-plan",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": false,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 10,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": false,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "Calculando vista previa\u2026 Puedes seguir editando",
+        "values": [
+          "{name}-batch{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 0,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 19,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": true,
+      "preview_start": 0,
+      "preview_total": 0,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    },
+    {
+      "label": "bulk-plan",
+      "applying": false,
+      "builds": 1,
+      "built": true,
+      "can_apply": true,
+      "can_edit": true,
+      "close": [
+        848,
+        36,
+        26,
+        33
+      ],
+      "dismissible": true,
+      "epoch": 10,
+      "error": "",
+      "geometry": {
+        "apply": [
+          776,
+          581,
+          98,
+          33
+        ],
+        "apply_enabled": true,
+        "cancel": [
+          677,
+          581,
+          90,
+          33
+        ],
+        "case": [
+          126,
+          305,
+          360,
+          32
+        ],
+        "control_count": {
+          "buttons": 4,
+          "fields": 5,
+          "preview": 1
+        },
+        "field_enabled": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fields": [
+          [
+            139,
+            136,
+            706,
+            34
+          ],
+          [
+            139,
+            200,
+            334,
+            34
+          ],
+          [
+            511,
+            200,
+            334,
+            34
+          ],
+          [
+            139,
+            264,
+            334,
+            34
+          ],
+          [
+            511,
+            264,
+            334,
+            34
+          ]
+        ],
+        "focus_field": 0,
+        "preview": [
+          126,
+          349,
+          732,
+          174
+        ],
+        "regex": [
+          498,
+          305,
+          360,
+          32
+        ],
+        "scroll": [
+          126,
+          113,
+          748,
+          415
+        ],
+        "status": "2 cambios \u00b7 revisa los nombres antes de aplicar",
+        "values": [
+          "{name}-batch{dotext}",
+          "1",
+          "1",
+          "",
+          ""
+        ]
+      },
+      "model": {
+        "browser_focus": false,
+        "can_undo": false,
+        "closing": false,
+        "dialog_id": 20,
+        "legacy_canvas_dialog_enabled": false,
+        "mode": "rename",
+        "mutation_applied": false,
+        "mutation_busy": false,
+        "mutation_id": 20,
+        "notice_open": false
+      },
+      "open": true,
+      "planning": false,
+      "preview_start": 0,
+      "preview_total": 2,
+      "rect": [
+        110,
+        20,
+        780,
+        610
+      ],
+      "revision": 1
+    }
+  ],
+  "binary_path": "/home/node/Work/files/.cargo/tmp/mutation-candidate-d734/bin/files",
+  "requested_size": "1000x650",
+  "animations": "on",
+  "captures": [
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/raw-and-percent-listing.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/open-start.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/open-middle.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/open-settled.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/close-start.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/close-middle.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/reopen-start.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/reopen-middle.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/reopen-settled.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/create-draft.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/create-ready.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/create-conflict.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/raw-name-rejected.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/single-preview.png",
+    "/home/node/.cache/files-test/mutation-sheet-native-3hlygju_/bulk-preview.png"
+  ],
+  "animation_comparison": "NOT_COMPARED",
+  "scope": "native input and real private mutation fixtures; this profile alone does not prove cross-profile motion",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "c8dc9437c35ddc7214b56ab019bdc033a6ce58ad08387efe32bf7c88e3a2a72f",
+  "helper_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "headless_attempt": "unavailable; see compositor.log",
+  "nested": {
+    "socket": "wayland-1",
+    "pids": [
+      1384714
+    ],
+    "runtime": "/var/tmp/files-filemanager",
+    "backend": "nested"
+  },
+  "policy_eval_response": "other",
+  "private_focus_on_activate": {
+    "option": "misc:focus_on_activate",
+    "int": 1,
+    "set": true
+  },
+  "window_size": [
+    1000,
+    650
+  ],
+  "nested_stopped": true
+}

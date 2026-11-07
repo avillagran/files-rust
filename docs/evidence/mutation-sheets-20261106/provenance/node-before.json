@@ -1,0 +1,39 @@
+{
+  "configuration": {
+    "/home/node/.config/files": {
+      "exists": false
+    },
+    "/home/node/.config/mimeapps.list": {
+      "mode": 420,
+      "sha256": "1c93140f3042b0fccedf2c2d75749a11c0fa64f06a570d7944b9bb818eaeb2a9"
+    },
+    "/home/node/.local/share/applications/mimeapps.list": {
+      "exists": false
+    },
+    "/home/node/.local/share/files": {
+      "exists": false
+    }
+  },
+  "installed": {
+    "files": {
+      "mode": 493,
+      "sha256": "d4c563a603f13a1f50bb2ac2592c447698e82821df91d7fb9b49885806b50930"
+    },
+    "files-helper": {
+      "mode": 493,
+      "sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241"
+    },
+    "files-html-helper": {
+      "mode": 493,
+      "sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758"
+    },
+    "files-html-helper.LICENSES": {
+      "mode": 420,
+      "sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b"
+    },
+    "files-html-helper.build.json": {
+      "mode": 420,
+      "sha256": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd"
+    }
+  }
+}

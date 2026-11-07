@@ -1,0 +1,21 @@
+    Checking lib-fltk-omarchy v0.0.10 (/home/node/Work/files/vendor/lib-fltk-omarchy)
+    Checking files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+warning: variants `Case`, `Regex`, and `Scroll` are never constructed
+  --> crates/ui/src/mutation_sheet_state.rs:60:5
+   |
+59 | pub enum Action {
+   |          ------ variants in this enum
+60 |     Case(Case),
+   |     ^^^^
+61 |     CycleCase,
+62 |     Regex(bool),
+   |     ^^^^^
+...
+69 |     Scroll(usize),
+   |     ^^^^^^
+   |
+   = note: `Action` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `files-ui` (lib) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.58s
