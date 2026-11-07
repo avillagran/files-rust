@@ -604,7 +604,7 @@ impl State {
             Status::Queued if self.paused => "Pausa".into(),
             Status::Queued | Status::Running { bytes: 0, .. } => "…".into(),
             Status::Running { bytes, .. } => format!("≥ {}", files_core::format_size(*bytes)),
-            Status::Measured { bytes, .. } => format!("∑ {}", files_core::format_size(*bytes)),
+            Status::Measured { bytes, .. } => files_core::format_size(*bytes),
             Status::Failed(_) => "Error".into(),
             Status::Cancelled => "Cancelado".into(),
         };
@@ -684,7 +684,7 @@ impl State {
             .filter(|r| matches!(r.status, Status::Queued))
             .count();
         Some(format!(
-            "∑ {} · cola {queued} · err {}",
+            "Tamaños: {} · cola {queued} · err {}",
             if self.paused { "pausa" } else { "activo" },
             self.errors()
         ))
@@ -774,7 +774,7 @@ mod tests {
         state.dispatch_work().unwrap();
         state.finish_measurement(Ok(Measurement::apparent(0, 0)));
         assert_eq!(state.measured_map(root).get(OsStr::new("a")), Some(&0));
-        assert_eq!(state.label(root, OsStr::new("a")).as_deref(), Some("∑ 0 B"));
+        assert_eq!(state.label(root, OsStr::new("a")).as_deref(), Some("0 B"));
     }
     #[test]
     fn mixed_modes_preserve_allocation_through_finish_and_revoke_it_for_fresh_attempts() {

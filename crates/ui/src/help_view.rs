@@ -225,8 +225,8 @@ pub const ITEMS: &[(&str, &str)] = &[
         "Calcular / parar carpetas del listado",
     ),
     (
-        "∑ / ≥ en Tamaño",
-        "Total medido / avance parcial; Ctrl+R invalida",
+        "≈ / ≥ en Tamaño",
+        "Valor previo / avance parcial; Ctrl+R invalida",
     ),
     ("Ctrl+N", "Crear archivo"),
     ("F7 / Ctrl+Shift+N", "Crear carpeta"),

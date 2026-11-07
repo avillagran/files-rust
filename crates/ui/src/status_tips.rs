@@ -11,7 +11,7 @@ const TIPS: [&str; 9] = [
     "Ctrl+L: escribe >comando o :lugar y pulsa Enter para abrir el catálogo filtrado; elige después una acción o destino.",
     "Home/End van a los extremos. Shift extiende el rango; Ctrl mueve el foco sin reemplazar marcas y Ctrl+Shift añade un rango.",
     "Filtra con *.rs o ext:pdf,md y pulsa Ctrl+Shift+A para marcar coincidencias y mostrar todo. Ctrl+Shift+D limpia la selección.",
-    "Ctrl+Shift+Espacio calcula o para carpetas listadas. ∑ es tamaño medido; ≥ es avance parcial. Ctrl+R invalida los cálculos.",
+    "Ctrl+Shift+Espacio calcula o para carpetas listadas. Sin símbolo es tamaño medido; ≈ es valor previo y ≥ avance parcial. Ctrl+R invalida los cálculos.",
     "Ctrl+F filtra nombres: *.pdf, ext:rs,md, type:dir, !draft. Insert marca y avanza; Ctrl+Espacio calcula una carpeta.",
     "Navegador de archivos · Preferencias (Ctrl+,) · Acciones (F10). Ctrl+H muestra u oculta archivos ocultos.",
     "Ctrl+1 Grupos, Ctrl+2 Lista, Ctrl+3 Columnas, Ctrl+4 Espacio y Ctrl+5 Grilla. Ctrl+rueda cambia el zoom de Grilla.",

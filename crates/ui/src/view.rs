@@ -297,6 +297,8 @@ pub(crate) fn empty_browser_message<'a>(loaded: bool, error: &'a str, query: &st
         "Carpeta vacía"
     }
 }
+/// Height reserved for the pinned List view column header.
+pub(crate) const LIST_HEADER: i32 = 30;
 pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     m.listing_sync.width = w;
     if m.search_reveal {
@@ -669,9 +671,32 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         crate::spatial_view::paint(p, m, r(left, top, width, vh));
         y = top - m.scroll + m.content_height;
     } else if m.view == View::List {
+        // The column header stays pinned at the top of the viewport while the
+        // rows scroll beneath it; the header keeps its 30 px slot in the
+        // content height so offsets and scrollbar math are unchanged.
+        y += LIST_HEADER;
+        let rows_top = top + LIST_HEADER;
+        let first = (((rows_top - y).max(0) / 38) as usize).min(m.order.len());
+        let end = ((bottom - y).max(0) as usize)
+            .div_ceil(38)
+            .min(m.order.len());
+        let rows_hits = m.hits.len();
+        p.clip(r(left - 4, rows_top, width + 8, (vh - LIST_HEADER).max(0)));
+        for pos in first..end {
+            let i = m.order[pos];
+            row(p, m, i, r(left, y + pos as i32 * 38, width, 38));
+        }
+        p.unclip();
+        for target in &mut m.hits[rows_hits..] {
+            let end = target.rect.y + target.rect.h;
+            target.rect.y = target.rect.y.max(rows_top);
+            target.rect.h = (end - target.rect.y).max(0);
+        }
+        m.hits.retain(|hit| hit.rect.h > 0);
+        p.rect(r(left - 4, top, width + 8, LIST_HEADER), c.background);
         crate::sort_controls::paint(
             p,
-            r(left, y, width, 26),
+            r(left, top, width, 26),
             &c,
             &mut m.hits,
             crate::sort_controls::Header {
@@ -682,15 +707,6 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                 query: &m.query,
             },
         );
-        y += 30;
-        let first = (((top - y).max(0) / 38) as usize).min(m.order.len());
-        let end = ((bottom - y).max(0) as usize)
-            .div_ceil(38)
-            .min(m.order.len());
-        for pos in first..end {
-            let i = m.order[pos];
-            row(p, m, i, r(left, y + pos as i32 * 38, width, 38));
-        }
         y += m.order.len() as i32 * 38;
     } else {
         let folders = m.group_ends[0];
@@ -1682,7 +1698,7 @@ pub(crate) fn entry_top(m: &Model, i: usize, w: i32) -> Option<i32> {
     let width = w - iw - 16 - left;
     let mut y = 0;
     if m.view == View::List {
-        y = 30 + 38 * m.order.iter().position(|&j| j == i).unwrap_or(0) as i32;
+        y = LIST_HEADER + 38 * m.order.iter().position(|&j| j == i).unwrap_or(0) as i32;
     } else {
         let folders = m.group_ends[0];
         let cols = (width / 240).max(1);
@@ -1755,8 +1771,10 @@ pub fn reveal_selection(m: &mut Model, w: i32, h: i32) {
         return;
     };
     let vh = h - 134;
-    if y < m.scroll {
-        m.scroll = y;
+    // In List view the pinned header covers the first LIST_HEADER pixels.
+    let covered = if m.view == View::List { LIST_HEADER } else { 0 };
+    if y - covered < m.scroll {
+        m.scroll = (y - covered).max(0);
     } else {
         let item_height = if m.view == View::Groups && m.entries.get(i).is_some_and(|e| e.is_dir())
         {
@@ -2728,5 +2746,93 @@ mod inspector_tabs_tests {
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod pinned_list_header_tests {
+    use super::*;
+    use files_core::listing::{Entry, Kind};
+    #[derive(Default)]
+    struct Recorder {
+        text: Vec<(Rect, String)>,
+    }
+    impl Painter for Recorder {
+        fn rect(&mut self, _: Rect, _: Color) {}
+        fn rounded_rect(&mut self, _: Rect, _: i32, _: Color) {}
+        fn text(&mut self, r: Rect, t: &str, _: i32, _: Color, _: bool, _: bool) {
+            self.text.push((r, t.into()));
+        }
+        fn image(&mut self, _: Rect, _: &crate::painter::Image<'_>) {}
+        fn clip(&mut self, _: Rect) {}
+        fn unclip(&mut self) {}
+    }
+    fn model() -> Model {
+        let mut m = Model::new("/fixture-only-pinned-list-header".into());
+        // Disconnected channels: this model never reaches the auxiliary worker.
+        let (tx, _) = std::sync::mpsc::sync_channel(1);
+        let (_, rx) = std::sync::mpsc::channel();
+        m.aux = crate::aux_io::AuxIo { tx, rx };
+        m.folder_views = Default::default();
+        m.folder_views.loaded = true;
+        m.folder_restore = None;
+        m.loaded = true;
+        m.view = View::List;
+        m.entries = (0..100)
+            .map(|i| Entry {
+                name: format!("item-{i:03}").into(),
+                kind: Kind::File,
+                metadata: None,
+                stat_attempted: false,
+            })
+            .collect();
+        m.rebuild();
+        m
+    }
+    #[test]
+    fn list_header_stays_at_viewport_top_and_owns_its_hits_while_scrolled() {
+        let mut m = model();
+        for scroll in [0, 57, 600] {
+            m.scroll = scroll;
+            let mut p = Recorder::default();
+            paint(&mut p, &mut m, 1000, 650);
+            let top = m.listing_rect.y;
+            let header = p
+                .text
+                .iter()
+                .find(|(_, t)| t.contains("NOMBRE"))
+                .expect("header painted");
+            assert_eq!(header.0.y, top, "scroll {scroll}");
+            let sorts: Vec<_> = m
+                .hits
+                .iter()
+                .filter(|h| matches!(h.action, Action::Sort(_)))
+                .collect();
+            assert_eq!(sorts.len(), 4);
+            assert!(sorts.iter().all(|h| h.rect.y == top));
+            for row in m
+                .hits
+                .iter()
+                .filter(|h| matches!(h.action, Action::Entry(_)))
+            {
+                assert!(row.rect.y >= top + LIST_HEADER, "row under header");
+            }
+        }
+    }
+    #[test]
+    fn reveal_upward_keeps_selected_row_below_pinned_header() {
+        let mut m = model();
+        m.scroll = 38 * 40;
+        m.selected = Some(10);
+        reveal_selection(&mut m, 1000, 650);
+        assert_eq!(m.scroll, 38 * 10);
+        let mut p = Recorder::default();
+        paint(&mut p, &mut m, 1000, 650);
+        let row = m
+            .hits
+            .iter()
+            .find(|h| matches!(h.action, Action::Entry(10)))
+            .expect("selected row visible");
+        assert_eq!(row.rect.y, m.listing_rect.y + LIST_HEADER);
     }
 }
