@@ -1512,13 +1512,13 @@ pub fn run_since(start: Instant) -> bool {
                     | Event::MouseWheel
             )
         {
-            if e == Event::Paste {
-                if let Ok(mut state) = m.try_borrow_mut() {
-                    // Drain an old asynchronous FL_PASTE receipt without
-                    // inserting it into the native editor or a later form.
-                    state.text_paste.invalidate();
-                    state.text_paste.receive(&None);
-                }
+            if e == Event::Paste
+                && let Ok(mut state) = m.try_borrow_mut()
+            {
+                // Drain an old asynchronous FL_PASTE receipt without
+                // inserting it into the native editor or a later form.
+                state.text_paste.invalidate();
+                state.text_paste.receive(&None);
             }
             return true;
         }

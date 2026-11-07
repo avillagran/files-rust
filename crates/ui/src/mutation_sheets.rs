@@ -269,10 +269,10 @@ impl Active {
                             bad.set(!accepted);
                         })
                         .on_submit(move |_| {
-                            if !submit_bad.get() {
-                                if let Some(stamp) = submit_stamp.get() {
-                                    submit.request(stamp, Action::Apply);
-                                }
+                            if !submit_bad.get()
+                                && let Some(stamp) = submit_stamp.get()
+                            {
+                                submit.request(stamp, Action::Apply);
                             }
                         });
                     // A defensive allocation bound; the model enforces UTF-8 bytes.
@@ -353,10 +353,10 @@ impl Active {
                 let apply = Button::new(if rename { "Renombrar" } else { "Crear" })
                     .primary()
                     .on_click(move || {
-                        if !bad.get() {
-                            if let Some(s) = stamp.get() {
-                                q.request(s, Action::Apply);
-                            }
+                        if !bad.get()
+                            && let Some(s) = stamp.get()
+                        {
+                            q.request(s, Action::Apply);
                         }
                     });
                 footer.fit(&*apply);
@@ -386,10 +386,9 @@ impl Active {
             if matches!(
                 reason,
                 SheetDismiss::Escape | SheetDismiss::ClickOutside | SheetDismiss::CloseButton
-            ) {
-                if let Some(s) = dismiss_stamp.get() {
-                    dismiss_inbox.request(s, Action::Dismiss);
-                }
+            ) && let Some(s) = dismiss_stamp.get()
+            {
+                dismiss_inbox.request(s, Action::Dismiss);
             }
         });
         Self {
