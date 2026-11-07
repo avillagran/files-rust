@@ -3431,9 +3431,12 @@ pub fn run_since(start: Instant) -> bool {
                 let request = path.with_extension("command");
                 if let Ok(command) = std::fs::read_to_string(&request) {
                     let _ = std::fs::remove_file(&request);
+                    // Geometry may lay out native children. Keep that work
+                    // outside Model even in private diagnostics.
+                    let native_marker = (command.trim() == "mutation-sheet-state")
+                        .then(|| mutation_sheets.marker());
                     let mut state = model.borrow_mut();
-                    match if command.trim() == "mutation-sheet-state" {
-                        let mut marker = mutation_sheets.marker();
+                    match if let Some(mut marker) = native_marker {
                         marker["model"] = serde_json::json!({
                             "mode":state.rename_dialog.as_ref().map(|d| match d.mode {rename_dialog::Mode::File=>"file",rename_dialog::Mode::Folder=>"folder",rename_dialog::Mode::Rename=>"rename"}),
                             "dialog_id":state.rename_dialog.as_ref().map(|d|d.id),
@@ -3444,6 +3447,9 @@ pub fn run_since(start: Instant) -> bool {
                             "browser_focus":app::focus().is_some_and(|w|w.as_widget_ptr()==canvas.as_widget_ptr())
                         });
                         eprintln!("FILES_MUTATION_SHEET_STATE {marker}");
+                        Ok(())
+                    } else if command.trim() == "mutation-sheet-cover" {
+                        state.action(Action::Help);
                         Ok(())
                     } else {
                         mutation_scene::command(&mut state, command.trim())

@@ -87,6 +87,12 @@ true. Cancel becomes an explicit cancellation request, leaving the form
 visible until the real response arrives. It does not confirm rollback, undo
 a committed Create or turn a successful result into failure.
 
+After the executable plan moves to the worker, presentation keeps only the
+bounded last reviewed preview rows, locked for the duration of Apply. Those
+rows grant no mutation authority. A disabled editor returns focus to the
+available cancellation control. A held Enter/Space submission does not
+redirect its repeats into Cancel; normal Tab traversal remains available.
+
 The cancellation status records a request, not its completion. Repeated
 Cancel is disabled after admission. An owner-window close requests cancellation
 and keeps the sheet visible and locked until its real Apply ACK is drained;

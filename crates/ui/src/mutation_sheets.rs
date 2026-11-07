@@ -80,7 +80,7 @@ impl Manager {
     pub fn sync(&mut self, snapshot: Option<Snapshot>, anchor: &Frame) -> bool {
         self.retiring
             .retain(|(at, _)| at.elapsed() < Duration::from_millis(500));
-        let Some(snapshot) = snapshot else {
+        let Some(mut snapshot) = snapshot else {
             self.close();
             return true;
         };
@@ -101,6 +101,20 @@ impl Manager {
             self.active = Some(Active::new(anchor, &snapshot, self.controller.inbox()));
         }
         let a = self.active.as_mut().unwrap();
+        if snapshot.applying {
+            // The worker owns PreparedRename after admission. Retain only
+            // the bounded rows already reviewed, never the executable plan.
+            if let Some(old) = a
+                .published
+                .borrow()
+                .as_ref()
+                .filter(|old| old.stamp == snapshot.stamp && old.mode == Mode::Rename)
+            {
+                snapshot.preview.clone_from(&old.preview);
+                snapshot.preview_total = old.preview_total;
+                snapshot.preview_start = old.preview_start;
+            }
+        }
         let opening = !a.sheet.is_open();
         let changed = a.published.borrow().as_ref() != Some(&snapshot);
         a.stamp.set(Some(snapshot.stamp));
@@ -170,28 +184,36 @@ impl Manager {
         let Some(a) = &self.active else {
             return serde_json::json!({"open":false});
         };
+        let panel_rect = a.sheet.rect();
+        let close_rect = a.sheet.close_rect();
         let s = a.published.borrow();
         let c = a.controls.borrow();
         let geometry = c.as_ref().filter(|c| !c.form.was_deleted() && !c.scroll.was_deleted()).map(|c| serde_json::json!({
             "fields": c.fields.iter().map(|f| rect(&f.input())).collect::<Vec<_>>(),
             "apply":rect(&*c.apply),"cancel":rect(&*c.cancel),
             "scroll":rect(&c.scroll),"preview":c.preview.as_ref().map(rect),
+            "directory":rect(&*c.directory),"status_rect":rect(&*c.status),
             "case":c.case.as_ref().map(|b| rect(&**b)),
             "regex":c.regex.as_ref().map(|b| rect(&**b)),
             "focus_field":c.fields.iter().position(|f| app::focus().is_some_and(|w| w.as_widget_ptr()==f.input().as_widget_ptr())),
+            "focus_cancel":app::focus().is_some_and(|w|w.as_widget_ptr()==c.cancel.as_widget_ptr()),
+            "focus_apply":app::focus().is_some_and(|w|w.as_widget_ptr()==c.apply.as_widget_ptr()),
             "values":c.fields.iter().map(TextField::value).collect::<Vec<_>>()
+            ,"positions":c.fields.iter().map(|f|f.input().position()).collect::<Vec<_>>()
+            ,"marks":c.fields.iter().map(|f|f.input().mark()).collect::<Vec<_>>()
             ,"field_enabled":c.fields.iter().map(|f|f.input().active_r()).collect::<Vec<_>>()
             ,"apply_enabled":c.apply.active_r(),"cancel_enabled":c.cancel.active_r(),"status":c.status.text()
             ,"control_count":{"fields":c.fields.len(),"buttons":if c.case.is_some(){4}else{2},"preview":usize::from(c.preview.is_some())}
         }));
         serde_json::json!({
             "open":a.sheet.is_open(),"built":a.sheet.is_built(),"builds":a.builds.get(),
-            "rect":a.sheet.rect(),"close":a.sheet.close_rect(),"dismissible":a.sheet.is_dismissible(),
+            "rect":panel_rect,"close":close_rect,"dismissible":a.sheet.is_dismissible(),
             "epoch":a.epoch,"revision":s.as_ref().map(|s|s.stamp.revision),
             "planning":s.as_ref().is_some_and(|s|s.planning),"applying":s.as_ref().is_some_and(|s|s.applying),
             "closing":s.as_ref().is_some_and(|s|s.closing),"cancel_requested":s.as_ref().is_some_and(|s|s.cancel_requested),
             "can_edit":s.as_ref().is_some_and(|s|s.can_edit),"can_apply":s.as_ref().is_some_and(|s|s.can_apply),
             "preview_total":s.as_ref().map(|s|s.preview_total),"preview_start":s.as_ref().map(|s|s.preview_start),
+            "preview_rows":s.as_ref().map(|s|s.preview.iter().map(|r|(&r.before,&r.after)).collect::<Vec<_>>()),
             "error":s.as_ref().map(|s|s.error.as_str()),"geometry":geometry
         })
     }
@@ -413,6 +435,20 @@ impl Active {
 
 impl Controls {
     fn sync(&self, s: &Snapshot, rejected: bool) {
+        let losing_focus = app::focus().is_some_and(|w| {
+            let ptr = w.as_widget_ptr();
+            self.fields.iter().any(|f| f.input().as_widget_ptr() == ptr)
+                || self.apply.as_widget_ptr() == ptr
+                || self.case.as_ref().is_some_and(|b| b.as_widget_ptr() == ptr)
+                || self
+                    .regex
+                    .as_ref()
+                    .is_some_and(|b| b.as_widget_ptr() == ptr)
+                || self
+                    .preview
+                    .as_ref()
+                    .is_some_and(|p| p.as_widget_ptr() == ptr)
+        });
         for (i, field) in self.fields.iter().enumerate() {
             let mut input = field.input();
             if input.value() != s.fields[i] {
@@ -468,6 +504,17 @@ impl Controls {
             "Cancelar"
         });
         enabled(&mut *cancel, !s.closing && !s.cancel_requested);
+        // A held submit key must not repeat into the cancellation action.
+        // Tab can still reach Cancel once editing is locked.
+        if losing_focus
+            && s.applying
+            && cancel.active_r()
+            && ![Key::Enter, Key::KPEnter, Key::from_char(' ')]
+                .into_iter()
+                .any(app::event_key_down)
+        {
+            let _ = cancel.take_focus();
+        }
         if let Some(mut case) = self.case.clone() {
             case.set_text(match s.case {
                 Case::Preserve => "Caso: conservar",
@@ -485,6 +532,7 @@ impl Controls {
             enabled(&mut *regex, s.can_edit);
         }
         if let Some(mut preview) = self.preview.clone() {
+            enabled(&mut preview, !s.applying);
             preview.redraw();
         }
     }
@@ -617,7 +665,9 @@ fn draw_preview(frame: &mut Frame, s: Option<&Snapshot>) {
         }
         if s.preview.is_empty() {
             paint::text_elided(
-                if s.planning {
+                if s.applying {
+                    "Aplicando cambios…"
+                } else if s.planning {
                     "Preparando vista previa…"
                 } else {
                     "El patrón no cambia ningún nombre."
