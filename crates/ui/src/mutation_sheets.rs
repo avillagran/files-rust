@@ -189,6 +189,7 @@ impl Manager {
             "rect":a.sheet.rect(),"close":a.sheet.close_rect(),"dismissible":a.sheet.is_dismissible(),
             "epoch":a.epoch,"revision":s.as_ref().map(|s|s.stamp.revision),
             "planning":s.as_ref().is_some_and(|s|s.planning),"applying":s.as_ref().is_some_and(|s|s.applying),
+            "closing":s.as_ref().is_some_and(|s|s.closing),"cancel_requested":s.as_ref().is_some_and(|s|s.cancel_requested),
             "can_edit":s.as_ref().is_some_and(|s|s.can_edit),"can_apply":s.as_ref().is_some_and(|s|s.can_apply),
             "preview_total":s.as_ref().map(|s|s.preview_total),"preview_start":s.as_ref().map(|s|s.preview_start),
             "error":s.as_ref().map(|s|s.error.as_str()),"geometry":geometry
@@ -432,7 +433,11 @@ impl Controls {
         } else if !s.error.is_empty() {
             s.error.clone()
         } else if s.applying {
-            "Aplicando cambios… Esperando confirmación".into()
+            if s.cancel_requested {
+                "Cancelación solicitada… Esperando confirmación".into()
+            } else {
+                "Aplicando cambios… Esperando confirmación".into()
+            }
         } else if s.planning {
             "Calculando vista previa… Puedes seguir editando".into()
         } else if s.mode == Mode::Rename {
@@ -443,16 +448,26 @@ impl Controls {
         } else {
             "Escribe un nombre y pulsa Crear".into()
         };
-        self.status.clone().set_text(&status);
+        self.status
+            .clone()
+            .tone(if rejected || !s.error.is_empty() {
+                Tone::Urgent
+            } else {
+                Tone::Dim
+            })
+            .set_text(&status);
         self.status.clone().set_tooltip(&status);
         let mut apply = self.apply.clone();
         enabled(&mut *apply, s.can_apply);
         let mut cancel = self.cancel.clone();
-        cancel.set_text(if s.applying {
+        cancel.set_text(if s.cancel_requested {
+            "Cancelación solicitada"
+        } else if s.applying {
             "Solicitar cancelación"
         } else {
             "Cancelar"
         });
+        enabled(&mut *cancel, !s.closing && !s.cancel_requested);
         if let Some(mut case) = self.case.clone() {
             case.set_text(match s.case {
                 Case::Preserve => "Caso: conservar",

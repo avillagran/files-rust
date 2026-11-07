@@ -50,6 +50,9 @@ pub struct Snapshot {
     pub error: String,
     pub planning: bool,
     pub applying: bool,
+    pub closing: bool,
+    /// UI admission only; neither rollback nor completion is implied.
+    pub cancel_requested: bool,
     pub can_edit: bool,
     pub can_apply: bool,
     pub can_dismiss: bool,
@@ -148,6 +151,7 @@ struct Observed {
     case: Case,
     regex: bool,
     edited_at: Instant,
+    cancel_requested: bool,
 }
 
 #[derive(Default, Debug, PartialEq, Eq)]
@@ -204,6 +208,7 @@ impl Controller {
                 case: d.case,
                 regex: d.regex,
                 edited_at: d.edited_at,
+                cancel_requested: false,
             });
         }
         let old = self.observed.as_mut()?;
@@ -218,12 +223,15 @@ impl Controller {
             old.regex = d.regex;
             old.edited_at = d.edited_at;
         }
+        old.cancel_requested |= m.closing && m.mutation_applied;
         Some(old.stamp)
     }
 
     pub fn snapshot(&mut self, m: &Model) -> Option<Snapshot> {
         let stamp = self.observe(m)?;
-        if covered(m) {
+        // An in-flight Apply stays visible until its ACK, including while
+        // the owning window waits to close. Competing surfaces still win.
+        if competing_surface(m) || (m.closing && !m.mutation_applied) {
             return None;
         }
         let d = m.rename_dialog.as_ref()?;
@@ -264,6 +272,8 @@ impl Controller {
             error,
             planning: (d.changed || m.mutations.busy) && !m.mutation_applied,
             applying: m.mutation_applied,
+            closing: m.closing,
+            cancel_requested: self.observed.as_ref().is_some_and(|s| s.cancel_requested),
             can_edit,
             can_apply: applicable(m),
             can_dismiss: !m.mutation_applied,
@@ -350,6 +360,11 @@ impl Controller {
                     can_apply
                 }
                 Value::Action(Action::Cancel) => {
+                    if m.mutation_applied
+                        && let Some(observed) = &mut self.observed
+                    {
+                        observed.cancel_requested = true;
+                    }
                     m.cancel_rename();
                     true
                 }
@@ -416,10 +431,13 @@ fn validate_create(name: &str) -> Result<(), String> {
     Ok(())
 }
 
-/// Competing surfaces exclude this sheet's own dialog and pending worker.
 fn covered(m: &Model) -> bool {
-    m.closing
-        || m.delete.confirm.is_some()
+    m.closing || competing_surface(m)
+}
+
+/// Competing surfaces exclude this sheet's own dialog and pending worker.
+fn competing_surface(m: &Model) -> bool {
+    m.delete.confirm.is_some()
         || m.delete.busy()
         || m.copy_busy()
         || m.open_with.is_some()
@@ -828,6 +846,9 @@ mod tests {
         let planning = c.snapshot(&m).unwrap();
         assert!(planning.can_dismiss);
         assert!(planning.can_edit);
+        m.closing = true;
+        assert!(c.snapshot(&m).is_none());
+        m.closing = false;
         c.inbox().request(planning.stamp, Action::Dismiss);
         c.drain(&mut m);
         assert!(m.rename_dialog.is_none());
@@ -837,6 +858,7 @@ mod tests {
         m.mutations.busy = true;
         let pending = c.snapshot(&m).unwrap();
         assert!(pending.applying);
+        assert!(!pending.cancel_requested);
         assert!(!pending.can_dismiss);
         c.inbox().request(pending.stamp, Action::Dismiss);
         assert_eq!(c.drain(&mut m).rejected, 1);
@@ -844,6 +866,38 @@ mod tests {
         assert_eq!(c.drain(&mut m).accepted, 1);
         assert!(m.rename_dialog.is_some());
         assert!(m.mutation_applied);
+        assert!(c.snapshot(&m).unwrap().cancel_requested);
+
+        let mut m = model(Mode::File);
+        assert!(!c.snapshot(&m).unwrap().cancel_requested);
+        let before = stamp(&mut c, &m);
+        c.inbox().edit(before, 0, "closing-ack.txt");
+        c.inbox().request(before, Action::Apply);
+        assert_eq!(c.drain(&mut m).accepted, 2);
+        m.closing = true;
+        let waiting = c.snapshot(&m).expect("Apply must remain visible until ACK");
+        assert!(waiting.closing && waiting.applying);
+        assert!(waiting.cancel_requested);
+        assert!(!waiting.can_edit && !waiting.can_apply && !waiting.can_dismiss);
+        c.inbox().request(waiting.stamp, Action::Cancel);
+        assert_eq!(c.drain(&mut m).rejected, 1);
+        assert!(m.rename_dialog.is_some() && m.mutation_applied);
+        m.settings = true;
+        assert!(
+            c.snapshot(&m).is_none(),
+            "a competing surface still covers Apply"
+        );
+        m.settings = false;
+        assert!(c.snapshot(&m).is_some());
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while m.mutations.busy {
+            m.pump_mutations();
+            assert!(Instant::now() < deadline, "closing Apply ACK timed out");
+            std::thread::sleep(Duration::from_millis(1));
+        }
+        assert!(!m.mutation_applied);
+        assert!(m.rename_dialog.is_none());
+        assert!(c.snapshot(&m).is_none());
     }
 
     #[test]

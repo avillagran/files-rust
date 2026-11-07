@@ -87,10 +87,17 @@ true. Cancel becomes an explicit cancellation request, leaving the form
 visible until the real response arrives. It does not confirm rollback, undo
 a committed Create or turn a successful result into failure.
 
+The cancellation status records a request, not its completion. Repeated
+Cancel is disabled after admission. An owner-window close requests cancellation
+and keeps the sheet visible and locked until its real Apply ACK is drained;
+the existing window shutdown and critical-result review protocol then decides
+when the owner can hide. Backend owner hide/deletion still bypasses the guard.
+
 Before Apply, dismissal cancels planning and closes the logical dialog while
-its worker response is drained. Programmatic/owner teardown can remove the
-UI despite the user dismissal gate; application closure still cancels and
-drains workers. Widget destruction is never an operation ACK.
+its worker response is drained. Actual owner hide/deletion and final adapter
+destruction can remove the UI despite the user dismissal gate; application
+closure still cancels and drains workers. Widget destruction is never an
+operation ACK.
 
 Real completion uses existing history, refresh and feedback paths. Required
 error, partial-result, recovery and acknowledgement reviews keep their
