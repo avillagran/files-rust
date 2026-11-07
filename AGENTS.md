@@ -9,6 +9,20 @@ must replace `AuxIo` with disconnected channels before pumping, unless the
 test explicitly validates persistence inside its private configuration root.
 Never use the user's live settings as test fixtures.
 
+## Retain test fixtures
+
+Review filesystem writes and cleanup in unfamiliar test harnesses and their
+reachable helpers before execution. Use an exclusive private directory for
+each run, keep fixtures and evidence, and reject symlink traversal. Do not
+delete directory trees or replace a prior run's output. Namespace-removal
+cases can move their owned entries aside while preserving the original data.
+
+If an unexpected deletion occurs, stop and inform the user. Do not retry the
+command or use another runner. Check the current project journal and incident
+record before resuming; fixing source does not by itself lift an existing stop.
+The retained-fixture toolkit repair and its pending authorization are recorded
+in `docs/evidence/mutation-sheets-20261106/README.md`.
+
 ## M2 installation (standing user instruction, 2026-11-04)
 
 Install every new validated Files version on M2, not only on NODE. This is

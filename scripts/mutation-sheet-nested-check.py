@@ -492,8 +492,8 @@ def main():
                 # parent, lstat checks and peer/starttime/inode checks reject a
                 # changed peer before any input, but cannot make lookup atomic.
                 connection.connect(str(runtime / socket))
-                peer_pid, peer_uid, _ = struct.unpack('3i', connection.getsockopt(
-                    socket_module.SOL_SOCKET, socket_module.SO_PEERCRED, struct.calcsize('3i')))
+                peer_pid, peer_uid, _ = struct.unpack('=iII', connection.getsockopt(
+                    socket_module.SOL_SOCKET, socket_module.SO_PEERCRED, struct.calcsize('=iII')))
                 after = os.stat(socket, dir_fd=directory, follow_symlinks=False)
                 if (peer_pid != compositor_pid or peer_uid != os.getuid() or
                         not stat.S_ISSOCK(after.st_mode) or (before.st_dev, before.st_ino) != (after.st_dev, after.st_ino) or
