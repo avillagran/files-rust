@@ -99,7 +99,10 @@ turn an external request into a partial selection.
 
 A successful D-Bus reply acknowledges UI admission. Folder enumeration,
 painting and properties metadata may finish afterward. A service disconnect
-does not terminate an already presented Files window.
+does not terminate an already presented Files window. The broker queues the
+reply before native presentation; it does not acknowledge focus transfer.
+Immediate window closure can disconnect a caller before its queued reply
+is delivered.
 
 ## Bounds and lifecycle
 
@@ -135,11 +138,25 @@ interval do not bound that initial phase. See the
 
 ## Activation and remaining scope
 
-The startup ID is accepted and bounded, but window presentation currently
-uses `show()` on a best-effort basis. Upstream toolkit `767235b` now exposes
-`native::present`, but that API is not part of Files' current `0f68089`
-vendor export and has not been adopted by this broker. Focus
-transfer and compositor startup-notification completion are not guaranteed.
+The current source adopts exact toolkit `767235b` and forwards the accepted
+request's startup ID unchanged to `native::present`. The owned intent is
+created only after UI admission, and the D-Bus reply is queued before native
+activation. An already mapped window can be presented immediately; a hidden
+initial window waits for its first paint in one pending slot with a
+two-second expiry. Current view/modal/operation guards are checked again
+before the native call, allowing only a properties request's own inspector.
+Rejected or stale intents are dropped without replay or activation retries.
+
+`Requested` means native dispatch, not confirmed focus. Files records the
+toolkit's activation outcome separately from visibility and does not force
+foreground ownership. Startup context and native error text are redacted;
+activation environment variables are neither imported nor mutated. The
+current Wayland private-queue implementation is synchronous and can wait
+for two separate two-second handshakes on its first no-token call. This
+wait follows admission-reply queuing and remains a usability limitation.
+Files-specific native acceptance and installation passed on NODE and native
+ARM Linux M2. See [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md) for the complete
+contract and the requested, unadopted nonblocking toolkit follow-up.
 
 The source-only
 [optional service template](../packaging/dbus/org.freedesktop.FileManager1.service.in)
@@ -153,9 +170,9 @@ file changes which application the bus can launch and can conflict with an
 existing provider; no such installation is part of this implementation.
 See the [D-Bus activation specification](https://dbus.freedesktop.org/doc/dbus-specification.html#message-bus-starting-services).
 
-Automatic desktop activation/default registration, platform activation-token
-handling and native macOS/Windows acceptance remain open. Functional evidence
-for each delivery is recorded separately; this implementation does not close
+Automatic desktop activation/default registration and native macOS/Windows
+acceptance remain open. Functional evidence for each delivery is recorded
+separately; this implementation does not close
 the project's `NOT_MEASURED` resource/startup gates or establish complete
 Nautilus/Finder parity.
 

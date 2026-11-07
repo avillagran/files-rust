@@ -34,8 +34,10 @@ Explicit FileManager1 service mode and the select/folders/properties CLI are
 implemented; see [FILEMANAGER1.md](FILEMANAGER1.md). Requests preserve exact
 path identity, use cancellable helper preflight and reject stale view/modal
 ownership before UI admission. Automatic desktop activation/default-provider
-registration and startup-token focus handling remain open. Initial local
-libdbus connection/authentication has no hard total deadline.
+registration remains open. The current source forwards explicit startup
+context through exact toolkit `767235b`; Files-specific native acceptance
+is pending. See [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md). Initial
+local libdbus connection/authentication has no hard total deadline.
 
 Reconcile the existing Nautilus parity matrix with current implementation;
 several entries predate Sidebar, recent files and AccessKit in the toolkit.
@@ -80,7 +82,7 @@ it does not replace the operation, interoperability or platform requirements.
 The upstream review found native dialogs/portal support (`4eef3bd`) and
 retained CPU/GPU scene surfaces (`c3c46ab` through `f02aacc`). These are
 committed upstream capabilities, not adopted Files functionality. The
-current exact `0f68089` vendor export includes those capabilities, but they
+current exact `767235b` vendor export includes those capabilities, but they
 are not enabled as Files features merely by exporting that source.
 
 Adopt dialogs through explicit user actions and preserve existing path,
@@ -96,8 +98,9 @@ Upstream `89632dc` now supplies composite-key tabs, close/context/reorder
 requests, an independent keyboard cursor and authoritative hit geometry.
 The follow-up `a029d45` fixes reveal when activating an already-selected key
 after independent cursor scrolling. Files exports that committed tree
-exactly in the original keyed-strip delivery; `0f68089` retains that fix
-with optional GPU/effects disabled. Its own acceptance is recorded in
+exactly in the original keyed-strip delivery; `0f68089` and the current
+`767235b` export retain that fix with optional GPU/effects disabled. Its own
+acceptance is recorded in
 [KEYED-TABS.md](KEYED-TABS.md), separately from upstream X11 evidence.
 
 The adapter queues requests outside drawing and synchronous State
@@ -141,12 +144,23 @@ Requested and actual mapped geometry, full-frame captures and native input
 have separate declared scopes. Optional GPU/accessibility/media features
 remain off; full language, accessibility and platform acceptance stay open.
 
-## Next toolkit integration: native presentation
+## Native presentation integrated at 767235b
 
-Committed upstream `767235b` now provides `native::present` and explicit
-startup/activation hints. Its bounded Wayland private-queue handshakes do
-not imply that a `Requested` outcome grants focus. The current Files vendor
-remains `0f68089`; adopt `767235b` as a separate exact export after this
-feedback delivery, then validate Files' token forwarding and native M2
-behavior. Do not treat the existence of the upstream API as Files adoption
-or claim that the current `show()` consumes a caller's startup ID.
+The current source exports exact committed toolkit `767235b` and connects
+`native::present` to accepted FileManager1/CLI requests. It preserves explicit
+startup context, queues the admission reply before native work and revalidates
+current ownership. One pending slot waits at most two seconds for a hidden
+window's first paint; stale or competing interaction drops it without replay.
+`Requested` remains distinct from confirmed activation, and no foreground
+forcing or retry bypasses platform policy. See
+[WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md).
+
+Files-specific native acceptance and NODE/M2 installation passed for this
+integration: eight source scopes and three installed checks per machine.
+The historical feedback and external-navigation evidence above retains its
+original scope; the new delivery is recorded separately. The current
+Wayland implementation can synchronously wait for two two-second private
+handshakes on its first no-token call. A nonblocking variant has been
+requested in the toolkit thread; no uncommitted follow-up is adopted.
+Automatic activation/default registration, native macOS/Windows acceptance
+and the existing resource/startup gates remain open.

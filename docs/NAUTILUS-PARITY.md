@@ -10,6 +10,8 @@ The original matrix was checked against code at `6348af9`. The dated
 2026-11-06 reconciliation below updates the entries supported by newer
 code and retained evidence through `cbc83a9`; unchanged rows
 retain their earlier scope and are not a fresh full-parity audit.
+Source notes also describe the `767235b` presentation integration below;
+its Files-specific native acceptance remains pending.
 
 States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use.
 
@@ -47,7 +49,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 30 | Search with filters and full text | yes | — | — |
 | 31 | Executables and `.desktop` | no | — | P2 |
 | 32 | File chooser (portal) | no | — | P3 |
-| 33 | `org.freedesktop.FileManager1` and `.desktop` | partial | explicit three-method service and select/folders/properties CLI implemented; automatic desktop activation/default registration and startup-token focus handling pending | P1 |
+| 33 | `org.freedesktop.FileManager1` and `.desktop` | partial | explicit three-method service and select/folders/properties CLI implemented; startup context forwarded through toolkit 767235b with native acceptance pending; automatic desktop activation/default registration remains open | P1 |
 | 34 | Shortcut help | yes | — | — |
 | 35 | Bookmarks Ctrl+D | yes | — | — |
 | 36 | Copy path | **yes** | block 1: Ctrl+Alt+C and context menu | — |
@@ -310,9 +312,10 @@ Multiple objects use the existing paged properties dialog, including browser
 multi-selection, without introducing batch permission changes. See
 [FILEMANAGER1.md](FILEMANAGER1.md) for limits, the startup/connect caveat and
 the source-only optional activation template. No activation provider or
-default association is installed by this work. Startup-token focus handling,
-native platform acceptance and the resource/startup gates remain open;
-delivery-specific acceptance is recorded separately.
+default association is installed by this work. The current source adopts
+explicit startup-context forwarding as described below; native platform
+acceptance and the resource/startup gates remain open. Delivery-specific
+acceptance is recorded separately.
 
 
 ### 2026-11-06 — Persistent operation feedback
@@ -326,3 +329,22 @@ installed NODE/M2 checks pass, including real history actions and card-only
 ON/OFF pixel equality. See [PERSISTENT-NOTICES.md](PERSISTENT-NOTICES.md).
 This improves feedback without closing the remaining operation, platform,
 language, accessibility or activation gaps in this matrix.
+
+### 2026-11-06 — Native presentation source integration
+
+Exact toolkit `767235b` supplies the current `native::present` boundary.
+Accepted FileManager1 requests retain their exact startup context, queue a
+reply before native work and recheck view/modal ownership immediately before
+presentation. A single expiring first-paint slot handles initially hidden
+windows. Native `Requested` does not establish granted focus, and Files
+does not force activation or replay rejected context. The synchronous
+Wayland private-queue wait remains a usability limitation; a nonblocking
+toolkit follow-up has been requested but is not adopted.
+
+Files-specific native acceptance and installation passed on NODE and ARM
+Linux M2, including real gesture tokens, compositor focus and first-map
+close cancellation. Windows/macOS runtime acceptance,
+automatic activation/default registration and the resource/startup gates
+remain open. See [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md). This source
+change does not turn row 33 into complete desktop interoperability or close
+the broader Nautilus/Finder goal.

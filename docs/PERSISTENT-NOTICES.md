@@ -1,10 +1,13 @@
 # Persistent operation notices
 
 Files uses the toolkit's `overlay::Notice` for compact operation feedback.
-The source implementation exports the exact committed toolkit `0f68089`
-tree: 430 upstream files and Files' own `UPSTREAM.json`. Optional GPU,
-accessibility, images, playback, QR and Mermaid features remain disabled.
-See the [export manifest](evidence/persistent-notices-20261106/vendor-manifest.json)
+The notice adapter originally adopted exact committed toolkit `0f68089`.
+The current source exports `767235b`, retaining that notice API and adding
+native presentation; see [WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md).
+Optional GPU, accessibility, images, playback, QR and Mermaid features
+remain disabled. The original notice export's 430 upstream files and Files'
+`UPSTREAM.json` are recorded in its
+[export manifest](evidence/persistent-notices-20261106/vendor-manifest.json)
 and [API review](evidence/persistent-notices-20261106/vendor-review.md).
 
 This document describes implemented behavior and the acceptance contract.
@@ -130,12 +133,16 @@ These cards do not complete Nautilus/Finder parity, enable Files' optional
 accessibility feature, establish full application translation or close the
 resource/startup gates, which remain `NOT_MEASURED`.
 
-Upstream `767235b` now provides `native::present`; it is a separate committed
-capability and is not part of this `0f68089` export. Its Wayland private-queue
-handshakes are bounded, and `Requested` does not mean focus was granted.
-Adopting it for Files' startup/activation context requires a separate exact
-export and Files-specific token and native M2 validation. The current
-FileManager1 presentation limitation remains documented in
+The current source separately adopts exact `767235b` for explicit external
+request presentation. It preserves the startup ID without logging it,
+queues the admission reply before native work and drops stale or modal-conflicting
+intent. `Requested` still does not mean focus was granted. Its synchronous
+Wayland private-queue wait remains bounded but can stall the UI; a
+nonblocking toolkit follow-up is requested and unadopted. Files-specific
+presentation acceptance, notice regressions after this export and NODE/M2
+installation passed. The historical notice delivery below retains
+its original `0f68089` scope. See
+[WINDOW-PRESENTATION.md](WINDOW-PRESENTATION.md) and
 [FILEMANAGER1.md](FILEMANAGER1.md).
 
 
