@@ -1002,11 +1002,9 @@ mod tests {
         assert!(!automatic.needs_measurement(root, OsStr::new("automatic"), at));
         assert!(automatic.needs_measurement(root, OsStr::new("automatic"), at + REUSE_FOR));
         queue.automatic = automatic;
-        assert!(
-            queue
-                .label(root, OsStr::new("automatic"))
-                .unwrap()
-                .contains("caché")
+        assert_eq!(
+            queue.label(root, OsStr::new("automatic")).as_deref(),
+            Some("≈ 42 B")
         );
         assert!(queue.measured_map(root).is_empty());
         assert!(queue.dispatch_work().is_none());

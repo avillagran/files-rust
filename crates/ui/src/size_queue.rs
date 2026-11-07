@@ -577,35 +577,33 @@ impl State {
         }
     }
     pub fn label(&self, root: &Path, name: &OsStr) -> Option<String> {
-        let record =
-            match self.rows(root).iter().find(|r| r.name == name) {
-                Some(record) => record,
-                None if self.root == root => {
-                    return self.automatic.cached.get(name).map(|value| {
-                        format!("≈ {} · caché", files_core::format_size(value.bytes))
-                    });
-                }
-                None => return None,
-            };
+        let record = match self.rows(root).iter().find(|r| r.name == name) {
+            Some(record) => record,
+            None if self.root == root => {
+                return self
+                    .automatic
+                    .cached
+                    .get(name)
+                    .map(|value| format!("≈ {}", files_core::format_size(value.bytes)));
+            }
+            None => return None,
+        };
         if record.mode == Mode::Apparent
             && matches!(record.status, Status::Queued | Status::Running { .. })
             && let Some(value) = self.automatic.cached.get(name)
         {
-            return Some(format!(
-                "≈ {} · caché",
-                files_core::format_size(value.bytes)
-            ));
+            return Some(format!("≈ {}", files_core::format_size(value.bytes)));
         }
         if matches!(record.status, Status::Failed(_))
             && let Some((bytes, _)) = self.automatic.partials.get(name)
             && *bytes > 0
         {
-            return Some(format!("≥{} · parcial", files_core::format_size(*bytes)));
+            return Some(format!("≥ {}", files_core::format_size(*bytes)));
         }
         let mut label = match &record.status {
-            Status::Queued if self.paused => "En pausa".into(),
-            Status::Queued => "En cola".into(),
-            Status::Running { bytes, .. } => format!("≥{}", files_core::format_size(*bytes)),
+            Status::Queued if self.paused => "Pausa".into(),
+            Status::Queued | Status::Running { bytes: 0, .. } => "…".into(),
+            Status::Running { bytes, .. } => format!("≥ {}", files_core::format_size(*bytes)),
             Status::Measured { bytes, .. } => format!("∑ {}", files_core::format_size(*bytes)),
             Status::Failed(_) => "Error".into(),
             Status::Cancelled => "Cancelado".into(),
@@ -618,7 +616,7 @@ impl State {
     pub fn detail(&self, root: &Path, name: &OsStr) -> Option<String> {
         let record = match self.rows(root).iter().find(|r| r.name == name) {
             Some(record) => record,
-            None if self.root == root => return self.automatic.cached.get(name).map(|value| format!("Última observación: {} · {} entradas · {}\nCaché provisional; se verifica su identidad sin recorrer otra vez la carpeta", files_core::format_size(value.bytes), value.entries, files_core::relative_date(value.at, SystemTime::now()))),
+            None if self.root == root => return self.automatic.cached.get(name).map(|value| format!("Última observación: {} · {} entradas · {}\nValor aproximado; puede haber cambios no observados", files_core::format_size(value.bytes), value.entries, files_core::relative_date(value.at, SystemTime::now()))),
             None => return None,
         };
         if record.mode == Mode::Apparent
@@ -626,7 +624,7 @@ impl State {
             && let Some(value) = self.automatic.cached.get(name)
         {
             return Some(format!(
-                "Última observación: {} · {} entradas · {}\nCaché provisional; actualizando en segundo plano",
+                "Última observación: {} · {} entradas · {}\nValor aproximado; actualizando en segundo plano",
                 files_core::format_size(value.bytes),
                 value.entries,
                 files_core::relative_date(value.at, SystemTime::now())
@@ -636,7 +634,7 @@ impl State {
             Status::Queued if self.paused => {
                 "En pausa · reanuda desde Acciones → Reanudar tamaños".into()
             }
-            Status::Queued => "En cola · esperando helper disponible".into(),
+            Status::Queued => "En cola · cálculo pendiente".into(),
             Status::Running { bytes, entries } => format!(
                 "Parcial: ≥{} · {entries} entradas recorridas",
                 files_core::format_size(*bytes)
@@ -759,19 +757,15 @@ mod tests {
                 at: SystemTime::now(),
             },
         );
-        assert!(
-            state
-                .label(root, OsStr::new("a"))
-                .unwrap()
-                .contains("caché")
+        assert_eq!(
+            state.label(root, OsStr::new("a")).as_deref(),
+            Some("≈ 42 B")
         );
         assert!(state.measured_map(root).is_empty());
         state.dispatch_work().unwrap();
-        assert!(
-            state
-                .label(root, OsStr::new("a"))
-                .unwrap()
-                .contains("caché")
+        assert_eq!(
+            state.label(root, OsStr::new("a")).as_deref(),
+            Some("≈ 42 B")
         );
         state.finish_measurement(Err("permission denied".into()));
         assert_eq!(state.label(root, OsStr::new("a")).as_deref(), Some("Error"));
@@ -780,12 +774,7 @@ mod tests {
         state.dispatch_work().unwrap();
         state.finish_measurement(Ok(Measurement::apparent(0, 0)));
         assert_eq!(state.measured_map(root).get(OsStr::new("a")), Some(&0));
-        assert!(
-            !state
-                .label(root, OsStr::new("a"))
-                .unwrap()
-                .contains("caché")
-        );
+        assert_eq!(state.label(root, OsStr::new("a")).as_deref(), Some("∑ 0 B"));
     }
     #[test]
     fn mixed_modes_preserve_allocation_through_finish_and_revoke_it_for_fresh_attempts() {
@@ -1006,10 +995,7 @@ mod tests {
         assert_eq!(s.measured(root, OsStr::new("one")), Some(8));
         assert!(s.has_work());
         assert!(s.dispatch().is_none());
-        assert_eq!(
-            s.label(root, OsStr::new("two")).as_deref(),
-            Some("En pausa")
-        );
+        assert_eq!(s.label(root, OsStr::new("two")).as_deref(), Some("Pausa"));
         s.pause(false);
         assert_eq!(s.dispatch().unwrap(), root.join("two"));
     }
@@ -1107,8 +1093,20 @@ mod tests {
         let mut s = State::default();
         s.enqueue(Path::new("/r"), [OsStr::new("folder")].into_iter())
             .unwrap();
+        assert_eq!(
+            s.label(Path::new("/r"), OsStr::new("folder")).as_deref(),
+            Some("…")
+        );
         s.dispatch();
+        assert_eq!(
+            s.label(Path::new("/r"), OsStr::new("folder")).as_deref(),
+            Some("…")
+        );
         assert!(s.progress((3, 1)));
+        assert_eq!(
+            s.label(Path::new("/r"), OsStr::new("folder")).as_deref(),
+            Some("≥ 3 B")
+        );
         assert!(s.measured(Path::new("/r"), OsStr::new("folder")).is_none());
         s.finish(Err("denied".into()));
         assert!(matches!(
