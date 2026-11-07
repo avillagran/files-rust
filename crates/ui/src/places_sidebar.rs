@@ -252,11 +252,7 @@ pub fn rail(m: &Model, pinned: bool, order: &[String]) -> Rail {
     out.push(
         SidebarItem::new(
             crate::fonts::icon("\u{f08d}", "P"),
-            if pinned {
-                "Desfijar barra lateral"
-            } else {
-                "Fijar barra lateral"
-            },
+            if pinned { "Desfijar" } else { "Fijar barra" },
         )
         .key("pin")
         .footer(),
@@ -596,10 +592,10 @@ mod tests {
         let pin = last - 1;
         assert_eq!(rail.kinds[pin], Kind::Pin);
         assert!(rail.items[pin].footer);
-        assert_eq!(rail.items[pin].label, "Fijar barra lateral");
+        assert_eq!(rail.items[pin].label, "Fijar barra");
         let pinned = super::rail(&m, true, &[]);
         assert_eq!(pinned.items[pin].key, rail.items[pin].key);
-        assert_eq!(pinned.items[pin].label, "Desfijar barra lateral");
+        assert_eq!(pinned.items[pin].label, "Desfijar");
         for ((item, action), kind) in rail.items.iter().zip(&rail.actions).zip(&rail.kinds) {
             let window_only = matches!(kind, Kind::Recent | Kind::Pin);
             assert_eq!(

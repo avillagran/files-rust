@@ -99,6 +99,7 @@ pub fn tips_available(m: &Model, w: i32) -> bool {
         && !m.copy_busy()
         && !m.sizes.has_work()
         && m.sizes.errors() == 0
+        && m.sizes.automatic_cache_error().is_none()
         && !m.filter_edit.active
         && m.context_menu.is_none()
         && m.help.is_none()
@@ -154,6 +155,8 @@ pub fn status(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         "Pestaña creada".into()
     } else if let Some(message) = m.launch_notice {
         message.into()
+    } else if let Some(error) = m.sizes.automatic_cache_error() {
+        format!("Caché de tamaños: {error}")
     } else if let Some(status) = m.folder_views.status() {
         status.into()
     } else if let Some(status) = m.bookmarks.status() {
@@ -215,6 +218,12 @@ pub fn status(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         &left,
         12,
         if m.error.is_empty()
+            && save_error.is_none()
+            && m.config_error.is_none()
+            && m.sizes.automatic_cache_error().is_some()
+        {
+            c.yellow
+        } else if m.error.is_empty()
             && save_error.is_none()
             && m.config_error.is_none()
             && m.bookmarks.error.is_empty()
@@ -345,12 +354,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     let omni = if m.editing {
         r(88, 10, (w - 192).max(1), 38)
     } else {
-        r(
-            88,
-            10,
-            (toolbar_right - 152 - if m.query.is_empty() { 0 } else { 30 }).max(1),
-            38,
-        )
+        r(88, 10, (toolbar_right - 96).max(1), 38)
     };
     p.rounded_rect(omni, 10 * rad, c.darker_background);
     hit(
@@ -394,50 +398,6 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             Action::PathCancel,
         );
     } else {
-        if !m.query.is_empty() {
-            let path_button = r(toolbar_right - 90, 13, 28, 32);
-            p.text(
-                path_button,
-                crate::fonts::icon("", "L"),
-                16,
-                c.accent,
-                true,
-                false,
-            );
-            hit(m, path_button, Action::Omni);
-        }
-        let filter_button = r(toolbar_right - 60, 13, 28, 32);
-        p.text(
-            filter_button,
-            crate::fonts::icon("", "?"),
-            16,
-            c.accent,
-            true,
-            false,
-        );
-        hit(m, filter_button, Action::Filter);
-        let clear_button = r(toolbar_right - 30, 13, 28, 32);
-        p.text(
-            clear_button,
-            if m.query.is_empty() {
-                crate::fonts::icon("", "L")
-            } else {
-                crate::fonts::icon("", "x")
-            },
-            16,
-            c.accent,
-            true,
-            false,
-        );
-        hit(
-            m,
-            clear_button,
-            if m.query.is_empty() {
-                Action::Omni
-            } else {
-                Action::ClearFilter
-            },
-        );
         crate::toolbar::paint(p, m, w, h);
     }
 

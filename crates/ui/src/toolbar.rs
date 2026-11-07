@@ -9,7 +9,7 @@ use fltk_omarchy::anim::{Anim, Ease};
 pub struct State {
     hot: Option<usize>,
     rows: Vec<Rect>,
-    motion: [Anim<f64>; 8],
+    motion: [Anim<f64>; 10],
     widths: Vec<i32>,
 }
 impl State {
@@ -32,8 +32,30 @@ struct Item {
     action: Action,
 }
 fn items(m: &Model, w: i32, h: i32) -> Vec<Item> {
+    let mut controls = vec![
+        Item {
+            icon: if m.query.is_empty() { "" } else { "" },
+            label: if m.query.is_empty() {
+                "Buscar"
+            } else {
+                "Limpiar filtro"
+            },
+            on: m.filter_edit.active || !m.query.is_empty(),
+            action: if m.query.is_empty() {
+                Action::Filter
+            } else {
+                Action::ClearFilter
+            },
+        },
+        Item {
+            icon: "",
+            label: "Editar ruta",
+            on: false,
+            action: Action::Omni,
+        },
+    ];
     if w < 640 {
-        return vec![
+        controls.extend([
             Item {
                 icon: "",
                 label: "Vistas",
@@ -52,9 +74,10 @@ fn items(m: &Model, w: i32, h: i32) -> Vec<Item> {
                 on: m.settings,
                 action: Action::Settings,
             },
-        ];
+        ]);
+        return controls;
     }
-    vec![
+    controls.extend([
         Item {
             icon: "",
             label: "Grupos",
@@ -103,10 +126,11 @@ fn items(m: &Model, w: i32, h: i32) -> Vec<Item> {
             on: m.settings,
             action: Action::Settings,
         },
-    ]
+    ]);
+    controls
 }
 pub fn base_right(w: i32) -> i32 {
-    w - 12 - (if w < 640 { 3 } else { 8 }) * 40 + 4 - 14
+    w - 12 - (if w < 640 { 5 } else { 10 }) * 40 + 4 - 14
 }
 pub fn marker(m: &Model, w: i32, h: i32) -> serde_json::Value {
     serde_json::json!({
@@ -131,7 +155,7 @@ pub fn prepare(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) -> i32 {
     if m.toolbar.hot.is_some_and(|i| i >= count) {
         m.toolbar.hot = None;
     }
-    let allowance = (base_right(w) - 232).clamp(0, 160);
+    let allowance = (base_right(w) - 176).clamp(0, 160);
     let mut remaining = allowance;
     m.toolbar.widths.clear();
     for (i, item) in items.iter().enumerate() {
