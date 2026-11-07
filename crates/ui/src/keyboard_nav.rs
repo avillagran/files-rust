@@ -318,6 +318,30 @@ mod tests {
                 .and_then(|i| m.entries.get(i))
                 .map(|e| e.name.as_os_str())
         }
+        struct NoopPainter;
+        impl crate::painter::Painter for NoopPainter {
+            fn rect(&mut self, _: crate::painter::Rect, _: files_core::theme::Color) {}
+            fn rounded_rect(
+                &mut self,
+                _: crate::painter::Rect,
+                _: i32,
+                _: files_core::theme::Color,
+            ) {
+            }
+            fn text(
+                &mut self,
+                _: crate::painter::Rect,
+                _: &str,
+                _: i32,
+                _: files_core::theme::Color,
+                _: bool,
+                _: bool,
+            ) {
+            }
+            fn image(&mut self, _: crate::painter::Rect, _: &crate::painter::Image<'_>) {}
+            fn clip(&mut self, _: crate::painter::Rect) {}
+            fn unclip(&mut self) {}
+        }
         #[test]
         fn enter_then_parent_restores_exact_raw_child_and_retained_scroll() {
             let root = fixture();
@@ -344,11 +368,24 @@ mod tests {
             assert_eq!(m.selection.iter().copied().collect::<Vec<_>>(), vec![73]);
             assert_eq!(m.scroll, 500);
             assert!(m.search_reveal);
-            crate::view::reveal_selection(&mut m, 1000, 650);
-            assert_eq!(
-                m.scroll, 500,
-                "retain scroll when the child is already visible"
-            );
+            // The first return frame still has the empty child's painted
+            // height. Idle wheel state must not clamp against that stale bound.
+            m.content_height = 0;
+            for _ in 0..2 {
+                assert!(!crate::wheel_scroll::advance_offsets(&mut m, 650));
+                assert_eq!(
+                    m.scroll, 500,
+                    "idle wheel must retain the restored position"
+                );
+                crate::view::paint(&mut NoopPainter, &mut m, 1000, 650);
+                m.clamp_scroll(650 - 134);
+                assert_eq!(
+                    m.scroll, 500,
+                    "the current geometry permits the retained scroll"
+                );
+                assert!(m.visible.contains(&m.selected.unwrap()));
+                assert_eq!(focused(&m), Some(raw.as_os_str()));
+            }
         }
         #[test]
         fn pending_parent_focus_rebinds_refresh_and_rejects_changed_owner_or_generation() {
@@ -386,7 +423,7 @@ mod tests {
             listing(&mut m, &["Leaf".into(), "B".into()]);
             assert!(m.pump_parent_return_focus());
             assert_eq!(focused(&m), Some(std::ffi::OsStr::new("B")));
-            m.load_location(PathBuf::from("/"));
+            m.path = PathBuf::from("/");
             let generation = m.generation;
             backspace(&mut m);
             assert_eq!(m.path, Path::new("/"));
