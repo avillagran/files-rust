@@ -2,8 +2,8 @@
 # Existing caller TMPDIR takes precedence; no global environment is changed.
 [env]
 TMPDIR = { value = ".cargo/tmp", relative = true }
-# Pinned own-window DnD hook, applied only to a generated FLTK build source.
+# Pinned DnD and keymap guards, applied only to generated FLTK build sources.
 # Bump BOTH versioned paths when patch/build inputs change (fltk-sys watches
 # CFLTK_TOOLCHAIN, not arbitrary files outside its registry directory).
-CMAKE = { value = "scripts/cmake-files-v3", relative = true }
-CFLTK_TOOLCHAIN = { value = "native/fltk/toolchain-v3.cmake", relative = true }
+CMAKE = { value = "scripts/cmake-files-v4", relative = true }
+CFLTK_TOOLCHAIN = { value = "native/fltk/toolchain-v4.cmake", relative = true }

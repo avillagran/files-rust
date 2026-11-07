@@ -1,6 +1,17 @@
 # Repo-owned CMAKE_PROJECT_INCLUDE. Runs after project(); target exists only
 # after add_subdirectory(fltk), so defer once to the root directory's end.
 if(CMAKE_PROJECT_NAME STREQUAL "cfltk" AND CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+  function(files_write_generated_v1 path source)
+    set(previous "")
+    if(EXISTS "${path}")
+      file(READ "${path}" previous)
+    endif()
+    if(NOT previous STREQUAL source)
+      get_filename_component(directory "${path}" DIRECTORY)
+      file(MAKE_DIRECTORY "${directory}")
+      file(WRITE "${path}" "${source}")
+    endif()
+  endfunction()
   function(files_replace_wayland_transfer_v1)
     if(NOT CMAKE_SYSTEM_NAME STREQUAL "Linux" OR NOT FLTK_BACKEND_WAYLAND)
       return()
@@ -15,7 +26,11 @@ if(CMAKE_PROJECT_NAME STREQUAL "cfltk" AND CMAKE_CURRENT_SOURCE_DIR STREQUAL CMA
     string(JSON modified GET "${metadata}" modified_sha256)
     get_target_property(source_dir fltk SOURCE_DIR)
     get_target_property(sources fltk SOURCES)
+    include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/contract-v1.cmake")
+    include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/keymap-v1.cmake")
+    files_dnd_contract("${repo}" input_stamp generated_source)
     set(count 0)
+    set(screen_count 0)
     set(replaced "")
     foreach(source IN LISTS sources)
       if(source MATCHES "(^|/)fl_wayland_clipboard_dnd\\.cxx$")
@@ -31,20 +46,29 @@ if(CMAKE_PROJECT_NAME STREQUAL "cfltk" AND CMAKE_CURRENT_SOURCE_DIR STREQUAL CMA
         if(NOT actual_modified STREQUAL modified)
           message(FATAL_ERROR "files DnD: repo modified source SHA mismatch")
         endif()
-        include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/contract-v1.cmake")
-        files_dnd_contract("${repo}" input_stamp generated_source)
-        set(previous_source "")
-        if(EXISTS "${generated}")
-          file(READ "${generated}" previous_source)
-        endif()
-        if(NOT previous_source STREQUAL generated_source)
-          file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/files-wayland-transfer")
-          file(WRITE "${generated}" "${generated_source}")
-        endif()
+        files_write_generated_v1("${generated}" "${generated_source}")
         # Original relative headers (../Unix, ../../flstring.h) resolve through
         # this source-local include directory. Other FLTK objects keep flags.
         set_source_files_properties("${generated}" TARGET_DIRECTORY fltk
           PROPERTIES INCLUDE_DIRECTORIES "${original_dir}")
+        list(APPEND replaced "${generated}")
+      elseif(source MATCHES "(^|/)Fl_Wayland_Screen_Driver\\.cxx$")
+        math(EXPR screen_count "${screen_count} + 1")
+        get_filename_component(original "${source}" ABSOLUTE BASE_DIR "${source_dir}")
+        file(READ "${original}" upstream_screen)
+        files_keymap_source("${repo}" "${upstream_screen}" "${input_stamp}" generated_screen)
+        get_filename_component(original_dir "${original}" DIRECTORY)
+        set(generated "${CMAKE_BINARY_DIR}/files-wayland-keymap/Fl_Wayland_Screen_Driver.cxx")
+        # Keep the verified upstream bytes only in the generated build tree.
+        # The build guard reconstructs and compares the exact patched copy.
+        files_write_generated_v1("${CMAKE_BINARY_DIR}/files-wayland-keymap/upstream-Fl_Wayland_Screen_Driver.cxx" "${upstream_screen}")
+        files_write_generated_v1("${generated}" "${generated_screen}")
+        get_source_file_property(screen_definitions "${original}" TARGET_DIRECTORY fltk COMPILE_DEFINITIONS)
+        if(screen_definitions STREQUAL "NOTFOUND")
+          message(FATAL_ERROR "files keymap: expected pinned screen compile definitions")
+        endif()
+        set_source_files_properties("${generated}" TARGET_DIRECTORY fltk
+          PROPERTIES INCLUDE_DIRECTORIES "${original_dir}" COMPILE_DEFINITIONS "${screen_definitions}")
         list(APPEND replaced "${generated}")
       else()
         # Preserve upstream relative/generated entries. CMake resolves its
@@ -55,10 +79,16 @@ if(CMAKE_PROJECT_NAME STREQUAL "cfltk" AND CMAKE_CURRENT_SOURCE_DIR STREQUAL CMA
     if(NOT count EQUAL 1)
       message(FATAL_ERROR "files DnD: must replace exactly one pinned source, got ${count}")
     endif()
+    if(NOT screen_count EQUAL 1)
+      message(FATAL_ERROR "files keymap: must replace exactly one pinned screen source, got ${screen_count}")
+    endif()
     set_property(TARGET fltk PROPERTY SOURCES "${replaced}")
     set_property(DIRECTORY "${CMAKE_SOURCE_DIR}" APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
-      "${vendor}/SOURCE.json" "${vendor}/fl_wayland_clipboard_dnd.cxx" "${CMAKE_CURRENT_FUNCTION_LIST_FILE}")
-    message(STATUS "files DnD v1: replaced one verified source; registry remains read-only")
+      "${vendor}/SOURCE.json" "${vendor}/fl_wayland_clipboard_dnd.cxx" "${CMAKE_CURRENT_FUNCTION_LIST_FILE}"
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/contract-v1.cmake" "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/guard-v1.cmake"
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/keymap-v1.cmake" "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/wayland-keymap-v1.inc"
+      "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/toolchain-v4.cmake" "${repo}/scripts/cmake-files-v4")
+    message(STATUS "files DnD/keymap v1: replaced two verified sources; registry remains read-only")
   endfunction()
   cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL files_replace_wayland_transfer_v1)
 endif()

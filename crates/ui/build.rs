@@ -104,7 +104,7 @@ fn main() {
     for path in [
         "vendor/fltk-wayland-transfer",
         "native/fltk",
-        "scripts/cmake-files-v3",
+        "scripts/cmake-files-v4",
     ] {
         println!("cargo:rerun-if-changed={}", repo.join(path).display());
     }
