@@ -1,0 +1,1 @@
+PASS installed Files and installed plugin: visually inspected initial, after-reload, parent images. Icon, single dim Files and separator and bright path appear correctly before/after plugin reload; native Alt+Up updates route. Window focused; unfocused retitle not tested.

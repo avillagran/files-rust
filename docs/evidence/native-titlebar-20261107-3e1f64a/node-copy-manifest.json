@@ -1,0 +1,428 @@
+[
+  {
+    "path": "plugin-provenance/source-provenance.json",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/source-provenance.json",
+    "bytes": 3152,
+    "sha256": "3db4b636c7ddf2f1526d87b9ceeded81683c8bd1742121b4db13fd93e862bf62"
+  },
+  {
+    "path": "plugin-provenance/node-source-manifest.json",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source-manifest.json",
+    "bytes": 3934,
+    "sha256": "15e13dd065f83e76d8d06d08fec75af2feed1a6ab79b89996b68061c8cac8d64"
+  },
+  {
+    "path": "plugin-provenance/m2-source-manifest.json",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/m2-source-manifest.json",
+    "bytes": 2893,
+    "sha256": "2f104435d2e5c4a514da0517d1a6f13bcb320ec95c81b0901f70aff24d7949d5"
+  },
+  {
+    "path": "plugin-provenance/tool-manifest.json",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/tool-manifest.json",
+    "bytes": 386,
+    "sha256": "249f04a6fb5cf611db0cad9793836995d0ca606edb204885307ac2b0f8b720dc"
+  },
+  {
+    "path": "plugin-provenance/install-plan.json",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/install-plan.json",
+    "bytes": 8375,
+    "sha256": "90650c8c51b1ce30f9a2d53e03694d6f0cb9f24a8fe68cb1068b6c5a3bf23fab"
+  },
+  {
+    "path": "plugin-provenance/atomic-plugin-replace.py",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/atomic-plugin-replace.py",
+    "bytes": 2888,
+    "sha256": "a6fe0be4574647522cb60baa7fcd4fc66967037de2da436d400572cfa11edfc1"
+  },
+  {
+    "path": "plugin-provenance/snapshot-plugin-state.py",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/snapshot-plugin-state.py",
+    "bytes": 2341,
+    "sha256": "fdf5095340fd057fae3d2c0a8589ae9a3d59e755d8add8fef790f94b70ae071e"
+  },
+  {
+    "path": "plugin-provenance/node-before-proposal.json",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-before-proposal.json",
+    "bytes": 6448,
+    "sha256": "c4e7165d8f9129864353427fa21a69c964362ca3d54861ca2a9f545b24b45c22"
+  },
+  {
+    "path": "NODE/plugin-build/build.log",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-build/build.log",
+    "bytes": 5592,
+    "sha256": "a8ce11de3aa44d3e658c21edd26238a0a7049870f4aa69a9ed76570cbc14607e"
+  },
+  {
+    "path": "NODE/plugin-build/result.json",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-build/result.json",
+    "bytes": 593,
+    "sha256": "a3cccbb2bbdf4d1e594f603f08e6db198e20453d48919e2decfe4f8d4b85de68"
+  },
+  {
+    "path": "NODE/plugin-source/.gitignore",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/.gitignore",
+    "bytes": 7,
+    "sha256": "181314065df2f2fdaf920b1a8b5311daa216a2d6489a06ada5b49cc514d89417"
+  },
+  {
+    "path": "NODE/plugin-source/BarPassElement.cpp",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/BarPassElement.cpp",
+    "bytes": 1535,
+    "sha256": "b429dce04ef692f8cbbba24b2f5838a0feba357d8afebfa9fd40028707c27883"
+  },
+  {
+    "path": "NODE/plugin-source/BarPassElement.hpp",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/BarPassElement.hpp",
+    "bytes": 752,
+    "sha256": "dffbf8ddc768fd111b2a41697fe6547e954c46edc16750913c789d8daa8690cc"
+  },
+  {
+    "path": "NODE/plugin-source/CMakeLists.txt",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/CMakeLists.txt",
+    "bytes": 1120,
+    "sha256": "018fd3165d0869b9b9d583fbbd5e639f828c7a3247bae398237f389893cdbb03"
+  },
+  {
+    "path": "NODE/plugin-source/LICENSE",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/LICENSE",
+    "bytes": 1503,
+    "sha256": "3a1d080d85ce1d722b3bd84d87b74dd2332ba7b68a40a28a7126a86cfca6502a"
+  },
+  {
+    "path": "NODE/plugin-source/LICENSE.MIT",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/LICENSE.MIT",
+    "bytes": 1063,
+    "sha256": "717ba1949502290f8e47688ae2e323acd06c8ca47aec9f7596b15f678c1af4a2"
+  },
+  {
+    "path": "NODE/plugin-source/README.md",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/README.md",
+    "bytes": 6005,
+    "sha256": "5fd91465dd105d5b87d4742b306e2d9340a8a4ddb88a271dd55a68aee265d64f"
+  },
+  {
+    "path": "NODE/plugin-source/appName.cpp",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/appName.cpp",
+    "bytes": 10527,
+    "sha256": "a6d424fa9e906a48580b139b8b9514192c26308a22c6df927599a67c9036971f"
+  },
+  {
+    "path": "NODE/plugin-source/appName.hpp",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/appName.hpp",
+    "bytes": 458,
+    "sha256": "415e9c0d4e0cd94f0fef15b5bf825a46bfdf6a3011289cacb62ecc66ab1d0561"
+  },
+  {
+    "path": "NODE/plugin-source/barDeco.cpp",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp",
+    "bytes": 49609,
+    "sha256": "7cd6c433e8c920d89571fd8e5de4090047e68bd1d7c66d6a10ae96aa4973fe63"
+  },
+  {
+    "path": "NODE/plugin-source/barDeco.hpp",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.hpp",
+    "bytes": 4815,
+    "sha256": "c8bbe39e6d7d036c3e8d51d2d545f2a038ad24e6863921b1e4d5955012adde84"
+  },
+  {
+    "path": "NODE/plugin-source/globals.hpp",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/globals.hpp",
+    "bytes": 2019,
+    "sha256": "a9f94de1de8bfb303a00c6d1c8baf96cf74dab72dda8b30ce57d3b0d498f1531"
+  },
+  {
+    "path": "NODE/plugin-source/main.cpp",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/main.cpp",
+    "bytes": 18660,
+    "sha256": "e4e72b0faa7d20700e46edb1c8fc24d95e26939d5097f0ca5684c5b1b52e210f"
+  },
+  {
+    "path": "NODE/plugin-source/tools/pointer.c",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/tools/pointer.c",
+    "bytes": 2120,
+    "sha256": "f9ecb642dcf62da6c5743492b01195e1eac10158eeb85ec60e830958fbead663"
+  },
+  {
+    "path": "NODE/plugin-source/tools/verify.py",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/tools/verify.py",
+    "bytes": 13546,
+    "sha256": "7d980dfa3cafebe3d71522db8ecdb9b41f8bb1b9853c2a61e126d89272bdd871"
+  },
+  {
+    "path": "NODE/plugin-source/tools/wlr-virtual-pointer-unstable-v1.xml",
+    "source": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/tools/wlr-virtual-pointer-unstable-v1.xml",
+    "bytes": 6895,
+    "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524"
+  },
+  {
+    "path": "NODE/files-checks/node-before.json",
+    "source": "/run/user/1000/files-native-title-qjzyh4j6/node-before.json",
+    "bytes": 599,
+    "sha256": "f88caf98a3b8bf0852f4d60adc8ae8171aef413b9fe3b33ad36aea1f6bea7fd9"
+  },
+  {
+    "path": "NODE/files-checks/node-build.json",
+    "source": "/run/user/1000/files-native-title-qjzyh4j6/node-build.json",
+    "bytes": 631,
+    "sha256": "0f2232c45a596e613038d57e64e48a131ddab915ae41b644ca1006fc1b437e3c"
+  },
+  {
+    "path": "NODE/files-checks/release.log",
+    "source": "/run/user/1000/files-native-title-qjzyh4j6/release.log",
+    "bytes": 191,
+    "sha256": "cdd2694131eb4c64a4ee7de380c9933d5d53c2b01d1c00a5bd9d14749d9fad2a"
+  },
+  {
+    "path": "NODE/files-checks/clippy.log",
+    "source": "/run/user/1000/files-native-title-qjzyh4j6/clippy.log",
+    "bytes": 200,
+    "sha256": "8bbd5f1768928c419f325bfe09a7949634c1be6e30b67fc96336e2ef4652b143"
+  },
+  {
+    "path": "NODE/files-checks/title-test.log",
+    "source": "/run/user/1000/files-native-title-qjzyh4j6/title-test.log",
+    "bytes": 422,
+    "sha256": "9f9672bd29340915d44bcef9a86203dfee17671a9270b63fc05f956e0f2d0774"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/after-reload.png",
+    "source": "/tmp/files-titlebar-pxnmmugs/after-reload.png",
+    "bytes": 246156,
+    "sha256": "89e63d9d311b260fed706b98f79bc72510c0d1eb8ca5a120502b689cd50205cf"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/app.log",
+    "source": "/tmp/files-titlebar-pxnmmugs/app.log",
+    "bytes": 72,
+    "sha256": "42043b6c518508b62ecc83dc1a82c077952360d792b6c28d03687977040f541c"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/bus.conf",
+    "source": "/tmp/files-titlebar-pxnmmugs/bus.conf",
+    "bytes": 228,
+    "sha256": "02951414aefc5fea35efe44e00e6d6f7f3896087141b3d6422b14bd0c1a0a02c"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/compositor.log",
+    "source": "/tmp/files-titlebar-pxnmmugs/compositor.log",
+    "bytes": 6245,
+    "sha256": "19880f74706c78eb34090962236dff5e24334352ecb29ae73a8c820a5b307822"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/hyprland.lua",
+    "source": "/tmp/files-titlebar-pxnmmugs/hyprland.lua",
+    "bytes": 541,
+    "sha256": "6ba4dc1d23b9e2e83e71983c6673ab512a049e94b4a91557c9b4ce6031a650a1"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/initial.png",
+    "source": "/tmp/files-titlebar-pxnmmugs/initial.png",
+    "bytes": 246154,
+    "sha256": "deed6713815f4ec328c04eacfbfa6ee809343c13bde4af24368bd0d5f25b521c"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/m2-after-reload.png",
+    "source": "/tmp/files-titlebar-pxnmmugs/m2-after-reload.png",
+    "bytes": 32198,
+    "sha256": "1e118fa660b036b2056c94559cec21ae0d48fe575166855b07403e2e28367292"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/m2-initial.png",
+    "source": "/tmp/files-titlebar-pxnmmugs/m2-initial.png",
+    "bytes": 32197,
+    "sha256": "58d23a844f9337bf0fdd0f49ff532788417f1f5b6f7ba0db6a7f9361fc7bf49c"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/m2-installed-after-reload.png",
+    "source": "/tmp/files-titlebar-pxnmmugs/m2-installed-after-reload.png",
+    "bytes": 32344,
+    "sha256": "f1eecdb2d1997537723d2a50f39ebee7b6c9083d605e840b426d6593ee9e13d3"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/m2-installed-initial.png",
+    "source": "/tmp/files-titlebar-pxnmmugs/m2-installed-initial.png",
+    "bytes": 32345,
+    "sha256": "f899a06acc27befcc845aa91841c5a226be3c62066437f5390177e8cddcb0aca"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/m2-installed-parent.png",
+    "source": "/tmp/files-titlebar-pxnmmugs/m2-installed-parent.png",
+    "bytes": 39523,
+    "sha256": "e309b49c530c3f383ffcc1d04962147fbef2729b9c484b0b0a85bce5d80ee1b3"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/m2-parent.png",
+    "source": "/tmp/files-titlebar-pxnmmugs/m2-parent.png",
+    "bytes": 39368,
+    "sha256": "28be2f06c127a70aa127feb1c9dfa6c76ecd9184200504d9b14e8227819c8755"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/parent.png",
+    "source": "/tmp/files-titlebar-pxnmmugs/parent.png",
+    "bytes": 251498,
+    "sha256": "a611bf015087327a3575fe5c1cfcbf07583c771d8bf93f1541f53325ae326b57"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/report.json",
+    "source": "/tmp/files-titlebar-pxnmmugs/report.json",
+    "bytes": 6932,
+    "sha256": "b579dfd5a014cab02cc2b04a0134c4602377693bbc304137c51b8d419891e301"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/sway.conf",
+    "source": "/tmp/files-titlebar-pxnmmugs/sway.conf",
+    "bytes": 54,
+    "sha256": "346a1db0dd5c9b939ff1e33dd121b909f0d67c5bb9347359db1c08b2d3082f3c"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/sway.log",
+    "source": "/tmp/files-titlebar-pxnmmugs/sway.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-pxnmmugs/visual-receipt.txt",
+    "source": "/tmp/files-titlebar-pxnmmugs/visual-receipt.txt",
+    "bytes": 364,
+    "sha256": "c5a2ac08bc4a704547991855ba0e4ea66d55f392e334e88c79d26644ef752ef3"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-vj_fogbg/bus.conf",
+    "source": "/tmp/files-titlebar-vj_fogbg/bus.conf",
+    "bytes": 228,
+    "sha256": "831fe2ccfc9d0d00ced95ecffe9a01046989e032d2f7e6ffabac159e61845aed"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-vj_fogbg/compositor.log",
+    "source": "/tmp/files-titlebar-vj_fogbg/compositor.log",
+    "bytes": 2999,
+    "sha256": "8262a42e42cd921fe4e69c2773fc84729f66208266de20172f849cabde761116"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-vj_fogbg/hyprland.lua",
+    "source": "/tmp/files-titlebar-vj_fogbg/hyprland.lua",
+    "bytes": 541,
+    "sha256": "6ba4dc1d23b9e2e83e71983c6673ab512a049e94b4a91557c9b4ce6031a650a1"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-vj_fogbg/report.json",
+    "source": "/tmp/files-titlebar-vj_fogbg/report.json",
+    "bytes": 843,
+    "sha256": "6a9aef10a6eae8f8fac3b22b3f1b276a636572815a72f95cff72cc6d12850b8c"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-vlv_5mac/bus.conf",
+    "source": "/tmp/files-titlebar-vlv_5mac/bus.conf",
+    "bytes": 228,
+    "sha256": "4b732b872fed5e1acfbd92db18dc9fab8d0fb9d743b26738d4b91fd12b148892"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-vlv_5mac/compositor.log",
+    "source": "/tmp/files-titlebar-vlv_5mac/compositor.log",
+    "bytes": 3035,
+    "sha256": "88f298662ce7f37c1264469bd815c20fdf9503e44274739dbcb1646ccbc02cf6"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-vlv_5mac/hyprland.lua",
+    "source": "/tmp/files-titlebar-vlv_5mac/hyprland.lua",
+    "bytes": 541,
+    "sha256": "6ba4dc1d23b9e2e83e71983c6673ab512a049e94b4a91557c9b4ce6031a650a1"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-vlv_5mac/report.json",
+    "source": "/tmp/files-titlebar-vlv_5mac/report.json",
+    "bytes": 956,
+    "sha256": "c6c986cfdeee3118ee8a87bd482223b14f82a152cb6cd681cb6c9c71df8c5f48"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-vlv_5mac/sway.conf",
+    "source": "/tmp/files-titlebar-vlv_5mac/sway.conf",
+    "bytes": 54,
+    "sha256": "346a1db0dd5c9b939ff1e33dd121b909f0d67c5bb9347359db1c08b2d3082f3c"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-vlv_5mac/sway.log",
+    "source": "/tmp/files-titlebar-vlv_5mac/sway.log",
+    "bytes": 151,
+    "sha256": "9c1506f9689514009e4ab67683369c6873b9a02e9442f437c0efb673a14a6aa3"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-czqr2sh3/bus.conf",
+    "source": "/tmp/files-titlebar-czqr2sh3/bus.conf",
+    "bytes": 228,
+    "sha256": "a5784450f006d3a2f8eaf5b1d908aa9e8ddcd4f41b46d354f294b59803025837"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-czqr2sh3/compositor.log",
+    "source": "/tmp/files-titlebar-czqr2sh3/compositor.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-czqr2sh3/hyprland.lua",
+    "source": "/tmp/files-titlebar-czqr2sh3/hyprland.lua",
+    "bytes": 541,
+    "sha256": "6ba4dc1d23b9e2e83e71983c6673ab512a049e94b4a91557c9b4ce6031a650a1"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-czqr2sh3/report.json",
+    "source": "/tmp/files-titlebar-czqr2sh3/report.json",
+    "bytes": 2905,
+    "sha256": "c0ce07f71f801c8ce5e851a1b2f44b9eca53ccef8c661efa0b8d0e23237a065c"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-czqr2sh3/sway.conf",
+    "source": "/tmp/files-titlebar-czqr2sh3/sway.conf",
+    "bytes": 54,
+    "sha256": "346a1db0dd5c9b939ff1e33dd121b909f0d67c5bb9347359db1c08b2d3082f3c"
+  },
+  {
+    "path": "NODE/profiles/files-titlebar-czqr2sh3/sway.log",
+    "source": "/tmp/files-titlebar-czqr2sh3/sway.log",
+    "bytes": 151,
+    "sha256": "07a7e94df05806b0110ae6b483093cfa7c1f36c0b2742f37c6bd7e407ef474d9"
+  },
+  {
+    "path": "parent-provenance/NODE/provenance.json",
+    "source": "/tmp/titlebar-kwin-parent-750iapc9/provenance.json",
+    "bytes": 1242,
+    "sha256": "5d67b248c2f0defa1296eef53de974f61fa58d55552bef8471487d19b844ac8e"
+  },
+  {
+    "path": "parent-provenance/NODE/verified-packages.json",
+    "source": "/tmp/titlebar-kwin-parent-750iapc9/verified-packages.json",
+    "bytes": 11493,
+    "sha256": "db67d26860867c00c19f271f812b7425c05b817c2c9ed8a04d55e50322934625"
+  },
+  {
+    "path": "parent-provenance/NODE/files.json",
+    "source": "/tmp/titlebar-kwin-parent-750iapc9/files.json",
+    "bytes": 818254,
+    "sha256": "7553a8b22ae51a901135aeb51a61eb3f3fee5f3f97312ff28ec127106959389e"
+  },
+  {
+    "path": "parent-provenance/NODE/ldd.txt",
+    "source": "/tmp/titlebar-kwin-parent-750iapc9/ldd.txt",
+    "bytes": 11896,
+    "sha256": "21aadf46bd9a88224dd751f7184ac9eb29ee3344d982bbc70e349bc60ec169c6"
+  },
+  {
+    "path": "parent-provenance/NODE/prepare-payload.py",
+    "source": "/tmp/titlebar-kwin-parent-750iapc9/prepare-payload.py",
+    "bytes": 3272,
+    "sha256": "2949a40216d19fbbf9331bab236bb406c6675dd474325f9d30e3a2e351ad5bc4"
+  },
+  {
+    "path": "files-provenance/source-manifest-3e1f64a.json",
+    "source": ".cargo/tmp/m2-build-inputs-3e1f64a/source-manifest-3e1f64a.json",
+    "bytes": 279960,
+    "sha256": "0290a4e24e76ff03407a31b7a613635da3cf5151875934363b149ae96468b1e4"
+  },
+  {
+    "path": "files-provenance/node-vendor-manifest.json",
+    "source": ".cargo/tmp/m2-build-inputs-3e1f64a/node-vendor-manifest.json",
+    "bytes": 111347,
+    "sha256": "2c88700f526bc1f6243ffec7a6b64ebb75a0bdb224d55c5ba705839d6150e296"
+  }
+]

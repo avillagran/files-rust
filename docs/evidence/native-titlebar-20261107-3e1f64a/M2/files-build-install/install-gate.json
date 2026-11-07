@@ -1,0 +1,13 @@
+{
+  "functional_gate": "PASS",
+  "scope": "Private native titlebar icon, app prefix, absolute path including files, live parent navigation and plugin reload with live window; focused view",
+  "binary_source_checkpoint": "3e1f64ab11da392313787c56ca5459883145876a",
+  "binary_sha256": "563b83865d29e4c63fe97291806569ee87923669a5210e3ccab2a248d96f8ea7",
+  "helper_sha256": "ffbe7a5be3cca5de90210029238403ef2890b9399326d5e6c59f7062709803d7",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "plugin_sha256": "9a28285b2e60ef734c0a3411d62dfdc2b38b67cbb408b7abc164293d917a7bc9",
+  "raw_report": "/tmp/files-titlebar-701cznjo/report.json",
+  "visual_receipt": "/tmp/files-titlebar-701cznjo/visual-receipt.txt",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED"
+}

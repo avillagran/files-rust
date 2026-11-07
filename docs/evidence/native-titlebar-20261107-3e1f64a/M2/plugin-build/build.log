@@ -1,0 +1,35 @@
+[ 40%] Building CXX object CMakeFiles/titlebars.dir/main.cpp.o
+[ 40%] Building CXX object CMakeFiles/titlebars.dir/barDeco.cpp.o
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp: In member function ‘virtual SDecorationPositioningInfo COmarchyFloatingHyprBar::getPositioningInfo()’:
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp:125:51: warning: narrowing conversion of ‘((((COmarchyFloatingHyprBar*)this)->COmarchyFloatingHyprBar::m_hidden || (!(bool)ENABLED)) ? 0 : ((long int)HEIGHT))’ from ‘long int’ to ‘int’ [-Wnarrowing]
+  125 |   info.desiredExtents = {{0, m_hidden || !ENABLED ? 0 : HEIGHT}, {0, 0}};
+      |                              ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp: In member function ‘bool COmarchyFloatingHyprBar::doButtonPress(Config::INTEGER, Config::INTEGER, Config::INTEGER, Hyprutils::Math::Vector2D, bool)’:
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp:390:62: warning: narrowing conversion of ‘barHeight’ from ‘Config::INTEGER’ {aka ‘long int’} to ‘int’ [-Wnarrowing]
+  390 |     const auto BARBUF = Vector2D{(int)assignedBoxGlobal().w, barHeight};
+      |                                                              ^~~~~~~~~
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp: In member function ‘void COmarchyFloatingHyprBar::renderBarButtonsText(Render::CRenderContext&, Hyprutils::Math::CBox*, float, float)’:
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp:540:62: warning: narrowing conversion of ‘(long int)HEIGHT’ from ‘long int’ to ‘int’ [-Wnarrowing]
+  540 |     const auto BARBUF = Vector2D{(int)assignedBoxGlobal().w, HEIGHT};
+      |                                                              ^~~~~~
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp: In member function ‘void COmarchyFloatingHyprBar::renderPass(Render::CRenderContext&, PHLMONITOR, const float&)’:
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp:644:22: warning: narrowing conversion of ‘(long int)HEIGHT’ from ‘long int’ to ‘int’ [-Wnarrowing]
+  644 |   m_seExtents = {{0, HEIGHT}, {}};
+      |                      ^~~~~~
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp:680:81: warning: narrowing conversion of ‘(float)scaledRounding’ from ‘float’ to ‘int’ [-Wnarrowing]
+  680 |     g_pHyprOpenGL->renderRect(ctx, windowBox, CHyprColor(0, 0, 0, 0), {.round = scaledRounding, .roundingPower = m_pWindow->presentation().roundingPower()});
+      |                                                                                 ^~~~~~~~~~~~~~
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp:720:49: warning: narrowing conversion of ‘(int)(double)BARBUF.Hyprutils::Math::Vector2D::x’ from ‘int’ to ‘double’ [-Wnarrowing]
+  720 |   CBox textBox = {titleBarBox.x, titleBarBox.y, (int)BARBUF.x, (int)BARBUF.y};
+      |                                                 ^~~~~~~~~~~~~
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp:720:64: warning: narrowing conversion of ‘(int)(double)BARBUF.Hyprutils::Math::Vector2D::y’ from ‘int’ to ‘double’ [-Wnarrowing]
+  720 |   CBox textBox = {titleBarBox.x, titleBarBox.y, (int)BARBUF.x, (int)BARBUF.y};
+      |                                                                ^~~~~~~~~~~~~
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp: In member function ‘void COmarchyFloatingHyprBar::damageOnButtonHover()’:
+/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp:950:62: warning: narrowing conversion of ‘(long int)HEIGHT’ from ‘long int’ to ‘int’ [-Wnarrowing]
+  950 |     const auto BARBUF = Vector2D{(int)assignedBoxGlobal().w, HEIGHT};
+      |                                                              ^~~~~~
+[ 60%] Building CXX object CMakeFiles/titlebars.dir/BarPassElement.cpp.o
+[ 80%] Building CXX object CMakeFiles/titlebars.dir/appName.cpp.o
+[100%] Linking CXX shared library titlebars.so
+[100%] Built target titlebars

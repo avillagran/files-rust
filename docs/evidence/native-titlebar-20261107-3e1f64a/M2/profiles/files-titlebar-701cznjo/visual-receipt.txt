@@ -1,0 +1,1 @@
+PASS: visually inspected initial.png, after-reload.png and parent.png. The Files icon, single dim Files and dim separator precede the bright absolute path, including files substring. Reload preserves the bar and native Alt+Up changes Nested to A. Focused window only; unfocused retitle not tested.

@@ -1,0 +1,12 @@
+{
+  "binary_source_checkpoint": "3e1f64ab11da392313787c56ca5459883145876a",
+  "returncode": 0,
+  "elapsed_seconds": 87.63571377200424,
+  "artifact_hashes": {
+    "files": "3e7b52f3386f125f4d9b153c57091c4c09d70993e4cfff0498d2a1c3467a60fa",
+    "files-helper": "9185191d3205b14a4343c785eaf4923b8da5cf4d498ce133332422a0a0ef9188",
+    "files-html-helper": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+    "files-html-helper.LICENSES": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+    "files-html-helper.build.json": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd"
+  }
+}

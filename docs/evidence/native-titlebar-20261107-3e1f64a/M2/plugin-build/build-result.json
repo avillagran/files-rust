@@ -1,0 +1,19 @@
+{
+  "source_checkpoint": "07f75d79b4a5c91a9ca9c82adec2e43e1a4d3df6",
+  "source_files_before": 16,
+  "archive_sha256": "297ef7b48cd6d57a1a992b8d81dd90e1d421a01da79d6f7c81c2fa8dc6778e36",
+  "stages": [
+    {
+      "stage": "configure",
+      "returncode": 0
+    },
+    {
+      "stage": "build",
+      "returncode": 0
+    }
+  ],
+  "source_files_after": 16,
+  "elapsed_seconds": 7.536624770000344,
+  "candidate_sha256": "9a28285b2e60ef734c0a3411d62dfdc2b38b67cbb408b7abc164293d917a7bc9",
+  "candidate_file": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/build/titlebars.so: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, BuildID[sha1]=033003a538407a18c9e325beef8535a47a1ff151, not stripped"
+}

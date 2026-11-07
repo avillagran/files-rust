@@ -1,0 +1,290 @@
+[
+  {
+    "name": "kdecoration",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/kdecoration-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "kdecoration-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 104156,
+    "sha256": "51b462be2758241a0694e314b7aea43bee1939384a157f36dd7795536bdb59ab",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "ksvg",
+    "version": "6.31.0-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/ksvg-6.31.0-1-x86_64.pkg.tar.zst",
+    "archive": "ksvg-6.31.0-1-x86_64.pkg.tar.zst",
+    "bytes": 166120,
+    "sha256": "6b6c8aedffd3d4a5f598ed9b09c05afbe7c417744a00425ee5769b5594689b3f",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "gumbo-parser",
+    "version": "0.14.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/gumbo-parser-0.14.1-1-x86_64.pkg.tar.zst",
+    "archive": "gumbo-parser-0.14.1-1-x86_64.pkg.tar.zst",
+    "bytes": 88622,
+    "sha256": "c2b88b4027f4c7fd42d0c0fb096117ce01ee6d2210876f388552fc9ae3c7b9cc",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "litehtml",
+    "version": "0.10-2",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/litehtml-0.10-2-x86_64.pkg.tar.zst",
+    "archive": "litehtml-0.10-2-x86_64.pkg.tar.zst",
+    "bytes": 511130,
+    "sha256": "7c08afe384af6459e00faaf6cd92535149f3a083d96862dfe9e8650d471001b2",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "qt6-tools",
+    "version": "6.12.0-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/qt6-tools-6.12.0-1-x86_64.pkg.tar.zst",
+    "archive": "qt6-tools-6.12.0-1-x86_64.pkg.tar.zst",
+    "bytes": 6965073,
+    "sha256": "bc45c9721e2fed7c7e85afc85e8653584bb7c90219af64b23769bd3e6fa46408",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "aurorae",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/aurorae-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "aurorae-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 173469,
+    "sha256": "744098b0c3608fad6c32c0c598c75f507ec7f434350d61c840fe747ce3889abb",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "frameworkintegration",
+    "version": "6.31.0-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/frameworkintegration-6.31.0-1-x86_64.pkg.tar.zst",
+    "archive": "frameworkintegration-6.31.0-1-x86_64.pkg.tar.zst",
+    "bytes": 79609,
+    "sha256": "63a191eda3c88a7874e1993b31fc88effef7a5520085e4db3067ba890efcfe69",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "breeze-cursors",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/breeze-cursors-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "breeze-cursors-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 1300760,
+    "sha256": "235ccceea255a920366b16eda0c05b0fea4d69bc0eb755bce44098c190a954bb",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "breeze",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/breeze-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "breeze-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 39555018,
+    "sha256": "2a2e7e934c2966f2f0ab2b458ca2fafa980fed1027a1ff0dcccdeacfa109ce0c",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libmbim",
+    "version": "1.34.0-2",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/libmbim-1.34.0-2-x86_64.pkg.tar.zst",
+    "archive": "libmbim-1.34.0-2-x86_64.pkg.tar.zst",
+    "bytes": 487315,
+    "sha256": "3a5f102da9350760424cb179d07c03e4b48883ff4297c9dc883f3a8910fea7e0",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libqrtr-glib",
+    "version": "1.4.0-2",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/libqrtr-glib-1.4.0-2-x86_64.pkg.tar.zst",
+    "archive": "libqrtr-glib-1.4.0-2-x86_64.pkg.tar.zst",
+    "bytes": 27520,
+    "sha256": "9a447513a5d23e8ebd8729b663cb47d989c54567fee57f12e25295d4c15e2b6c",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libqmi",
+    "version": "1.38.0-2",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/libqmi-1.38.0-2-x86_64.pkg.tar.zst",
+    "archive": "libqmi-1.38.0-2-x86_64.pkg.tar.zst",
+    "bytes": 1970072,
+    "sha256": "2049b218b75da32e8be0ce4a8792fadef1abfab8149ace778bc09e9936100404",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "protobuf-c",
+    "version": "1.5.2-15",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/protobuf-c-1.5.2-15-x86_64.pkg.tar.zst",
+    "archive": "protobuf-c-1.5.2-15-x86_64.pkg.tar.zst",
+    "bytes": 144037,
+    "sha256": "5f6d5bf77d267ab0b77dd09e488a3480c7e4e8c92a2d9e9a43200c386886a1c7",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libssc",
+    "version": "0.4.4-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/libssc-0.4.4-1-x86_64.pkg.tar.zst",
+    "archive": "libssc-0.4.4-1-x86_64.pkg.tar.zst",
+    "bytes": 58857,
+    "sha256": "6fa2bfa80ee5f35e06eafcead32fab20fd5d108ef96f4d503a23c5971d5ebd4c",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "iio-sensor-proxy",
+    "version": "3.9-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/iio-sensor-proxy-3.9-1-x86_64.pkg.tar.zst",
+    "archive": "iio-sensor-proxy-3.9-1-x86_64.pkg.tar.zst",
+    "bytes": 40923,
+    "sha256": "02d90729e6990f3a8208577a5d2fe65acbd3b6563d6ab4cc08019dbe07c7de6f",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "plasma-activities",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/plasma-activities-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "plasma-activities-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 128549,
+    "sha256": "1141647b67814cbe9487255683c1cadc40d7bb7d2bf38591adb0f8cda26d670f",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "polkit-qt6",
+    "version": "0.201.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/polkit-qt6-0.201.1-1-x86_64.pkg.tar.zst",
+    "archive": "polkit-qt6-0.201.1-1-x86_64.pkg.tar.zst",
+    "bytes": 95685,
+    "sha256": "b9944cfed4aa4d3103c942c0210c984766c2defb6c1033a5df4479a2a53ba029",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kauth",
+    "version": "6.31.0-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/kauth-6.31.0-1-x86_64.pkg.tar.zst",
+    "archive": "kauth-6.31.0-1-x86_64.pkg.tar.zst",
+    "bytes": 124544,
+    "sha256": "5edc057749947c29027fd8a91f039b16c30c9c898656a16821c601806c3b14f4",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kdeclarative",
+    "version": "6.31.0-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/kdeclarative-6.31.0-1-x86_64.pkg.tar.zst",
+    "archive": "kdeclarative-6.31.0-1-x86_64.pkg.tar.zst",
+    "bytes": 208940,
+    "sha256": "31f46f7a5bd10b1babff0d130617861ad04a998de5636cd089ef2645fb268a04",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kglobalacceld",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/kglobalacceld-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "kglobalacceld-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 120581,
+    "sha256": "c170d4f632841cfc6e0fb407ba8a2d7f6de410cf51b08d116958d2f8c7b76fc9",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kidletime",
+    "version": "6.31.0-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/kidletime-6.31.0-1-x86_64.pkg.tar.zst",
+    "archive": "kidletime-6.31.0-1-x86_64.pkg.tar.zst",
+    "bytes": 64037,
+    "sha256": "ffea2dd679d6818843220deae92f4ba08748468d1ee3e45068ef22172cc288c7",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kholidays",
+    "version": "1:6.31.0-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/kholidays-1:6.31.0-1-x86_64.pkg.tar.zst",
+    "archive": "kholidays-1:6.31.0-1-x86_64.pkg.tar.zst",
+    "bytes": 331894,
+    "sha256": "84a6034f3ceedf529bbb1c8fe3aba5f29a22871b6ea6fadc8fbfdabb9cba901d",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "knighttime",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/knighttime-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "knighttime-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 68326,
+    "sha256": "7fbb7eab173da8fdf4f42e0db0cb84a2677bee8b6f17c0ab5456949f9875102a",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kquickcharts",
+    "version": "6.31.0-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/kquickcharts-6.31.0-1-x86_64.pkg.tar.zst",
+    "archive": "kquickcharts-6.31.0-1-x86_64.pkg.tar.zst",
+    "bytes": 206063,
+    "sha256": "1d8222bc46829161270ecd82123ac24f0291c90e1be06227210265c721dfd69f",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "krunner",
+    "version": "6.31.0-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/krunner-6.31.0-1-x86_64.pkg.tar.zst",
+    "archive": "krunner-6.31.0-1-x86_64.pkg.tar.zst",
+    "bytes": 220981,
+    "sha256": "7a1256695e874a62321cb713b349bc04701e7e5da325a95f0177fa43591d60ed",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libkscreen",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/libkscreen-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "libkscreen-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 256333,
+    "sha256": "091995f758db623809efc7be6a70b61c7a94d9ebd7a5dc78463fa7207f0494c6",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libplasma",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/libplasma-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "libplasma-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 2903042,
+    "sha256": "9690c5d2981f7bfa35a0dbb1bf0465eb3d627b2719798fe8c970c58af8ef786f",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kscreenlocker",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/kscreenlocker-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "kscreenlocker-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 290355,
+    "sha256": "74a97b4678a40716848f2d45232199f6ee7b811d2b8bad0c0417bcf27c086564",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kwayland",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/kwayland-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "kwayland-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 252932,
+    "sha256": "571aa8d912d71cbe6e3d52d19f390c8ec86d3d312c222a869b7841bf53cc7b81",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libqaccessibilityclient-qt6",
+    "version": "0.6.0-4",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/libqaccessibilityclient-qt6-0.6.0-4-x86_64.pkg.tar.zst",
+    "archive": "libqaccessibilityclient-qt6-0.6.0-4-x86_64.pkg.tar.zst",
+    "bytes": 104287,
+    "sha256": "e478d9abacfcc7381bb21a2d06659524072904119edba89607165d74fb8dd801",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "milou",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/milou-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "milou-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 126500,
+    "sha256": "ef90da33f9713bd9b3f4652973b04c870c9d6ad7dedc0225a76e5244f18cba39",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kwin",
+    "version": "6.8.1-1",
+    "url": "https://rc-mirror.omarchy.org/extra/os/x86_64/kwin-6.8.1-1-x86_64.pkg.tar.zst",
+    "archive": "kwin-6.8.1-1-x86_64.pkg.tar.zst",
+    "bytes": 11118586,
+    "sha256": "fa8b9cc8490a50cacc74f2f708f3c4c1745ae8f68bb61822c56bada3ef097a52",
+    "repository_sha256_verified": true
+  }
+]

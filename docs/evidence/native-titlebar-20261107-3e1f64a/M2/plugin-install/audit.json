@@ -1,0 +1,14 @@
+{
+  "checks": {
+    "same_compositor": true,
+    "same_active_window": true,
+    "same_windows": true,
+    "same_supported_options": true,
+    "same_config_errors": true,
+    "candidate_installed": true,
+    "candidate_mapped": true
+  },
+  "different_options": [],
+  "all_pass": true,
+  "new_separator": "{\"option\": \"plugin:hyprbars:bar_title_separator\", \"str\": \"\u203a\", \"set\": false }"
+}

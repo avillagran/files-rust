@@ -1,0 +1,18 @@
+-- The CXX compiler identification is GNU 16.1.1
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found PkgConfig: /usr/bin/pkg-config (found version "3.0.10")
+-- Checking for modules 'hyprland;libdrm;libinput;libudev;pixman-1;wayland-server;xkbcommon'
+--   Found hyprland, version 0.57.1
+--   Found libdrm, version 2.4.134
+--   Found libinput, version 1.32.0
+--   Found libudev, version 262
+--   Found pixman-1, version 0.46.4
+--   Found wayland-server, version 1.26.0
+--   Found xkbcommon, version 1.13.2
+-- Configuring done (0.4s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/avillagran/.cache/titlebar-prefix-1794037640062108752/build

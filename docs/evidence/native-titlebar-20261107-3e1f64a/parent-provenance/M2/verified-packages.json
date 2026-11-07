@@ -1,0 +1,263 @@
+[
+  {
+    "name": "kdecoration",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/kdecoration-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "kdecoration-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 94176,
+    "sha256": "002b0ee4d2718c2540653b8743d3cf77bb5a2798e3666bcf636ab03923f5e334",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "ksvg",
+    "version": "6.31.0-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/ksvg-6.31.0-1-aarch64.pkg.tar.xz",
+    "archive": "ksvg-6.31.0-1-aarch64.pkg.tar.xz",
+    "bytes": 148852,
+    "sha256": "aba430fe1150e0c0235b4f006ceba1e0bffce327cd58231f4c7d9466f2b188c0",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "aurorae",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/aurorae-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "aurorae-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 157828,
+    "sha256": "a9b96a0f780f49526ff1f5e4ce3de7d5b30a08a4353052c160d1abbad7b01612",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "frameworkintegration",
+    "version": "6.31.0-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/frameworkintegration-6.31.0-1-aarch64.pkg.tar.xz",
+    "archive": "frameworkintegration-6.31.0-1-aarch64.pkg.tar.xz",
+    "bytes": 72252,
+    "sha256": "dad1452a5c8bb9ac78f2d21224fbab5a02c4d9b1cb9f9e39caefccb13db488ed",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "breeze-cursors",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/breeze-cursors-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "breeze-cursors-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 1222772,
+    "sha256": "710c66e8b6b269b149822e15035c004b5eb50d7fde8ccf50b334035229e1c1ac",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "breeze",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/breeze-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "breeze-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 39502408,
+    "sha256": "6fbcc108869f49c0ae7568c0da07a6088f5b10d5814a9517d3af0cd0c205c819",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libmbim",
+    "version": "1.34.0-2",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/libmbim-1.34.0-2-aarch64.pkg.tar.xz",
+    "archive": "libmbim-1.34.0-2-aarch64.pkg.tar.xz",
+    "bytes": 401900,
+    "sha256": "cb91e4028cd7e00983e1a44d8ece84f134437f28552f7b94ed9af3d152268525",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libqrtr-glib",
+    "version": "1.4.0-2",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/libqrtr-glib-1.4.0-2-aarch64.pkg.tar.xz",
+    "archive": "libqrtr-glib-1.4.0-2-aarch64.pkg.tar.xz",
+    "bytes": 25552,
+    "sha256": "eb7a972c21c5c396c84b5b2dd46576b3befe7ac8c06d58b192070d48cb49f774",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libqmi",
+    "version": "1.38.0-2",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/libqmi-1.38.0-2-aarch64.pkg.tar.xz",
+    "archive": "libqmi-1.38.0-2-aarch64.pkg.tar.xz",
+    "bytes": 1725908,
+    "sha256": "4e39f19a20da9497594d5e213bef8694ce96cdcf6327b76603f1940234233dc8",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "protobuf-c",
+    "version": "1.5.2-15",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/protobuf-c-1.5.2-15-aarch64.pkg.tar.xz",
+    "archive": "protobuf-c-1.5.2-15-aarch64.pkg.tar.xz",
+    "bytes": 112836,
+    "sha256": "8eeaa6e4d7c65750ac1a3c29f5bc844df668c715aa926d7038cb3453c4b2af4c",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libssc",
+    "version": "0.4.4-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/libssc-0.4.4-1-aarch64.pkg.tar.xz",
+    "archive": "libssc-0.4.4-1-aarch64.pkg.tar.xz",
+    "bytes": 59976,
+    "sha256": "c65429123ee7ec43d8feca7cb034df0cd7c2eae27ab8eaea951226c4d14a5f84",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "iio-sensor-proxy",
+    "version": "3.9-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/iio-sensor-proxy-3.9-1-aarch64.pkg.tar.xz",
+    "archive": "iio-sensor-proxy-3.9-1-aarch64.pkg.tar.xz",
+    "bytes": 37772,
+    "sha256": "8c37d1f1448dbc0f6381fc75315a7754e7ac9902efb341558a4c47cd4065f975",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "plasma-activities",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/plasma-activities-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "plasma-activities-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 118264,
+    "sha256": "38a34d67f0d9bfa65380ff3d496a2ce6ff42a1ff644ea7d8b1d173de657628c9",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "polkit-qt6",
+    "version": "0.201.1-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/polkit-qt6-0.201.1-1-aarch64.pkg.tar.xz",
+    "archive": "polkit-qt6-0.201.1-1-aarch64.pkg.tar.xz",
+    "bytes": 88620,
+    "sha256": "f6baaa62490e2f609483498f8aa2db244bd170824236d9261f284c95c6aa3daf",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kauth",
+    "version": "6.31.0-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/kauth-6.31.0-1-aarch64.pkg.tar.xz",
+    "archive": "kauth-6.31.0-1-aarch64.pkg.tar.xz",
+    "bytes": 114908,
+    "sha256": "96efa43db454553c63a1f686ea30c8adf633337cb99762895750e783584a4cf8",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kdeclarative",
+    "version": "6.31.0-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/kdeclarative-6.31.0-1-aarch64.pkg.tar.xz",
+    "archive": "kdeclarative-6.31.0-1-aarch64.pkg.tar.xz",
+    "bytes": 190668,
+    "sha256": "53cfb1886520a1afe9a5fc15943aeb83dcec0050d4c9f660bc311314593e7d81",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kglobalacceld",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/kglobalacceld-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "kglobalacceld-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 108268,
+    "sha256": "049564e5676e0d42de68b69dfdf90c56d8c6cd84c8e20b75f835d3bd6b507001",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kidletime",
+    "version": "6.31.0-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/kidletime-6.31.0-1-aarch64.pkg.tar.xz",
+    "archive": "kidletime-6.31.0-1-aarch64.pkg.tar.xz",
+    "bytes": 60600,
+    "sha256": "97c5b9ae61ec30ae4f32fae7b61749c2030cfd1a75b57e020b18172f5a317fc2",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kholidays",
+    "version": "1:6.31.0-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/kholidays-1:6.31.0-1-aarch64.pkg.tar.xz",
+    "archive": "kholidays-1:6.31.0-1-aarch64.pkg.tar.xz",
+    "bytes": 317520,
+    "sha256": "afba466d4b7d17b8c986f280c8511c29814e725a2fc91c6f841eb4c7b847417f",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "knighttime",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/knighttime-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "knighttime-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 62548,
+    "sha256": "30c0dbe4ed4c4a54eb3339d238707a76816833b102357805ce9e51a18701aa1a",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kquickcharts",
+    "version": "6.31.0-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/kquickcharts-6.31.0-1-aarch64.pkg.tar.xz",
+    "archive": "kquickcharts-6.31.0-1-aarch64.pkg.tar.xz",
+    "bytes": 186040,
+    "sha256": "8d1c5afb4f90ff99302d03cb7fc9fcd32e1df44e16489d10f1f7a752202a7830",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "krunner",
+    "version": "6.31.0-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/krunner-6.31.0-1-aarch64.pkg.tar.xz",
+    "archive": "krunner-6.31.0-1-aarch64.pkg.tar.xz",
+    "bytes": 211612,
+    "sha256": "6965a4ec790169cadbed0555c74bc12ec32fe91eddd74a4cf47f7fd6bdacf81c",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libkscreen",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/libkscreen-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "libkscreen-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 228508,
+    "sha256": "f0ad5d75bcc007470ded0f29b837a0f46dc15b6e9c302b09447ff6ebe99ee367",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libplasma",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/libplasma-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "libplasma-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 2722616,
+    "sha256": "54266ed49532f05e623dea0951b4817bdbbb13eca1e89cfa188280326f900e43",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kscreenlocker",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/kscreenlocker-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "kscreenlocker-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 267088,
+    "sha256": "2612ec88966a8851756850366db4f0d3d702f11611cb2ae972b820c289e8c65e",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kwayland",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/kwayland-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "kwayland-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 229924,
+    "sha256": "241810347458407ed6a6520729f8acf0f07a0858fad5d15685b64008cbc96452",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "libqaccessibilityclient-qt6",
+    "version": "0.6.0-4",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/libqaccessibilityclient-qt6-0.6.0-4-aarch64.pkg.tar.xz",
+    "archive": "libqaccessibilityclient-qt6-0.6.0-4-aarch64.pkg.tar.xz",
+    "bytes": 95388,
+    "sha256": "4eec4075a2a0b2644540eabf30aa07dd557edd0e2e506826e126bbb0cdcf04fb",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "milou",
+    "version": "6.8.2-1",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/milou-6.8.2-1-aarch64.pkg.tar.xz",
+    "archive": "milou-6.8.2-1-aarch64.pkg.tar.xz",
+    "bytes": 112416,
+    "sha256": "f5da3b17fafc0e691c83e99768177eafba50cc5c00b935cfda4034f7353dccf6",
+    "repository_sha256_verified": true
+  },
+  {
+    "name": "kwin",
+    "version": "6.8.2-2",
+    "url": "http://mirror.archlinuxarm.org/aarch64/extra/kwin-6.8.2-2-aarch64.pkg.tar.xz",
+    "archive": "kwin-6.8.2-2-aarch64.pkg.tar.xz",
+    "bytes": 10638676,
+    "sha256": "74876e5adbdc7d2c6dc718013abeba44c018d0d6b629959bd2a33b49dd093d12",
+    "repository_sha256_verified": true
+  }
+]

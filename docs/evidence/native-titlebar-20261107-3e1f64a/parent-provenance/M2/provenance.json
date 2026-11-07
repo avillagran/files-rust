@@ -1,0 +1,19 @@
+{
+  "purpose": "Private virtual Wayland parent for native titlebar acceptance only",
+  "version": "KWin 6.8.1",
+  "primary_source": {
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.1/src/wayland/xdgshell.cpp",
+    "sha256": "df3a060d39bca990457c3e94a107990edff4aa51588b1cba07f64d704038b8b0",
+    "xdg_shell_version": 6
+  },
+  "backend_source": {
+    "url": "https://raw.githubusercontent.com/KDE/kwin/v6.8.1/src/main_wayland.cpp",
+    "sha256": "17ad8fad7686195065b80a77d7ab50bc7aedf3a242b6a292edb2057b6d5c6881",
+    "selection": "--virtual chooses BackendType::Virtual explicitly before environment-driven selection"
+  },
+  "package_verification": "Every archive matches SHA256SUM, FILENAME and VERSION in the local ALPM repository database before extraction",
+  "extraction": "Retained private payload; no install hooks or package installation. Internal hardlinks copied as regular files. Absolute /usr symlinks relocated inside the private payload. No directory cleanup or host config writes.",
+  "gui_status": "Not executed by infrastructure worker; delegated to scoped visual acceptance",
+  "node_payload": "/tmp/titlebar-kwin-parent-750iapc9/payload/usr",
+  "m2_payload": "/tmp/titlebar-kwin-parent-ntorbx1d/payload/usr"
+}

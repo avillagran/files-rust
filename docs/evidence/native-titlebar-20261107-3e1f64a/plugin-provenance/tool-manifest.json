@@ -1,0 +1,14 @@
+[
+  {
+    "name": "atomic-plugin-replace.py",
+    "sha256": "a6fe0be4574647522cb60baa7fcd4fc66967037de2da436d400572cfa11edfc1"
+  },
+  {
+    "name": "snapshot-plugin-state.py",
+    "sha256": "fdf5095340fd057fae3d2c0a8589ae9a3d59e755d8add8fef790f94b70ae071e"
+  },
+  {
+    "name": "install-plan.json",
+    "sha256": "90650c8c51b1ce30f9a2d53e03694d6f0cb9f24a8fe68cb1068b6c5a3bf23fab"
+  }
+]

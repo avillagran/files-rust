@@ -1,0 +1,356 @@
+[
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/after-reload.png",
+    "source": "/tmp/files-titlebar-701cznjo/after-reload.png",
+    "bytes": 32198,
+    "sha256": "1e118fa660b036b2056c94559cec21ae0d48fe575166855b07403e2e28367292"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/app.log",
+    "source": "/tmp/files-titlebar-701cznjo/app.log",
+    "bytes": 72,
+    "sha256": "88f8f1233fb17238a65605b055bd8e6bfe45c7c1a1e19e89ad4049b835d53ec4"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/bus.conf",
+    "source": "/tmp/files-titlebar-701cznjo/bus.conf",
+    "bytes": 228,
+    "sha256": "6926d35a37e2ec2e2d7cdb75c127ae1b885a4de681235c4dbceaf31752e02974"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/compositor.log",
+    "source": "/tmp/files-titlebar-701cznjo/compositor.log",
+    "bytes": 5279,
+    "sha256": "c4bf6bc660a456aa96dd568b15d6b116c1f4b75304af4f0fbdd95e44149d1e74"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/hyprland.lua",
+    "source": "/tmp/files-titlebar-701cznjo/hyprland.lua",
+    "bytes": 541,
+    "sha256": "6ba4dc1d23b9e2e83e71983c6673ab512a049e94b4a91557c9b4ce6031a650a1"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/initial.png",
+    "source": "/tmp/files-titlebar-701cznjo/initial.png",
+    "bytes": 32197,
+    "sha256": "58d23a844f9337bf0fdd0f49ff532788417f1f5b6f7ba0db6a7f9361fc7bf49c"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/parent.png",
+    "source": "/tmp/files-titlebar-701cznjo/parent.png",
+    "bytes": 39368,
+    "sha256": "28be2f06c127a70aa127feb1c9dfa6c76ecd9184200504d9b14e8227819c8755"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/report.json",
+    "source": "/tmp/files-titlebar-701cznjo/report.json",
+    "bytes": 7415,
+    "sha256": "3c3b1edbc591c5b6c53ac398f782a300862269314cfe2fe4ecc419e0646ec282"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/sway.conf",
+    "source": "/tmp/files-titlebar-701cznjo/sway.conf",
+    "bytes": 54,
+    "sha256": "346a1db0dd5c9b939ff1e33dd121b909f0d67c5bb9347359db1c08b2d3082f3c"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/sway.log",
+    "source": "/tmp/files-titlebar-701cznjo/sway.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-701cznjo/visual-receipt.txt",
+    "source": "/tmp/files-titlebar-701cznjo/visual-receipt.txt",
+    "bytes": 298,
+    "sha256": "290f98e8a925eaf7ceb9f190a4a4ce574f571cd257f6477c8b73bf609c3b69fa"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-zikpng53/after-reload.png",
+    "source": "/tmp/files-titlebar-zikpng53/after-reload.png",
+    "bytes": 32344,
+    "sha256": "f1eecdb2d1997537723d2a50f39ebee7b6c9083d605e840b426d6593ee9e13d3"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-zikpng53/app.log",
+    "source": "/tmp/files-titlebar-zikpng53/app.log",
+    "bytes": 72,
+    "sha256": "e37f4ccb5d46e474e6de8d3a2eb9e4b9e88bfae707bb926baeda6b25eae0dede"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-zikpng53/bus.conf",
+    "source": "/tmp/files-titlebar-zikpng53/bus.conf",
+    "bytes": 228,
+    "sha256": "8536e618433345b84e959e5bfe454650d233ec603665e2afc036d331a13dac9f"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-zikpng53/compositor.log",
+    "source": "/tmp/files-titlebar-zikpng53/compositor.log",
+    "bytes": 5278,
+    "sha256": "d957dfa9f3276dde17b66d479659f5ec8b308000b83c204f5b5fbd6887e623f0"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-zikpng53/hyprland.lua",
+    "source": "/tmp/files-titlebar-zikpng53/hyprland.lua",
+    "bytes": 541,
+    "sha256": "6ba4dc1d23b9e2e83e71983c6673ab512a049e94b4a91557c9b4ce6031a650a1"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-zikpng53/initial.png",
+    "source": "/tmp/files-titlebar-zikpng53/initial.png",
+    "bytes": 32345,
+    "sha256": "f899a06acc27befcc845aa91841c5a226be3c62066437f5390177e8cddcb0aca"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-zikpng53/parent.log",
+    "source": "/tmp/files-titlebar-zikpng53/parent.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-zikpng53/parent.png",
+    "source": "/tmp/files-titlebar-zikpng53/parent.png",
+    "bytes": 39523,
+    "sha256": "e309b49c530c3f383ffcc1d04962147fbef2729b9c484b0b0a85bce5d80ee1b3"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-zikpng53/report.json",
+    "source": "/tmp/files-titlebar-zikpng53/report.json",
+    "bytes": 7437,
+    "sha256": "cb91f89d77ced969f7d20d44986e289f6b7d9c94bb2536d5cab0462f191aac64"
+  },
+  {
+    "path": "M2/profiles/files-titlebar-zikpng53/visual-receipt.txt",
+    "source": "/tmp/files-titlebar-zikpng53/visual-receipt.txt",
+    "bytes": 273,
+    "sha256": "e390fc09a901f3ca328a3ec02b06b071f7871ea3e984022a8f834ebf44437769"
+  },
+  {
+    "path": "M2/plugin-build/build-result.json",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/build-result.json",
+    "bytes": 737,
+    "sha256": "5e157e30b8487329ec3d2e926d51fca3b00c986613cdb3c14ad7f05ac9fd6afc"
+  },
+  {
+    "path": "M2/plugin-build/build.log",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/build.log",
+    "bytes": 4343,
+    "sha256": "96429bf82ecbd9de9e18adeb67027b909ceb2bf829bed40049a87626e8aa8b1c"
+  },
+  {
+    "path": "M2/plugin-build/configure.log",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/configure.log",
+    "bytes": 827,
+    "sha256": "e239a870f5b062d2d34371b5077252e72fe8ef0cb25a920f237e8de93b53f1f3"
+  },
+  {
+    "path": "M2/plugin-build/m2-source-manifest.json",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/m2-source-manifest.json",
+    "bytes": 2893,
+    "sha256": "2f104435d2e5c4a514da0517d1a6f13bcb320ec95c81b0901f70aff24d7949d5"
+  },
+  {
+    "path": "M2/plugin-build/m2-before-proposal.json",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/m2-before-proposal.json",
+    "bytes": 8080,
+    "sha256": "c6cd297ef25e1a5b810364b936f5a07945b3e765147db6602cb9bdc45c31bd90"
+  },
+  {
+    "path": "M2/plugin-install/after.json",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/after.json",
+    "bytes": 8545,
+    "sha256": "a04a94d04a8f7f60fd63b4a12da888c16c147421a043c32559ad3d6f85ea1a51"
+  },
+  {
+    "path": "M2/plugin-install/audit.json",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/audit.json",
+    "bytes": 400,
+    "sha256": "3e9fd3874f7b4d8ad105222c16d13ecf1a3628f8441f3eeee34a76d4ed11fcfe"
+  },
+  {
+    "path": "M2/plugin-install/before.json",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/before.json",
+    "bytes": 8468,
+    "sha256": "da06b96f5ab1786e412010ef6fde79471f8c04cee5949f70baf5f71efc380c20"
+  },
+  {
+    "path": "M2/plugin-install/reload.log",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/reload.log",
+    "bytes": 6,
+    "sha256": "9256c4df6c9bdf77305f44a5d25caa4387eb979a8508d007a2353f4a8a7764df"
+  },
+  {
+    "path": "M2/plugin-install/replace-stderr.log",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/replace-stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/plugin-install/replace-stdout.json",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/replace-stdout.json",
+    "bytes": 350,
+    "sha256": "a0dd6c5705d1a13054c012cfa759e9889aca9a8cfb06341b2106aafcd100256e"
+  },
+  {
+    "path": "M2/plugin-source/.gitignore",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/.gitignore",
+    "bytes": 7,
+    "sha256": "181314065df2f2fdaf920b1a8b5311daa216a2d6489a06ada5b49cc514d89417"
+  },
+  {
+    "path": "M2/plugin-source/BarPassElement.cpp",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/BarPassElement.cpp",
+    "bytes": 1357,
+    "sha256": "80f62755edc980e8d3c66f1bbe37f11b88f7672bdc8196cc485a34746aa5d864"
+  },
+  {
+    "path": "M2/plugin-source/BarPassElement.hpp",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/BarPassElement.hpp",
+    "bytes": 854,
+    "sha256": "be404fa98f92eef2e05f7eecacf58483f266c33b5012a64f1064e65ed0c3fcff"
+  },
+  {
+    "path": "M2/plugin-source/CMakeLists.txt",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/CMakeLists.txt",
+    "bytes": 1120,
+    "sha256": "018fd3165d0869b9b9d583fbbd5e639f828c7a3247bae398237f389893cdbb03"
+  },
+  {
+    "path": "M2/plugin-source/LICENSE",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/LICENSE",
+    "bytes": 1503,
+    "sha256": "3a1d080d85ce1d722b3bd84d87b74dd2332ba7b68a40a28a7126a86cfca6502a"
+  },
+  {
+    "path": "M2/plugin-source/LICENSE.MIT",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/LICENSE.MIT",
+    "bytes": 1063,
+    "sha256": "717ba1949502290f8e47688ae2e323acd06c8ca47aec9f7596b15f678c1af4a2"
+  },
+  {
+    "path": "M2/plugin-source/README.md",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/README.md",
+    "bytes": 8109,
+    "sha256": "e2857a748d7ce541187231ab01289aed2bf28c4f5d67c56e30e14f266da02629"
+  },
+  {
+    "path": "M2/plugin-source/appName.cpp",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/appName.cpp",
+    "bytes": 10527,
+    "sha256": "a6d424fa9e906a48580b139b8b9514192c26308a22c6df927599a67c9036971f"
+  },
+  {
+    "path": "M2/plugin-source/appName.hpp",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/appName.hpp",
+    "bytes": 458,
+    "sha256": "415e9c0d4e0cd94f0fef15b5bf825a46bfdf6a3011289cacb62ecc66ab1d0561"
+  },
+  {
+    "path": "M2/plugin-source/barDeco.cpp",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.cpp",
+    "bytes": 42112,
+    "sha256": "225a4d06b0abe5679840abf040f6bc40bf870524d5e5493a9ff0a6d533fbd878"
+  },
+  {
+    "path": "M2/plugin-source/barDeco.hpp",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/barDeco.hpp",
+    "bytes": 4542,
+    "sha256": "e08945ec6c6613eb4f8783af90575fdf0c6f21fddb2273e80beec84f78330f48"
+  },
+  {
+    "path": "M2/plugin-source/globals.hpp",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/globals.hpp",
+    "bytes": 1862,
+    "sha256": "de03a42b1826788e0bb378a04e24ebbb29a8491c7465292a536ecee236666190"
+  },
+  {
+    "path": "M2/plugin-source/main.cpp",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/main.cpp",
+    "bytes": 15644,
+    "sha256": "55f6102ee8d460330c1d9e8e6b63b2291b167afdcdc28ca5e66ae45e5bd91e00"
+  },
+  {
+    "path": "M2/plugin-source/tools/pointer.c",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/tools/pointer.c",
+    "bytes": 2120,
+    "sha256": "f9ecb642dcf62da6c5743492b01195e1eac10158eeb85ec60e830958fbead663"
+  },
+  {
+    "path": "M2/plugin-source/tools/verify.py",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/tools/verify.py",
+    "bytes": 13546,
+    "sha256": "7d980dfa3cafebe3d71522db8ecdb9b41f8bb1b9853c2a61e126d89272bdd871"
+  },
+  {
+    "path": "M2/plugin-source/tools/wlr-virtual-pointer-unstable-v1.xml",
+    "source": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/tools/wlr-virtual-pointer-unstable-v1.xml",
+    "bytes": 6895,
+    "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524"
+  },
+  {
+    "path": "M2/files-build-install/build-result.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-3e1f64a/build-result.json",
+    "bytes": 4048,
+    "sha256": "3de2a914a6fa38329bd06f9a10e363fa7d2eddb4331b8f75c119d750a7d37a5f"
+  },
+  {
+    "path": "M2/files-build-install/build.log",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-3e1f64a/build.log",
+    "bytes": 794,
+    "sha256": "10b39cc9ee5ab3d9ee95d11f6227f79fc6cbaf30df5a5fefef7b775284be310d"
+  },
+  {
+    "path": "M2/files-build-install/before-installation.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-3e1f64a/before-installation.json",
+    "bytes": 1828,
+    "sha256": "abf9a69e9e88a2a62a9cf5e90e9ba29fd3df15e1720d4321d8a7ca391d05416c"
+  },
+  {
+    "path": "M2/files-build-install/install-gate.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-3e1f64a/install-gate.json",
+    "bytes": 817,
+    "sha256": "3a30deebbe80ea5b58789cb29d69a3b63fdcc4fc1d0c0f2362fbda960daa53a9"
+  },
+  {
+    "path": "M2/files-build-install/installation-audit.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-3e1f64a/installation-audit.json",
+    "bytes": 2200,
+    "sha256": "bddf6aa7c4abc75451d92b9e0b05094e3a858b3cf8f179952076b9b92a97a015"
+  },
+  {
+    "path": "M2/files-build-install/installed.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-3e1f64a/installation-1794038479019332789/installed.json",
+    "bytes": 2630,
+    "sha256": "7df31ba0936f2481337a1d72a00e4c12d129867f5a290810427ad007e778bcbc"
+  },
+  {
+    "path": "parent-provenance/M2/provenance.json",
+    "source": "/tmp/titlebar-kwin-parent-ntorbx1d/provenance.json",
+    "bytes": 1242,
+    "sha256": "5d67b248c2f0defa1296eef53de974f61fa58d55552bef8471487d19b844ac8e"
+  },
+  {
+    "path": "parent-provenance/M2/verified-packages.json",
+    "source": "/tmp/titlebar-kwin-parent-ntorbx1d/verified-packages.json",
+    "bytes": 10391,
+    "sha256": "7b047952fb30ca972a52342265cce6c1c7382de6c7f685c1c848bc7181e1043d"
+  },
+  {
+    "path": "parent-provenance/M2/files.json",
+    "source": "/tmp/titlebar-kwin-parent-ntorbx1d/files.json",
+    "bytes": 712774,
+    "sha256": "0d8bf8c975f5a146271489a825f0583b34d4542952d671225b2419683f017c98"
+  },
+  {
+    "path": "parent-provenance/M2/ldd.txt",
+    "source": "/tmp/titlebar-kwin-parent-ntorbx1d/ldd.txt",
+    "bytes": 11894,
+    "sha256": "c5a914647c027a77b2fdaacf215c68745b6b9d8488f472e92ea0f7f9f8abf9fa"
+  },
+  {
+    "path": "M2/driver/installed-check.py",
+    "source": "/tmp/files-titlebar-driver-LDL20Ut1/installed-check.py",
+    "bytes": 16846,
+    "sha256": "c4e3b6b61de49bca3641ce6fa953b5b368ac681604771f80c1f5fd9006937985"
+  }
+]

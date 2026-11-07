@@ -1,0 +1,118 @@
+{
+  "source_checkpoint": "374fa4158ac3230b054ce09432bff51722e8df0c",
+  "source_file_count": 16,
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 7,
+      "sha256": "181314065df2f2fdaf920b1a8b5311daa216a2d6489a06ada5b49cc514d89417",
+      "git_mode": "100644",
+      "git_blob": "567609b1234a9b8806c5a05da6c866e480aa148d"
+    },
+    {
+      "path": "BarPassElement.cpp",
+      "bytes": 1535,
+      "sha256": "b429dce04ef692f8cbbba24b2f5838a0feba357d8afebfa9fd40028707c27883",
+      "git_mode": "100644",
+      "git_blob": "8bf1111d561df88076b0729a8ddb925d630a4cd6"
+    },
+    {
+      "path": "BarPassElement.hpp",
+      "bytes": 752,
+      "sha256": "dffbf8ddc768fd111b2a41697fe6547e954c46edc16750913c789d8daa8690cc",
+      "git_mode": "100644",
+      "git_blob": "9cf19f97c67e81ae7e13c9ef8df35ea85313d329"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 1120,
+      "sha256": "018fd3165d0869b9b9d583fbbd5e639f828c7a3247bae398237f389893cdbb03",
+      "git_mode": "100644",
+      "git_blob": "239baf26e01ebc79d3c25724b1f7ad9e006f2a19"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1503,
+      "sha256": "3a1d080d85ce1d722b3bd84d87b74dd2332ba7b68a40a28a7126a86cfca6502a",
+      "git_mode": "100644",
+      "git_blob": "eca5561f65fe81a03e278b0938c40f86f0387404"
+    },
+    {
+      "path": "LICENSE.MIT",
+      "bytes": 1063,
+      "sha256": "717ba1949502290f8e47688ae2e323acd06c8ca47aec9f7596b15f678c1af4a2",
+      "git_mode": "100644",
+      "git_blob": "f12cfa766c55541c9d8e008e310c95a721e70a97"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6005,
+      "sha256": "5fd91465dd105d5b87d4742b306e2d9340a8a4ddb88a271dd55a68aee265d64f",
+      "git_mode": "100644",
+      "git_blob": "e9d4de418926e3dfee2fb5d21c331762fdf02389"
+    },
+    {
+      "path": "appName.cpp",
+      "bytes": 10527,
+      "sha256": "a6d424fa9e906a48580b139b8b9514192c26308a22c6df927599a67c9036971f",
+      "git_mode": "100644",
+      "git_blob": "5886c45620718253e85f9dc8620e77ca20ef1897"
+    },
+    {
+      "path": "appName.hpp",
+      "bytes": 458,
+      "sha256": "415e9c0d4e0cd94f0fef15b5bf825a46bfdf6a3011289cacb62ecc66ab1d0561",
+      "git_mode": "100644",
+      "git_blob": "9921067fcb59ee744ad1da6e852e2350c0ceaabb"
+    },
+    {
+      "path": "barDeco.cpp",
+      "bytes": 49609,
+      "sha256": "7cd6c433e8c920d89571fd8e5de4090047e68bd1d7c66d6a10ae96aa4973fe63",
+      "git_mode": "100644",
+      "git_blob": "cb86bf834c48878bce4c4e9492b228d7418f5da2"
+    },
+    {
+      "path": "barDeco.hpp",
+      "bytes": 4815,
+      "sha256": "c8bbe39e6d7d036c3e8d51d2d545f2a038ad24e6863921b1e4d5955012adde84",
+      "git_mode": "100644",
+      "git_blob": "4ec58b4b2efb9965b0d650e1aaa7f06c4d76001e"
+    },
+    {
+      "path": "globals.hpp",
+      "bytes": 2019,
+      "sha256": "a9f94de1de8bfb303a00c6d1c8baf96cf74dab72dda8b30ce57d3b0d498f1531",
+      "git_mode": "100644",
+      "git_blob": "98eafdbc66ebb0a733c446968d3182704b0999c0"
+    },
+    {
+      "path": "main.cpp",
+      "bytes": 18660,
+      "sha256": "e4e72b0faa7d20700e46edb1c8fc24d95e26939d5097f0ca5684c5b1b52e210f",
+      "git_mode": "100644",
+      "git_blob": "cbe05f104202434a3b0ba58d2706f1827b7c1ad8"
+    },
+    {
+      "path": "tools/pointer.c",
+      "bytes": 2120,
+      "sha256": "f9ecb642dcf62da6c5743492b01195e1eac10158eeb85ec60e830958fbead663",
+      "git_mode": "100644",
+      "git_blob": "35a932bd445aceffec4075c575a5014f0b1bb0fa"
+    },
+    {
+      "path": "tools/verify.py",
+      "bytes": 13546,
+      "sha256": "7d980dfa3cafebe3d71522db8ecdb9b41f8bb1b9853c2a61e126d89272bdd871",
+      "git_mode": "100644",
+      "git_blob": "7ce02122180e94e0b381d2527c4138efc70f8f81"
+    },
+    {
+      "path": "tools/wlr-virtual-pointer-unstable-v1.xml",
+      "bytes": 6895,
+      "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524",
+      "git_mode": "100644",
+      "git_blob": "ea243e7c80e4e19f3a19bf35f0c4b1e8ddee8471"
+    }
+  ]
+}

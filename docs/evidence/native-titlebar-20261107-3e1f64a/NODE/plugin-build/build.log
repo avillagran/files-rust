@@ -1,0 +1,45 @@
+[ 20%] Building CXX object CMakeFiles/titlebars.dir/main.cpp.o
+[ 40%] Building CXX object CMakeFiles/titlebars.dir/barDeco.cpp.o
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/main.cpp: In function ‘PLUGIN_DESCRIPTION_INFO initializeOmarchyFloating(void*)’:
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/main.cpp:323:34: warning: ‘bool HyprlandAPI::addConfigKeyword(void*, const std::string&, Hyprlang::PCONFIGHANDLERFUNC, Hyprlang::SHandlerOptions)’ is deprecated [-Wdeprecated-declarations]
+  323 |     HyprlandAPI::addConfigKeyword(OMARCHY_FLOATING_PHANDLE, "plugin:hyprbars:hyprbars-button", onNewOmarchyFloatingButton, Hyprlang::SHandlerOptions{});
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /home/node/.cache/titlebar-prefix-1794037640062108752/node-source/globals.hpp:3,
+                 from /home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.hpp:15,
+                 from /home/node/.cache/titlebar-prefix-1794037640062108752/node-source/main.cpp:22:
+/usr/include/hyprland/src/plugins/PluginAPI.hpp:151:33: note: declared here
+  151 |     APICALL [[deprecated]] bool addConfigKeyword(HANDLE handle, const std::string& name, Hyprlang::PCONFIGHANDLERFUNC fn, Hyprlang::SHandlerOptions opts);
+      |                                 ^~~~~~~~~~~~~~~~
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp: In member function ‘virtual SDecorationPositioningInfo COmarchyFloatingHyprBar::getPositioningInfo()’:
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp:257:51: warning: narrowing conversion of ‘((((COmarchyFloatingHyprBar*)this)->COmarchyFloatingHyprBar::m_hidden || (!(bool)ENABLED)) ? 0 : ((long int)HEIGHT))’ from ‘long int’ to ‘int’ [-Wnarrowing]
+  257 |   info.desiredExtents = {{0, m_hidden || !ENABLED ? 0 : HEIGHT}, {0, 0}};
+      |                              ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp: In member function ‘bool COmarchyFloatingHyprBar::doButtonPress(Config::INTEGER, Config::INTEGER, Config::INTEGER, Hyprutils::Math::Vector2D, bool)’:
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp:526:62: warning: narrowing conversion of ‘barHeight’ from ‘Config::INTEGER’ {aka ‘long int’} to ‘int’ [-Wnarrowing]
+  526 |     const auto BARBUF = Vector2D{(int)assignedBoxGlobal().w, barHeight};
+      |                                                              ^~~~~~~~~
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp: In member function ‘void COmarchyFloatingHyprBar::renderBarButtonsText(Hyprutils::Math::CBox*, float, float)’:
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp:680:62: warning: narrowing conversion of ‘(long int)HEIGHT’ from ‘long int’ to ‘int’ [-Wnarrowing]
+  680 |     const auto BARBUF = Vector2D{(int)assignedBoxGlobal().w, HEIGHT};
+      |                                                              ^~~~~~
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp: In member function ‘void COmarchyFloatingHyprBar::renderPass(PHLMONITOR, const float&)’:
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp:789:22: warning: narrowing conversion of ‘(long int)HEIGHT’ from ‘long int’ to ‘int’ [-Wnarrowing]
+  789 |   m_seExtents = {{0, HEIGHT}, {}};
+      |                      ^~~~~~
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp:830:76: warning: narrowing conversion of ‘(float)scaledRounding’ from ‘float’ to ‘int’ [-Wnarrowing]
+  830 |     g_pHyprOpenGL->renderRect(windowBox, CHyprColor(0, 0, 0, 0), {.round = scaledRounding, .roundingPower = m_pWindow->roundingPower()});
+      |                                                                            ^~~~~~~~~~~~~~
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp:870:49: warning: narrowing conversion of ‘(int)(double)BARBUF.Hyprutils::Math::Vector2D::x’ from ‘int’ to ‘double’ [-Wnarrowing]
+  870 |   CBox textBox = {titleBarBox.x, titleBarBox.y, (int)BARBUF.x, (int)BARBUF.y};
+      |                                                 ^~~~~~~~~~~~~
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp:870:64: warning: narrowing conversion of ‘(int)(double)BARBUF.Hyprutils::Math::Vector2D::y’ from ‘int’ to ‘double’ [-Wnarrowing]
+  870 |   CBox textBox = {titleBarBox.x, titleBarBox.y, (int)BARBUF.x, (int)BARBUF.y};
+      |                                                                ^~~~~~~~~~~~~
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp: In member function ‘void COmarchyFloatingHyprBar::damageOnButtonHover()’:
+/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/barDeco.cpp:1114:62: warning: narrowing conversion of ‘(long int)HEIGHT’ from ‘long int’ to ‘int’ [-Wnarrowing]
+ 1114 |     const auto BARBUF = Vector2D{(int)assignedBoxGlobal().w, HEIGHT};
+      |                                                              ^~~~~~
+[ 60%] Building CXX object CMakeFiles/titlebars.dir/BarPassElement.cpp.o
+[ 80%] Building CXX object CMakeFiles/titlebars.dir/appName.cpp.o
+[100%] Linking CXX shared library titlebars.so
+[100%] Built target titlebars

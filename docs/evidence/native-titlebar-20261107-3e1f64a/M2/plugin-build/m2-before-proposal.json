@@ -1,0 +1,251 @@
+{
+  "pid": 2534712,
+  "start_ticks": 16876946,
+  "instance": "acc1aa0bfd4bd575dcb0f76c35ccf12b660a1ab9_1793992756_728902198",
+  "installed_sha256": "803fe92261be769104b66e15d9378ba8f50b911fc7b4dda802b23224d843c168",
+  "installed_inode": 2247581,
+  "plugin_maps": [
+    {
+      "inode": 2247581,
+      "device": "00:1f",
+      "path": "/usr/lib/omarchy-hyprland-titlebars/titlebars.so",
+      "matches_installed_inode": true
+    },
+    {
+      "inode": 2247581,
+      "device": "00:1f",
+      "path": "/usr/lib/omarchy-hyprland-titlebars/titlebars.so",
+      "matches_installed_inode": true
+    },
+    {
+      "inode": 2247581,
+      "device": "00:1f",
+      "path": "/usr/lib/omarchy-hyprland-titlebars/titlebars.so",
+      "matches_installed_inode": true
+    },
+    {
+      "inode": 2247581,
+      "device": "00:1f",
+      "path": "/usr/lib/omarchy-hyprland-titlebars/titlebars.so",
+      "matches_installed_inode": true
+    }
+  ],
+  "options": {
+    "plugin:hyprbars:bar_blur": "{\"option\": \"plugin:hyprbars:bar_blur\", \"bool\": false, \"set\": false }",
+    "plugin:hyprbars:bar_button_padding": "{\"option\": \"plugin:hyprbars:bar_button_padding\", \"int\": 8, \"set\": true }",
+    "plugin:hyprbars:bar_buttons_alignment": "{\"option\": \"plugin:hyprbars:bar_buttons_alignment\", \"str\": \"right\", \"set\": true }",
+    "plugin:hyprbars:bar_color": "{\"option\": \"plugin:hyprbars:bar_color\", \"int\": 4280163870, \"set\": true }",
+    "plugin:hyprbars:bar_color_inactive": "{\"option\": \"plugin:hyprbars:bar_color_inactive\", \"int\": 0, \"set\": false }",
+    "plugin:hyprbars:bar_height": "{\"option\": \"plugin:hyprbars:bar_height\", \"int\": 30, \"set\": true }",
+    "plugin:hyprbars:bar_icon": "{\"option\": \"plugin:hyprbars:bar_icon\", \"bool\": true, \"set\": false }",
+    "plugin:hyprbars:bar_padding": "{\"option\": \"plugin:hyprbars:bar_padding\", \"int\": 10, \"set\": true }",
+    "plugin:hyprbars:bar_part_of_window": "{\"option\": \"plugin:hyprbars:bar_part_of_window\", \"bool\": true, \"set\": true }",
+    "plugin:hyprbars:bar_precedence_over_border": "{\"option\": \"plugin:hyprbars:bar_precedence_over_border\", \"bool\": true, \"set\": true }",
+    "plugin:hyprbars:bar_text_align": "{\"option\": \"plugin:hyprbars:bar_text_align\", \"str\": \"left\", \"set\": true }",
+    "plugin:hyprbars:bar_text_font": "{\"option\": \"plugin:hyprbars:bar_text_font\", \"str\": \"monospace\", \"set\": true }",
+    "plugin:hyprbars:bar_text_size": "{\"option\": \"plugin:hyprbars:bar_text_size\", \"int\": 12, \"set\": true }",
+    "plugin:hyprbars:bar_text_weight": "invalid type (internal error)",
+    "plugin:hyprbars:bar_title_enabled": "{\"option\": \"plugin:hyprbars:bar_title_enabled\", \"bool\": true, \"set\": false }",
+    "plugin:hyprbars:bar_title_separator": "no such option",
+    "plugin:hyprbars:bar_title_source": "{\"option\": \"plugin:hyprbars:bar_title_source\", \"str\": \"title\", \"set\": false }",
+    "plugin:hyprbars:button_border_color": "{\"option\": \"plugin:hyprbars:button_border_color\", \"int\": 0, \"set\": false }",
+    "plugin:hyprbars:button_border_size": "{\"option\": \"plugin:hyprbars:button_border_size\", \"int\": 0, \"set\": false }",
+    "plugin:hyprbars:button_rounding": "{\"option\": \"plugin:hyprbars:button_rounding\", \"int\": 0, \"set\": true }",
+    "plugin:hyprbars:client_decorations_tag": "{\"option\": \"plugin:hyprbars:client_decorations_tag\", \"str\": \"chromium-based-browser\", \"set\": false }",
+    "plugin:hyprbars:col.text": "{\"option\": \"plugin:hyprbars:col.text\", \"int\": 4290690750, \"set\": true }",
+    "plugin:hyprbars:enabled": "{\"option\": \"plugin:hyprbars:enabled\", \"bool\": true, \"set\": true }",
+    "plugin:hyprbars:icon_on_hover": "{\"option\": \"plugin:hyprbars:icon_on_hover\", \"bool\": false, \"set\": true }",
+    "plugin:hyprbars:inactive_button_color": "{\"option\": \"plugin:hyprbars:inactive_button_color\", \"int\": 4280163870, \"set\": true }",
+    "plugin:hyprbars:on_double_click": "{\"option\": \"plugin:hyprbars:on_double_click\", \"str\": \"hyprctl dispatch 'hl.dsp.window.fullscreen({ mode = \"maximized\", action = \"toggle\", window = \"address:%WINDOW%\" })'\", \"set\": true }",
+    "plugin:hyprbars:respect_client_decorations": "{\"option\": \"plugin:hyprbars:respect_client_decorations\", \"bool\": true, \"set\": false }",
+    "plugin:hyprbars:workspace_tag": "{\"option\": \"plugin:hyprbars:workspace_tag\", \"str\": \"omarchy-floating-workspace\", \"set\": true }"
+  },
+  "active_address": "0xaaaae1f9bae0",
+  "windows": [
+    {
+      "address": "0xaaaae0976bd0",
+      "pid": 2535226,
+      "at": [
+        3678,
+        78
+      ],
+      "size": [
+        1433,
+        874
+      ],
+      "floating": true,
+      "mapped": true,
+      "hidden": false,
+      "workspace": {
+        "address": "1",
+        "id": 1,
+        "type": "normal",
+        "name": "1"
+      },
+      "fullscreen": 0,
+      "fullscreenClient": 0
+    },
+    {
+      "address": "0xaaaae1b2d180",
+      "pid": 3173124,
+      "at": [
+        3681,
+        326
+      ],
+      "size": [
+        1100,
+        759
+      ],
+      "floating": true,
+      "mapped": true,
+      "hidden": false,
+      "workspace": {
+        "address": "1",
+        "id": 1,
+        "type": "normal",
+        "name": "1"
+      },
+      "fullscreen": 0,
+      "fullscreenClient": 0
+    },
+    {
+      "address": "0xaaaae1f9bae0",
+      "pid": 3173124,
+      "at": [
+        3660,
+        42
+      ],
+      "size": [
+        1704,
+        1067
+      ],
+      "floating": false,
+      "mapped": true,
+      "hidden": false,
+      "workspace": {
+        "address": "2",
+        "id": 2,
+        "type": "normal",
+        "name": "2"
+      },
+      "fullscreen": 0,
+      "fullscreenClient": 0
+    },
+    {
+      "address": "0xaaaae1fb69b0",
+      "pid": 1221864,
+      "at": [
+        4149,
+        311
+      ],
+      "size": [
+        1100,
+        759
+      ],
+      "floating": true,
+      "mapped": true,
+      "hidden": false,
+      "workspace": {
+        "address": "1",
+        "id": 1,
+        "type": "normal",
+        "name": "1"
+      },
+      "fullscreen": 0,
+      "fullscreenClient": 0
+    },
+    {
+      "address": "0xaaaae237e490",
+      "pid": 3318413,
+      "at": [
+        4075,
+        139
+      ],
+      "size": [
+        1100,
+        741
+      ],
+      "floating": true,
+      "mapped": true,
+      "hidden": false,
+      "workspace": {
+        "address": "1",
+        "id": 1,
+        "type": "normal",
+        "name": "1"
+      },
+      "fullscreen": 0,
+      "fullscreenClient": 0
+    },
+    {
+      "address": "0xaaaae2386030",
+      "pid": 1285833,
+      "at": [
+        3665,
+        42
+      ],
+      "size": [
+        1694,
+        1067
+      ],
+      "floating": false,
+      "mapped": true,
+      "hidden": false,
+      "workspace": {
+        "address": "3",
+        "id": 3,
+        "type": "normal",
+        "name": "3"
+      },
+      "fullscreen": 0,
+      "fullscreenClient": 0
+    },
+    {
+      "address": "0xaaaae238e4d0",
+      "pid": 3173124,
+      "at": [
+        4736,
+        38
+      ],
+      "size": [
+        620,
+        958
+      ],
+      "floating": true,
+      "mapped": true,
+      "hidden": false,
+      "workspace": {
+        "address": "special:sidepanelX",
+        "type": "special",
+        "name": "special:sidepanelX"
+      },
+      "fullscreen": 0,
+      "fullscreenClient": 0
+    },
+    {
+      "address": "0xaaaae2909330",
+      "pid": 1361788,
+      "at": [
+        3986,
+        207
+      ],
+      "size": [
+        1100,
+        759
+      ],
+      "floating": true,
+      "mapped": true,
+      "hidden": false,
+      "workspace": {
+        "address": "1",
+        "id": 1,
+        "type": "normal",
+        "name": "1"
+      },
+      "fullscreen": 0,
+      "fullscreenClient": 0
+    }
+  ],
+  "config_errors": "[\n\t\"\"\n]",
+  "plugins": "[\n{\n    \"name\": \"hyprbars\",\n    \"author\": \"Vaxry\",\n    \"handle\": \"aaaae164bcc0\",\n    \"version\": \"1.0\",\n    \"description\": \"A plugin to add title bars to windows.\"\n}]"
+}

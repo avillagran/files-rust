@@ -1,0 +1,103 @@
+{
+  "source_checkpoint": "07f75d79b4a5c91a9ca9c82adec2e43e1a4d3df6",
+  "source_archive_sha256": "297ef7b48cd6d57a1a992b8d81dd90e1d421a01da79d6f7c81c2fa8dc6778e36",
+  "source_file_count": 16,
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 7,
+      "sha256": "181314065df2f2fdaf920b1a8b5311daa216a2d6489a06ada5b49cc514d89417",
+      "mode": 436
+    },
+    {
+      "path": "BarPassElement.cpp",
+      "bytes": 1357,
+      "sha256": "80f62755edc980e8d3c66f1bbe37f11b88f7672bdc8196cc485a34746aa5d864",
+      "mode": 436
+    },
+    {
+      "path": "BarPassElement.hpp",
+      "bytes": 854,
+      "sha256": "be404fa98f92eef2e05f7eecacf58483f266c33b5012a64f1064e65ed0c3fcff",
+      "mode": 436
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 1120,
+      "sha256": "018fd3165d0869b9b9d583fbbd5e639f828c7a3247bae398237f389893cdbb03",
+      "mode": 436
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1503,
+      "sha256": "3a1d080d85ce1d722b3bd84d87b74dd2332ba7b68a40a28a7126a86cfca6502a",
+      "mode": 436
+    },
+    {
+      "path": "LICENSE.MIT",
+      "bytes": 1063,
+      "sha256": "717ba1949502290f8e47688ae2e323acd06c8ca47aec9f7596b15f678c1af4a2",
+      "mode": 436
+    },
+    {
+      "path": "README.md",
+      "bytes": 8109,
+      "sha256": "e2857a748d7ce541187231ab01289aed2bf28c4f5d67c56e30e14f266da02629",
+      "mode": 436
+    },
+    {
+      "path": "appName.cpp",
+      "bytes": 10527,
+      "sha256": "a6d424fa9e906a48580b139b8b9514192c26308a22c6df927599a67c9036971f",
+      "mode": 436
+    },
+    {
+      "path": "appName.hpp",
+      "bytes": 458,
+      "sha256": "415e9c0d4e0cd94f0fef15b5bf825a46bfdf6a3011289cacb62ecc66ab1d0561",
+      "mode": 436
+    },
+    {
+      "path": "barDeco.cpp",
+      "bytes": 42112,
+      "sha256": "225a4d06b0abe5679840abf040f6bc40bf870524d5e5493a9ff0a6d533fbd878",
+      "mode": 436
+    },
+    {
+      "path": "barDeco.hpp",
+      "bytes": 4542,
+      "sha256": "e08945ec6c6613eb4f8783af90575fdf0c6f21fddb2273e80beec84f78330f48",
+      "mode": 436
+    },
+    {
+      "path": "globals.hpp",
+      "bytes": 1862,
+      "sha256": "de03a42b1826788e0bb378a04e24ebbb29a8491c7465292a536ecee236666190",
+      "mode": 436
+    },
+    {
+      "path": "main.cpp",
+      "bytes": 15644,
+      "sha256": "55f6102ee8d460330c1d9e8e6b63b2291b167afdcdc28ca5e66ae45e5bd91e00",
+      "mode": 436
+    },
+    {
+      "path": "tools/pointer.c",
+      "bytes": 2120,
+      "sha256": "f9ecb642dcf62da6c5743492b01195e1eac10158eeb85ec60e830958fbead663",
+      "mode": 436
+    },
+    {
+      "path": "tools/verify.py",
+      "bytes": 13546,
+      "sha256": "7d980dfa3cafebe3d71522db8ecdb9b41f8bb1b9853c2a61e126d89272bdd871",
+      "mode": 436
+    },
+    {
+      "path": "tools/wlr-virtual-pointer-unstable-v1.xml",
+      "bytes": 6895,
+      "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524",
+      "mode": 436
+    }
+  ]
+}

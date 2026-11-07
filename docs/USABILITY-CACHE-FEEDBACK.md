@@ -4,6 +4,11 @@ The production source checkpoint is `dd80534ce42b7a8831e65a4d9c12f4951e8bf1e3`.
 The separate native acceptance driver is `1d5a5c0`, refined in `2cdd732`;
 it changes no product source.
 
+The later [native titlebar integration](NATIVE-TITLEBAR-FORMAT.md) replaces the
+literal client prefix described by this initial feedback checkpoint. M2 now uses
+the compositor's app prefix and styling; NODE's final plugin deployment awaits
+system authentication.
+
 ## Behavior
 
 - The client title is `Files > <path>`, followed by brief operation state when

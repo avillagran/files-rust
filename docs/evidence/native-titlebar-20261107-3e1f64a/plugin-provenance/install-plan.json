@@ -1,0 +1,168 @@
+{
+  "plans": [
+    {
+      "machine": "NODE",
+      "requires_private_acceptance": "PASS for this exact candidate hash before any privileged action",
+      "create_exclusive_private_transaction_directory": "/home/node/.cache/titlebar-prefix-1794037640062108752/installation",
+      "candidate": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-build/cmake/titlebars.so",
+      "candidate_sha256": "653ee0dfc0f845439469f328b20728891750c522dfbfb40de063c5eab9637121",
+      "expected_installed_sha256": "09e68e28a7d76926de8ec9c601cc21cba127f2e6c0cab3026f02109cfa6856bf",
+      "before_snapshot_command": [
+        "python3",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/snapshot-plugin-state.py",
+        "--source-main",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/main.cpp",
+        "--output",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/installation/before.json"
+      ],
+      "replace_command": [
+        "pkexec",
+        "--disable-internal-agent",
+        "/usr/bin/python3",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/atomic-plugin-replace.py",
+        "--candidate",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/node-build/cmake/titlebars.so",
+        "--candidate-sha256",
+        "653ee0dfc0f845439469f328b20728891750c522dfbfb40de063c5eab9637121",
+        "--expected-installed-sha256",
+        "09e68e28a7d76926de8ec9c601cc21cba127f2e6c0cab3026f02109cfa6856bf",
+        "--backup",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/installation/previous-titlebars.so"
+      ],
+      "loader_commands_after_rechecking_PID_and_start_ticks": [
+        [
+          "hyprctl",
+          "-i",
+          "INSTANCE_FROM_BEFORE_JSON",
+          "plugin",
+          "unload",
+          "/usr/lib/omarchy-hyprland-titlebars/titlebars.so"
+        ],
+        [
+          "hyprctl",
+          "-i",
+          "INSTANCE_FROM_BEFORE_JSON",
+          "plugin",
+          "load",
+          "/usr/lib/omarchy-hyprland-titlebars/titlebars.so"
+        ]
+      ],
+      "after_snapshot_command": [
+        "python3",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/snapshot-plugin-state.py",
+        "--source-main",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/node-source/main.cpp",
+        "--output",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/installation/after.json"
+      ],
+      "post_conditions": [
+        "Compositor PID and /proc start_ticks unchanged",
+        "active_address and sorted windows geometries/states equal; do not move/focus/close any client to manufacture equality",
+        "Every pre-existing supported plugin option equals the saved raw value; bar_title_separator added on M2 must equal \u203a",
+        "config_errors equals the pre-install value; enabled remains true",
+        "Every titlebars.so map uses the new installed inode",
+        "Installed SHA equals privately accepted candidate; backup SHA equals the prior artifact"
+      ],
+      "rollback_replacement_command": [
+        "pkexec",
+        "--disable-internal-agent",
+        "/usr/bin/python3",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/atomic-plugin-replace.py",
+        "--candidate",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/installation/previous-titlebars.so",
+        "--candidate-sha256",
+        "09e68e28a7d76926de8ec9c601cc21cba127f2e6c0cab3026f02109cfa6856bf",
+        "--expected-installed-sha256",
+        "653ee0dfc0f845439469f328b20728891750c522dfbfb40de063c5eab9637121",
+        "--backup",
+        "/home/node/.cache/titlebar-prefix-1794037640062108752/installation/failed-titlebars.so"
+      ],
+      "rollback_loader": "Unload and load the fixed installed path again, with the same guarded instance; preserve every failed receipt and do not modify windows."
+    },
+    {
+      "machine": "M2",
+      "requires_private_acceptance": "PASS for this exact candidate hash before any privileged action",
+      "create_exclusive_private_transaction_directory": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation",
+      "candidate": "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/build/titlebars.so",
+      "candidate_sha256": "9a28285b2e60ef734c0a3411d62dfdc2b38b67cbb408b7abc164293d917a7bc9",
+      "expected_installed_sha256": "803fe92261be769104b66e15d9378ba8f50b911fc7b4dda802b23224d843c168",
+      "before_snapshot_command": [
+        "python3",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/snapshot-plugin-state.py",
+        "--source-main",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/main.cpp",
+        "--output",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/before.json"
+      ],
+      "replace_command": [
+        "sudo",
+        "-n",
+        "/usr/bin/python3",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/atomic-plugin-replace.py",
+        "--candidate",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/build/titlebars.so",
+        "--candidate-sha256",
+        "9a28285b2e60ef734c0a3411d62dfdc2b38b67cbb408b7abc164293d917a7bc9",
+        "--expected-installed-sha256",
+        "803fe92261be769104b66e15d9378ba8f50b911fc7b4dda802b23224d843c168",
+        "--backup",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/previous-titlebars.so"
+      ],
+      "loader_commands_after_rechecking_PID_and_start_ticks": [
+        [
+          "hyprctl",
+          "-i",
+          "INSTANCE_FROM_BEFORE_JSON",
+          "plugin",
+          "unload",
+          "/usr/lib/omarchy-hyprland-titlebars/titlebars.so"
+        ],
+        [
+          "hyprctl",
+          "-i",
+          "INSTANCE_FROM_BEFORE_JSON",
+          "plugin",
+          "load",
+          "/usr/lib/omarchy-hyprland-titlebars/titlebars.so"
+        ]
+      ],
+      "after_snapshot_command": [
+        "python3",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/snapshot-plugin-state.py",
+        "--source-main",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/source/main.cpp",
+        "--output",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/after.json"
+      ],
+      "post_conditions": [
+        "Compositor PID and /proc start_ticks unchanged",
+        "active_address and sorted windows geometries/states equal; do not move/focus/close any client to manufacture equality",
+        "Every pre-existing supported plugin option equals the saved raw value; bar_title_separator added on M2 must equal \u203a",
+        "config_errors equals the pre-install value; enabled remains true",
+        "Every titlebars.so map uses the new installed inode",
+        "Installed SHA equals privately accepted candidate; backup SHA equals the prior artifact"
+      ],
+      "rollback_replacement_command": [
+        "sudo",
+        "-n",
+        "/usr/bin/python3",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/atomic-plugin-replace.py",
+        "--candidate",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/previous-titlebars.so",
+        "--candidate-sha256",
+        "803fe92261be769104b66e15d9378ba8f50b911fc7b4dda802b23224d843c168",
+        "--expected-installed-sha256",
+        "9a28285b2e60ef734c0a3411d62dfdc2b38b67cbb408b7abc164293d917a7bc9",
+        "--backup",
+        "/home/avillagran/.cache/titlebar-prefix-1794037640062108752/installation/failed-titlebars.so"
+      ],
+      "rollback_loader": "Unload and load the fixed installed path again, with the same guarded instance; preserve every failed receipt and do not modify windows."
+    }
+  ],
+  "notes": [
+    "PLUGIN_INIT calls HyprlandAPI::reloadConfig automatically; this is required to restore Lua options and button definitions. Do not issue another reload unless the private test proves it is needed.",
+    "Read a fresh snapshot immediately before replacement, not the proposal snapshots captured earlier.",
+    "Atomic helper does no compositor calls, config writes, file-tree deletion or backup destruction.",
+    "NODE Polkit may require OS authentication; notify user before invocation. Do not use a per-user nonpersistent loader as a completed installation."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "source_checkpoint": "374fa4158ac3230b054ce09432bff51722e8df0c",
+  "stages": [
+    {
+      "stage": "configure",
+      "returncode": 0
+    },
+    {
+      "stage": "build",
+      "returncode": 0
+    }
+  ],
+  "elapsed_seconds": 10.648047472001053,
+  "candidate_sha256": "653ee0dfc0f845439469f328b20728891750c522dfbfb40de063c5eab9637121",
+  "candidate_file": "/home/node/.cache/titlebar-prefix-1794037640062108752/node-build/cmake/titlebars.so: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, BuildID[sha1]=9733d461be187addfdb93bc86504d896a4ce1c03, not stripped"
+}

@@ -1,0 +1,1 @@
+PASS: visually inspected initial.png, after-reload.png and parent.png. Each shows the Files folder icon, a single dim Files label and dim ›, followed by the bright absolute path. After plugin unload/load the same titlebar remains correct. After native Alt+Up the displayed path updates from Nested to A. Scope: focused window only; unfocused retitle not tested.

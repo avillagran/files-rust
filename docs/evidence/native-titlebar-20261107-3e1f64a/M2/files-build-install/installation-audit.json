@@ -1,0 +1,47 @@
+{
+  "five_backups_and_installed_hashes": "PASS",
+  "settings": [
+    {
+      "path": "/home/avillagran/.config/files/config.toml",
+      "before": "f225b2303b1ca96f8a42301f80a2838577a14c327c75eb7b4c9d367f96f2862b",
+      "after": "f225b2303b1ca96f8a42301f80a2838577a14c327c75eb7b4c9d367f96f2862b"
+    },
+    {
+      "path": "/home/avillagran/.config/files/session.bin",
+      "before": "14d5d1d1ead41e70ef9c51e072b9c319ad7b813fcd8b67f4a93307827f7d3170",
+      "after": "14d5d1d1ead41e70ef9c51e072b9c319ad7b813fcd8b67f4a93307827f7d3170"
+    },
+    {
+      "path": "/home/avillagran/.config/files/layouts/0d922b96b215a0a5.toml",
+      "before": "e0f3277c2f15261378b7aa49496828016358163df7236397f825f1b00a0932e7",
+      "after": "e0f3277c2f15261378b7aa49496828016358163df7236397f825f1b00a0932e7"
+    },
+    {
+      "path": "/home/avillagran/.config/files/layouts/32d393d1817c5e72.toml",
+      "before": "1cbf77da02414f7c97e6a895b9a65fefaae10c41c91bdf869111a56df40d0a21",
+      "after": "1cbf77da02414f7c97e6a895b9a65fefaae10c41c91bdf869111a56df40d0a21"
+    },
+    {
+      "path": "/home/avillagran/.config/files/layouts/35201e16dc621286.toml",
+      "before": "c17250785358f5cb71cc8624ecfef3fc85d20ba3f386a987d0d8bc9224bb1772",
+      "after": "c17250785358f5cb71cc8624ecfef3fc85d20ba3f386a987d0d8bc9224bb1772"
+    },
+    {
+      "path": "/home/avillagran/.config/mimeapps.list",
+      "before": "9f1c34cc010e997bf8e95e88cf68dcc7bee4fa60514254a35684e7192e86d6d0",
+      "after": "9f1c34cc010e997bf8e95e88cf68dcc7bee4fa60514254a35684e7192e86d6d0"
+    },
+    {
+      "path": "/home/avillagran/.config/hyprland-mimeapps.list",
+      "before": "d9fa7aff0d4006789fb673b2a4b50cd83c51b8287f8ad15ce7549ca6605cc649",
+      "after": "d9fa7aff0d4006789fb673b2a4b50cd83c51b8287f8ad15ce7549ca6605cc649"
+    },
+    {
+      "path": "/home/avillagran/.local/share/applications/mimeapps.list",
+      "before": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "settings_unchanged": true,
+  "receipt": "/home/avillagran/.cache/files-m2-updates/sheets-3e1f64a/installation-1794038479019332789/installed.json"
+}
