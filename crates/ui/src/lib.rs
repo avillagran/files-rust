@@ -1983,12 +1983,6 @@ pub fn run_since(start: Instant) -> bool {
             auto_exit = None;
             m.mutations.cancel();
         }
-        window_presentation.pump(&model, &mut win, &mut canvas, paint_revision.get());
-        if win.was_deleted() || canvas.was_deleted() {
-            eprintln!("FILES_BACKEND_WIDGET_LOST phase=presentation; cancelling and draining");
-            runtime_failed = true;
-            break;
-        }
         let feedback_dirty = operation_notices.drain(&model);
         let desired_corners = omarchy_theme::corners(model.borrow().corners);
         if fltk_omarchy::theme::corners() != desired_corners {
@@ -2021,6 +2015,16 @@ pub fn run_since(start: Instant) -> bool {
         }
         m.set_media_visible(win.shown() && win.visible_r());
         let strip_dirty = tab_strip.drain(&mut m);
+        // Apply queued user gestures before validating presentation, while
+        // keeping the initial listing/watch refresh after that validation.
+        drop(m);
+        window_presentation.pump(&model, &mut win, &mut canvas, paint_revision.get());
+        if win.was_deleted() || canvas.was_deleted() {
+            eprintln!("FILES_BACKEND_WIDGET_LOST phase=presentation; cancelling and draining");
+            runtime_failed = true;
+            break;
+        }
+        let mut m = model.borrow_mut();
         let mut dirty = m.pump() || changed || strip_dirty || feedback_dirty || close_dirty;
         {
             let Model {
