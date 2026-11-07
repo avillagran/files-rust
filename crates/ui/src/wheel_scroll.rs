@@ -129,18 +129,29 @@ pub fn wheel(m: &mut Model, x: i32, delta: i32, horizontal: bool, h: i32) {
 }
 
 pub fn advance(m: &mut Model, canvas: &Frame) {
+    if advance_offsets(m, canvas.h()) {
+        anim::request_redraw(canvas);
+    }
+}
+
+pub(crate) fn advance_offsets(m: &mut Model, height: i32) -> bool {
     let mut state = std::mem::take(&mut m.wheel_scroll);
     state.sync(m);
-    let offsets = offsets(m, canvas.h());
+    let offsets = offsets(m, height);
+    let mut running = false;
     for (slot, offset) in offsets.into_iter().enumerate() {
+        // Idle motion must not clamp programmatic restoration against the
+        // previous frame's geometry. The model clamps after the current paint.
+        if !state.slots[slot].running() {
+            continue;
+        }
         let Some((position, max)) = offset else {
             continue;
         };
         let value = state.slots[slot].position(position as i64, max as i64) as i32;
         set(m, slot, value);
-        if state.slots[slot].running() {
-            anim::request_redraw(canvas);
-        }
+        running |= state.slots[slot].running();
     }
     m.wheel_scroll = state;
+    running
 }
