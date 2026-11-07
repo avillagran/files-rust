@@ -103,12 +103,20 @@ opt-level = 1
 name = "ui"
 harness = false
 
+[[test]]
+name = "timer"
+harness = false
+
 [profile.dev]
 incremental = false
 debug = "line-tables-only"
 
 [[example]]
 name = "gpu_bench"
+required-features = ["gpu"]
+
+[[example]]
+name = "scene_residency_check"
 required-features = ["gpu"]
 
 [[example]]

@@ -16,6 +16,442 @@ use std::{
 const MAX_NAMES: usize = 100_000;
 const MAX_INPUT_BYTES: usize = 8 * 1024 * 1024;
 
+// Private acceptance instrumentation only. An armed pre-execution gate exits
+// on cancellation; an armed computed-ACK gate retains the actual response
+// through cancellation until release or its real ten-second deadline.
+#[cfg(target_os = "linux")]
+mod fixture_gate {
+    use std::{
+        ffi::{CString, OsStr},
+        fs::File,
+        io::Write,
+        os::{
+            fd::{AsRawFd, FromRawFd},
+            unix::{ffi::OsStrExt, fs::MetadataExt},
+        },
+        path::{Component, Path},
+        sync::atomic::{AtomicBool, Ordering},
+        time::{Duration, Instant},
+    };
+
+    const DEADLINE: Duration = Duration::from_secs(10);
+    const POLL: Duration = Duration::from_millis(10);
+
+    pub(super) struct Gate {
+        directory: File,
+    }
+    #[derive(Debug, PartialEq, Eq)]
+    enum Exit {
+        Unarmed,
+        Released,
+        Cancelled,
+        TimedOut,
+    }
+
+    impl Gate {
+        pub(super) fn from_environment() -> Option<Self> {
+            let enabled = std::env::var_os("FILES_TEST_MUTATIONS");
+            let root = std::env::var_os("TMPDIR");
+            let requested = std::env::var_os("FILES_TEST_MUTATION_GATE_DIR");
+            Self::configured(enabled.as_deref(), root.as_deref(), requested.as_deref())
+        }
+
+        fn configured(
+            enabled: Option<&OsStr>,
+            root: Option<&OsStr>,
+            requested: Option<&OsStr>,
+        ) -> Option<Self> {
+            if enabled != Some(OsStr::new("1")) {
+                return None;
+            }
+            // Never accept the default shared temp directory or live settings.
+            let root = Path::new(root?);
+            let requested = Path::new(requested?);
+            let clean = |path: &Path| {
+                path.is_absolute()
+                    && path
+                        .components()
+                        .all(|part| matches!(part, Component::RootDir | Component::Normal(_)))
+            };
+            if !clean(root) || !clean(requested) {
+                return None;
+            }
+            let relative = requested.strip_prefix(root).ok()?;
+            if relative.as_os_str().is_empty() {
+                return None;
+            }
+            let mut directory = File::open("/").ok()?;
+            for part in root.components() {
+                if let Component::Normal(name) = part {
+                    directory = open_child(&directory, name)?;
+                }
+            }
+            if !private_directory(&directory) {
+                return None;
+            }
+            for part in relative.components() {
+                let Component::Normal(name) = part else {
+                    return None;
+                };
+                directory = open_child(&directory, name)?;
+                if !private_directory(&directory) {
+                    return None;
+                }
+            }
+            Some(Self { directory })
+        }
+
+        pub(super) fn wait(&self, phase: &str, id: u64, cancel: &AtomicBool, ack: bool) {
+            let phase = if ack {
+                format!("ack-{phase}")
+            } else {
+                phase.to_owned()
+            };
+            let _ = self.wait_until(&phase, id, cancel, ack, DEADLINE);
+        }
+
+        fn wait_until(
+            &self,
+            phase: &str,
+            id: u64,
+            cancel: &AtomicBool,
+            ack: bool,
+            timeout: Duration,
+        ) -> Exit {
+            if !self.signal_exists(&format!("{phase}.arm")) {
+                return Exit::Unarmed;
+            }
+            let prefix = format!("{phase}-{id}");
+            if !self.signal(&format!("{prefix}.waiting"), "waiting\n") {
+                return Exit::Unarmed;
+            }
+            let started = Instant::now();
+            let mut observed_cancel = false;
+            let exit = loop {
+                if cancel.load(Ordering::Acquire) {
+                    if !observed_cancel {
+                        let _ = self.signal(&format!("{prefix}.cancelled"), "cancel-observed\n");
+                        observed_cancel = true;
+                    }
+                    if !ack {
+                        break Exit::Cancelled;
+                    }
+                    // The result already exists. Holding its ACK can exercise
+                    // stale delivery after close/reopen; this is not rollback.
+                }
+                if self.signal_exists(&format!("{prefix}.release")) {
+                    break Exit::Released;
+                }
+                let remaining = timeout.saturating_sub(started.elapsed());
+                if remaining.is_zero() {
+                    break Exit::TimedOut;
+                }
+                std::thread::sleep(remaining.min(POLL));
+            };
+            let text = match exit {
+                Exit::Released => "released\n",
+                Exit::Cancelled => "cancelled-before-execution\n",
+                Exit::TimedOut => "timed-out\n",
+                Exit::Unarmed => unreachable!(),
+            };
+            let _ = self.signal(&format!("{prefix}.finished"), text);
+            exit
+        }
+
+        fn signal_exists(&self, name: &str) -> bool {
+            let Ok(name) = CString::new(name) else {
+                return false;
+            };
+            let mut info = std::mem::MaybeUninit::<libc::stat>::uninit();
+            // SAFETY: inspect one internal phase/id name relative to our
+            // retained directory descriptor, without following symlinks.
+            if unsafe {
+                libc::fstatat(
+                    self.directory.as_raw_fd(),
+                    name.as_ptr(),
+                    info.as_mut_ptr(),
+                    libc::AT_SYMLINK_NOFOLLOW,
+                )
+            } != 0
+            {
+                return false;
+            }
+            // SAFETY: successful fstatat initialized the entire stat.
+            let info = unsafe { info.assume_init() };
+            info.st_mode & libc::S_IFMT == libc::S_IFREG
+                && info.st_mode & 0o077 == 0
+                && info.st_uid == unsafe { libc::geteuid() }
+        }
+
+        fn signal(&self, name: &str, text: &str) -> bool {
+            let Ok(name) = CString::new(name) else {
+                return false;
+            };
+            // SAFETY: create a new internal phase/id name. O_EXCL and
+            // O_NOFOLLOW prevent replacing existing entries or linked data.
+            let fd = unsafe {
+                libc::openat(
+                    self.directory.as_raw_fd(),
+                    name.as_ptr(),
+                    libc::O_WRONLY
+                        | libc::O_CREAT
+                        | libc::O_EXCL
+                        | libc::O_NOFOLLOW
+                        | libc::O_CLOEXEC
+                        | libc::O_NONBLOCK,
+                    0o600,
+                )
+            };
+            if fd < 0 {
+                return false;
+            }
+            // SAFETY: exactly one File takes ownership of the new descriptor.
+            let mut file = unsafe { File::from_raw_fd(fd) };
+            file.write_all(text.as_bytes()).is_ok()
+        }
+    }
+
+    fn private_directory(file: &File) -> bool {
+        file.metadata().is_ok_and(|metadata| {
+            metadata.is_dir()
+                && metadata.mode() & 0o777 == 0o700
+                && metadata.uid() == unsafe { libc::geteuid() }
+        })
+    }
+
+    fn open_child(parent: &File, name: &OsStr) -> Option<File> {
+        let name = CString::new(name.as_bytes()).ok()?;
+        // SAFETY: open one component while its parent remains owned.
+        // O_DIRECTORY and O_NOFOLLOW reject linked or non-directory paths.
+        let fd = unsafe {
+            libc::openat(
+                parent.as_raw_fd(),
+                name.as_ptr(),
+                libc::O_RDONLY | libc::O_DIRECTORY | libc::O_NOFOLLOW | libc::O_CLOEXEC,
+            )
+        };
+        (fd >= 0).then(|| unsafe { File::from_raw_fd(fd) })
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+        use std::{
+            fs,
+            os::unix::fs::{DirBuilderExt, OpenOptionsExt, PermissionsExt, symlink},
+            path::PathBuf,
+            sync::atomic::AtomicU64,
+        };
+
+        struct Fixture {
+            root: PathBuf,
+            gate: PathBuf,
+        }
+        impl Fixture {
+            fn new() -> Self {
+                static NEXT: AtomicU64 = AtomicU64::new(0);
+                let root = std::env::temp_dir().join(format!(
+                    "files-mutation-gate-{}-{}",
+                    std::process::id(),
+                    NEXT.fetch_add(1, Ordering::Relaxed)
+                ));
+                fs::DirBuilder::new().mode(0o700).create(&root).unwrap();
+                let gate = root.join("gate");
+                fs::DirBuilder::new().mode(0o700).create(&gate).unwrap();
+                // Retain these owned fixtures; never remove filesystem trees.
+                Self { root, gate }
+            }
+            fn configured(&self) -> Gate {
+                Gate::configured(
+                    Some(OsStr::new("1")),
+                    Some(self.root.as_os_str()),
+                    Some(self.gate.as_os_str()),
+                )
+                .unwrap()
+            }
+            fn signal(&self, name: &str) {
+                fs::OpenOptions::new()
+                    .write(true)
+                    .create_new(true)
+                    .mode(0o600)
+                    .open(self.gate.join(name))
+                    .unwrap();
+            }
+        }
+
+        #[test]
+        fn private_gate_requires_flag_private_root_and_strict_descendant() {
+            let f = Fixture::new();
+            for flag in [None, Some(OsStr::new("0"))] {
+                assert!(
+                    Gate::configured(flag, Some(f.root.as_os_str()), Some(f.gate.as_os_str()))
+                        .is_none()
+                );
+            }
+            assert!(
+                Gate::configured(Some(OsStr::new("1")), None, Some(f.gate.as_os_str())).is_none()
+            );
+            assert!(
+                Gate::configured(
+                    Some(OsStr::new("1")),
+                    Some(f.gate.as_os_str()),
+                    Some(f.root.as_os_str())
+                )
+                .is_none()
+            );
+            assert!(
+                Gate::configured(
+                    Some(OsStr::new("1")),
+                    Some(f.root.as_os_str()),
+                    Some(f.root.as_os_str())
+                )
+                .is_none()
+            );
+            fs::set_permissions(&f.root, fs::Permissions::from_mode(0o755)).unwrap();
+            assert!(
+                Gate::configured(
+                    Some(OsStr::new("1")),
+                    Some(f.root.as_os_str()),
+                    Some(f.gate.as_os_str())
+                )
+                .is_none()
+            );
+        }
+
+        #[test]
+        fn private_gate_rejects_directory_and_release_symlinks() {
+            let f = Fixture::new();
+            let alias = f.root.join("alias");
+            symlink(&f.gate, &alias).unwrap();
+            assert!(
+                Gate::configured(
+                    Some(OsStr::new("1")),
+                    Some(f.root.as_os_str()),
+                    Some(alias.as_os_str())
+                )
+                .is_none()
+            );
+            f.signal("plan.arm");
+            symlink(f.gate.join("plan.arm"), f.gate.join("plan-1.release")).unwrap();
+            assert_eq!(
+                f.configured().wait_until(
+                    "plan",
+                    1,
+                    &AtomicBool::new(false),
+                    false,
+                    Duration::from_millis(20)
+                ),
+                Exit::TimedOut
+            );
+            assert_eq!(fs::read(f.gate.join("plan.arm")).unwrap(), b"");
+        }
+
+        #[test]
+        fn private_gate_unarmed_release_and_cancel_are_distinct() {
+            let f = Fixture::new();
+            let gate = f.configured();
+            assert_eq!(
+                gate.wait_until("plan", 1, &AtomicBool::new(false), false, Duration::ZERO),
+                Exit::Unarmed
+            );
+            assert!(!f.gate.join("plan-1.waiting").exists());
+            f.signal("plan.arm");
+            f.signal("plan-2.release");
+            assert_eq!(
+                gate.wait_until("plan", 2, &AtomicBool::new(false), false, Duration::ZERO),
+                Exit::Released
+            );
+            assert_eq!(
+                gate.wait_until(
+                    "plan",
+                    3,
+                    &AtomicBool::new(true),
+                    false,
+                    Duration::from_secs(1)
+                ),
+                Exit::Cancelled
+            );
+            assert!(f.gate.join("plan-3.cancelled").is_file());
+        }
+
+        #[test]
+        fn private_gate_computed_ack_observes_cancel_and_has_a_deadline() {
+            let f = Fixture::new();
+            f.signal("ack-plan.arm");
+            assert_eq!(
+                f.configured().wait_until(
+                    "ack-plan",
+                    4,
+                    &AtomicBool::new(true),
+                    true,
+                    Duration::from_millis(20)
+                ),
+                Exit::TimedOut
+            );
+            assert!(f.gate.join("ack-plan-4.cancelled").is_file());
+            assert_eq!(
+                fs::read_to_string(f.gate.join("ack-plan-4.finished")).unwrap(),
+                "timed-out\n"
+            );
+        }
+
+        #[test]
+        fn private_gate_cancelled_computed_create_ack_preserves_actual_success() {
+            let f = Fixture::new();
+            f.signal("ack-create.arm");
+            let mut worker = super::super::Worker::new();
+            worker.start_with_gate(Some(f.configured()));
+            assert!(
+                worker
+                    .submit(super::super::Request::Create {
+                        id: 9,
+                        directory: f.root.clone(),
+                        name: "created.txt".into(),
+                        folder: false,
+                    })
+                    .is_ok()
+            );
+            let deadline = Instant::now() + Duration::from_secs(5);
+            while !f.gate.join("ack-create-9.waiting").exists() {
+                assert!(Instant::now() < deadline);
+                std::thread::sleep(POLL);
+            }
+            assert!(f.root.join("created.txt").is_file());
+            worker.cancel();
+            while !f.gate.join("ack-create-9.cancelled").exists() {
+                assert!(Instant::now() < deadline);
+                std::thread::sleep(POLL);
+            }
+            assert!(worker.busy && worker.poll().is_none());
+            f.signal("ack-create-9.release");
+            let response = loop {
+                if let Some(response) = worker.poll() {
+                    break response;
+                }
+                assert!(Instant::now() < deadline);
+                std::thread::sleep(POLL);
+            };
+            let super::super::Response::Finished(id, outcome, _) = response else {
+                panic!("expected actual create result")
+            };
+            assert_eq!(id, 9);
+            assert!(outcome.success && outcome.details.is_empty());
+            assert_eq!(fs::read(f.root.join("created.txt")).unwrap(), b"");
+        }
+    }
+}
+
+#[cfg(not(target_os = "linux"))]
+mod fixture_gate {
+    pub(super) struct Gate;
+    impl Gate {
+        pub(super) fn from_environment() -> Option<Self> {
+            None
+        }
+        pub(super) fn wait(&self, _: &str, _: u64, _: &std::sync::atomic::AtomicBool, _: bool) {}
+    }
+}
+
 pub enum Request {
     Inspect {
         id: u64,
@@ -54,6 +490,14 @@ pub enum Request {
     },
 }
 impl Request {
+    fn fixture_phase(&self) -> Option<&'static str> {
+        match self {
+            Self::Plan { .. } => Some("plan"),
+            Self::Apply { .. } => Some("apply"),
+            Self::Create { .. } => Some("create"),
+            _ => None,
+        }
+    }
     fn id(&self) -> u64 {
         match self {
             Self::Inspect { id, .. }
@@ -94,6 +538,9 @@ impl Worker {
         }
     }
     fn start(&mut self) {
+        self.start_with_gate(fixture_gate::Gate::from_environment());
+    }
+    fn start_with_gate(&mut self, gate: Option<fixture_gate::Gate>) {
         let (tx, input) = mpsc::sync_channel::<Request>(1);
         let (output, rx) = mpsc::sync_channel(1);
         let flag = self.cancel.clone();
@@ -104,6 +551,10 @@ impl Worker {
             let mut trash_history = crate::trash_history::History::default();
             while let Ok(request) = input.recv() {
                 let id = request.id();
+                let fixture_phase = request.fixture_phase();
+                if let (Some(gate), Some(phase)) = (&gate, fixture_phase) {
+                    gate.wait(phase, id, &flag, false);
+                }
                 let refresh_directory = match &request {
                     Request::Apply { prepared, .. } => Some(prepared.directory().to_path_buf()),
                     Request::Create { directory, .. } | Request::Trash { directory, .. } => {
@@ -228,6 +679,9 @@ impl Worker {
                         Response::Finished(id, outcome, refresh_directory)
                     }
                 };
+                if let (Some(gate), Some(phase)) = (&gate, fixture_phase) {
+                    gate.wait(phase, id, &flag, true);
+                }
                 if output.send(response).is_err() {
                     break;
                 }

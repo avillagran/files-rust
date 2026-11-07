@@ -544,6 +544,9 @@ pub struct Model {
     /// The window adapter owns persistent cards; canvas fallback is retained
     /// for model-only rendering and an unavailable native anchor.
     pub toolkit_feedback: bool,
+    /// Native form rendering is owned by the window adapter.
+    pub toolkit_mutation_sheet: bool,
+    pub toolkit_mutation_sheet_open: bool,
     pub operation_details: Vec<String>,
     pub notice_open: bool,
     pub trash_browser: Option<crate::trash_browser::Panel>,
@@ -760,6 +763,8 @@ impl Model {
             operation_message: None,
             operation_feedback: Default::default(),
             toolkit_feedback: false,
+            toolkit_mutation_sheet: false,
+            toolkit_mutation_sheet_open: false,
             operation_details: Vec::new(),
             notice_open: false,
             trash_browser: None,

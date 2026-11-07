@@ -5,6 +5,24 @@ use crate::{
 };
 pub fn command(m: &mut Model, command: &str) -> Result<(), String> {
     match command {
+        "rename-single" | "rename-raw" => {
+            if !m.loaded || m.mutations.busy {
+                return Err("scene is not ready".into());
+            }
+            use std::os::unix::ffi::OsStrExt;
+            let name: &[u8] = if command == "rename-raw" {
+                b"raw-\xff\nname.txt"
+            } else {
+                b"photo1.txt"
+            };
+            let index = m
+                .entries
+                .iter()
+                .position(|e| e.name.as_bytes() == name)
+                .ok_or("rename fixture missing source")?;
+            m.select_entry(index, false, false);
+            m.open_rename(Mode::Rename);
+        }
         "rename-preview" => {
             if !m.loaded || m.mutations.busy {
                 return Err("scene is not ready".into());

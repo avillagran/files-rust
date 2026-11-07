@@ -104,6 +104,7 @@ impl Model {
         if self.mutation_applied || self.copy_busy() {
             return;
         }
+        self.text_paste.invalidate();
         // Any pending preview is cancelled; its ACK must be drained before the next
         // request. IDs are process-global, never restarted with a new dialog.
         self.mutations.cancel();
@@ -839,6 +840,8 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                 action,
             );
         }
+    } else if m.toolkit_mutation_sheet && m.rename_dialog.is_some() {
+        m.hits.clear();
     } else if let Some(dialog) = m.rename_dialog.take() {
         crate::rename_dialog::paint(p, m, &dialog, w, h);
         m.rename_dialog = Some(dialog);

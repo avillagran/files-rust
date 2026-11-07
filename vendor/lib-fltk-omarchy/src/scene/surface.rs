@@ -90,7 +90,13 @@ pub struct SurfaceStats {
     pub instance_bytes: usize,
     pub texture_bytes: usize,
     pub gpu_preparations: u64,
+    /// Installed scene revisions, including revisions with no texture upload.
     pub gpu_scene_uploads: u64,
+    pub gpu_texture_uploads: u64,
+    pub gpu_texture_upload_bytes: u64,
+    pub gpu_image_reuses: u64,
+    pub gpu_program_links: u64,
+    pub gpu_image_repacks: u64,
     pub overlay_captures: u64,
     pub overlay_uploads: u64,
     pub overlay_texture_bytes: usize,
@@ -552,7 +558,7 @@ fn dispatch_done(group: &Group, st: &Rc<RefCell<State>>) {
         return;
     }
     let (group, owner) = (group.clone(), Rc::downgrade(st));
-    app::add_timeout3(0.0, move |_| {
+    crate::timer::add(0.0, move |_| {
         let Some(st) = owner.upgrade() else { return };
         for (id, serial, callback) in callbacks.drain(..) {
             if group.was_deleted() {
@@ -1019,7 +1025,7 @@ mod native {
         owner.borrow_mut().error = Some(error);
         owner.borrow_mut().overlay_retry = overlay.then(crate::overlay::layers_revision);
         let (mut window, weak, parent) = (win.clone(), Rc::downgrade(owner), win.parent());
-        app::add_timeout3(0.0, move |_| {
+        crate::timer::add(0.0, move |_| {
             if let Some(st) = weak.upgrade() {
                 hide(&st);
                 st.borrow_mut().dirty = true;
@@ -1049,7 +1055,7 @@ mod native {
         }
         let (mut group, owner) = (g.clone(), Rc::downgrade(st));
         let ticks = Cell::new(0);
-        app::add_timeout3(0.05, move |timer| {
+        crate::timer::add(0.05, move |timer| {
             let Some(st) = owner.upgrade() else { return };
             if group.was_deleted() {
                 return;
@@ -1065,7 +1071,7 @@ mod native {
             }
             ticks.set(ticks.get() + 1);
             if ticks.get() < 3 {
-                app::repeat_timeout3(0.05, timer);
+                crate::timer::repeat(0.05, timer);
                 return;
             }
             st.borrow_mut().activation_pending = false;
@@ -1168,6 +1174,7 @@ mod native {
                 r.abandon_context();
             }
             gl.context = context;
+            gl.ctx = None;
             gl.pending_scene = true;
         }
         if gl.pending_scene {
@@ -1177,7 +1184,7 @@ mod native {
                 drop(gl);
                 let s = Rc::downgrade(&owner);
                 let parent = win.parent();
-                app::add_timeout3(0.0, move |_| {
+                crate::timer::add(0.0, move |_| {
                     if let Some(s) = s.upgrade() {
                         invalidate(&s);
                         if let Some(mut p) = parent.clone() {
@@ -1189,14 +1196,15 @@ mod native {
                 });
                 return;
             }
-            drop(gl.renderer.take()); // our current context, safe cleanup
             let prepared = gl.prepared.take().unwrap();
             let loader = win.clone();
             // SAFETY: current FLTK GL draw context. Destruction happens in
             // this callback, or names are abandoned after native context loss.
-            let ctx = Rc::new(unsafe {
-                glow::Context::from_loader_function(|name| {
-                    loader.get_proc_address(name) as *const _
+            let ctx = gl.ctx.clone().unwrap_or_else(|| {
+                Rc::new(unsafe {
+                    glow::Context::from_loader_function(|name| {
+                        loader.get_proc_address(name) as *const _
+                    })
                 })
             });
             win.set_swap_interval(0);
@@ -1205,14 +1213,27 @@ mod native {
                     Some(unsafe { ctx.get_parameter_string(glow::RENDERER) });
             }
             gl.ctx = Some(ctx.clone());
-            let result = unsafe { Renderer::new(ctx, prepared) };
+            let created = gl.renderer.is_none();
+            let result = unsafe {
+                if let Some(renderer) = gl.renderer.as_mut() {
+                    renderer.replace_scene(prepared)
+                } else {
+                    Renderer::new(ctx, prepared).map(|renderer| gl.renderer = Some(renderer))
+                }
+            };
             match result {
-                Ok(renderer) => {
-                    gl.renderer = Some(renderer);
+                Ok(()) => {
                     gl.pending_scene = false;
-                    gl.pending_overlay = true;
+                    gl.pending_overlay |= created;
                     win.set_context_valid(true);
-                    owner.borrow_mut().stats.gpu_scene_uploads += 1;
+                    let resources = gl.renderer.as_ref().unwrap().resource_stats();
+                    let mut s = owner.borrow_mut();
+                    s.stats.gpu_scene_uploads += 1;
+                    s.stats.gpu_texture_uploads += resources.texture_uploads;
+                    s.stats.gpu_texture_upload_bytes += resources.texture_upload_bytes;
+                    s.stats.gpu_image_reuses += resources.reused_images;
+                    s.stats.gpu_program_links += resources.program_links;
+                    s.stats.gpu_image_repacks += resources.repacks;
                 }
                 Err(error) => {
                     drop(gl);
@@ -1351,7 +1372,7 @@ mod native {
             let window = win.clone();
             // A capture callback may replace content or close its window.
             // Never deliver it inside FLTK's native GL draw callback.
-            app::add_timeout3(0.0, move |_| {
+            crate::timer::add(0.0, move |_| {
                 for f in results.drain(..) {
                     if window.was_deleted() {
                         break;

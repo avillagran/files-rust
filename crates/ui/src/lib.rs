@@ -75,6 +75,8 @@ mod markdown_render;
 mod media_watch;
 mod model;
 mod mutation_scene;
+mod mutation_sheet_state;
+mod mutation_sheets;
 mod mutations;
 mod native_drag_origin;
 mod native_drop;
@@ -349,6 +351,9 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
         return crate::text_preview::event(m, ev);
     }
     if m.rename_dialog.is_some() || m.notice_open || m.mutation_applied {
+        if m.toolkit_mutation_sheet && m.rename_dialog.is_some() {
+            return true;
+        }
         return crate::mutations::event(m, ev);
     }
     if !m.editing && matches!(ev, Event::KeyDown | Event::Shortcut) && app::event_key() == Key::F9 {
@@ -1339,6 +1344,7 @@ pub fn run_since(start: Instant) -> bool {
     let fixture_rail = rail_state.clone();
     let tab_strip = tab_strip::Strip::new(size.0, isolate_fixture_input, fixture_dispatch.clone());
     let mut operation_notices = operation_notices::Manager::default();
+    let mut mutation_sheets = mutation_sheets::Manager::default();
     let close_requested = Rc::new(Cell::new(false));
     let mut window_presentation = window_presentation::Manager::new(close_requested.clone());
     let notice_input = operation_notices.inbox();
@@ -1491,6 +1497,31 @@ pub fn run_since(start: Instant) -> bool {
     let event_tabs = tab_strip.clone();
     let event_notices = notice_input.clone();
     canvas.handle(move |f, e| {
+        // A native modal owns text and navigation. In particular, a late
+        // canvas paste must not bypass the sheet's stamped admission queue.
+        if m.try_borrow().is_ok_and(|m| m.toolkit_mutation_sheet_open)
+            && matches!(
+                e,
+                Event::Push
+                    | Event::Drag
+                    | Event::Released
+                    | Event::KeyDown
+                    | Event::KeyUp
+                    | Event::Shortcut
+                    | Event::Paste
+                    | Event::MouseWheel
+            )
+        {
+            if e == Event::Paste {
+                if let Ok(mut state) = m.try_borrow_mut() {
+                    // Drain an old asynchronous FL_PASTE receipt without
+                    // inserting it into the native editor or a later form.
+                    state.text_paste.invalidate();
+                    state.text_paste.receive(&None);
+                }
+            }
+            return true;
+        }
         let release_click = if e == Event::Released {
             deferred_click.take()
         } else {
@@ -1698,6 +1729,12 @@ pub fn run_since(start: Instant) -> bool {
             observed_presentation_keys.set(observed_presentation_keys.get().wrapping_add(1));
         }
         native_transfer::window_event(&native_window_model, window, event);
+        if native_window_model
+            .try_borrow()
+            .is_ok_and(|m| m.toolkit_mutation_sheet_open)
+        {
+            return false;
+        }
         if matches!(event, Event::KeyDown | Event::Shortcut) {
             let mods = app::event_state();
             if app::event_key() == Key::from_char('n')
@@ -1992,6 +2029,10 @@ pub fn run_since(start: Instant) -> bool {
             m.mutations.cancel();
         }
         let feedback_dirty = operation_notices.drain(&model);
+        let mutation_sheet_dirty = mutation_sheets
+            .controller
+            .drain(&mut model.borrow_mut())
+            .dirty;
         let desired_corners = omarchy_theme::corners(model.borrow().corners);
         if fltk_omarchy::theme::corners() != desired_corners {
             fltk_omarchy::theme::set_corners(desired_corners);
@@ -2033,7 +2074,12 @@ pub fn run_since(start: Instant) -> bool {
             break;
         }
         let mut m = model.borrow_mut();
-        let mut dirty = m.pump() || changed || strip_dirty || feedback_dirty || close_dirty;
+        let mut dirty = m.pump()
+            || changed
+            || strip_dirty
+            || feedback_dirty
+            || close_dirty
+            || mutation_sheet_dirty;
         {
             let Model {
                 operation_feedback,
@@ -2175,6 +2221,7 @@ pub fn run_since(start: Instant) -> bool {
             clean_hidden = true;
             drop(m);
             operation_notices.close();
+            mutation_sheets.close();
             window_presentation.close();
             win.hide();
             continue;
@@ -2244,7 +2291,18 @@ pub fn run_since(start: Instant) -> bool {
         } else {
             None
         };
+        let mutation_snapshot = if win.shown() {
+            mutation_sheets.controller.snapshot(&m)
+        } else {
+            None
+        };
         drop(m);
+        let mutation_managed = mutation_sheets.sync(mutation_snapshot, &canvas);
+        model.borrow_mut().toolkit_mutation_sheet_open = mutation_sheets.is_open();
+        if model.borrow().toolkit_mutation_sheet != mutation_managed {
+            model.borrow_mut().toolkit_mutation_sheet = mutation_managed;
+            canvas.redraw();
+        }
         let feedback_managed = operation_notices.sync(feedback_snapshot, &canvas);
         if model.borrow().toolkit_feedback != feedback_managed {
             model.borrow_mut().toolkit_feedback = feedback_managed;
@@ -3374,7 +3432,22 @@ pub fn run_since(start: Instant) -> bool {
                 if let Ok(command) = std::fs::read_to_string(&request) {
                     let _ = std::fs::remove_file(&request);
                     let mut state = model.borrow_mut();
-                    match mutation_scene::command(&mut state, command.trim()) {
+                    match if command.trim() == "mutation-sheet-state" {
+                        let mut marker = mutation_sheets.marker();
+                        marker["model"] = serde_json::json!({
+                            "mode":state.rename_dialog.as_ref().map(|d| match d.mode {rename_dialog::Mode::File=>"file",rename_dialog::Mode::Folder=>"folder",rename_dialog::Mode::Rename=>"rename"}),
+                            "dialog_id":state.rename_dialog.as_ref().map(|d|d.id),
+                            "mutation_id":state.mutation_id,"mutation_busy":state.mutations.busy,
+                            "mutation_applied":state.mutation_applied,"can_undo":state.can_undo,
+                            "notice_open":state.notice_open,"closing":state.closing,
+                            "legacy_canvas_dialog_enabled":!state.toolkit_mutation_sheet,
+                            "browser_focus":app::focus().is_some_and(|w|w.as_widget_ptr()==canvas.as_widget_ptr())
+                        });
+                        eprintln!("FILES_MUTATION_SHEET_STATE {marker}");
+                        Ok(())
+                    } else {
+                        mutation_scene::command(&mut state, command.trim())
+                    } {
                         Ok(()) => {
                             eprintln!("FILES_MUTATION_COMMAND_OK {}", command.trim());
                             if state.mutation_applied {
@@ -3623,6 +3696,7 @@ pub fn run_since(start: Instant) -> bool {
         }
     }
     file_manager.stop();
+    mutation_sheets.close();
     operation_notices.close();
     window_presentation.close();
     if toolkit_fixture {

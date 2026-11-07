@@ -1,7 +1,7 @@
 {
   "repository": "https://github.com/avillagran/lib-fltk-omarchy",
-  "base_commit": "767235b79d9f6fd5ef9b20495585d5d2e21cc141",
-  "fix_commit": "fac0705d25eabc43f34d62ab94ee2b9e48902a75",
+  "base_commit": "fac0705d25eabc43f34d62ab94ee2b9e48902a75",
+  "fix_commit": "dd481f1c7b29a06c0eedeb61780c112f3e603679",
   "status": "local committed upstream checkpoint, untagged; no vendor patches",
-  "scope": "Exact fac0705 export: cancellable UI-thread begin_present/poll/cancel with owned redacted startup hints and nonwaiting Wayland phases. Retains synchronous native::present, persistent notices and keyed tabs. Includes the committed lazy overlay::Sheet API from 8be476b, which Files has not adopted, and every tracked upstream receipt/license. Optional GPU, accessibility, images, playback, QR and Mermaid features remain disabled in Files."
+  "scope": "Exact committed export. Files adopts lazy overlay::Sheet, live bind_dismissible guards, native TextField and bounded model-owned rename/create workflows. Includes owned timer cleanup and immutable scene residence; optional GPU, accessibility, images, playback, QR and Mermaid features remain disabled. Preserves asynchronous native presentation and every tracked upstream receipt/license."
 }

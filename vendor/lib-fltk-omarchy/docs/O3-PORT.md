@@ -351,6 +351,14 @@ cards above a shader background, a dragged/falling row, translucent layers,
 and a short effect on deletion. [SCENE.md](SCENE.md#video-reference-lavamp4-2026-11-06)
 separates existing components from the missing rendering path.
 
+An ownership audit also reproduced callback retention in the pinned FLTK
+timeout bridge. Internal closure timers now use `timer` (completion and
+cancellation release captures), the animation clock uses a fixed raw native
+callback, and `task::Latest` frees replaced debounce work immediately.
+[TIMERS.md](TIMERS.md) documents the contract and diagnostic: 1 MiB of
+retained payload becomes zero in the same workload. This is not a PSS or
+power result and does not close the cold-renderer memory gate.
+
 Continue section 4 without changing the CPU default:
 
 1. Shared painter: the first CPU slice now records fills, borders, text,
@@ -373,8 +381,10 @@ Continue section 4 without changing the CPU default:
    Consecutive compatible quads now use retained instanced attributes and
    ordered batches; shader-only frames reuse the instance buffer. Zero-area
    regions suspend GL and release resources, recovering on positive size.
-   A bounded per-renderer image page now groups different fallback images.
-   Next: full-window widget rendering, glyph atlases, residency across scenes and
+   Bounded image pages now group different fallback images. Immutable image
+   and cached-layer identities retain textures/programs across scene revisions,
+   with current-scene eviction and compaction under the same 64 MiB budget.
+   Next: full-window widget rendering, glyph atlases and
    native isolated shader layers.
 4. A live version of the interaction now runs in `examples/lava.rs`.
    [Measurements](SCENE.md#interactive-lava-example) cover the actual
