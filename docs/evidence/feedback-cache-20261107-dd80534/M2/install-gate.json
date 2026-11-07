@@ -1,0 +1,15 @@
+{
+  "binary_sha256": "de3d488a7a2d225abab9a0ed9502a3a39ac1adbf75482970618d406a6ae6b8f1",
+  "helper_sha256": "ffbe7a5be3cca5de90210029238403ef2890b9399326d5e6c59f7062709803d7",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "functional_gate": "PASS",
+  "binary_source_checkpoint": "dd80534ce42b7a8831e65a4d9c12f4951e8bf1e3",
+  "profiles": [
+    "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/report.json",
+    "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/report.json"
+  ],
+  "scope": "Native ARM private feedback acceptance in normal and narrow windows; actual viewport sizes in the raw reports",
+  "overall_request": "INCOMPLETE_DND_BLOCKED",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED"
+}

@@ -1,0 +1,482 @@
+[
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/compositor.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/compositor.log",
+    "bytes": 151,
+    "sha256": "271797f33b36ae6b544cbbea5550a5feaa908801af060d3dda25e7b3e358a1bd"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/disable-thumbnail-settings.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/disable-thumbnail-settings.png",
+    "bytes": 51480,
+    "sha256": "08079cd32dced9593b245f565e9114cff49295afb406af71ad31f151dc624523"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/enable-thumbnail-settings.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/enable-thumbnail-settings.png",
+    "bytes": 51464,
+    "sha256": "938a32aa06bc824b50e2278a589df1506032bc3533ee72ec3b68c0f83f69956c"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/folder-changed.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/folder-changed.png",
+    "bytes": 55131,
+    "sha256": "3278f5d125f7c218be9cdb01ebe18781ad493e3642b3067107866a1e2213ed49"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/folder-offscreen.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/folder-offscreen.png",
+    "bytes": 54334,
+    "sha256": "a8d29d3306d453f4fd35cba343259e3c55856e31ca96de1d17e17923a6ba1992"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/folder-returned.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/folder-returned.png",
+    "bytes": 54791,
+    "sha256": "a4ff1066d01224516deae530d7285092777ae6425f4690f071d9ec8ae7cf6c42"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/initial.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/initial.png",
+    "bytes": 38455,
+    "sha256": "b977b7a7e904dd970e07356933da2c8df15faaed535d3aa2df80b03eec0aa0d8"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/keyboard.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/parent-after-up.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/parent-after-up.png",
+    "bytes": 53601,
+    "sha256": "c0591f62331eedacd1333baf64d5e2b046e1f271f1df420e75a62a0aa68e80b1"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/pointer.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/report.json",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/report.json",
+    "bytes": 265172,
+    "sha256": "07530d4407ed50f0ae779f8df82e5fa66480b4ab79acf43053e48f2d1363acf0"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/service-restarted.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/service-restarted.log",
+    "bytes": 25982,
+    "sha256": "414f462d2fe8dd21acfa037f824dfbe9d4b2525f607dde0206e1a8618b6e14b4"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/service.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/service.log",
+    "bytes": 213537,
+    "sha256": "c73e1dead0fe47327e91e1001c32f59b4845eab5ac8bd57e7a041a85c4632059"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/shortcut-tooltip-early.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/shortcut-tooltip-early.png",
+    "bytes": 63304,
+    "sha256": "f42bdcc1a18dfcd1b1b4c53cc13968aeeb1ef4d835701a70d2999f6f727d1b9f"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/shortcut-tooltip.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/shortcut-tooltip.png",
+    "bytes": 63976,
+    "sha256": "6e15cb435d9777b47f81beeea063e138f46877baa8076ca209ab6be43e0753cb"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/thumbnail-blue.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/thumbnail-blue.png",
+    "bytes": 30820,
+    "sha256": "02d6ec5a625f3e34e01fb6cbe248a4417927b51a1226d3c361dfe931a609eb08"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/thumbnail-disabled.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/thumbnail-disabled.png",
+    "bytes": 49492,
+    "sha256": "5f8a5649966fc30d1da419488c24e0f028f769ee31d2bf26b53a36b4bb538a4b"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/thumbnail-missing.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/thumbnail-missing.png",
+    "bytes": 29413,
+    "sha256": "cfaa51131d4f49b25e8821e188081cf8d1f2864bdaa4628dc4770873504d1169"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-bf610faf0511/thumbnail-red.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/thumbnail-red.png",
+    "bytes": 38455,
+    "sha256": "c0755c8ca622dcebc4512092fecc6792523265595e7ece79c4170c67ff87b7fc"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/compositor.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/compositor.log",
+    "bytes": 151,
+    "sha256": "ae6eecf31130e063761cfeccf2d2c720c5e75b84e8041e79d8416ec9dec8e6f2"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/disable-thumbnail-settings.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/disable-thumbnail-settings.png",
+    "bytes": 37436,
+    "sha256": "f585b8020bd73b78027cbe4ddb88702cafe7c1e01f8dbae66ccb14cb43bcd513"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/enable-thumbnail-settings.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/enable-thumbnail-settings.png",
+    "bytes": 37938,
+    "sha256": "c3e8a2e319adb3097070c7ab1227fc373ff97a005cf49eecf765f3d252f47431"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/folder-changed.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/folder-changed.png",
+    "bytes": 31412,
+    "sha256": "ab11e3c21a6575fd661552648f8f7ea0584f074752af9be7bd7849e3d32d4509"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/folder-offscreen.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/folder-offscreen.png",
+    "bytes": 31977,
+    "sha256": "4338cfde92c2e47245bd28b453d170dd239c156ea2ba42bde76b82640cf54aad"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/folder-returned.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/folder-returned.png",
+    "bytes": 31155,
+    "sha256": "f837741b668ccc5ea6d0b5f808cb4323d5a321e88655a85e0d7905c92697f3cb"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/initial.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/initial.png",
+    "bytes": 21561,
+    "sha256": "4baf7caf68dff0b0454955b2c05e5a1467ec4c8a3e4e4e0ef974327a7fa4fa9c"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/keyboard.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/parent-after-up.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/parent-after-up.png",
+    "bytes": 30900,
+    "sha256": "f8255f440b6ede09a35aa3279ec1002c6e16e5cd84dea0f107dce16f09ec43f5"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/pointer.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/report.json",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/report.json",
+    "bytes": 279527,
+    "sha256": "f5356f603bce60e66141feadae9e22ee237fdd1981bd9338e99e6e9b66fdcd57"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/service-restarted.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/service-restarted.log",
+    "bytes": 30273,
+    "sha256": "cad631396fda08bba6d9808eaeba3e1e40795640cadd6cde15c553a6a85708cf"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/service.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/service.log",
+    "bytes": 223640,
+    "sha256": "09b34b5f2d3257d71a39861d6e196cab2ef2a3d0b5c22455c0bf27a8f999b603"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/shortcut-tooltip-early.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/shortcut-tooltip-early.png",
+    "bytes": 41464,
+    "sha256": "9c2822f7a651dc59371467b078160ede96a9d84a39085d10b9f57986035a71ba"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/shortcut-tooltip.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/shortcut-tooltip.png",
+    "bytes": 42140,
+    "sha256": "0f20cb6f7895adb269e74fd76bf03a3f03feb8335f12f4e8fdf86ed0a9e3c7ef"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/thumbnail-blue.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/thumbnail-blue.png",
+    "bytes": 22251,
+    "sha256": "d3f1602b3bcba77b0a5c969948bbd70c019b55102e0ed584f5fef0039cfd3e74"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/thumbnail-disabled.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/thumbnail-disabled.png",
+    "bytes": 30588,
+    "sha256": "f396f08da33292f48b29b0e6690ec10389740fc080e5a184fc5aed68d45d36f8"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/thumbnail-missing.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/thumbnail-missing.png",
+    "bytes": 20880,
+    "sha256": "bd0a1ab98d6a5302d51ff3087c561d1a35514a33075acc43da97366bd83b6e5c"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-5bc550c04c95/thumbnail-red.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/thumbnail-red.png",
+    "bytes": 22606,
+    "sha256": "9e76a68b622b572b71d9b10d50f1be5eeaa60f51ac2af1aa37ba3a5564dc3ee8"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a1ef3086b6aa/compositor.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a1ef3086b6aa/compositor.log",
+    "bytes": 151,
+    "sha256": "1cefc05ac3fe4c55ca5ecf667f5e1f919c36475ee28cbccf7e94076a2efbb8ce"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a1ef3086b6aa/initial.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a1ef3086b6aa/initial.png",
+    "bytes": 21561,
+    "sha256": "c6f55aae344581db12bda48e38043eebf2269a3dbdd98541efc3a4eb899c58a2"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a1ef3086b6aa/keyboard.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a1ef3086b6aa/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a1ef3086b6aa/pointer.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a1ef3086b6aa/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a1ef3086b6aa/report.json",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a1ef3086b6aa/report.json",
+    "bytes": 10830,
+    "sha256": "46df24d1f2157d238ac321bb23cd703c0143fde264aa75bb1d0048593bca746d"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a1ef3086b6aa/service.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a1ef3086b6aa/service.log",
+    "bytes": 1057507,
+    "sha256": "cf6ea17ddd2d63cf5410388f60b9cf62564c852228e4c560d3c8ca4c305724cd"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/compositor.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/compositor.log",
+    "bytes": 151,
+    "sha256": "48c91831d41b914abf23f7c3130d11590983022e3169a991f154922323ff9a73"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/disable-thumbnail-settings.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/disable-thumbnail-settings.png",
+    "bytes": 51569,
+    "sha256": "23797c91e8df9b5d581c4ae32e3816c48d8981cea0e145c7c4b20e389f117881"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/enable-thumbnail-settings.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/enable-thumbnail-settings.png",
+    "bytes": 51554,
+    "sha256": "760af84ae410b1ebc9a3cdb3b9d374ba26f49a89f3ad9638bcb675f798d594cc"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/folder-changed.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/folder-changed.png",
+    "bytes": 55218,
+    "sha256": "0fee1ff3d71a1821091415ef5a2d69980feee6611d180294fde3de5c8f95f07a"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/folder-offscreen.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/folder-offscreen.png",
+    "bytes": 54334,
+    "sha256": "042cefafd45590decfb1ec364c6fa345f51db65ff70d859003757451e25d3707"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/folder-returned.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/folder-returned.png",
+    "bytes": 54829,
+    "sha256": "a7041c7b2c0bb3e2f2cf7d52a636baebec7568a247d85e77755e7c1a17f777ca"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/initial.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/initial.png",
+    "bytes": 38455,
+    "sha256": "9dd921ede7f74b78107f5e7b2ca12096a725df70e385e224ff45e2cbc552714b"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/keyboard.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/parent-after-up.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/parent-after-up.png",
+    "bytes": 53600,
+    "sha256": "ace301809c01ebcc8de37f084b70a087d20193190d8fc53f6e84465f28bd9d8f"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/pointer.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/report.json",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/report.json",
+    "bytes": 268048,
+    "sha256": "1a58079917992e994b07160e261ffd4aef048237e05c67860ed3b548b173e428"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/service-restarted.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/service-restarted.log",
+    "bytes": 30050,
+    "sha256": "5c0da92e46ee47d62e1ae55b713905176da3e37fab6718f3a086f88ed90c56f5"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/service.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/service.log",
+    "bytes": 227361,
+    "sha256": "5d044b0ca4deea61ff3109f99eb585493ab3d8f4fa3476f7bc7892ea26e8ac59"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/shortcut-tooltip-early.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/shortcut-tooltip-early.png",
+    "bytes": 63479,
+    "sha256": "33a126f07f07d92b94168abf3759c54dcd17db5b1c82faf8c256221a1671b773"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/shortcut-tooltip.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/shortcut-tooltip.png",
+    "bytes": 64119,
+    "sha256": "02602f7bf1441b9fbb66db2b6a4fa2b0e4c68a72485819f6e83a824abd6dd6e3"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/thumbnail-blue.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/thumbnail-blue.png",
+    "bytes": 30820,
+    "sha256": "2c3701ed8c8cad9ab7971e840b77c3c325204d8068f29fa2127b98cbd01026d1"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/thumbnail-disabled.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/thumbnail-disabled.png",
+    "bytes": 51786,
+    "sha256": "3b2dcc70a991c2fc160b59e2b1cc3d1738c4105106715f9a6f7e3e9bf50b6666"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/thumbnail-missing.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/thumbnail-missing.png",
+    "bytes": 29413,
+    "sha256": "f5096a8d6a9152dc058487cea7fded4ec56bac58a07f8c6e6fee54cd48a54ee4"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-da8cae9c6a3e/thumbnail-red.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-da8cae9c6a3e/thumbnail-red.png",
+    "bytes": 38455,
+    "sha256": "9dd921ede7f74b78107f5e7b2ca12096a725df70e385e224ff45e2cbc552714b"
+  },
+  {
+    "path": "M2/build-result.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-dd80534/build-result.json",
+    "bytes": 4048,
+    "sha256": "af9903e90545de2135737311cc9092d1a270627ae469d7ff82dbd82db4d8fbd9"
+  },
+  {
+    "path": "M2/build.log",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-dd80534/build.log",
+    "bytes": 794,
+    "sha256": "b81e9281dca4466dcde60b65ca925bf062647b899a07b84647c90223d5ea0948"
+  },
+  {
+    "path": "M2/before-installation.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-dd80534/before-installation.json",
+    "bytes": 1828,
+    "sha256": "605a438506919724bd18d25bc5644b6df2a2bfc70968ce5e4f116eac48e1b4c3"
+  },
+  {
+    "path": "M2/install-gate.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-dd80534/install-gate.json",
+    "bytes": 803,
+    "sha256": "926260dd1b402bf466f893d3e645ab1b03ed766ae3acdd20a8ea950b5507809e"
+  },
+  {
+    "path": "M2/installation-audit.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-dd80534/installation-audit.json",
+    "bytes": 2321,
+    "sha256": "a76aee7f9a0d0df0895ee2563516df094f94cabd5f67c80899484fd327146275"
+  },
+  {
+    "path": "M2/installed.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-dd80534/installation-1794036047813693354/installed.json",
+    "bytes": 2630,
+    "sha256": "7a1d13fadb250b55fcedf01c0934e14a44a773f991faad212c08a39e86f4c617"
+  },
+  {
+    "path": "M2/acceptance-summary.json",
+    "source": "/tmp/files-feedback-m2-summary-eae081507e815589/report.json",
+    "bytes": 1885,
+    "sha256": "fb22f8c96cfdecd71fd4fd28c3839cf2193dcc63d0f0091c4243ff5c5e40ba45"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-46aa4c43a42c61fd/manifest.json",
+    "source": "/tmp/files-feedback-overlay-46aa4c43a42c61fd/manifest.json",
+    "bytes": 1064,
+    "sha256": "a9faf0d845254504086b4eeae2ce308f541f5e6b3573754dcffd9ddbbd84074d"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-46aa4c43a42c61fd/scripts/feedback-ui-native-check.py",
+    "source": "/tmp/files-feedback-overlay-46aa4c43a42c61fd/scripts/feedback-ui-native-check.py",
+    "bytes": 45526,
+    "sha256": "1e432a5c79497f39e502ca0ca86e10287ec37aafacab25f5566e1e3aa4697840"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-46aa4c43a42c61fd/scripts/tools/compact-persistent-pointer.c",
+    "source": "/tmp/files-feedback-overlay-46aa4c43a42c61fd/scripts/tools/compact-persistent-pointer.c",
+    "bytes": 4999,
+    "sha256": "0264bdb8102870d44ed273527eb25d3bd7f649856f1efc6016591177ca9d1b02"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-46aa4c43a42c61fd/scripts/tools/persistent-keyboard.c",
+    "source": "/tmp/files-feedback-overlay-46aa4c43a42c61fd/scripts/tools/persistent-keyboard.c",
+    "bytes": 14651,
+    "sha256": "b7162218c4a1c10736abcb42ad27b0f86778905d7add4b1842431683bb789245"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-46aa4c43a42c61fd/scripts/tools/wtype-provenance.json",
+    "source": "/tmp/files-feedback-overlay-46aa4c43a42c61fd/scripts/tools/wtype-provenance.json",
+    "bytes": 808,
+    "sha256": "84e537e3ad80c05e08893cd76049c86376231905489d7767b0c020cf877548af"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-bc95154d02128ede/manifest.json",
+    "source": "/tmp/files-feedback-overlay-bc95154d02128ede/manifest.json",
+    "bytes": 1064,
+    "sha256": "b7384126b14df9471e96641b3efd47ad13d2e3d2f267aceb60065ff2181fa442"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-bc95154d02128ede/scripts/feedback-ui-native-check.py",
+    "source": "/tmp/files-feedback-overlay-bc95154d02128ede/scripts/feedback-ui-native-check.py",
+    "bytes": 46352,
+    "sha256": "1415660a95cd36d5770dfeb171a1b45ef2c0973129562ee5fe25a1e807edc077"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-bc95154d02128ede/scripts/tools/compact-persistent-pointer.c",
+    "source": "/tmp/files-feedback-overlay-bc95154d02128ede/scripts/tools/compact-persistent-pointer.c",
+    "bytes": 4999,
+    "sha256": "0264bdb8102870d44ed273527eb25d3bd7f649856f1efc6016591177ca9d1b02"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-bc95154d02128ede/scripts/tools/persistent-keyboard.c",
+    "source": "/tmp/files-feedback-overlay-bc95154d02128ede/scripts/tools/persistent-keyboard.c",
+    "bytes": 14651,
+    "sha256": "b7162218c4a1c10736abcb42ad27b0f86778905d7add4b1842431683bb789245"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-bc95154d02128ede/scripts/tools/wtype-provenance.json",
+    "source": "/tmp/files-feedback-overlay-bc95154d02128ede/scripts/tools/wtype-provenance.json",
+    "bytes": 808,
+    "sha256": "84e537e3ad80c05e08893cd76049c86376231905489d7767b0c020cf877548af"
+  }
+]

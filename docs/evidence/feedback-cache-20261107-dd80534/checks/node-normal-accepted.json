@@ -1,0 +1,9 @@
+{
+  "binary_source_checkpoint": "dd80534ce42b7a8831e65a4d9c12f4951e8bf1e3",
+  "normal_profile": "/home/node/.cache/files-test/feedback-ui-native-3d5115ad8ffd/report.json",
+  "scope": "Feedback changes only; narrow profile still pending, not an installation gate",
+  "functional_gate": "INCOMPLETE",
+  "binary_sha256": "c7a610fdc0f63a2e957b90768819022b8c09835adb9757e5dc9fba0f98adc90d",
+  "helper_sha256": "9185191d3205b14a4343c785eaf4923b8da5cf4d498ce133332422a0a0ef9188",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758"
+}

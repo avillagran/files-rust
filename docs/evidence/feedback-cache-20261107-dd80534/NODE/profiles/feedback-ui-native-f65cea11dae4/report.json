@@ -1,0 +1,447 @@
+{
+  "functional_gate": "FAIL",
+  "fixture_dir": "/home/node/.cache/files-test/feedback-ui-native-f65cea11dae4",
+  "checks": [],
+  "states": [
+    {
+      "label": "initial",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [],
+      "footer_status": "1 marcado \u00b7 2 elementos",
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        102,
+        101,
+        101,
+        100,
+        98,
+        97,
+        99,
+        107,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        102,
+        54,
+        53,
+        99,
+        101,
+        97,
+        49,
+        49,
+        100,
+        97,
+        101,
+        52,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65,
+        47,
+        78,
+        101,
+        115,
+        116,
+        101,
+        100
+      ],
+      "scroll": 0,
+      "show_thumbnails": true,
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d6636356365613131646165342f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d6636356365613131646165342f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d6636356365613131646165342f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d6636356365613131646165342f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d6636356365613131646165342f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": null
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d6636356365613131646165342f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": null
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra",
+            "rect": [
+              0,
+              353,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              393,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "size_busy": false,
+      "size_dispatch_total": 0,
+      "space": {
+        "state": "closed"
+      },
+      "thumbnails": {
+        "authorized": true,
+        "busy": false,
+        "cache_warning": null,
+        "cached": 1,
+        "demand": 1,
+        "errors": 0,
+        "notice": null,
+        "painted": 0,
+        "ready": [
+          {
+            "format": "png",
+            "height": 48,
+            "path": "\"/home/node/.cache/files-test/feedback-ui-native-f65cea11dae4/home/A/Nested/thumbnail.png\"",
+            "pixel": [
+              210,
+              40,
+              55
+            ],
+            "revision": {
+              "bytes": 158,
+              "changed_nanoseconds": 285365355,
+              "changed_seconds": 1794035851,
+              "device": 2051,
+              "inode": 17174770,
+              "modified_nanoseconds": 285365355,
+              "modified_seconds": 1794035851
+            },
+            "source_height": 48,
+            "source_width": 64,
+            "width": 64
+          }
+        ],
+        "rgb_capacity": 9511,
+        "scratch_capacity": 0,
+        "worker": {
+          "cache_errors": 0,
+          "decodes": 1,
+          "disk_hits": 0,
+          "missing": 0,
+          "probes": 2,
+          "requests": 2
+        }
+      },
+      "title": "Files > /home/node/.cache/files-test/feedback-ui-native-f65cea11dae4/home/A/Nested",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Buscar",
+            "on": false,
+            "rect": [
+              292,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+F"
+          },
+          {
+            "index": 1,
+            "label": "Editar ruta",
+            "on": false,
+            "rect": [
+              332,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+L"
+          },
+          {
+            "index": 2,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              372,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+1"
+          },
+          {
+            "index": 3,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              412,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+2"
+          },
+          {
+            "index": 4,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              452,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+5"
+          },
+          {
+            "index": 5,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              492,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+4"
+          },
+          {
+            "index": 6,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              532,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+3"
+          },
+          {
+            "index": 7,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              572,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+Alt+I"
+          },
+          {
+            "index": 8,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              612,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "F10"
+          },
+          {
+            "index": 9,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              652,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+,"
+          }
+        ],
+        "tooltip": null,
+        "up_rect": [
+          84,
+          13,
+          30,
+          32
+        ]
+      }
+    }
+  ],
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "requested_size": "700x500",
+  "animations": "on",
+  "captures": [
+    "/home/node/.cache/files-test/feedback-ui-native-f65cea11dae4/initial.png"
+  ],
+  "animation_comparison": "NOT_COMPARED",
+  "scope": "native input and private mutation fixtures; executable paths and compositor-owned paths are outside fixture file checks; this profile alone does not prove cross-profile motion",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "c7a610fdc0f63a2e957b90768819022b8c09835adb9757e5dc9fba0f98adc90d",
+  "helper_sha256": "9185191d3205b14a4343c785eaf4923b8da5cf4d498ce133332422a0a0ef9188",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "nested": {
+    "socket": "wayland-1",
+    "pid": 3660028,
+    "runtime": "/tmp/f-dfde3d7337a5",
+    "backend": "private-sway-headless"
+  },
+  "motion_and_hyprland": "NOT_RUN",
+  "window_size": [
+    704,
+    474
+  ],
+  "native_window": {
+    "name": "Files > /home/node/.cache/files-test/feedback-ui-native-f65cea11dae4/home/A/Nested",
+    "app_id": "files",
+    "rect": {
+      "x": 290,
+      "y": 164,
+      "width": 704,
+      "height": 474
+    },
+    "pid": 3660044
+  },
+  "error": "AssertionError: thumbnail-red",
+  "nested_stopped": true
+}

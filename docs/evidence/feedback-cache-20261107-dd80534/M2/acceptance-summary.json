@@ -1,0 +1,36 @@
+{
+  "functional_gate": "PASS",
+  "functional_scope": "private native window title and Up without history; delayed shortcut-only tooltips; viewport size reuse and visible direct change; thumbnail toggle, persisted hit and changed source",
+  "overall_request": "INCOMPLETE_DND_BLOCKED",
+  "binary_source_checkpoint": "dd80534ce42b7a8831e65a4d9c12f4951e8bf1e3",
+  "binary_sha256": "de3d488a7a2d225abab9a0ed9502a3a39ac1adbf75482970618d406a6ae6b8f1",
+  "helper_sha256": "ffbe7a5be3cca5de90210029238403ef2890b9399326d5e6c59f7062709803d7",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "profiles": [
+    {
+      "path": "/home/avillagran/.cache/files-test/feedback-ui-native-bf610faf0511/report.json",
+      "sha256": "07530d4407ed50f0ae779f8df82e5fa66480b4ab79acf43053e48f2d1363acf0",
+      "size": "1000x650",
+      "overlay": "/tmp/files-feedback-overlay-46aa4c43a42c61fd",
+      "overlay_manifest_sha256": "a9faf0d845254504086b4eeae2ce308f541f5e6b3573754dcffd9ddbbd84074d"
+    },
+    {
+      "path": "/home/avillagran/.cache/files-test/feedback-ui-native-5bc550c04c95/report.json",
+      "sha256": "f5356f603bce60e66141feadae9e22ee237fdd1981bd9338e99e6e9b66fdcd57",
+      "size": "700x500",
+      "overlay": "/tmp/files-feedback-overlay-bc95154d02128ede",
+      "overlay_manifest_sha256": "b7384126b14df9471e96641b3efd47ad13d2e3d2f267aceb60065ff2181fa442"
+    }
+  ],
+  "visual_review": "M2 normal early and late shortcut, narrow changed folder and replacement thumbnail inspected after SHA-verified transfer.",
+  "limits": [
+    "sidebar drag/drop remains blocked",
+    "system titlebar rendering not observed",
+    "unobserved deep changes are not detected instantly; TTL applies",
+    "thumbnail demand in narrow layout verified in Grid",
+    "resources and startup not measured"
+  ],
+  "failed_runs_retained": [
+    "a1ef3086b6aa"
+  ]
+}

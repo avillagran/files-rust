@@ -1,0 +1,212 @@
+[
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/compositor.log",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/compositor.log",
+    "bytes": 151,
+    "sha256": "f4cd172399fac87cdabd50354f916233048fca860f507cdd0a32e541b681bdc8"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/disable-thumbnail-settings.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/disable-thumbnail-settings.png",
+    "bytes": 51230,
+    "sha256": "17302ad887aea4a383d365826a89869e13f794d180ec0f924964cf79548c91f4"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/enable-thumbnail-settings.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/enable-thumbnail-settings.png",
+    "bytes": 51214,
+    "sha256": "6ab5235efb60fd494df91a0dd505ed132746d06379b35f189d34499e51116581"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/folder-changed.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/folder-changed.png",
+    "bytes": 55210,
+    "sha256": "1d59a1747e324f6b41744c07d8d0bdf4bf842a4f9c8a336c6c6b803141555169"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/folder-offscreen.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/folder-offscreen.png",
+    "bytes": 54356,
+    "sha256": "6e5fa8d988ade5d46eda08eadc926192ef47dd8d5a3a7e244e275cb0c4526b0f"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/folder-returned.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/folder-returned.png",
+    "bytes": 55024,
+    "sha256": "bb527a2316a34af7ef2491bc4ef62dbe4a2f104703f81bc7a56421fdad9274a7"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/initial.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/initial.png",
+    "bytes": 38516,
+    "sha256": "7ca4937b935033c64fa506ab2cb64a271b00b70647e37627eaca6f78d540ddb5"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/keyboard.log",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/parent-after-up.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/parent-after-up.png",
+    "bytes": 55104,
+    "sha256": "50c41256e6413dd6f048c9b2d82812e414da7fc9ae012c903df05a1598abeafa"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/pointer.log",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/report.json",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/report.json",
+    "bytes": 261226,
+    "sha256": "ba3a9d9c8f3122d4d30c835c9f856d01bc5bff93906ba709f23cd6485c1b88e4"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/service-restarted.log",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/service-restarted.log",
+    "bytes": 25363,
+    "sha256": "2c8e2457e2a1b5260417ae0da6fc1d9e8ac17fbf96bd70ad8c129254c3e0397d"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/service.log",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/service.log",
+    "bytes": 223477,
+    "sha256": "7bdb78139f03d1663f7156febbcd2d32bbe1b72aa915e299c50b9cf1c01a343f"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/shortcut-tooltip-early.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/shortcut-tooltip-early.png",
+    "bytes": 62974,
+    "sha256": "4d8bb44445d8db6c2b54a1a842d9fd27314ef9fb584ef519377b062856d08cf2"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/shortcut-tooltip.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/shortcut-tooltip.png",
+    "bytes": 63656,
+    "sha256": "a4a07cc3e5420166cd1f48b57c3700a936b0ffa940a7f4affbe42debf76e3fd8"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/thumbnail-blue.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/thumbnail-blue.png",
+    "bytes": 31016,
+    "sha256": "4f44fd7e675386985e5f3aa8795c35b83e437eb7b8f64231c052559b7d8aa885"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/thumbnail-disabled.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/thumbnail-disabled.png",
+    "bytes": 52247,
+    "sha256": "5133a49821f759d2da0d00f1c03f8fdbca860eeaaf43a59372a3fc0c3c533cca"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/thumbnail-missing.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/thumbnail-missing.png",
+    "bytes": 29739,
+    "sha256": "e4effc251502080253d329eda4f1504b7dbb16a6771191e0052c9cc1cdc73200"
+  },
+  {
+    "path": "NODE/profiles/feedback-ui-native-db55ec511762/thumbnail-red.png",
+    "source": "/home/node/.cache/files-test/feedback-ui-native-db55ec511762/thumbnail-red.png",
+    "bytes": 38516,
+    "sha256": "7ca4937b935033c64fa506ab2cb64a271b00b70647e37627eaca6f78d540ddb5"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-8f37c67e3c54d5dc/manifest.json",
+    "source": "/tmp/files-feedback-overlay-8f37c67e3c54d5dc/manifest.json",
+    "bytes": 1064,
+    "sha256": "a9faf0d845254504086b4eeae2ce308f541f5e6b3573754dcffd9ddbbd84074d"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-8f37c67e3c54d5dc/scripts/feedback-ui-native-check.py",
+    "source": "/tmp/files-feedback-overlay-8f37c67e3c54d5dc/scripts/feedback-ui-native-check.py",
+    "bytes": 45526,
+    "sha256": "1e432a5c79497f39e502ca0ca86e10287ec37aafacab25f5566e1e3aa4697840"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/COPYING-wtype",
+    "source": "/tmp/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/COPYING-wtype",
+    "bytes": 1071,
+    "sha256": "e8bd6bac1b3ba6253625830bceb30c5340f74f4bc898d1bd5450596cbd8224f0"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/compact-persistent-pointer.c",
+    "source": "/tmp/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/compact-persistent-pointer.c",
+    "bytes": 4999,
+    "sha256": "0264bdb8102870d44ed273527eb25d3bd7f649856f1efc6016591177ca9d1b02"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/persistent-keyboard.c",
+    "source": "/tmp/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/persistent-keyboard.c",
+    "bytes": 14651,
+    "sha256": "b7162218c4a1c10736abcb42ad27b0f86778905d7add4b1842431683bb789245"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/virtual-keyboard-unstable-v1.xml",
+    "source": "/tmp/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/virtual-keyboard-unstable-v1.xml",
+    "bytes": 4886,
+    "sha256": "7ad7870003ecd592cae47dc19d277a609b7f18fd7b7be012623cf3225a7294f5"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/wlr-virtual-pointer-unstable-v1.xml",
+    "source": "/tmp/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/wlr-virtual-pointer-unstable-v1.xml",
+    "bytes": 6895,
+    "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/wtype-provenance.json",
+    "source": "/tmp/files-feedback-overlay-8f37c67e3c54d5dc/scripts/tools/wtype-provenance.json",
+    "bytes": 808,
+    "sha256": "84e537e3ad80c05e08893cd76049c86376231905489d7767b0c020cf877548af"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-21ea4672187e2548/manifest.json",
+    "source": "/tmp/files-feedback-overlay-21ea4672187e2548/manifest.json",
+    "bytes": 1064,
+    "sha256": "b7384126b14df9471e96641b3efd47ad13d2e3d2f267aceb60065ff2181fa442"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-21ea4672187e2548/scripts/feedback-ui-native-check.py",
+    "source": "/tmp/files-feedback-overlay-21ea4672187e2548/scripts/feedback-ui-native-check.py",
+    "bytes": 46352,
+    "sha256": "1415660a95cd36d5770dfeb171a1b45ef2c0973129562ee5fe25a1e807edc077"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-21ea4672187e2548/scripts/tools/COPYING-wtype",
+    "source": "/tmp/files-feedback-overlay-21ea4672187e2548/scripts/tools/COPYING-wtype",
+    "bytes": 1071,
+    "sha256": "e8bd6bac1b3ba6253625830bceb30c5340f74f4bc898d1bd5450596cbd8224f0"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-21ea4672187e2548/scripts/tools/compact-persistent-pointer.c",
+    "source": "/tmp/files-feedback-overlay-21ea4672187e2548/scripts/tools/compact-persistent-pointer.c",
+    "bytes": 4999,
+    "sha256": "0264bdb8102870d44ed273527eb25d3bd7f649856f1efc6016591177ca9d1b02"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-21ea4672187e2548/scripts/tools/persistent-keyboard.c",
+    "source": "/tmp/files-feedback-overlay-21ea4672187e2548/scripts/tools/persistent-keyboard.c",
+    "bytes": 14651,
+    "sha256": "b7162218c4a1c10736abcb42ad27b0f86778905d7add4b1842431683bb789245"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-21ea4672187e2548/scripts/tools/virtual-keyboard-unstable-v1.xml",
+    "source": "/tmp/files-feedback-overlay-21ea4672187e2548/scripts/tools/virtual-keyboard-unstable-v1.xml",
+    "bytes": 4886,
+    "sha256": "7ad7870003ecd592cae47dc19d277a609b7f18fd7b7be012623cf3225a7294f5"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-21ea4672187e2548/scripts/tools/wlr-virtual-pointer-unstable-v1.xml",
+    "source": "/tmp/files-feedback-overlay-21ea4672187e2548/scripts/tools/wlr-virtual-pointer-unstable-v1.xml",
+    "bytes": 6895,
+    "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524"
+  },
+  {
+    "path": "NODE/overlays/files-feedback-overlay-21ea4672187e2548/scripts/tools/wtype-provenance.json",
+    "source": "/tmp/files-feedback-overlay-21ea4672187e2548/scripts/tools/wtype-provenance.json",
+    "bytes": 808,
+    "sha256": "84e537e3ad80c05e08893cd76049c86376231905489d7767b0c020cf877548af"
+  }
+]

@@ -1,0 +1,101 @@
+[
+  {
+    "file": "/run/user/1000/files-feedback-check-yjv5xfjb/tooltip.log",
+    "results": [
+      [
+        "ok",
+        "2",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  {
+    "file": "/run/user/1000/files-feedback-check-yjv5xfjb/title.log",
+    "results": [
+      [
+        "ok",
+        "1",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  {
+    "file": "/run/user/1000/files-feedback-check-yjv5xfjb/childwatch.log",
+    "results": [
+      [
+        "ok",
+        "1",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  {
+    "file": "/run/user/1000/files-feedback-check-yjv5xfjb/thumbnail-disk.log",
+    "results": [
+      [
+        "ok",
+        "3",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  {
+    "file": "/run/user/1000/files-feedback-check-yjv5xfjb/thumbnail-state.log",
+    "results": [
+      [
+        "ok",
+        "6",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  {
+    "file": "/run/user/1000/files-feedback-check-yjv5xfjb/thumbnail-worker.log",
+    "results": [
+      [
+        "ok",
+        "3",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  {
+    "file": "/run/user/1000/files-feedback-check-yjv5xfjb/thumbnail-pref.log",
+    "results": [
+      [
+        "ok",
+        "1",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  {
+    "file": "/run/user/1000/files-size-reuse-y886ho0t/cache-core-tests-v2.log",
+    "results": [
+      [
+        "ok",
+        "5",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  {
+    "file": "/run/user/1000/files-size-reuse-y886ho0t/automatic-ui-tests-v4.log",
+    "results": [
+      [
+        "ok",
+        "11",
+        "0",
+        "0"
+      ]
+    ]
+  }
+]

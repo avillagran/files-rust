@@ -1,0 +1,8 @@
+{
+  "five_artifact_backups_and_installed_hashes": "PASS",
+  "receipt": "docs/evidence/0.0.4/installed-checkpoint-1794036018767496327.json",
+  "binary_source_checkpoint": "dd80534ce42b7a8831e65a4d9c12f4951e8bf1e3",
+  "installation_repository_head": "30bb484d4be0b639d11e19e323c57f8c7716c5bc",
+  "files_config_still_absent": true,
+  "mimeapps_unchanged": true
+}

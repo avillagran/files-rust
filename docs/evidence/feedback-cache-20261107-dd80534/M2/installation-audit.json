@@ -1,0 +1,47 @@
+{
+  "five_artifact_backups_and_installed_hashes": "PASS",
+  "receipt": "/home/avillagran/.cache/files-m2-updates/sheets-dd80534/installation-1794036047813693354/installed.json",
+  "settings_unchanged": true,
+  "settings": [
+    {
+      "path": "/home/avillagran/.config/files/config.toml",
+      "before_sha256": "f225b2303b1ca96f8a42301f80a2838577a14c327c75eb7b4c9d367f96f2862b",
+      "after_sha256": "f225b2303b1ca96f8a42301f80a2838577a14c327c75eb7b4c9d367f96f2862b"
+    },
+    {
+      "path": "/home/avillagran/.config/files/session.bin",
+      "before_sha256": "b6e8aa2e84ce58d22612508d931c2722997048a42df0405b9eddf30a565101ee",
+      "after_sha256": "b6e8aa2e84ce58d22612508d931c2722997048a42df0405b9eddf30a565101ee"
+    },
+    {
+      "path": "/home/avillagran/.config/files/layouts/0d922b96b215a0a5.toml",
+      "before_sha256": "e0f3277c2f15261378b7aa49496828016358163df7236397f825f1b00a0932e7",
+      "after_sha256": "e0f3277c2f15261378b7aa49496828016358163df7236397f825f1b00a0932e7"
+    },
+    {
+      "path": "/home/avillagran/.config/files/layouts/32d393d1817c5e72.toml",
+      "before_sha256": "1cbf77da02414f7c97e6a895b9a65fefaae10c41c91bdf869111a56df40d0a21",
+      "after_sha256": "1cbf77da02414f7c97e6a895b9a65fefaae10c41c91bdf869111a56df40d0a21"
+    },
+    {
+      "path": "/home/avillagran/.config/files/layouts/35201e16dc621286.toml",
+      "before_sha256": "c17250785358f5cb71cc8624ecfef3fc85d20ba3f386a987d0d8bc9224bb1772",
+      "after_sha256": "c17250785358f5cb71cc8624ecfef3fc85d20ba3f386a987d0d8bc9224bb1772"
+    },
+    {
+      "path": "/home/avillagran/.config/mimeapps.list",
+      "before_sha256": "9f1c34cc010e997bf8e95e88cf68dcc7bee4fa60514254a35684e7192e86d6d0",
+      "after_sha256": "9f1c34cc010e997bf8e95e88cf68dcc7bee4fa60514254a35684e7192e86d6d0"
+    },
+    {
+      "path": "/home/avillagran/.config/hyprland-mimeapps.list",
+      "before_sha256": "d9fa7aff0d4006789fb673b2a4b50cd83c51b8287f8ad15ce7549ca6605cc649",
+      "after_sha256": "d9fa7aff0d4006789fb673b2a4b50cd83c51b8287f8ad15ce7549ca6605cc649"
+    },
+    {
+      "path": "/home/avillagran/.local/share/applications/mimeapps.list",
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

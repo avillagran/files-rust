@@ -1,0 +1,40 @@
+{
+  "functional_gate": "PASS",
+  "functional_scope": "private native window title and Up without history; delayed shortcut-only tooltips; viewport size reuse and visible direct change; thumbnail toggle, persisted hit and changed source",
+  "overall_request": "INCOMPLETE_DND_BLOCKED",
+  "binary_source_checkpoint": "dd80534ce42b7a8831e65a4d9c12f4951e8bf1e3",
+  "binary_sha256": "c7a610fdc0f63a2e957b90768819022b8c09835adb9757e5dc9fba0f98adc90d",
+  "helper_sha256": "9185191d3205b14a4343c785eaf4923b8da5cf4d498ce133332422a0a0ef9188",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "profiles": [
+    {
+      "path": "/home/node/.cache/files-test/feedback-ui-native-3d5115ad8ffd/report.json",
+      "sha256": "2d9181d8eab8b4769ff6f7aa17b23adb4b1ba062abab41e42a5ff57ac8b2726c",
+      "size": "1000x650",
+      "overlay": "/tmp/files-feedback-overlay-8f37c67e3c54d5dc",
+      "overlay_manifest_sha256": "a9faf0d845254504086b4eeae2ce308f541f5e6b3573754dcffd9ddbbd84074d"
+    },
+    {
+      "path": "/home/node/.cache/files-test/feedback-ui-native-f174b8e9739c/report.json",
+      "sha256": "8a3a2bfb8b7a6186b850d7bab46052ece06b4c36acb04ff98875ed81b11b8f1a",
+      "size": "700x500",
+      "overlay": "/tmp/files-feedback-overlay-21ea4672187e2548",
+      "overlay_manifest_sha256": "b7384126b14df9471e96641b3efd47ad13d2e3d2f267aceb60065ff2181fa442"
+    }
+  ],
+  "visual_review": "NODE normal and narrow shortcut tooltips, Folder00 changed size and replacement thumbnail inspected.",
+  "limits": [
+    "sidebar drag/drop remains blocked",
+    "system titlebar rendering not observed",
+    "unobserved deep changes are not detected instantly; TTL applies",
+    "thumbnail demand in narrow layout verified in Grid",
+    "resources and startup not measured"
+  ],
+  "failed_runs_retained": [
+    "4c9df2080b84",
+    "10a75bab8a05",
+    "cf58483c9fc6",
+    "8f948363506e",
+    "f65cea11dae4"
+  ]
+}

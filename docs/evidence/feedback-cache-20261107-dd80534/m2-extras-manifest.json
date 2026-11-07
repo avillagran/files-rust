@@ -1,0 +1,37 @@
+[
+  {
+    "path": "M2/overlays/files-feedback-overlay-46aa4c43a42c61fd/scripts/tools/COPYING-wtype",
+    "bytes": 1071,
+    "sha256": "e8bd6bac1b3ba6253625830bceb30c5340f74f4bc898d1bd5450596cbd8224f0"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-46aa4c43a42c61fd/scripts/tools/virtual-keyboard-unstable-v1.xml",
+    "bytes": 4886,
+    "sha256": "7ad7870003ecd592cae47dc19d277a609b7f18fd7b7be012623cf3225a7294f5"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-46aa4c43a42c61fd/scripts/tools/wlr-virtual-pointer-unstable-v1.xml",
+    "bytes": 6895,
+    "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-bc95154d02128ede/scripts/tools/COPYING-wtype",
+    "bytes": 1071,
+    "sha256": "e8bd6bac1b3ba6253625830bceb30c5340f74f4bc898d1bd5450596cbd8224f0"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-bc95154d02128ede/scripts/tools/virtual-keyboard-unstable-v1.xml",
+    "bytes": 4886,
+    "sha256": "7ad7870003ecd592cae47dc19d277a609b7f18fd7b7be012623cf3225a7294f5"
+  },
+  {
+    "path": "M2/overlays/files-feedback-overlay-bc95154d02128ede/scripts/tools/wlr-virtual-pointer-unstable-v1.xml",
+    "bytes": 6895,
+    "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524"
+  },
+  {
+    "path": "M2/post-install-audit.json",
+    "bytes": 215,
+    "sha256": "ba62675c619db55eee7761d2a77311f295dc607b0f93b058ba5cbec39de4e64d"
+  }
+]

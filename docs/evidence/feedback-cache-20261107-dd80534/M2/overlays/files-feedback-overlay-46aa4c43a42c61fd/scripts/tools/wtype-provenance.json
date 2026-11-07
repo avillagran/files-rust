@@ -1,0 +1,11 @@
+{
+  "upstream_repository": "https://github.com/atx/wtype",
+  "upstream_tag": "v0.4",
+  "license_url": "https://raw.githubusercontent.com/atx/wtype/v0.4/LICENSE",
+  "source_url": "https://raw.githubusercontent.com/atx/wtype/v0.4/main.c",
+  "license_sha256": "e8bd6bac1b3ba6253625830bceb30c5340f74f4bc898d1bd5450596cbd8224f0",
+  "upstream_source_sha256": "713597abfc049196864ffcc041bb6683c761b71d68ed2da86cdcfc6b7ed3d244",
+  "overlay_source_sha256": "713597abfc049196864ffcc041bb6683c761b71d68ed2da86cdcfc6b7ed3d244",
+  "derived_helper_sha256": "b7162218c4a1c10736abcb42ad27b0f86778905d7add4b1842431683bb789245",
+  "note": "The overlay helper is based on upstream wtype v0.4; the license and copyright notices are preserved in COPYING. The helper uses a persistent private Wayland keyboard and memfd keymap."
+}

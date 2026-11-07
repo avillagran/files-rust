@@ -1,0 +1,5 @@
+{
+  "modified_rust_files": "PASS: rustfmt --check --config skip_children=true across the fifteen changed Rust files",
+  "workspace_format": "FAIL: unchanged crates/core/src/lib.rs declares folder_usage before folder_size_cache; rustfmt requests lexical order",
+  "production_change": "None; the unrelated order was preserved rather than changing the frozen source checkpoint"
+}

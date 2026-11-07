@@ -1,0 +1,14 @@
+{
+  "target_thread": "omarchy-thread-e31bf060-0c36-4330-a4c4-2782fc6a872b",
+  "client_request_id": "files-toolbar-sidebar-feedback-20261107-v2",
+  "mode": "queue",
+  "result": "Authentication required",
+  "delivered": false,
+  "requested_contracts": [
+    "Sidebar pin/unpin and row/section gestures with complete cancellation",
+    "Bounded canvas treemap",
+    "Per-control shortcut-only tooltip after fresh 2000ms",
+    "Icon plus app name plus explanatory client title/status"
+  ],
+  "toolkit_execution_authorized": false
+}

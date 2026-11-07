@@ -1,0 +1,30 @@
+{
+  "scripts/feedback-ui-native-check.py": {
+    "sha256": "1e432a5c79497f39e502ca0ca86e10287ec37aafacab25f5566e1e3aa4697840",
+    "bytes": 45526
+  },
+  "scripts/tools/compact-persistent-pointer.c": {
+    "sha256": "0264bdb8102870d44ed273527eb25d3bd7f649856f1efc6016591177ca9d1b02",
+    "bytes": 4999
+  },
+  "scripts/tools/persistent-keyboard.c": {
+    "sha256": "b7162218c4a1c10736abcb42ad27b0f86778905d7add4b1842431683bb789245",
+    "bytes": 14651
+  },
+  "scripts/tools/wlr-virtual-pointer-unstable-v1.xml": {
+    "sha256": "3ff6d540be0bc5228195bf072bde42117ea17945a5c2061add5d3cf97d6bb524",
+    "bytes": 6895
+  },
+  "scripts/tools/virtual-keyboard-unstable-v1.xml": {
+    "sha256": "7ad7870003ecd592cae47dc19d277a609b7f18fd7b7be012623cf3225a7294f5",
+    "bytes": 4886
+  },
+  "scripts/tools/COPYING-wtype": {
+    "sha256": "e8bd6bac1b3ba6253625830bceb30c5340f74f4bc898d1bd5450596cbd8224f0",
+    "bytes": 1071
+  },
+  "scripts/tools/wtype-provenance.json": {
+    "sha256": "84e537e3ad80c05e08893cd76049c86376231905489d7767b0c020cf877548af",
+    "bytes": 808
+  }
+}
