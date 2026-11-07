@@ -1,0 +1,11 @@
+{
+  "artifacts": {
+    "files": "c7a610fdc0f63a2e957b90768819022b8c09835adb9757e5dc9fba0f98adc90d",
+    "files-helper": "9185191d3205b14a4343c785eaf4923b8da5cf4d498ce133332422a0a0ef9188",
+    "files-html-helper": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+    "files-html-helper.LICENSES": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+    "files-html-helper.build.json": "4077f8f5e5fb80380abea02f840ea68685b889fa6c504f170acf8671153b76dd"
+  },
+  "config_exists": false,
+  "mimeapps": "1c93140f3042b0fccedf2c2d75749a11c0fa64f06a570d7944b9bb818eaeb2a9"
+}

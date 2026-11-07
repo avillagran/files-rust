@@ -1,0 +1,12 @@
+{
+  "results": [
+    {
+      "log": "/run/user/1000/files-size-labels-e7hfhilz/size-queue-v2.log",
+      "exit_code": 0
+    },
+    {
+      "log": "/run/user/1000/files-size-labels-e7hfhilz/automatic-provisional.log",
+      "exit_code": 0
+    }
+  ]
+}

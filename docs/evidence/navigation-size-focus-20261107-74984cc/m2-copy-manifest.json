@@ -1,0 +1,470 @@
+[
+  {
+    "path": "M2/profiles/feedback-ui-native-cfb964412efb/compositor.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-cfb964412efb/compositor.log",
+    "bytes": 151,
+    "sha256": "f345c4435bb748cb571abcfd8bce16948688da07e42ec43f8e2f2ee4b4ad1e1f"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-cfb964412efb/service.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-cfb964412efb/service.log",
+    "bytes": 44761,
+    "sha256": "cdf7fafe751883c048b8410841af23ec280734eb0a27724b43ac316001c82547"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-cfb964412efb/keyboard.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-cfb964412efb/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-cfb964412efb/pointer.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-cfb964412efb/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-cfb964412efb/report.json",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-cfb964412efb/report.json",
+    "bytes": 72231,
+    "sha256": "4e52b0ca614003c7baa0903a13528f01f4c7a51a43518770e4ef2bcad11f671c"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-cfb964412efb/visual-receipt.txt",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-cfb964412efb/visual-receipt.txt",
+    "bytes": 304,
+    "sha256": "75b52df397d1c7c0618ee9044570f58327d55ba86b6f43cfb94e3c5181208402"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-cfb964412efb/helper-proxy.c",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-cfb964412efb/programs/helper-proxy.c",
+    "bytes": 654,
+    "sha256": "48cc624632e1e81c3820940141a0d8627fbb396235f49699aaec607335d88622"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-614330d75d12/compositor.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-614330d75d12/compositor.log",
+    "bytes": 151,
+    "sha256": "567779409ceb84dc74a6b73b1b18e7eae2b5f4057a65f06e9365d5c572975b71"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-614330d75d12/service.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-614330d75d12/service.log",
+    "bytes": 44948,
+    "sha256": "0ba3883789562fd5d61b5b50a33dbb34f358c065d5631831d51f2bbcc4a8223a"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-614330d75d12/keyboard.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-614330d75d12/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-614330d75d12/pointer.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-614330d75d12/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-614330d75d12/report.json",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-614330d75d12/report.json",
+    "bytes": 71403,
+    "sha256": "d559b4163998d4e035eebf74527eb1d8e6e18f66d1c6a7f73e71efeab21f913b"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-614330d75d12/visual-receipt.txt",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-614330d75d12/visual-receipt.txt",
+    "bytes": 304,
+    "sha256": "75b52df397d1c7c0618ee9044570f58327d55ba86b6f43cfb94e3c5181208402"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-614330d75d12/helper-proxy.c",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-614330d75d12/programs/helper-proxy.c",
+    "bytes": 654,
+    "sha256": "48cc624632e1e81c3820940141a0d8627fbb396235f49699aaec607335d88622"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-d2657f67de05/compositor.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-d2657f67de05/compositor.log",
+    "bytes": 151,
+    "sha256": "09fe20bb4b813376d785f0944299fd0f2c81b18e9a5cb2cca2a55dcd210a2878"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-d2657f67de05/service.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-d2657f67de05/service.log",
+    "bytes": 53897,
+    "sha256": "0f19f35d31f44e6ce7382badf245e09135b098906c12cf46aeac2fbe074dd63a"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-d2657f67de05/keyboard.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-d2657f67de05/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-d2657f67de05/pointer.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-d2657f67de05/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-d2657f67de05/report.json",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-d2657f67de05/report.json",
+    "bytes": 86137,
+    "sha256": "1bac4fd25d91542249dfea4bcd4c75640de9981865868191f15c265db62338ea"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-d2657f67de05/helper-proxy.c",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-d2657f67de05/programs/helper-proxy.c",
+    "bytes": 654,
+    "sha256": "48cc624632e1e81c3820940141a0d8627fbb396235f49699aaec607335d88622"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/compositor.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/compositor.log",
+    "bytes": 151,
+    "sha256": "3116661b693865ad9a25c94c2e36ae268158b387974213eaf00aafb91891fd49"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/service.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/service.log",
+    "bytes": 182398,
+    "sha256": "8c5e68376cc28bc1a612fba8d9e0c414d8349a69aa2eb3576fe34250b1540618"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/keyboard.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/pointer.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/groups-initial.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/groups-initial.png",
+    "bytes": 43392,
+    "sha256": "0b5124121f7871e84d0e65f96691703a76ad5f0e4b20d51c79b70ce31f53b919"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/breadcrumb-overflow-menu.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/breadcrumb-overflow-menu.png",
+    "bytes": 73333,
+    "sha256": "f849d55924a76b20b01ad9d84d855e88a00893098bc0aed4c1b963db3c7001ab"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/list-initial.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/list-initial.png",
+    "bytes": 58527,
+    "sha256": "6b3a738fb597df97a702497364f7bdac9d76dd1978ee10631531497748b4e81c"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/list-sizes-settled.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/list-sizes-settled.png",
+    "bytes": 63116,
+    "sha256": "306ec344160359ffaf4838cfe46436f9a8dc000b3df212cc250f14831a75517f"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/groups-sizes-settled.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/groups-sizes-settled.png",
+    "bytes": 52081,
+    "sha256": "34a7dd54e9fbf13aa72918443fdf9cabdc25022c9c57441743e7e786f9b02eab"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/selected-before-child.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/selected-before-child.png",
+    "bytes": 62524,
+    "sha256": "185bc24ef617750ddfaf75cc183c224d961e81f93c8ff6eed95125fc05cc303a"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/entered-child.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/entered-child.png",
+    "bytes": 69640,
+    "sha256": "67a6dd39ae41ae07608c3579008045b452ca6a2f4acd370e6c65a34971e0f576"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/returned-before-visible-check.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/returned-before-visible-check.png",
+    "bytes": 52849,
+    "sha256": "b1a775895cf5c39031bc7999d6fd12966e352b0bde75baa6b9f313102539ac1f"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/selected-after-return.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/selected-after-return.png",
+    "bytes": 52849,
+    "sha256": "b1a775895cf5c39031bc7999d6fd12966e352b0bde75baa6b9f313102539ac1f"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/up-parent.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/up-parent.png",
+    "bytes": 37772,
+    "sha256": "634745a3808daea8c2e377103dbc1964a8288075abdea9fb1de14dd1bed91d3e"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/report.json",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/report.json",
+    "bytes": 273114,
+    "sha256": "0258731c12f3068cc9dcd945ce63e359b01ce074b8e72985ddf2184f91b68a81"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/visual-receipt.txt",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/visual-receipt.txt",
+    "bytes": 244,
+    "sha256": "21b6e8c2c3675e5277c18a22726b105968f72a983c672c7ee12ba8287364797e"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-4061c111fa59/helper-proxy.c",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/programs/helper-proxy.c",
+    "bytes": 654,
+    "sha256": "48cc624632e1e81c3820940141a0d8627fbb396235f49699aaec607335d88622"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/compositor.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/compositor.log",
+    "bytes": 151,
+    "sha256": "3116661b693865ad9a25c94c2e36ae268158b387974213eaf00aafb91891fd49"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/service.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/service.log",
+    "bytes": 190932,
+    "sha256": "5c431bf3b5fb2885b8cd33ac1267737005e93160a155e8620a5da6b820b728bd"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/keyboard.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/pointer.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/groups-initial.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/groups-initial.png",
+    "bytes": 25252,
+    "sha256": "2b269ae505b9bb4230f15d5b60c9b7a592ed76e279b5bf5d6015f69ddff1bb69"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/breadcrumb-overflow-menu.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/breadcrumb-overflow-menu.png",
+    "bytes": 48142,
+    "sha256": "119812d68dc2aa239f285b8e2b38e09732fba1aae8c5592c8e00c91a0c14af6e"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/list-initial.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/list-initial.png",
+    "bytes": 29876,
+    "sha256": "29e23c4b13dbad667f2d74fae3dda6d336b9adbaedc488c2ae2e9e57db9f8f80"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/list-sizes-settled.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/list-sizes-settled.png",
+    "bytes": 36362,
+    "sha256": "ff102a21d8dbd7df32d242542271c27b75d98a94fafc6b8456ec5f390f1445b5"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/groups-sizes-settled.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/groups-sizes-settled.png",
+    "bytes": 29104,
+    "sha256": "6a9c38fdf0c3f94506d42ab4989ead87338c22b4c7e6d117ec7423acd22009a7"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/selected-before-child.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/selected-before-child.png",
+    "bytes": 35945,
+    "sha256": "2f514ff778f08dd5e76468903557d4eab7f613687ee3925d40fce4d0ea526dd9"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/entered-child.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/entered-child.png",
+    "bytes": 41058,
+    "sha256": "f13fbdcc347a79ee6f235ea2c58913570bba7577c69a463c8006e1d97e049362"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/returned-before-visible-check.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/returned-before-visible-check.png",
+    "bytes": 29731,
+    "sha256": "a315b52928b623954e6297737820303f58802dfdbcdd38f2162745ace9ca28eb"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/selected-after-return.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/selected-after-return.png",
+    "bytes": 29731,
+    "sha256": "a315b52928b623954e6297737820303f58802dfdbcdd38f2162745ace9ca28eb"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/up-parent.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/up-parent.png",
+    "bytes": 19877,
+    "sha256": "755e8aec0507bf85e1bbf900e7c663170277e257171306155205f28aa968008f"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/report.json",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/report.json",
+    "bytes": 277755,
+    "sha256": "cd30741907707582525defd9446edc380380753e5ea576d0b580cc421993e824"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/visual-receipt.txt",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/visual-receipt.txt",
+    "bytes": 244,
+    "sha256": "21b6e8c2c3675e5277c18a22726b105968f72a983c672c7ee12ba8287364797e"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-605e49419f4d/helper-proxy.c",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/programs/helper-proxy.c",
+    "bytes": 654,
+    "sha256": "48cc624632e1e81c3820940141a0d8627fbb396235f49699aaec607335d88622"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/compositor.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/compositor.log",
+    "bytes": 151,
+    "sha256": "6872a8ec382946a1ab971304a2ac062cce1bb0bb7133519864d5600c2182a478"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/service.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/service.log",
+    "bytes": 182512,
+    "sha256": "98ccbb7b82e51f8d7c02ff10f725f18b0cae27e623f138f546c4ba3761ff7300"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/keyboard.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/keyboard.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/pointer.log",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/pointer.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/groups-initial.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/groups-initial.png",
+    "bytes": 43386,
+    "sha256": "1011404e3b7d45d3f5e4ae04521f53b7b6ec5dc866eb87aeec6a3c6eb971a884"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/breadcrumb-overflow-menu.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/breadcrumb-overflow-menu.png",
+    "bytes": 74325,
+    "sha256": "18bfbada5fa8ee40fe58847095019c54d19f5bd49d09572809ec469fb867b15a"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/list-initial.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/list-initial.png",
+    "bytes": 58804,
+    "sha256": "703ad36de7808b36a1c5f13fed79f913578ce19a9dc003750b4f29a0d63076ed"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/list-sizes-settled.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/list-sizes-settled.png",
+    "bytes": 63067,
+    "sha256": "5a0e8f8776369e49f483c1eecb01749542a59300ec79d6e58da1a35f182a39f3"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/groups-sizes-settled.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/groups-sizes-settled.png",
+    "bytes": 52041,
+    "sha256": "d2de31459383435aff380ec46e23768683cf60e7f1439548301d68ed52e773ab"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/selected-before-child.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/selected-before-child.png",
+    "bytes": 62555,
+    "sha256": "0f566a39c78e25512e5bca626c326f7cad9619a19912d17a02f416548e12cdf1"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/entered-child.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/entered-child.png",
+    "bytes": 69669,
+    "sha256": "8c37c0eac2c75478720c9508acf8574c39f7f2e490b4ec50a453692e321e8549"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/returned-before-visible-check.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/returned-before-visible-check.png",
+    "bytes": 52881,
+    "sha256": "a02073f8ff94ed5b3dcd788a62bc7f61cab88a1f51c2af96787069edab2fb56f"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/selected-after-return.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/selected-after-return.png",
+    "bytes": 52881,
+    "sha256": "a02073f8ff94ed5b3dcd788a62bc7f61cab88a1f51c2af96787069edab2fb56f"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/up-parent.png",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/up-parent.png",
+    "bytes": 37802,
+    "sha256": "97ea6caa0f22a1c4f8ae5b33de19eeda9262fadfad57997e956deb83c0f286df"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/report.json",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/report.json",
+    "bytes": 273330,
+    "sha256": "18ea36bd669591480fc8c1978220bd7079f168e3a811ae93cf00101e0a2d741a"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/visual-receipt.txt",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/visual-receipt.txt",
+    "bytes": 213,
+    "sha256": "666ca72f75b870fb30ec0fcad6894c7d986a7a95caf630b0785c435f7d2180ac"
+  },
+  {
+    "path": "M2/profiles/feedback-ui-native-a38256480b78/helper-proxy.c",
+    "source": "/home/avillagran/.cache/files-test/feedback-ui-native-a38256480b78/programs/helper-proxy.c",
+    "bytes": 654,
+    "sha256": "48cc624632e1e81c3820940141a0d8627fbb396235f49699aaec607335d88622"
+  },
+  {
+    "path": "M2/build-result.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-74984cc/build-result.json",
+    "bytes": 4048,
+    "sha256": "090b18941856bd50e996d76cfb4ff7cff507dfd7c9d92422cb6dfa0588f65591"
+  },
+  {
+    "path": "M2/build.log",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-74984cc/build.log",
+    "bytes": 794,
+    "sha256": "b5d0bc6a18aad0e9b4d9e3ee03ef2f6dd3817ba29dab6a44ea228b0cd2815fb4"
+  },
+  {
+    "path": "M2/before-installation.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-74984cc/before-installation.json",
+    "bytes": 1828,
+    "sha256": "b8f5b129b6e613d09883f09a21bcb3a8480f7dde83d687e70a53668f8ee549d0"
+  },
+  {
+    "path": "M2/install-gate.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-74984cc/install-gate.json",
+    "bytes": 722,
+    "sha256": "7b1c3911f8592baea00f1dedce56ba7ad8218f3d35f74135fcb4fa8fead37ca9"
+  },
+  {
+    "path": "M2/installation-audit.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-74984cc/installation-audit.json",
+    "bytes": 2176,
+    "sha256": "825c1aa73d2682fb45128658d869735f854b6816f0bd0c16ff5fcb562f0218f1"
+  },
+  {
+    "path": "M2/installed.json",
+    "source": "/home/avillagran/.cache/files-m2-updates/sheets-74984cc/installation-1794079787763774642/installed.json",
+    "bytes": 2630,
+    "sha256": "51c31c9c90dc4c5dc62accf55685656fe3fa7de75cf7c559a8ca97ebceca4dd4"
+  },
+  {
+    "path": "M2/report-index.json",
+    "source": "/tmp/files-nav-driver-9Wh9iTrg/report-index.json",
+    "bytes": 600,
+    "sha256": "2f1adc103e124e23e5d7e0fca5344930c0169da9c02cecc553fa4d984c077d2d"
+  }
+]

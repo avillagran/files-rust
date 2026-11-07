@@ -1,0 +1,1 @@
+Visually inspected groups-initial, list-sizes-settled, groups-sizes-settled and breadcrumb-overflow-menu. The in-flight size marker fits each card, the current breadcrumb remains visible, and the overflow menu is legible. Settled folder sizes display ∑ and no cache label. Measurement helper was held by the recorded private proxy; no claim of uninstrumented helper timing.

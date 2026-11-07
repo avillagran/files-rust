@@ -1,0 +1,43 @@
+{
+  "artifacts": {
+    "files": "563b83865d29e4c63fe97291806569ee87923669a5210e3ccab2a248d96f8ea7",
+    "files-helper": "ffbe7a5be3cca5de90210029238403ef2890b9399326d5e6c59f7062709803d7",
+    "files-html-helper": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+    "files-html-helper.LICENSES": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+    "files-html-helper.build.json": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838"
+  },
+  "settings": [
+    {
+      "path": "/home/avillagran/.config/files/config.toml",
+      "sha256": "20ec8a60b9d5be0b91ec7059453f99ad984878fbd4441d4d79c0f907814ed21e"
+    },
+    {
+      "path": "/home/avillagran/.config/files/session.bin",
+      "sha256": "c80fc8f7b02534787d14518a4147fe790f5adb1c798d7d5765054e5df841ac57"
+    },
+    {
+      "path": "/home/avillagran/.config/files/layouts/0d922b96b215a0a5.toml",
+      "sha256": "e0f3277c2f15261378b7aa49496828016358163df7236397f825f1b00a0932e7"
+    },
+    {
+      "path": "/home/avillagran/.config/files/layouts/32d393d1817c5e72.toml",
+      "sha256": "1cbf77da02414f7c97e6a895b9a65fefaae10c41c91bdf869111a56df40d0a21"
+    },
+    {
+      "path": "/home/avillagran/.config/files/layouts/35201e16dc621286.toml",
+      "sha256": "c17250785358f5cb71cc8624ecfef3fc85d20ba3f386a987d0d8bc9224bb1772"
+    },
+    {
+      "path": "/home/avillagran/.config/mimeapps.list",
+      "sha256": "9f1c34cc010e997bf8e95e88cf68dcc7bee4fa60514254a35684e7192e86d6d0"
+    },
+    {
+      "path": "/home/avillagran/.config/hyprland-mimeapps.list",
+      "sha256": "d9fa7aff0d4006789fb673b2a4b50cd83c51b8287f8ad15ce7549ca6605cc649"
+    },
+    {
+      "path": "/home/avillagran/.local/share/applications/mimeapps.list",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

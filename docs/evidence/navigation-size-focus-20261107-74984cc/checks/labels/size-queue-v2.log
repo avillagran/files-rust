@@ -1,0 +1,27 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.50s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 19 tests
+test size_queue::tests::finish_signals_only_fresh_measured_values_not_errors_or_cancelled_old_acks ... ok
+test size_queue::tests::oversized_error_keeps_utf8_budget_and_signals_omitted_suffix ... ok
+test size_queue::tests::pause_finishes_active_but_never_admits_next_until_resume ... ok
+test size_queue::tests::forgetting_other_observation_does_not_reset_active_epoch_or_progress ... ok
+test size_queue::tests::navigation_and_same_name_do_not_publish_old_ack_or_start_before_it ... ok
+test size_queue::tests::mode_replacement_waits_for_old_ack_and_rejected_batch_preserves_observations_and_pause ... ok
+test size_queue::tests::progress_is_not_a_final_total_and_errors_do_not_become_zero ... ok
+test size_queue::tests::mixed_modes_preserve_allocation_through_finish_and_revoke_it_for_fresh_attempts ... ok
+test size_queue::tests::over_budget_batch_rejects_atomically_and_cancelled_results_stay_unconfirmed ... ok
+test size_queue::tests::recalculate_one_observation_preserves_other_results_pause_and_active_ack ... ok
+test size_queue::tests::provisional_cache_is_labelled_and_does_not_become_a_confirmed_sort_value ... ok
+test size_queue::tests::recalculate_rejects_old_context_and_non_measurements_without_mutation ... ok
+test size_queue::tests::record_tickets_survive_cancel_retry_ack_without_reusing_attempt_identity ... ok
+test size_queue::tests::forgetting_finished_row_releases_capacity_but_never_forgets_queued_or_active_ack ... ok
+test size_queue::tests::rejected_enqueue_preserves_pause_while_navigation_and_stop_clear_it ... ok
+test size_queue::tests::retry_only_errors_preserves_pause_measured_cancelled_and_ack_barrier ... ok
+test size_queue::tests::snapshot_forget_preserves_new_measurements_errors_pause_and_zero_semantics ... ok
+test size_queue::tests::stale_snapshot_after_recalculation_is_atomic_and_old_epoch_is_rejected ... ok
+test size_queue::tests::wrong_mode_and_invalid_allocation_fail_without_measured_sort_key_or_cached_allocation ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 905 filtered out; finished in 0.00s
+

@@ -1,0 +1,14 @@
+{
+  "binary_sha256": "e5520ef67e9f80d9efd1093b0e64ff877bbd890a675e0cba153081a357d5aa6c",
+  "helper_sha256": "9185191d3205b14a4343c785eaf4923b8da5cf4d498ce133332422a0a0ef9188",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "functional_gate": "PASS",
+  "binary_source_checkpoint": "74984cc0ec02d5bf2d770ed59aa09491e355e973",
+  "profiles": [
+    "/home/node/.cache/files-test/feedback-ui-native-abb94c6b04e0/report.json",
+    "/home/node/.cache/files-test/feedback-ui-native-97c7ec212307/report.json"
+  ],
+  "scope": "Private native navigation, compact size cards, and Enter/Backspace retained focus and scroll; bounded helper gate for size progress",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED"
+}

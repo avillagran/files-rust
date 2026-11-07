@@ -1,0 +1,606 @@
+{
+  "functional_gate": "FAIL",
+  "fixture_dir": "/home/node/.cache/files-test/feedback-ui-native-4b6f65efe3a9",
+  "checks": [],
+  "states": [
+    {
+      "label": "groups-initial",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            48
+          ],
+          "size": null
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            49
+          ],
+          "size": null
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            50
+          ],
+          "size": null
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            51
+          ],
+          "size": null
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            52
+          ],
+          "size": null
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            53
+          ],
+          "size": null
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            54
+          ],
+          "size": null
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            55
+          ],
+          "size": null
+        }
+      ],
+      "footer_status": "1 marcado \u00b7 45 elementos",
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        102,
+        101,
+        101,
+        100,
+        98,
+        97,
+        99,
+        107,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        52,
+        98,
+        54,
+        102,
+        54,
+        53,
+        101,
+        102,
+        101,
+        51,
+        97,
+        57,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65,
+        47,
+        78,
+        101,
+        115,
+        116,
+        101,
+        100,
+        47,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        45,
+        119,
+        105,
+        116,
+        104,
+        45,
+        114,
+        101,
+        97,
+        100,
+        97,
+        98,
+        108,
+        101,
+        45,
+        110,
+        97,
+        109,
+        101,
+        47,
+        115,
+        101,
+        99,
+        111,
+        110,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        116,
+        104,
+        105,
+        114,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        112,
+        97,
+        114,
+        101,
+        110,
+        116,
+        47,
+        108,
+        101,
+        97,
+        102
+      ],
+      "scroll": 0,
+      "show_thumbnails": true,
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3462366636356566653361392f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3462366636356566653361392f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3462366636356566653361392f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3462366636356566653361392f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3462366636356566653361392f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": null
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3462366636356566653361392f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": null
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra",
+            "rect": [
+              0,
+              353,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              393,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "size_busy": false,
+      "size_dispatch_total": 0,
+      "space": {
+        "state": "closed"
+      },
+      "thumbnails": {
+        "authorized": false,
+        "busy": false,
+        "cache_warning": null,
+        "cached": 0,
+        "demand": 0,
+        "errors": 0,
+        "notice": null,
+        "painted": 0,
+        "ready": [],
+        "rgb_capacity": 0,
+        "scratch_capacity": 0,
+        "worker": {
+          "cache_errors": 0,
+          "decodes": 0,
+          "disk_hits": 0,
+          "missing": 0,
+          "probes": 0,
+          "requests": 0
+        }
+      },
+      "title": "/home/node/.cache/files-test/feedback-ui-native-4b6f65efe3a9/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Buscar",
+            "on": false,
+            "rect": [
+              292,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+F"
+          },
+          {
+            "index": 1,
+            "label": "Editar ruta",
+            "on": false,
+            "rect": [
+              332,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+L"
+          },
+          {
+            "index": 2,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              372,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+1"
+          },
+          {
+            "index": 3,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              412,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+2"
+          },
+          {
+            "index": 4,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              452,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+5"
+          },
+          {
+            "index": 5,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              492,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+4"
+          },
+          {
+            "index": 6,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              532,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+3"
+          },
+          {
+            "index": 7,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              572,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+Alt+I"
+          },
+          {
+            "index": 8,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              612,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "F10"
+          },
+          {
+            "index": 9,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              652,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+,"
+          }
+        ],
+        "tooltip": null,
+        "up_rect": [
+          84,
+          13,
+          30,
+          32
+        ]
+      }
+    }
+  ],
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "requested_size": "700x500",
+  "animations": "on",
+  "captures": [],
+  "animation_comparison": "NOT_COMPARED",
+  "scope": "native input and private mutation fixtures; executable paths and compositor-owned paths are outside fixture file checks; this profile alone does not prove cross-profile motion",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "fc133212ba6e005cb32374b2db5531bac5739bc385afe33c6fcc525301520de8",
+  "helper_sha256": "9185191d3205b14a4343c785eaf4923b8da5cf4d498ce133332422a0a0ef9188",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "nested": {
+    "socket": "wayland-1",
+    "pid": 2895197,
+    "runtime": "/tmp/f-852c52c9029c",
+    "backend": "private-sway-headless"
+  },
+  "motion_and_hyprland": "NOT_RUN",
+  "helper_gate": "private proxy delays only size measurements until an owned release file",
+  "window_size": [
+    704,
+    474
+  ],
+  "error": "AssertionError: breadcrumb-state",
+  "nested_stopped": true
+}

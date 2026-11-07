@@ -1,0 +1,13 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.84s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 5 tests
+test keyboard_nav::tests::no_focus_boundaries_and_extremes_never_skip_or_overflow ... ok
+test keyboard_nav::tests::parent_returns::rapid_multilevel_parent_navigation_keeps_only_the_latest_child ... ok
+test keyboard_nav::tests::parent_returns::explicit_selection_or_missing_child_never_restores_a_neighbour ... ok
+test keyboard_nav::tests::parent_returns::enter_then_parent_restores_exact_raw_child_and_retained_scroll ... ok
+test keyboard_nav::tests::parent_returns::pending_parent_focus_rebinds_refresh_and_rejects_changed_owner_or_generation ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 923 filtered out; finished in 0.00s
+

@@ -1,0 +1,1 @@
+PASS candidate M2: visually inspected restored Folder20 selected and visible, pending group cards, settled list and overflow menu. Native pointer and keyboard checks passed. Size helper held by private proxy; uninstrumented timing not claimed.

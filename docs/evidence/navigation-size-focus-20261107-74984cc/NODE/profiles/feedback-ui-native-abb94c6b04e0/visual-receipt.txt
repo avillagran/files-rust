@@ -1,0 +1,1 @@
+PASS: visually inspected pending group cards, settled list, overflow menu and return selection. Small pending markers fit; sizes have no cache label; the current breadcrumb is visible and its menu opens by pointer. Folder20 is selected and visible after Enter/Backspace. Folder-size helper was instrumented with a private hold proxy; uninstrumented timing not claimed.

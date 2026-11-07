@@ -1,0 +1,3092 @@
+{
+  "functional_gate": "PASS",
+  "fixture_dir": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc",
+  "checks": [
+    "deep breadcrumb overflow renders and opens with native Alt+Down",
+    "group and list views rendered with bounded private folder fixtures",
+    "native Alt+Up navigates to the actual parent"
+  ],
+  "states": [
+    {
+      "label": "groups-initial",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            48
+          ],
+          "size": "\u2026"
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            49
+          ],
+          "size": "\u2026"
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            50
+          ],
+          "size": "\u2026"
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            51
+          ],
+          "size": "\u2026"
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            52
+          ],
+          "size": "\u2026"
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            53
+          ],
+          "size": "\u2026"
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            54
+          ],
+          "size": "\u2026"
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            55
+          ],
+          "size": "\u2026"
+        }
+      ],
+      "footer_status": "Tama\u00f1os: 0/8 carpetas \u00b7 0 errores",
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        102,
+        101,
+        101,
+        100,
+        98,
+        97,
+        99,
+        107,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        52,
+        97,
+        97,
+        55,
+        97,
+        49,
+        49,
+        51,
+        54,
+        51,
+        100,
+        99,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65,
+        47,
+        78,
+        101,
+        115,
+        116,
+        101,
+        100,
+        47,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        45,
+        119,
+        105,
+        116,
+        104,
+        45,
+        114,
+        101,
+        97,
+        100,
+        97,
+        98,
+        108,
+        101,
+        45,
+        110,
+        97,
+        109,
+        101,
+        47,
+        115,
+        101,
+        99,
+        111,
+        110,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        116,
+        104,
+        105,
+        114,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        112,
+        97,
+        114,
+        101,
+        110,
+        116,
+        47,
+        108,
+        101,
+        97,
+        102
+      ],
+      "scroll": 0,
+      "show_thumbnails": true,
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": null
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": null
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra",
+            "rect": [
+              0,
+              353,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              393,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "size_busy": true,
+      "size_dispatch_total": 1,
+      "space": {
+        "state": "closed"
+      },
+      "thumbnails": {
+        "authorized": false,
+        "busy": false,
+        "cache_warning": null,
+        "cached": 0,
+        "demand": 0,
+        "errors": 0,
+        "notice": null,
+        "painted": 0,
+        "ready": [],
+        "rgb_capacity": 0,
+        "scratch_capacity": 0,
+        "worker": {
+          "cache_errors": 0,
+          "decodes": 0,
+          "disk_hits": 0,
+          "missing": 0,
+          "probes": 0,
+          "requests": 0
+        }
+      },
+      "title": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf \u00b7 Calculando tama\u00f1os\u2026",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Buscar",
+            "on": false,
+            "rect": [
+              292,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+F"
+          },
+          {
+            "index": 1,
+            "label": "Editar ruta",
+            "on": false,
+            "rect": [
+              332,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+L"
+          },
+          {
+            "index": 2,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              372,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+1"
+          },
+          {
+            "index": 3,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              412,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+2"
+          },
+          {
+            "index": 4,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              452,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+5"
+          },
+          {
+            "index": 5,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              492,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+4"
+          },
+          {
+            "index": 6,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              532,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+3"
+          },
+          {
+            "index": 7,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              572,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+Alt+I"
+          },
+          {
+            "index": 8,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              612,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "F10"
+          },
+          {
+            "index": 9,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              652,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+,"
+          }
+        ],
+        "tooltip": null,
+        "up_rect": [
+          84,
+          13,
+          30,
+          32
+        ]
+      }
+    },
+    {
+      "label": "breadcrumbs-initial",
+      "active": 1,
+      "anchor_raw": "466f6c6465723031",
+      "editing": false,
+      "filter": "",
+      "focus_browser": true,
+      "generation": 2,
+      "loaded": true,
+      "omni_rect": [
+        136,
+        12,
+        122,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "feedback-ui-native-4aa7a11363dc",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d346161376131313336336463"
+        },
+        {
+          "label": "Inicio",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d65"
+        },
+        {
+          "label": "A",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f41"
+        },
+        {
+          "label": "Nested",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e6573746564"
+        },
+        {
+          "label": "ancestor-with-readable-name",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e65737465642f616e636573746f722d776974682d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e65737465642f616e636573746f722d776974682d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e65737465642f616e636573746f722d776974682d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e65737465642f616e636573746f722d776974682d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e74"
+        }
+      ],
+      "overflow_rect": [
+        136,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e65737465642f616e636573746f722d776974682d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": false,
+      "refreshing": false,
+      "selected_raw": "466f6c6465723031",
+      "selection_raw": [
+        "466f6c6465723031"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            178,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "breadcrumbs-menu",
+      "active": 1,
+      "anchor_raw": "466f6c6465723031",
+      "editing": false,
+      "filter": "",
+      "focus_browser": false,
+      "generation": 2,
+      "loaded": true,
+      "omni_rect": [
+        136,
+        12,
+        122,
+        34
+      ],
+      "overflow": [
+        {
+          "label": "/",
+          "path": "/",
+          "path_raw": "2f"
+        },
+        {
+          "label": "home",
+          "path": "/home",
+          "path_raw": "2f686f6d65"
+        },
+        {
+          "label": "node",
+          "path": "/home/node",
+          "path_raw": "2f686f6d652f6e6f6465"
+        },
+        {
+          "label": ".cache",
+          "path": "/home/node/.cache",
+          "path_raw": "2f686f6d652f6e6f64652f2e6361636865"
+        },
+        {
+          "label": "files-test",
+          "path": "/home/node/.cache/files-test",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d74657374"
+        },
+        {
+          "label": "feedback-ui-native-4aa7a11363dc",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d346161376131313336336463"
+        },
+        {
+          "label": "Inicio",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d65"
+        },
+        {
+          "label": "A",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f41"
+        },
+        {
+          "label": "Nested",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e6573746564"
+        },
+        {
+          "label": "ancestor-with-readable-name",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e65737465642f616e636573746f722d776974682d7265616461626c652d6e616d65"
+        },
+        {
+          "label": "second-long-ancestor",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e65737465642f616e636573746f722d776974682d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "third-long-ancestor",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e65737465642f616e636573746f722d776974682d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f72"
+        },
+        {
+          "label": "parent",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent",
+          "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e65737465642f616e636573746f722d776974682d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e74"
+        }
+      ],
+      "overflow_rect": [
+        136,
+        17,
+        28,
+        24
+      ],
+      "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "path_raw": "2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f412f4e65737465642f616e636573746f722d776974682d7265616461626c652d6e616d652f7365636f6e642d6c6f6e672d616e636573746f722f74686972642d6c6f6e672d616e636573746f722f706172656e742f6c656166",
+      "popup_open": true,
+      "refreshing": false,
+      "selected_raw": "466f6c6465723031",
+      "selection_raw": [
+        "466f6c6465723031"
+      ],
+      "settled": true,
+      "tabs": [
+        {
+          "id": 1,
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf"
+        }
+      ],
+      "visible": [
+        {
+          "label": "leaf",
+          "path": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+          "rect": [
+            178,
+            17,
+            48,
+            24
+          ]
+        }
+      ]
+    },
+    {
+      "label": "list-view",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 1,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            48
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            49
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            50
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            51
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            52
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            53
+          ],
+          "size": "Cancelado"
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            54
+          ],
+          "size": null
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            55
+          ],
+          "size": null
+        },
+        {
+          "dispatch_count": null,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            56
+          ],
+          "size": null
+        }
+      ],
+      "footer_status": "1 marcado \u00b7 45 elementos",
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        102,
+        101,
+        101,
+        100,
+        98,
+        97,
+        99,
+        107,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        52,
+        97,
+        97,
+        55,
+        97,
+        49,
+        49,
+        51,
+        54,
+        51,
+        100,
+        99,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65,
+        47,
+        78,
+        101,
+        115,
+        116,
+        101,
+        100,
+        47,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        45,
+        119,
+        105,
+        116,
+        104,
+        45,
+        114,
+        101,
+        97,
+        100,
+        97,
+        98,
+        108,
+        101,
+        45,
+        110,
+        97,
+        109,
+        101,
+        47,
+        115,
+        101,
+        99,
+        111,
+        110,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        116,
+        104,
+        105,
+        114,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        112,
+        97,
+        114,
+        101,
+        110,
+        116,
+        47,
+        108,
+        101,
+        97,
+        102
+      ],
+      "scroll": 0,
+      "show_thumbnails": true,
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": null
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": null
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra",
+            "rect": [
+              0,
+              353,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              393,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "size_busy": false,
+      "size_dispatch_total": 6,
+      "space": {
+        "state": "closed"
+      },
+      "thumbnails": {
+        "authorized": false,
+        "busy": false,
+        "cache_warning": null,
+        "cached": 0,
+        "demand": 0,
+        "errors": 0,
+        "notice": null,
+        "painted": 0,
+        "ready": [],
+        "rgb_capacity": 0,
+        "scratch_capacity": 0,
+        "worker": {
+          "cache_errors": 0,
+          "decodes": 0,
+          "disk_hits": 0,
+          "missing": 0,
+          "probes": 0,
+          "requests": 0
+        }
+      },
+      "title": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Buscar",
+            "on": false,
+            "rect": [
+              292,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+F"
+          },
+          {
+            "index": 1,
+            "label": "Editar ruta",
+            "on": false,
+            "rect": [
+              332,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+L"
+          },
+          {
+            "index": 2,
+            "label": "Grupos",
+            "on": false,
+            "rect": [
+              372,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+1"
+          },
+          {
+            "index": 3,
+            "label": "Lista",
+            "on": true,
+            "rect": [
+              412,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+2"
+          },
+          {
+            "index": 4,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              452,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+5"
+          },
+          {
+            "index": 5,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              492,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+4"
+          },
+          {
+            "index": 6,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              532,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+3"
+          },
+          {
+            "index": 7,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              572,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+Alt+I"
+          },
+          {
+            "index": 8,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              612,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "F10"
+          },
+          {
+            "index": 9,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              652,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+,"
+          }
+        ],
+        "tooltip": null,
+        "up_rect": [
+          84,
+          13,
+          30,
+          32
+        ]
+      }
+    },
+    {
+      "label": "list-sizes-settled",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 1,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            48
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            49
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            50
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            51
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            52
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            53
+          ],
+          "size": "Cancelado"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            54
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            55
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            56
+          ],
+          "size": "\u2211 630 B"
+        }
+      ],
+      "footer_status": "1 marcado \u00b7 45 elementos",
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        102,
+        101,
+        101,
+        100,
+        98,
+        97,
+        99,
+        107,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        52,
+        97,
+        97,
+        55,
+        97,
+        49,
+        49,
+        51,
+        54,
+        51,
+        100,
+        99,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65,
+        47,
+        78,
+        101,
+        115,
+        116,
+        101,
+        100,
+        47,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        45,
+        119,
+        105,
+        116,
+        104,
+        45,
+        114,
+        101,
+        97,
+        100,
+        97,
+        98,
+        108,
+        101,
+        45,
+        110,
+        97,
+        109,
+        101,
+        47,
+        115,
+        101,
+        99,
+        111,
+        110,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        116,
+        104,
+        105,
+        114,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        112,
+        97,
+        114,
+        101,
+        110,
+        116,
+        47,
+        108,
+        101,
+        97,
+        102
+      ],
+      "scroll": 0,
+      "show_thumbnails": true,
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": null
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": null
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra",
+            "rect": [
+              0,
+              353,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              393,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "size_busy": false,
+      "size_dispatch_total": 9,
+      "space": {
+        "state": "closed"
+      },
+      "thumbnails": {
+        "authorized": false,
+        "busy": false,
+        "cache_warning": null,
+        "cached": 0,
+        "demand": 0,
+        "errors": 0,
+        "notice": null,
+        "painted": 0,
+        "ready": [],
+        "rgb_capacity": 0,
+        "scratch_capacity": 0,
+        "worker": {
+          "cache_errors": 0,
+          "decodes": 0,
+          "disk_hits": 0,
+          "missing": 0,
+          "probes": 0,
+          "requests": 0
+        }
+      },
+      "title": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Buscar",
+            "on": false,
+            "rect": [
+              292,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+F"
+          },
+          {
+            "index": 1,
+            "label": "Editar ruta",
+            "on": false,
+            "rect": [
+              332,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+L"
+          },
+          {
+            "index": 2,
+            "label": "Grupos",
+            "on": false,
+            "rect": [
+              372,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+1"
+          },
+          {
+            "index": 3,
+            "label": "Lista",
+            "on": true,
+            "rect": [
+              412,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+2"
+          },
+          {
+            "index": 4,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              452,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+5"
+          },
+          {
+            "index": 5,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              492,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+4"
+          },
+          {
+            "index": 6,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              532,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+3"
+          },
+          {
+            "index": 7,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              572,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+Alt+I"
+          },
+          {
+            "index": 8,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              612,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "F10"
+          },
+          {
+            "index": 9,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              652,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+,"
+          }
+        ],
+        "tooltip": null,
+        "up_rect": [
+          84,
+          13,
+          30,
+          32
+        ]
+      }
+    },
+    {
+      "label": "groups-sizes-settled",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 2,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            48
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            49
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            50
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            51
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            52
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 2,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            53
+          ],
+          "size": "\u2026"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            54
+          ],
+          "size": "\u2211 630 B"
+        },
+        {
+          "dispatch_count": 1,
+          "name": [
+            70,
+            111,
+            108,
+            100,
+            101,
+            114,
+            48,
+            55
+          ],
+          "size": "\u2211 630 B"
+        }
+      ],
+      "footer_status": "1 marcado \u00b7 45 elementos",
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        102,
+        101,
+        101,
+        100,
+        98,
+        97,
+        99,
+        107,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        52,
+        97,
+        97,
+        55,
+        97,
+        49,
+        49,
+        51,
+        54,
+        51,
+        100,
+        99,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65,
+        47,
+        78,
+        101,
+        115,
+        116,
+        101,
+        100,
+        47,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        45,
+        119,
+        105,
+        116,
+        104,
+        45,
+        114,
+        101,
+        97,
+        100,
+        97,
+        98,
+        108,
+        101,
+        45,
+        110,
+        97,
+        109,
+        101,
+        47,
+        115,
+        101,
+        99,
+        111,
+        110,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        116,
+        104,
+        105,
+        114,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        112,
+        97,
+        114,
+        101,
+        110,
+        116,
+        47,
+        108,
+        101,
+        97,
+        102
+      ],
+      "scroll": 0,
+      "show_thumbnails": true,
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": null
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": null
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra",
+            "rect": [
+              0,
+              353,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              393,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "size_busy": true,
+      "size_dispatch_total": 10,
+      "space": {
+        "state": "closed"
+      },
+      "thumbnails": {
+        "authorized": false,
+        "busy": false,
+        "cache_warning": null,
+        "cached": 0,
+        "demand": 0,
+        "errors": 0,
+        "notice": null,
+        "painted": 0,
+        "ready": [],
+        "rgb_capacity": 0,
+        "scratch_capacity": 0,
+        "worker": {
+          "cache_errors": 0,
+          "decodes": 0,
+          "disk_hits": 0,
+          "missing": 0,
+          "probes": 0,
+          "requests": 0
+        }
+      },
+      "title": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent/leaf \u00b7 Calculando tama\u00f1os\u2026",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Buscar",
+            "on": false,
+            "rect": [
+              292,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+F"
+          },
+          {
+            "index": 1,
+            "label": "Editar ruta",
+            "on": false,
+            "rect": [
+              332,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+L"
+          },
+          {
+            "index": 2,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              372,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+1"
+          },
+          {
+            "index": 3,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              412,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+2"
+          },
+          {
+            "index": 4,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              452,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+5"
+          },
+          {
+            "index": 5,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              492,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+4"
+          },
+          {
+            "index": 6,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              532,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+3"
+          },
+          {
+            "index": 7,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              572,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+Alt+I"
+          },
+          {
+            "index": 8,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              612,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "F10"
+          },
+          {
+            "index": 9,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              652,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+,"
+          }
+        ],
+        "tooltip": null,
+        "up_rect": [
+          84,
+          13,
+          30,
+          32
+        ]
+      }
+    },
+    {
+      "label": "up-parent",
+      "app_id": "files",
+      "auto_sizes": true,
+      "cache_error": null,
+      "cache_hits": 0,
+      "config_pending": false,
+      "error": "",
+      "folders": [
+        {
+          "dispatch_count": null,
+          "name": [
+            108,
+            101,
+            97,
+            102
+          ],
+          "size": null
+        }
+      ],
+      "footer_status": "Cambios pendientes \u00b7 se aplicar\u00e1n al terminar",
+      "loaded": true,
+      "path": [
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        110,
+        111,
+        100,
+        101,
+        47,
+        46,
+        99,
+        97,
+        99,
+        104,
+        101,
+        47,
+        102,
+        105,
+        108,
+        101,
+        115,
+        45,
+        116,
+        101,
+        115,
+        116,
+        47,
+        102,
+        101,
+        101,
+        100,
+        98,
+        97,
+        99,
+        107,
+        45,
+        117,
+        105,
+        45,
+        110,
+        97,
+        116,
+        105,
+        118,
+        101,
+        45,
+        52,
+        97,
+        97,
+        55,
+        97,
+        49,
+        49,
+        51,
+        54,
+        51,
+        100,
+        99,
+        47,
+        104,
+        111,
+        109,
+        101,
+        47,
+        65,
+        47,
+        78,
+        101,
+        115,
+        116,
+        101,
+        100,
+        47,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        45,
+        119,
+        105,
+        116,
+        104,
+        45,
+        114,
+        101,
+        97,
+        100,
+        97,
+        98,
+        108,
+        101,
+        45,
+        110,
+        97,
+        109,
+        101,
+        47,
+        115,
+        101,
+        99,
+        111,
+        110,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        116,
+        104,
+        105,
+        114,
+        100,
+        45,
+        108,
+        111,
+        110,
+        103,
+        45,
+        97,
+        110,
+        99,
+        101,
+        115,
+        116,
+        111,
+        114,
+        47,
+        112,
+        97,
+        114,
+        101,
+        110,
+        116
+      ],
+      "scroll": 0,
+      "show_thumbnails": true,
+      "sidebar": {
+        "expanded": false,
+        "pinned": false,
+        "rows": [
+          {
+            "footer": false,
+            "header": false,
+            "key": "fav",
+            "label": "Favoritos",
+            "rect": [
+              0,
+              97,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "recent",
+            "label": "Recientes",
+            "rect": [
+              0,
+              137,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": true,
+            "key": "h:places",
+            "label": "Lugares",
+            "rect": [
+              0,
+              177,
+              52,
+              28
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d6500496e6963696f",
+            "label": "Inicio",
+            "rect": [
+              0,
+              205,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f446f776e6c6f61647300446573636172676173",
+            "label": "Descargas",
+            "rect": [
+              0,
+              245,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f446f63756d656e747300446f63756d656e746f73",
+            "label": "Documentos",
+            "rect": [
+              0,
+              285,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f506963747572657300496dc3a167656e6573",
+            "label": "Im\u00e1genes",
+            "rect": [
+              0,
+              325,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f4d75736963004dc3ba73696361",
+            "label": "M\u00fasica",
+            "rect": null
+          },
+          {
+            "footer": false,
+            "header": false,
+            "key": "place:2f686f6d652f6e6f64652f2e63616368652f66696c65732d746573742f666565646261636b2d75692d6e61746976652d3461613761313133363364632f686f6d652f566964656f730056c3ad64656f73",
+            "label": "V\u00eddeos",
+            "rect": null
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "pin",
+            "label": "Fijar barra",
+            "rect": [
+              0,
+              353,
+              52,
+              40
+            ]
+          },
+          {
+            "footer": true,
+            "header": false,
+            "key": "trash",
+            "label": "Papelera",
+            "rect": [
+              0,
+              393,
+              52,
+              40
+            ]
+          }
+        ],
+        "width": 52
+      },
+      "size_busy": false,
+      "size_dispatch_total": 10,
+      "space": {
+        "state": "closed"
+      },
+      "thumbnails": {
+        "authorized": false,
+        "busy": false,
+        "cache_warning": null,
+        "cached": 0,
+        "demand": 0,
+        "errors": 0,
+        "notice": null,
+        "painted": 0,
+        "ready": [],
+        "rgb_capacity": 0,
+        "scratch_capacity": 0,
+        "worker": {
+          "cache_errors": 0,
+          "decodes": 0,
+          "disk_hits": 0,
+          "missing": 0,
+          "probes": 0,
+          "requests": 0
+        }
+      },
+      "title": "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/home/A/Nested/ancestor-with-readable-name/second-long-ancestor/third-long-ancestor/parent",
+      "toolbar": {
+        "animating": false,
+        "enabled": true,
+        "hot": null,
+        "items": [
+          {
+            "index": 0,
+            "label": "Buscar",
+            "on": false,
+            "rect": [
+              292,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+F"
+          },
+          {
+            "index": 1,
+            "label": "Editar ruta",
+            "on": false,
+            "rect": [
+              332,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+L"
+          },
+          {
+            "index": 2,
+            "label": "Grupos",
+            "on": true,
+            "rect": [
+              372,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+1"
+          },
+          {
+            "index": 3,
+            "label": "Lista",
+            "on": false,
+            "rect": [
+              412,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+2"
+          },
+          {
+            "index": 4,
+            "label": "Grilla",
+            "on": false,
+            "rect": [
+              452,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+5"
+          },
+          {
+            "index": 5,
+            "label": "Espacio",
+            "on": false,
+            "rect": [
+              492,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+4"
+          },
+          {
+            "index": 6,
+            "label": "Columnas",
+            "on": false,
+            "rect": [
+              532,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+3"
+          },
+          {
+            "index": 7,
+            "label": "Inspector",
+            "on": true,
+            "rect": [
+              572,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+Alt+I"
+          },
+          {
+            "index": 8,
+            "label": "Acciones",
+            "on": false,
+            "rect": [
+              612,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "F10"
+          },
+          {
+            "index": 9,
+            "label": "Preferencias",
+            "on": false,
+            "rect": [
+              652,
+              10,
+              36,
+              36
+            ],
+            "shortcut": "Ctrl+,"
+          }
+        ],
+        "tooltip": null,
+        "up_rect": [
+          84,
+          13,
+          30,
+          32
+        ]
+      }
+    }
+  ],
+  "binary_path": "/home/node/Work/files/target/release/files",
+  "requested_size": "700x500",
+  "animations": "on",
+  "captures": [
+    "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/groups-initial.png",
+    "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/breadcrumb-overflow-menu.png",
+    "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/list-initial.png",
+    "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/list-sizes-settled.png",
+    "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/groups-sizes-settled.png",
+    "/home/node/.cache/files-test/feedback-ui-native-4aa7a11363dc/up-parent.png"
+  ],
+  "animation_comparison": "NOT_COMPARED",
+  "scope": "native input and private mutation fixtures; executable paths and compositor-owned paths are outside fixture file checks; this profile alone does not prove cross-profile motion",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "binary_sha256": "fc133212ba6e005cb32374b2db5531bac5739bc385afe33c6fcc525301520de8",
+  "helper_sha256": "9185191d3205b14a4343c785eaf4923b8da5cf4d498ce133332422a0a0ef9188",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "nested": {
+    "socket": "wayland-1",
+    "pid": 2929617,
+    "runtime": "/tmp/f-10dab1baac98",
+    "backend": "private-sway-headless"
+  },
+  "motion_and_hyprland": "NOT_RUN",
+  "helper_gate": "private proxy delays only size measurements until an owned release file",
+  "helper_proxy_sha256": "2c965979cdcdfa99bab764426737f00eae24b30583946da581644d49144fb945",
+  "helper_proxy_source_sha256": "48cc624632e1e81c3820940141a0d8627fbb396235f49699aaec607335d88622",
+  "window_size": [
+    704,
+    474
+  ],
+  "observed_initial_busy": true,
+  "initial_folder_labels": [
+    "\u2026",
+    "\u2026",
+    "\u2026",
+    "\u2026",
+    "\u2026",
+    "\u2026",
+    "\u2026",
+    "\u2026"
+  ],
+  "settled_folder_labels": [
+    "\u2211 630 B",
+    "\u2211 630 B",
+    "\u2211 630 B",
+    "\u2211 630 B",
+    "\u2211 630 B",
+    "Cancelado",
+    "\u2211 630 B",
+    "\u2211 630 B",
+    "\u2211 630 B"
+  ],
+  "functional_scope": "breadcrumb overflow, group and list folder size presentation",
+  "profile_gate": "PASS",
+  "visual_review": "REQUIRED",
+  "nested_stopped": true
+}

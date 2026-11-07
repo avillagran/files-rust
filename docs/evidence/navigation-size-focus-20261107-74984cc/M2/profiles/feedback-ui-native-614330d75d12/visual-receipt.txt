@@ -1,0 +1,1 @@
+Visually inspected group busy, list and group settled, and breadcrumb menu captures. The pending size marker fits; current breadcrumb remains visible; menu is legible. Settled sizes show ∑ and no cache label. Private helper proxy retained size requests until release; uninstrumented timing not tested.

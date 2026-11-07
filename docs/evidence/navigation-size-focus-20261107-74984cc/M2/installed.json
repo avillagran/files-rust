@@ -1,0 +1,47 @@
+{
+  "source_checkpoint": "74984cc0ec02d5bf2d770ed59aa09491e355e973",
+  "functional_gate": "PASS",
+  "validation_report": "/home/avillagran/.cache/files-m2-updates/sheets-74984cc/install-gate.json",
+  "backup": "/home/avillagran/.cache/files-m2-updates/sheets-74984cc/installation-1794079787763774642/backup",
+  "files": [
+    {
+      "name": "files",
+      "old_sha256": "563b83865d29e4c63fe97291806569ee87923669a5210e3ccab2a248d96f8ea7",
+      "backup_sha256": "563b83865d29e4c63fe97291806569ee87923669a5210e3ccab2a248d96f8ea7",
+      "release_sha256": "0d4ea36c20681bd4062705a408e0ceea4760dfaa53e050a863198eb92437a89b",
+      "installed_sha256": "0d4ea36c20681bd4062705a408e0ceea4760dfaa53e050a863198eb92437a89b"
+    },
+    {
+      "name": "files-helper",
+      "old_sha256": "ffbe7a5be3cca5de90210029238403ef2890b9399326d5e6c59f7062709803d7",
+      "backup_sha256": "ffbe7a5be3cca5de90210029238403ef2890b9399326d5e6c59f7062709803d7",
+      "release_sha256": "ffbe7a5be3cca5de90210029238403ef2890b9399326d5e6c59f7062709803d7",
+      "installed_sha256": "ffbe7a5be3cca5de90210029238403ef2890b9399326d5e6c59f7062709803d7"
+    },
+    {
+      "name": "files-html-helper",
+      "old_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "backup_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "release_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+      "installed_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4"
+    },
+    {
+      "name": "files-html-helper.LICENSES",
+      "old_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "backup_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "release_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b",
+      "installed_sha256": "a9eeea963c462b675d27cee32880e590faf81b52afef8fc0cd669a6bdfd2e62b"
+    },
+    {
+      "name": "files-html-helper.build.json",
+      "old_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "backup_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "release_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838",
+      "installed_sha256": "bcadb92537d91eaf916df1d5678603a433664040686932b7a0b9f685b3477838"
+    }
+  ],
+  "scope": "M2 private functional acceptance; all five backed up and individually atomically replaced; existing processes untouched",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "full_regression_gate": "NOT_RUN"
+}

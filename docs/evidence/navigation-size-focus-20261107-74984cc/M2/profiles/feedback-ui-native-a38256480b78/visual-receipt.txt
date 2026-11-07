@@ -1,0 +1,1 @@
+PASS installed M2: reviewed Folder20 selected and visible after return, group busy markers, settled list and pointer-opened breadcrumb menu. Size helper used private hold proxy; uninstrumented timing not claimed.

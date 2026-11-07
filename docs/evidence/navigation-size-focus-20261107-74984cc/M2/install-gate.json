@@ -1,0 +1,12 @@
+{
+  "binary_sha256": "0d4ea36c20681bd4062705a408e0ceea4760dfaa53e050a863198eb92437a89b",
+  "helper_sha256": "ffbe7a5be3cca5de90210029238403ef2890b9399326d5e6c59f7062709803d7",
+  "html_helper_sha256": "85ea1b8009efb3f221fcb1b639701ec3a50aeb72a8b1ddf8783091d08da403a4",
+  "functional_gate": "PASS",
+  "binary_source_checkpoint": "74984cc0ec02d5bf2d770ed59aa09491e355e973",
+  "profiles": [
+    "/home/avillagran/.cache/files-test/feedback-ui-native-4061c111fa59/report.json",
+    "/home/avillagran/.cache/files-test/feedback-ui-native-605e49419f4d/report.json"
+  ],
+  "scope": "Private native compact cards, ancestor menu, and Enter/Backspace focus/scroll in normal and narrow windows; helper gate only holds size progress"
+}

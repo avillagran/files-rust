@@ -25,8 +25,9 @@ button changes; M2 gains the current PR #11 title format without unrelated
 feature additions. Source manifests retain the exact local snapshots.
 
 Private native visual acceptance passes on both architectures. M2 is installed
-and its post-install visual check passes. NODE installation is waiting for system
-Polkit authentication; its validated artifacts are ready. See the
+and its post-install visual check passes. The NODE application has since been updated with the navigation/size release;
+its separate titlebar plugin replacement still waits for system Polkit
+authentication. See the
 [evidence bundle](evidence/native-titlebar-20261107-3e1f64a/README.md) for precise
 checks, retained setup failures, receipts and source provenance.
 Existing Files processes keep their previous executable and title behavior until

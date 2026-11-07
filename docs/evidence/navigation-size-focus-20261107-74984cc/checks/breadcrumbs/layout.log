@@ -1,0 +1,15 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.58s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 7 tests
+test breadcrumbs::tests::compact_viewports_keep_current_separate_from_hidden_ancestors ... ok
+test breadcrumbs::tests::root_and_non_home_prefixes_are_not_mistaken_for_home ... ok
+test breadcrumbs::tests::measurement_drives_widths_and_long_current_is_clipped_to_budget ... ok
+test breadcrumbs::tests::home_abbreviation_keeps_every_parent_reachable ... ok
+test breadcrumbs::tests::invalid_bytes_and_literal_escapes_have_distinct_labels_and_exact_targets ... ok
+test breadcrumbs::tests::invalid_startup_paths_are_rejected_before_prefix_construction ... ok
+test breadcrumbs::tests::suffix_and_current_survive_compression_without_dropping_targets ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 917 filtered out; finished in 0.00s
+
