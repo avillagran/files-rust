@@ -42,24 +42,50 @@ pub fn open(m: &mut Model) {
 pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
     let all = crate::breadcrumbs::build(&m.path, &files_core::theme::home());
     let layout = crate::breadcrumbs::layout(&all, area.w, |s| p.text_width(s, 12, false));
+    let compact_menu = layout.overflow_width == 0 && !layout.hidden.is_empty();
+    let y = area.y + (area.h - 24) / 2;
     m.breadcrumbs.area = area;
     m.breadcrumbs.hidden = layout.hidden;
+    m.breadcrumbs.visible.clear();
+    m.breadcrumbs.overflow = None;
     let mut x = area.x;
     if layout.overflow_width > 0 {
-        let rect = Rect::new(x, 17, layout.overflow_width, 24);
+        let rect = Rect::new(x, y, layout.overflow_width, 24);
         p.rounded_rect(rect, 7 * m.radius, m.palette.lighter_background);
-        p.text(rect, "…", 12, m.palette.foreground, false, true);
+        let text_width = p.text_width("…", 12, false).ceil() as i32;
+        p.text(
+            Rect::new(
+                rect.x + (rect.w - text_width).max(0) / 2,
+                y,
+                text_width.min(rect.w),
+                24,
+            ),
+            "…",
+            12,
+            m.palette.foreground,
+            false,
+            false,
+        );
         m.hits.push(Hit {
             generation: m.generation,
             rect,
             action: Action::Breadcrumbs,
         });
         m.breadcrumbs.overflow = Some(rect);
-        x += rect.w + layout.gap;
+        x += rect.w;
+        paint_separator(p, m, x, y, layout.gap);
+        x += layout.gap;
     }
-    for (crumb, width) in layout.visible {
-        let rect = Rect::new(x, 17, width, 24);
+    let count = layout.visible.len();
+    for (index, (crumb, width)) in layout.visible.into_iter().enumerate() {
+        let rect = Rect::new(x, y, width, 24);
         let current = crumb.path == m.path;
+        if width <= 0 {
+            m.breadcrumbs.visible.push((crumb, rect));
+            continue;
+        }
+        let dropdown = current && compact_menu;
+        let arrow_width = if dropdown && width >= 44 { 14 } else { 0 };
         p.rounded_rect(
             rect,
             7 * m.radius,
@@ -69,30 +95,70 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
                 m.palette.lighter_background
             },
         );
+        let color = if current {
+            m.palette.darker_background
+        } else {
+            m.palette.foreground
+        };
         p.text(
-            Rect::new(x + 8, 17, (width - 16).max(0), 24),
+            Rect::new(x + 8, y, (width - 16 - arrow_width).max(0), 24),
             &crumb.label,
             12,
-            if current {
-                m.palette.darker_background
-            } else {
-                m.palette.foreground
-            },
+            color,
             false,
             false,
         );
+        if arrow_width > 0 {
+            p.text(
+                Rect::new(x + width - 20, y, 14, 24),
+                "▾",
+                12,
+                color,
+                false,
+                false,
+            );
+        }
+        // In the smallest address field the named current folder also carries
+        // the ancestor menu; it is never replaced by an unexplained ellipsis.
+        let action = if dropdown {
+            m.breadcrumbs.overflow = Some(rect);
+            Action::Breadcrumbs
+        } else {
+            Action::Navigate(crumb.path.clone())
+        };
         m.hits.push(Hit {
             generation: m.generation,
             rect,
-            action: Action::Navigate(crumb.path.clone()),
+            action,
         });
         m.breadcrumbs.visible.push((crumb, rect));
-        x += width + layout.gap;
+        x += width;
+        if index + 1 < count {
+            paint_separator(p, m, x, y, layout.gap);
+            x += layout.gap;
+        }
     }
     if x + 90 < area.x + area.w {
         p.text(
-            Rect::new(x + 4, 11, (area.x + area.w - x - 8).max(0), 36),
+            Rect::new(
+                x + 4,
+                area.y - 1,
+                (area.x + area.w - x - 8).max(0),
+                area.h + 2,
+            ),
             "escribe para filtrar",
+            12,
+            m.palette.dark_foreground,
+            false,
+            false,
+        );
+    }
+}
+fn paint_separator(p: &mut dyn Painter, m: &Model, x: i32, y: i32, width: i32) {
+    if width > 4 {
+        p.text(
+            Rect::new(x + 3, y, width - 6, 24),
+            "›",
             12,
             m.palette.dark_foreground,
             false,

@@ -29,7 +29,7 @@ pub fn build(path: &Path, home: &Path) -> Vec<Crumb> {
         .map(|p| {
             let is_home = p == home;
             let label = if is_home {
-                "~".into()
+                "Inicio".into()
             } else {
                 let component = p.components().next_back().map(|c| c.as_os_str());
                 files_core::name_label::label(component.unwrap_or(p.as_os_str())).into_owned()
@@ -47,9 +47,10 @@ pub fn build(path: &Path, home: &Path) -> Vec<Crumb> {
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct Layout {
-    /// Exact prefix hidden by compression. At tiny widths it includes current.
+    /// Exact ancestor prefix hidden by compression; never includes current.
     pub hidden: Vec<Crumb>,
     /// Visible suffix, paired with each chip's width (including text padding).
+    /// A compact current chip can be narrower than the normal minimum.
     pub visible: Vec<(Crumb, i32)>,
     /// Zero if there is no overflow or there is no available pixel.
     pub overflow_width: i32,
@@ -68,46 +69,45 @@ fn width(label: &str, measure: &mut impl FnMut(&str) -> f32) -> i32 {
     (text + 20).clamp(MIN_CHIP_WIDTH, MAX_CHIP_WIDTH)
 }
 
-fn overflow_only(crumbs: &[Crumb], available: i32) -> Layout {
-    let overflow_width = available.min(OVERFLOW_WIDTH);
+fn current_only(crumbs: &[Crumb], available: i32, current_width: i32) -> Layout {
+    let last = crumbs.len() - 1;
+    let width = current_width.min(available);
     Layout {
-        hidden: crumbs.to_vec(),
-        visible: Vec::new(),
-        overflow_width,
+        hidden: crumbs[..last].to_vec(),
+        visible: vec![(crumbs[last].clone(), width)],
+        overflow_width: 0,
         gap: 0,
-        used_width: overflow_width,
+        used_width: width,
     }
 }
 
-/// Choose the longest fitting suffix, keeping the current chip visible whenever
-/// there is room for a meaningful chip. Ancestors above home are always in the
-/// overflow, so displaying `~` never makes `/` or the home parent unreachable.
+/// Show the full lexical route when it fits, then the longest fitting suffix.
+/// Only ancestors enter overflow; the current directory always retains its own
+/// display slot. If a separate overflow button cannot fit, painting attaches
+/// the ancestor menu to that current-directory control instead.
 ///
 /// `measure` must use the same font/size as painting. All returned widths and
-/// `used_width` are nonnegative and bounded by `available.max(0)`. If the
-/// overflow plus a minimum current chip cannot fit, one overflow button holds
-/// every target, including current. Even a one-pixel viewport has no invalid
-/// hit rectangle; a zero-pixel viewport naturally has no clickable control.
+/// `used_width` are nonnegative and bounded by `available.max(0)`. At zero width
+/// the current slot has zero width and cannot produce a hit rectangle.
 pub fn layout(crumbs: &[Crumb], available: i32, mut measure: impl FnMut(&str) -> f32) -> Layout {
     if crumbs.is_empty() {
         return Layout::default();
     }
     let available = available.max(0);
-    if available < MIN_CHIP_WIDTH {
-        return overflow_only(crumbs, available);
-    }
     let widths: Vec<_> = crumbs
         .iter()
         .map(|c| width(&c.label, &mut measure))
         .collect();
-    let first = crumbs.iter().position(|c| c.home).unwrap_or(0);
     let last = crumbs.len() - 1;
-    for start in first..=last {
+    if available < MIN_CHIP_WIDTH {
+        return current_only(crumbs, available, widths[last]);
+    }
+    for start in 0..=last {
         let overflow_width = if start == 0 { 0 } else { OVERFLOW_WIDTH };
         let leading = if start == 0 { 0 } else { OVERFLOW_WIDTH + GAP };
         let budget = available.saturating_sub(leading);
         if budget < MIN_CHIP_WIDTH {
-            return overflow_only(crumbs, available);
+            return current_only(crumbs, available, widths[last]);
         }
         let count = crumbs.len() - start;
         let natural = widths[start..]
@@ -131,7 +131,7 @@ pub fn layout(crumbs: &[Crumb], available: i32, mut measure: impl FnMut(&str) ->
             used_width: leading + natural.min(budget),
         };
     }
-    unreachable!("the current chip or overflow-only case always fits")
+    unreachable!("the current chip or compact current control always fits")
 }
 
 #[cfg(test)]
@@ -158,7 +158,10 @@ mod tests {
             x += result.gap;
         }
         for (i, (_, width)) in result.visible.iter().enumerate() {
-            assert!(*width >= MIN_CHIP_WIDTH && *width <= MAX_CHIP_WIDTH);
+            assert!(*width >= 0 && *width <= MAX_CHIP_WIDTH);
+            if result.visible.len() > 1 || result.overflow_width > 0 {
+                assert!(*width >= MIN_CHIP_WIDTH);
+            }
             if i > 0 {
                 x += result.gap;
             }
@@ -204,18 +207,20 @@ mod tests {
         );
         assert_eq!(
             crumbs.iter().map(|c| c.label.as_str()).collect::<Vec<_>>(),
-            ["/", "home", "~", "Projects", "Files"]
+            ["/", "home", "Inicio", "Projects", "Files"]
         );
         let result = layout(&crumbs, 800, measure);
-        assert_eq!(
-            result
-                .hidden
-                .iter()
-                .map(|c| c.path.as_path())
-                .collect::<Vec<_>>(),
-            [Path::new("/"), Path::new("/home")]
+        assert!(
+            result.hidden.is_empty(),
+            "a fitting route needs no overflow"
         );
-        assert_eq!(result.visible[0].0.label, "~");
+        assert_eq!(result.visible[0].0.label, "/");
+        assert!(
+            result
+                .visible
+                .iter()
+                .any(|(c, _)| c.home && c.label == "Inicio")
+        );
         assert_eq!(
             targets(&result),
             crumbs.iter().map(|c| c.path.as_path()).collect::<Vec<_>>()
@@ -250,31 +255,38 @@ mod tests {
                         .collect::<Vec<_>>(),
                     crumbs[first..].iter().map(|c| &c.path).collect::<Vec<_>>()
                 );
-            } else {
-                assert_eq!(
-                    result.hidden.last().unwrap().path,
-                    Path::new("/one/two/three/four/five")
-                );
             }
+            assert!(
+                result
+                    .hidden
+                    .iter()
+                    .all(|c| c.path != Path::new("/one/two/three/four/five"))
+            );
         }
     }
 
     #[test]
-    fn tiny_viewports_offer_current_in_one_bounded_overflow_button() {
+    fn compact_viewports_keep_current_separate_from_hidden_ancestors() {
         let crumbs = build(
             Path::new("/home/fixture/long-current-name"),
             Path::new("/home/fixture"),
         );
         for available in [-20, 0, 1, 10, 23, 24, 42, 65] {
             let result = layout(&crumbs, available, measure);
-            assert!(result.visible.is_empty());
-            assert_eq!(result.hidden, crumbs);
-            assert_eq!(result.overflow_width, available.clamp(0, OVERFLOW_WIDTH));
+            assert_eq!(result.visible.len(), 1);
+            assert_eq!(
+                result.visible[0].0.path,
+                Path::new("/home/fixture/long-current-name")
+            );
+            assert_eq!(result.visible[0].1, available.max(0));
+            assert_eq!(result.hidden, crumbs[..crumbs.len() - 1]);
+            assert_eq!(result.overflow_width, 0);
             assert_bounds(&result, available);
         }
         let result = layout(&crumbs, 66, measure);
         assert_eq!(result.visible.len(), 1);
         assert_eq!(result.visible[0].1, MIN_CHIP_WIDTH);
+        assert_eq!(result.overflow_width, OVERFLOW_WIDTH);
         assert_bounds(&result, 66);
     }
 
