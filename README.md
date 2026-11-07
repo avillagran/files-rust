@@ -6,7 +6,7 @@ rendering, Groups/List/Grid/Columns views and a Space treemap, with Omarchy's Ne
 ```sh
 cargo build --release
 ./target/release/files ~/Downloads
-cargo test --workspace
+cargo check --workspace --all-targets
 make memcheck
 ```
 
@@ -77,6 +77,18 @@ temporary files and unit-test fixtures unless the user sets an explicit TMPDIR; 
 - Alt+Enter or Actions → Properties shows real metadata and lets you prepare
   r/w/x permissions for an object you own, with FD-based confirmation and rejection of
   external changes. [Linux scope and limits](docs/FILE-PROPERTIES.md).
+- The header keeps view and action icons compact on the right. Hover reveals a
+  label with the shared animation clock; Preferences stays at the far right.
+  Actions and Preferences use grouped submenus. The native window title follows
+  the active path and brief activity status; desktop identity is in
+  `packaging/files.desktop` and `assets/files.svg`.
+- Visible local folders are measured automatically by default, with one bounded
+  off-thread helper. A disposable persistent cache keeps up to 256 observations
+  (1 MiB); cached values are marked as provisional and refreshed. Preferences
+  can disable automatic work. No links are followed for recursive measurements.
+- The sidebar has a persisted pin control. Row menus can move places, bookmarks
+  and devices up/down. Drag reordering awaits the toolkit's click/drag lifecycle
+  fix; see [the concrete request](docs/TOOLKIT-SIDEBAR-REQUEST.md).
 - Preferences (, Ctrl+,): Normal window by default, Fullscreen,
   Omarchy/square/rounded borders and theme. Actions (, F10): file
   operations. Preferences are written atomically and keep unknown fields.

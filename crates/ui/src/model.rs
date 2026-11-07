@@ -3150,6 +3150,7 @@ impl Model {
                     if let Some(job) = &self.du_job {
                         job.cancel();
                     }
+                    self.sizes.yield_automatic();
                     self.sizes.cancel_all();
                     self.du_requested = None;
                     self.du_target = None;
