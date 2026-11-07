@@ -1,0 +1,10 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 3 tests
+test thumbnail_job::tests::gif_uses_existing_video_thumbnail_and_source_guard_path ... ok
+test thumbnail_job::tests::close_distinguishes_readonly_from_helper_phase_without_join ... ok
+test thumbnail_job::tests::single_request_stays_busy_until_ack_and_reuses_same_worker_for_probe ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 920 filtered out; finished in 0.00s
+

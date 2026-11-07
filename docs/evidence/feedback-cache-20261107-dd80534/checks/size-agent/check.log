@@ -1,0 +1,58 @@
+    Checking files-core v0.0.4 (/home/node/Work/files/crates/core)
+    Checking files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+error[E0433]: cannot find `thumbnail_disk_cache` in the crate root
+  --> crates/ui/src/thumbnail_job.rs:98:48
+   |
+98 | ...                   let _ = crate::thumbnail_disk_cache::invalidate(
+   |                                      ^^^^^^^^^^^^^^^^^^^^ could not find `thumbnail_disk_cache` in the crate root
+
+error[E0433]: cannot find `thumbnail_disk_cache` in the crate root
+   --> crates/ui/src/thumbnail_job.rs:111:38
+    |
+111 |                         match crate::thumbnail_disk_cache::load(&request.path, revision) {
+    |                                      ^^^^^^^^^^^^^^^^^^^^ could not find `thumbnail_disk_cache` in the crate root
+
+error[E0433]: cannot find `thumbnail_disk_cache` in the crate root
+   --> crates/ui/src/thumbnail_job.rs:168:60
+    |
+168 | ...                   if let Err(error) = crate::thumbnail_disk_cache::save(
+    |                                                  ^^^^^^^^^^^^^^^^^^^^ could not find `thumbnail_disk_cache` in the crate root
+
+error[E0433]: cannot find `thumbnail_disk_cache` in the crate root
+   --> crates/ui/src/thumbnail_job.rs:333:26
+    |
+333 |         let dir = crate::thumbnail_disk_cache::retained_test_directory("thumbnail-probe");
+    |                          ^^^^^^^^^^^^^^^^^^^^ could not find `thumbnail_disk_cache` in the crate root
+
+error[E0061]: this enum variant takes 10 arguments but 9 arguments were supplied
+    --> crates/ui/src/model.rs:2419:27
+     |
+2419 |                   .try_send(crate::aux_io::Request::Preferences(
+     |  ___________________________^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-
+2420 | |                     self.config_revision,
+2421 | |                     self.corners,
+2422 | |                     self.window_mode,
+...    |
+2428 | |                     self.rail_order.clone(),
+2429 | |                 ))
+     | |_________________- argument #10 of type `bool` is missing
+     |
+note: tuple variant defined here
+    --> crates/ui/src/aux_io.rs:79:5
+     |
+  79 |     Preferences(
+     |     ^^^^^^^^^^^
+help: provide the argument
+     |
+2419 |                 .try_send(crate::aux_io::Request::Preferences(
+ ...
+2428 |                     self.rail_order.clone(),
+2429 ~                     /* bool */,
+2430 ~                 ))
+     |
+
+Some errors have detailed explanations: E0061, E0433.
+For more information about an error, try `rustc --explain E0061`.
+error: could not compile `files-ui` (lib) due to 4 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `files-ui` (lib test) due to 5 previous errors

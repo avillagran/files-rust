@@ -1,0 +1,10 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 3 tests
+test thumbnail_disk_cache::tests::codec_requires_full_path_revision_recipe_checksum_and_bounded_rgb ... ok
+test thumbnail_disk_cache::tests::cache_refuses_symlink_slots_and_preserves_incompatible_records ... ok
+test thumbnail_disk_cache::tests::persisted_slot_reloads_after_reopen_and_rejects_replaced_or_missing_source ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 918 filtered out; finished in 0.00s
+

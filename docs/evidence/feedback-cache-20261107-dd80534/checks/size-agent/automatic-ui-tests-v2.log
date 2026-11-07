@@ -1,0 +1,17 @@
+   Compiling files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.02s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 9 tests
+test automatic_sizes::tests::explicit_stop_does_not_gain_a_view_resume_intent ... ok
+test automatic_sizes::tests::fresh_persisted_values_are_provisional_without_starting_a_recursive_walk ... ok
+test automatic_sizes::tests::explicit_stop_revokes_an_existing_temporary_view_resume_intent ... ok
+test automatic_sizes::tests::directory_navigation_reuses_memory_only_after_matching_identity_probe ... ok
+test automatic_sizes::tests::real_change_revokes_memory_and_rejects_an_older_pending_disk_hit ... ok
+test automatic_sizes::tests::replaced_identity_or_expired_observation_requires_a_new_measurement ... ok
+test automatic_sizes::tests::scrolling_away_and_back_keeps_a_completed_measurement_without_dispatch ... ok
+test automatic_sizes::tests::view_yield_resumes_only_automatic_work_after_the_old_ack ... ok
+test automatic_sizes::tests::observation_and_dispatch_histories_remain_bounded_and_keep_recent_entries ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 912 filtered out; finished in 0.01s
+

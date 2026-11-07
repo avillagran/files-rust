@@ -1,0 +1,25 @@
+    Checking files-core v0.0.4 (/home/node/Work/files/crates/core)
+    Checking files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+    Checking files-helper v0.0.4 (/home/node/Work/files/crates/helper)
+error[E0425]: cannot find value `m` in this scope
+   --> crates/ui/src/automatic_sizes.rs:438:20
+    |
+438 |         for row in m
+    |                    ^ not found in this scope
+
+error[E0425]: cannot find value `m` in this scope
+   --> crates/ui/src/automatic_sizes.rs:462:32
+    |
+462 |         let obsolete: Vec<_> = m
+    |                                ^ not found in this scope
+
+error[E0425]: cannot find value `m` in this scope
+   --> crates/ui/src/automatic_sizes.rs:494:26
+    |
+494 |             let victim = m
+    |                          ^ not found in this scope
+
+For more information about this error, try `rustc --explain E0425`.
+error: could not compile `files-ui` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `files-ui` (lib test) due to 3 previous errors

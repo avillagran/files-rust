@@ -1,0 +1,62 @@
+    Checking files-core v0.0.4 (/home/node/Work/files/crates/core)
+    Checking files-ui v0.0.4 (/home/node/Work/files/crates/ui)
+error: this `if` statement can be collapsed
+   --> crates/ui/src/automatic_sizes.rs:303:13
+    |
+303 | /             if let Some(value) = self.recalled(&root.join(name), stamp, now) {
+304 | |                 if let Some(id) = queue.restore_automatic_observation(&root, name, value) {
+305 | |                     self.automatic.insert(id);
+306 | |                     self.proof_ids.insert(name.clone(), id);
+...   |
+310 | |             }
+    | |_____________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#collapsible_if
+    = note: `-D clippy::collapsible-if` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+    |
+303 ~             if let Some(value) = self.recalled(&root.join(name), stamp, now)
+304 ~                 && let Some(id) = queue.restore_automatic_observation(&root, name, value) {
+305 |                     self.automatic.insert(id);
+...
+308 |                     dirty = true;
+309 ~                 }
+    |
+
+error: this `if` statement can be collapsed
+   --> crates/ui/src/automatic_sizes.rs:645:9
+    |
+645 | /         if cancel {
+646 | |             if let Some(job) = &m.du_job {
+647 | |                 job.cancel();
+648 | |             }
+649 | |         }
+    | |_________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#collapsible_if
+help: collapse nested if block
+    |
+645 ~         if cancel
+646 ~             && let Some(job) = &m.du_job {
+647 |                 job.cancel();
+648 ~             }
+    |
+
+error: could not compile `files-ui` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: items after a test module
+   --> crates/ui/src/toolbar.rs:304:1
+    |
+304 | mod tests {
+    | ^^^^^^^^^
+...
+344 | pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#items_after_test_module
+    = note: `-D clippy::items-after-test-module` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::items_after_test_module)]`
+    = help: move the items to before the test module was defined
+
+error: could not compile `files-ui` (lib test) due to 3 previous errors

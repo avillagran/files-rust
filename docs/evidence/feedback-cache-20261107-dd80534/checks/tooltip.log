@@ -1,0 +1,9 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/lib.rs (target/debug/deps/files_ui-43c458d8746efbce)
+
+running 2 tests
+test toolbar::tests::shortcut_delay_restarts_for_each_control_without_warm_shortcut ... ok
+test toolbar::tests::input_and_exit_cancel_tooltip_until_a_new_hover ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 919 filtered out; finished in 0.00s
+
