@@ -704,6 +704,7 @@ int main(int argc, char **argv) {
         settled = usability('list-sizes-settled', lambda s: not s['size_busy'] and any(v['size'] for v in s['folders']))
         capture('list-sizes-settled')
         report['settled_folder_labels'] = [v['size'] for v in settled['folders']]
+        assert not any('\u2211' in (v['size'] or '') for v in settled['folders']), settled['folders']
         key('-M', 'ctrl', '-k', '1', '-m', 'ctrl')
         usability('groups-sizes-settled', lambda s: any(i['label'] == 'Grupos' and i['on'] for i in s['toolbar']['items']))
         capture('groups-sizes-settled')
@@ -718,6 +719,7 @@ int main(int argc, char **argv) {
         else: raise AssertionError('could not select Folder20 in list')
         before_child = usability('selected-before-child')
         report['before_child_scroll'] = before_child['scroll']
+        assert before_child['scroll'] > 0, 'Folder20 must be reached with the List view scrolled'
         capture('selected-before-child')
         key('-k', 'Return')
         usability('entered-child', lambda s: s['loaded'] and bytes(s['path']) == os.fsencode(leaf / 'Folder20'))
@@ -737,7 +739,9 @@ int main(int argc, char **argv) {
         report['checks'] = ['deep breadcrumb overflow renders and opens; pointer outcome separately reported',
                             'group and list views rendered with bounded private folder fixtures',
                             'native Enter and Backspace restore Folder20 selection',
-                            'native Alt+Up navigates to the actual parent']
+                            'native Alt+Up navigates to the actual parent',
+                            'measured folder sizes carry no summation mark',
+                            'List view reaches Folder20 scrolled; header pinning needs visual review']
         report['functional_scope'] = 'breadcrumb overflow, group and list folder size presentation'
         report['functional_gate'] = 'PASS'
         report['profile_gate'] = 'PASS'
