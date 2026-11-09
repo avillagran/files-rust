@@ -1,0 +1,78 @@
+{
+  "functional_gate": "FAIL",
+  "label": "control",
+  "binary_sha256": "407699f7514b2f70df315575137883a15f913c01d2f905218b6713eefa6e5f85",
+  "method": "private nested Hyprland on a hidden special workspace; real Wayland DnD from a Files listing to another Files window's Sidebar row with the virtual pointer",
+  "checks": {
+    "drag": {
+      "from": [
+        160,
+        149
+      ],
+      "to": [
+        580,
+        240
+      ],
+      "row": "place:/home/node/.cache/files-test/sidebar-drop-a8rtlsus/home/Documents"
+    },
+    "target_log_tail": [
+      "FILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=None"
+    ],
+    "logs": {
+      "source": [],
+      "target": [
+        "FILES_TOOLKIT_SIDEBAR expanded=false rail=false visible=true rect=(0, 90, 52, 318) active=- path=/home/node/.cache/files-test/sidebar-drop-a8rtlsus/home/target scroll=(0, 126) rows=[Some((0, 96, 52, 34)), Some((0, 130, 52, 34)), Some((0, 164, 52, 34)), Some((0, 198, 52, 34)), Some((0, 232, 52, 34)), Some((0, 266, 52, 34)), Some((0, 300, 52, 34)), Some((0, 334, 52, 24)), Some((0, 358, 52, 34)), None, None, None, Some((0, 368, 52, 34))] keys=fav|place:/home/node/.cache/files-test/sidebar-drop-a8rtlsus/home|place:/home/node/.cache/files-test/sidebar-drop-a8rtlsus/home/Downloads|place:/home/node/.cache/files-test/sidebar-drop-a8rtlsus/home/Documents|place:/home/node/.cache/files-test/sidebar-drop-a8rtlsus/home/Pictures|place:/home/node/.cache/files-test/sidebar-drop-a8rtlsus/home/Music|place:/home/node/.cache/files-test/sidebar-drop-a8rtlsus/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash"
+      ]
+    }
+  },
+  "captures": [
+    "/home/node/Work/files/docs/evidence/sidebar-drop-20261105/control-target-before-1793910941827313545.png",
+    "/home/node/Work/files/docs/evidence/sidebar-drop-20261105/control-source-after-drag-1793910946177617875.png"
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "819792"
+    ]
+  },
+  "nested_extent": [
+    550,
+    367
+  ],
+  "dispatch": [
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+  ],
+  "windows": {
+    "source": [
+      [
+        10,
+        10
+      ],
+      [
+        700,
+        440
+      ]
+    ],
+    "target": [
+      [
+        330,
+        40
+      ],
+      [
+        700,
+        440
+      ]
+    ]
+  },
+  "onto": "body",
+  "error": "AssertionError('no copy review in the target window')",
+  "nested_stopped": true
+}

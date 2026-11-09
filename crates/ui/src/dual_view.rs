@@ -142,6 +142,7 @@ fn list(
             generation,
             pane: Some((id, revision)),
             query: "",
+            columns: None,
         },
     );
     let body = Rect::new(area.x, area.y + 64, area.w, (area.h - 92).max(0));

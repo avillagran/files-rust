@@ -1,0 +1,126 @@
+{
+  "functional_gate": "FAIL",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "method": "Files window framebuffer + toolkit Sidebar expand / focus::click_at fixture; no native input",
+  "captures": [
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-collapsed-1793915218486352087.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-expanded-1793915218974026806.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-downloads-1793915219461568196.png"
+  ],
+  "states": {
+    "start": {
+      "expanded": false,
+      "rail": false,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        52,
+        528
+      ],
+      "active": "-",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/files",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "expanded": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        528
+      ],
+      "active": "-",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/files",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "downloads": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        528
+      ],
+      "active": "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "device": {
+      "expanded": true,
+      "rail": true,
+      "visible": false,
+      "rect": [
+        0,
+        90,
+        170,
+        528
+      ],
+      "active": "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads",
+      "keys": [
+        "fav",
+        "recent",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    }
+  },
+  "error": "RuntimeError('open the mounted stick')",
+  "log": "456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads scroll=(0, 134) rows=[Some((0, 99, 170, 51)), Some((0, 150, 170, 51)), Some((0, 201, 170, 51)), Some((0, 252, 170, 51)), Some((0, 303, 170, 51)), Some((0, 354, 170, 51)), Some((0, 405, 170, 51)), Some((0, 456, 170, 51)), Some((0, 507, 170, 35)), Some((0, 542, 170, 80)), None, Some((0, 558, 170, 51))] keys=fav|recent|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-uz5ug_pb/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\n",
+  "binary_sha256": "dd8f1e92cb7012f8637e2cc5e18845de1cfad3c5403d7efbeca2c9360ce25cc3",
+  "helper_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758"
+}

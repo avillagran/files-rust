@@ -359,6 +359,19 @@ pub fn checks(run: &mut dyn FnMut(&str, Check)) {
                 got.last().map(String::as_str) == Some("move t:theme p:omarchy 0"),
                 &format!("moved {got:?}"),
             )?;
+            check(
+                !got.iter().any(|g| g.starts_with("activate")),
+                &format!("a drag never activates its row: {got:?}"),
+            )?;
+            // A press that does not move is still a click: it activates on
+            // release.
+            let bar = s.tree.item_rect("t:bar").ok_or("no t:bar")?;
+            focus::mouse_drag(&*s.win, center(bar), center(bar), true);
+            let got = take(&log);
+            check(
+                got.iter().any(|g| g == "activate t:bar"),
+                &format!("a click activates on release: {got:?}"),
+            )?;
             // Into another project (middle of its row).
             let fltk_r = s.tree.item_rect("p:fltk").ok_or("no p:fltk")?;
             focus::mouse_drag(&*s.win, center(theme_r), center(fltk_r), false);

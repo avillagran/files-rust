@@ -1,0 +1,189 @@
+{
+  "functional_gate": "PASS",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "method": "Files window framebuffer + toolkit Sidebar expand / focus::click_at fixture; no native input",
+  "captures": [
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-collapsed-1793908235975160557.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-expanded-1793908236463551008.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-downloads-1793908236919288454.png"
+  ],
+  "states": {
+    "start": {
+      "expanded": false,
+      "rail": false,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        52,
+        318
+      ],
+      "active": "-",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/files",
+      "keys": [
+        "fav",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos",
+        "h:devices",
+        "dev:/dev/sda5",
+        "dev:/dev/sdc2",
+        "dev:/dev/sdd2",
+        "dev:/dev/mapper/avd",
+        "trash"
+      ]
+    },
+    "expanded": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        318
+      ],
+      "active": "-",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/files",
+      "keys": [
+        "fav",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos",
+        "h:devices",
+        "dev:/dev/sda5",
+        "dev:/dev/sdc2",
+        "dev:/dev/sdd2",
+        "dev:/dev/mapper/avd",
+        "trash"
+      ]
+    },
+    "downloads": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        318
+      ],
+      "active": "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+      "keys": [
+        "fav",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos",
+        "h:devices",
+        "dev:/dev/sda5",
+        "dev:/dev/sdc2",
+        "dev:/dev/sdd2",
+        "dev:/dev/mapper/avd",
+        "trash"
+      ]
+    },
+    "trash": {
+      "expanded": true,
+      "rail": true,
+      "visible": false,
+      "rect": [
+        0,
+        90,
+        170,
+        318
+      ],
+      "active": "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+      "keys": [
+        "fav",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos",
+        "h:devices",
+        "dev:/dev/sda5",
+        "dev:/dev/sdc2",
+        "dev:/dev/sdd2",
+        "dev:/dev/mapper/avd",
+        "trash"
+      ]
+    },
+    "trash-closed": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        318
+      ],
+      "active": "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+      "keys": [
+        "fav",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos",
+        "h:devices",
+        "dev:/dev/sda5",
+        "dev:/dev/sdc2",
+        "dev:/dev/sdd2",
+        "dev:/dev/mapper/avd",
+        "trash"
+      ]
+    },
+    "collapsed-again": {
+      "expanded": false,
+      "rail": false,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        52,
+        318
+      ],
+      "active": "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+      "keys": [
+        "fav",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos",
+        "h:devices",
+        "dev:/dev/sda5",
+        "dev:/dev/sdc2",
+        "dev:/dev/sdd2",
+        "dev:/dev/mapper/avd",
+        "trash"
+      ]
+    }
+  },
+  "normal_exit": true,
+  "viewport": [
+    800,
+    440
+  ],
+  "log": "XOpenIM() failed\nFILES_FONT=JetBrainsMono Nerd Font nerd=true\nFILES_GLASS mode=opaque opacity=1.00 overridden=true wayland=false\nFILES_FIRST_PAINT_US=34334\nFILES_UI_SMOKE_OK entries=1\nFILES_TOOLKIT_SIDEBAR expanded=false rail=false visible=true rect=(0, 90, 52, 318) active=- path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/files keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=false rail=false visible=true rect=(0, 90, 52, 318) active=- path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/files keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_CAPTURE_OK id=0 redraw=false before=7 paint=7 width=800 height=440\nFILES_TOOLKIT_FIXTURE action=sidebar-expand\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 318) active=- path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/files keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 318) active=- path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/files keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_CAPTURE_OK id=0 redraw=false before=10 paint=10 width=800 height=440\nFILES_TOOLKIT_SIDEBAR_CLICK key=place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads rect=Some((0, 201, 170, 51))\nFILES_TOOLKIT_FIXTURE action=sidebar-click:place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 318) active=place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 318) active=place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_CAPTURE_OK id=0 redraw=false before=18 paint=18 width=800 height=440\nFILES_TOOLKIT_SIDEBAR_CLICK key=trash rect=Some((0, 348, 170, 51))\nFILES_TOOLKIT_FIXTURE action=sidebar-click:trash\nFILES_TRASH_BROWSER open=true count=0 ready=true\nFILES_TOOLKIT_FIXTURE action=trash-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 318) active=place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=false rect=(0, 90, 170, 318) active=place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TRASH_BROWSER open=false count=0 ready=false\nFILES_TOOLKIT_FIXTURE action=trash-close\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 318) active=place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 318) active=place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_FIXTURE action=sidebar-collapse\nFILES_TOOLKIT_SIDEBAR expanded=false rail=false visible=true rect=(0, 90, 52, 318) active=place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=false rail=false visible=true rect=(0, 90, 52, 318) active=place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-h_vt35rw/home/Videos|h:devices|dev:/dev/sda5|dev:/dev/sdc2|dev:/dev/sdd2|dev:/dev/mapper/avd|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_FIXTURE action=close\nFILES_CLOSE_WAIT saves_ready=false mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false\nFILES_CLOSE_WAIT saves_ready=true mutations_drained=true copy_closed=true preview_drained=true du_drained=true space_drained=true notice=false\nFILES_CLOSE_DRAINED\nFILES_GLASS_STATS glass_fills=0 opaque_fills=18868 regions_cleared=0 regions_restored=0\n",
+  "binary_sha256": "293b3a3e55a0bbee23ada735d65ed08b2378c611c3396f7353ca4ac8002101be",
+  "helper_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a"
+}

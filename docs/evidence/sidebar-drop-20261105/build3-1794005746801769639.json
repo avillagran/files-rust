@@ -1,0 +1,106 @@
+{
+  "functional_gate": "PASS",
+  "label": "build3",
+  "binary_sha256": "56024b52d2bd532cbac8748c8a9679341fa4c28b886a98e297e464ceba75f53e",
+  "method": "private nested Hyprland on a hidden special workspace; real Wayland DnD from a Files listing to another Files window's Sidebar row with the virtual pointer",
+  "checks": {
+    "drag": {
+      "from": [
+        171,
+        160
+      ],
+      "to": [
+        356,
+        289
+      ],
+      "row": "place:/home/node/.cache/files-test/sidebar-drop-ue95exll/home/Documents"
+    },
+    "target_log_tail": [
+      "FILES_TOOLKIT_SIDEBAR_FORM open=true destination=/home/node/.cache/files-test/sidebar-drop-ue95exll/home/Documents names=1 message=Some(\"Revisa origen y destino antes de pegar archivos del sistema\")"
+    ],
+    "logs": {
+      "source": [
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=310 y=249 seq=44 last=44 owner=(1,1) pane=(1,1)"
+      ],
+      "target": [
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)",
+        "FILES_DND_TRACE kind=3 x=27 y=249 seq=18 last=18 owner=(1,1) pane=(1,1)"
+      ]
+    },
+    "review": {
+      "destination": "/home/node/.cache/files-test/sidebar-drop-ue95exll/home/Documents",
+      "names": 1
+    },
+    "copied": true,
+    "source_intact": true
+  },
+  "captures": [
+    "/home/node/Work/files/docs/evidence/sidebar-drop-20261105/build3-target-before-1794005749868789091.png",
+    "/home/node/Work/files/docs/evidence/sidebar-drop-20261105/build3-source-after-drag-1794005754261986487.png",
+    "/home/node/Work/files/docs/evidence/sidebar-drop-20261105/build3-target-review-1794005754395938146.png"
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "3498640"
+    ]
+  },
+  "nested_extent": [
+    550,
+    367
+  ],
+  "dispatch": [
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+  ],
+  "windows": {
+    "source": [
+      [
+        21,
+        21
+      ],
+      [
+        508,
+        325
+      ]
+    ],
+    "target": [
+      [
+        330,
+        40
+      ],
+      [
+        700,
+        440
+      ]
+    ]
+  },
+  "onto": "rail",
+  "nested_stopped": true
+}

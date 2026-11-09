@@ -1,7 +1,7 @@
 {
   "repository": "https://github.com/avillagran/lib-fltk-omarchy",
   "base_commit": "dd481f1c7b29a06c0eedeb61780c112f3e603679",
-  "fix_commit": "2fa59d99118d13b053cf2c08e81b4afb59a13d03",
+  "fix_commit": "8874ad258644ab1b7f06a67622e004f7fabc2627",
   "status": "local committed upstream checkpoint, untagged; no vendor patches",
-  "scope": "Exact committed export of branch files/glyph-ink-center (dd481f1 plus ink-centered paint::glyph so Nerd Font icons center in rails and buttons). Files adopts lazy overlay::Sheet, live bind_dismissible guards, native TextField and bounded model-owned rename/create workflows. Includes owned timer cleanup and immutable scene residence; optional GPU, accessibility, images, playback, QR and Mermaid features remain disabled. Preserves asynchronous native presentation and every tracked upstream receipt/license."
+  "scope": "Exact committed export of branch files/sidebar-drag-activate (dd481f1 plus ink-centered paint::glyph so Nerd Font icons center in rails and buttons, and reorderable NavTree rows that activate on release so a drag never navigates). Files adopts lazy overlay::Sheet, live bind_dismissible guards, native TextField and bounded model-owned rename/create workflows. Includes owned timer cleanup and immutable scene residence; optional GPU, accessibility, images, playback, QR and Mermaid features remain disabled. Preserves asynchronous native presentation and every tracked upstream receipt/license."
 }

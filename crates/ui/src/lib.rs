@@ -89,6 +89,7 @@ mod navigation_tests;
 mod notice_navigation;
 mod office_preview_job;
 mod omarchy_theme;
+mod omi;
 mod omnibar_input;
 mod open_job;
 mod open_scene;
@@ -1289,14 +1290,6 @@ pub fn run_since(start: Instant) -> bool {
         fltk_omarchy::widgets::Sidebar::new(Vec::new(), &rail_selected)
             .widths(places_sidebar::RAIL, places_sidebar::WIDE)
             .on_activate(move |i| {
-                if r1.borrow().kinds.get(i) == Some(&places_sidebar::Kind::Pin) {
-                    if let Ok(mut state) = m1.try_borrow_mut() {
-                        let pinned = !state.rail_pinned;
-                        state.action(Action::RailPin(pinned));
-                    }
-                    c1.clone().redraw();
-                    return;
-                }
                 if r1.borrow().kinds.get(i) == Some(&places_sidebar::Kind::Recent) {
                     open_recent(&recent);
                     return;
@@ -1347,8 +1340,29 @@ pub fn run_since(start: Instant) -> bool {
             });
         });
     }
-    // The current toolkit activates navigation before distinguishing a drag.
-    // Keep ordering explicit in row menus until its click/drag contract is fixed.
+    // Rows of places, devices and bookmarks reorder by dragging within their
+    // section. With reordering on, the toolkit activates a row on a release
+    // that did not drag, so a drag never navigates.
+    {
+        let (m5, r5, c5) = (model.clone(), rail_state.clone(), canvas.clone());
+        let _ = sidebar
+            .tree()
+            .reorder(fltk_omarchy::navtree::Reorder::Siblings)
+            .accept_move(|_, parent, _| places_sidebar::ORDERED_SECTIONS.contains(&parent))
+            .on_move(move |key, parent, index| {
+                let pick = match m5.try_borrow() {
+                    Ok(state) => places_sidebar::drag_pick(&state, &r5.borrow(), key, parent, index),
+                    Err(_) => return,
+                };
+                eprintln!("FILES_TOOLKIT_SIDEBAR_MOVE key={key} parent={parent} index={index} pick={pick:?}");
+                if let Some(pick) = pick
+                    && let Ok(mut state) = m5.try_borrow_mut()
+                {
+                    places_sidebar::apply(&mut state, pick);
+                }
+                c5.clone().redraw();
+            });
+    }
     sidebar.resize(0, 90, places_sidebar::RAIL, (size.1 - 122).max(0));
     // Tab stays with the browser (it switches panes); the rail is pointer-driven.
     sidebar.clear_visible_focus();
@@ -1661,6 +1675,7 @@ pub fn run_since(start: Instant) -> bool {
             if e == Event::Released || e == Event::Leave {
                 grabbing = None;
             }
+            state.pointer = (e != Event::Leave).then(|| (app::event_x(), app::event_y()));
             window_chrome::cursor(
                 &mut gesture_window,
                 if e == Event::Leave { None } else { zone },

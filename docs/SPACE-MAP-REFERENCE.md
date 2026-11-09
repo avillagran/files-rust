@@ -20,8 +20,20 @@ Previously the helper descended into the first directory before even admitting
 later immediate children. One large subtree could exhaust the whole deadline,
 hiding later names and direct-file measurements. It now gathers bounded root
 metadata first, then shares the remaining cooperative time and visit budgets
-between admitted directories. Only one depth-bounded walk is active. Root
-omission knowledge is independent of whether individual subtrees complete.
+between admitted directories. Immediate directories are measured one after
+another; each subtree walk runs on up to 8 threads of the same helper
+(2026-11-09: cold metadata reads are latency bound, and a single walker was
+much slower than disktree). Workers descend depth first with their own stack of
+pinned directory streams and hand a newly opened subdirectory to the shared
+queue only while another worker is idle, so open descriptors stay bounded by
+workers x depth. Workers start on the first subdirectory, share an exact
+atomic visit cap and one deadline, and use 256 KiB stacks and a single malloc
+arena inside the helper's 96 MiB address-space limit. An entry that cannot be
+read or opened (for example a folder without permission) is skipped: the walk
+keeps measuring its siblings and reports the subtree partial with that reason,
+instead of stopping at the first unreadable folder. Limits still stop every
+worker. Root omission knowledge is independent of whether individual subtrees
+complete.
 The shared deadline, 100,000,000 visits, 2,048 nodes and aggregate metadata caps
 remain. A subtree stopped only by its fair share is measured again from scratch
 after all its siblings, with every remaining visit and second, so unused budget

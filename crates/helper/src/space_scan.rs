@@ -56,6 +56,10 @@ mod platform {
             unix::ffi::OsStrExt,
         },
         ptr::NonNull,
+        sync::{
+            Condvar, Mutex, MutexGuard,
+            atomic::{AtomicBool, AtomicU64, Ordering},
+        },
     };
     struct Stream {
         directory: NonNull<libc::DIR>,
@@ -299,43 +303,290 @@ mod platform {
         counts.files += 1;
         Ok(())
     }
-    fn walk(mut stack: Vec<Stream>, budget: &mut Budget, counts: &mut Counts) -> Result<(), Issue> {
+    // SAFETY: a DIR stream is used by one thread at a time. Ownership moves
+    // between walk workers through the shared queue and is never aliased.
+    unsafe impl Send for Stream {}
+    /// Upper bound of walk workers for one subtree. Cold metadata reads are
+    /// latency bound, so a few concurrent walkers keep the device busy.
+    const MAX_WORKERS: usize = 8;
+    const WORKER_STACK: usize = 256 * 1024;
+    struct Shared {
+        queue: Vec<(Stream, usize)>,
+        idle: usize,
+        workers: usize,
+        spawned: bool,
+        done: bool,
+    }
+    /// One subtree walk shared by its workers. Each worker descends depth
+    /// first with its own stack of pinned directory streams; it hands a newly
+    /// opened subdirectory to the shared queue only while another worker is
+    /// idle, so open descriptors stay bounded by workers x depth.
+    struct Walk {
+        limits: Limits,
+        started: Instant,
+        visited: AtomicU64,
+        stop: AtomicBool,
+        issue: Mutex<Option<Issue>>,
+        totals: Mutex<Result<Counts, Issue>>,
+        shared: Mutex<Shared>,
+        ready: Condvar,
+        max: usize,
+    }
+    fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
+        m.lock().unwrap_or_else(|e| e.into_inner())
+    }
+    impl Walk {
+        fn time(&self) -> Result<(), Issue> {
+            if self.started.elapsed() >= self.limits.elapsed {
+                Err(Issue::limit("Tiempo de cálculo de espacio agotado"))
+            } else {
+                Ok(())
+            }
+        }
+        /// Exact visit cap shared by every worker.
+        fn visit(&self) -> Result<(), Issue> {
+            let limit = self.limits.visited;
+            let mut seen = self.visited.load(Ordering::Acquire);
+            loop {
+                if seen >= limit {
+                    return Err(Issue::limit("Límite de entradas de espacio alcanzado"));
+                }
+                match self.visited.compare_exchange_weak(
+                    seen,
+                    seen + 1,
+                    Ordering::AcqRel,
+                    Ordering::Acquire,
+                ) {
+                    Ok(_) => return Ok(()),
+                    Err(now) => seen = now,
+                }
+            }
+        }
+        /// A problem that leaves the rest of the subtree measurable: the walk
+        /// continues and the subtree is reported partial with this reason.
+        fn note(&self, issue: Issue) {
+            let mut slot = lock(&self.issue);
+            if slot.is_none() {
+                *slot = Some(issue);
+            }
+        }
+        /// A limit: every worker stops. It replaces a noted problem so the
+        /// caller can tell a budget stop from an unreadable entry.
+        fn fail(&self, issue: Issue) {
+            {
+                let mut slot = lock(&self.issue);
+                if slot.as_ref().is_none_or(|i| !i.stop_all) {
+                    *slot = Some(issue);
+                }
+            }
+            self.stop.store(true, Ordering::Release);
+            let _guard = lock(&self.shared);
+            self.ready.notify_all();
+        }
+        fn take(&self) -> Option<(Stream, usize)> {
+            let mut s = lock(&self.shared);
+            loop {
+                if s.done || self.stop.load(Ordering::Acquire) {
+                    return None;
+                }
+                if let Some(item) = s.queue.pop() {
+                    return Some(item);
+                }
+                s.idle += 1;
+                if s.idle == s.workers {
+                    s.done = true;
+                    self.ready.notify_all();
+                    return None;
+                }
+                s = self.ready.wait(s).unwrap_or_else(|e| e.into_inner());
+                s.idle -= 1;
+            }
+        }
+        /// Hands `child` to an idle worker (spawning the workers on the first
+        /// subdirectory) or keeps it on the local stack.
+        fn place(
+            &self,
+            child: Stream,
+            depth: usize,
+            local: &mut Vec<(Stream, usize)>,
+            spawn: &dyn Fn(&mut Shared),
+        ) {
+            if self.max > 1 {
+                let mut s = lock(&self.shared);
+                if !s.spawned {
+                    s.spawned = true;
+                    spawn(&mut s);
+                }
+                if s.idle > s.queue.len() {
+                    s.queue.push((child, depth));
+                    self.ready.notify_one();
+                    return;
+                }
+            }
+            local.push((child, depth));
+        }
+        fn run(&self, spawn: &dyn Fn(&mut Shared)) {
+            let mut counts = Counts::default();
+            let mut local: Vec<(Stream, usize)> = Vec::new();
+            loop {
+                if local.is_empty() {
+                    match self.take() {
+                        Some(item) => local.push(item),
+                        None => break,
+                    }
+                }
+                self.descend(&mut local, &mut counts, spawn);
+                if self.stop.load(Ordering::Acquire) {
+                    break;
+                }
+            }
+            drop(local);
+            let mut totals = lock(&self.totals);
+            if let Ok(t) = totals.as_mut() {
+                match t.bytes.checked_add(counts.bytes) {
+                    Some(bytes) => {
+                        t.bytes = bytes;
+                        t.files += counts.files;
+                        t.directories += counts.directories;
+                    }
+                    None => {
+                        *totals = Err(Issue::io(
+                            "Tamaño aparente fuera de rango",
+                            io::Error::other("Desbordamiento de bytes"),
+                        ))
+                    }
+                }
+            }
+        }
+        fn descend(
+            &self,
+            local: &mut Vec<(Stream, usize)>,
+            counts: &mut Counts,
+            spawn: &dyn Fn(&mut Shared),
+        ) {
+            while let Some((frame, depth)) = local.last_mut() {
+                if self.stop.load(Ordering::Acquire) {
+                    return;
+                }
+                if let Err(issue) = self.time() {
+                    return self.fail(issue);
+                }
+                let (fd, depth) = (frame.fd(), *depth);
+                let name = match frame.next() {
+                    Ok(Some(name)) => name,
+                    Ok(None) => {
+                        local.pop();
+                        continue;
+                    }
+                    Err(error) => {
+                        self.note(Issue::io("No se pudo enumerar una subcarpeta", error));
+                        local.pop();
+                        continue;
+                    }
+                };
+                if let Err(issue) = self.visit() {
+                    return self.fail(issue);
+                }
+                if name.to_bytes().len() > MAX_NAME_BYTES {
+                    return self.fail(Issue::limit("Nombre de subcarpeta fuera del límite"));
+                }
+                let stat = match stat_at(fd, name) {
+                    Ok(stat) => stat,
+                    Err(error) => {
+                        self.note(Issue::io(
+                            "No se pudo leer una entrada de subcarpeta",
+                            error,
+                        ));
+                        continue;
+                    }
+                };
+                match kind(&stat) {
+                    NodeKind::File => {
+                        if let Err(issue) = file_bytes(&stat, counts) {
+                            self.note(issue);
+                        }
+                    }
+                    NodeKind::Directory => {
+                        counts.directories += 1;
+                        if depth >= self.limits.depth {
+                            return self
+                                .fail(Issue::limit("Límite de profundidad de espacio alcanzado"));
+                        }
+                        match child_directory(fd, name, &stat) {
+                            Ok(child) => self.place(child, depth + 1, local, spawn),
+                            Err(error) => {
+                                self.note(Issue::io("No se pudo abrir una subcarpeta", error))
+                            }
+                        }
+                    }
+                    NodeKind::Symlink | NodeKind::Other => (),
+                }
+            }
+        }
+    }
+    fn workers() -> usize {
+        std::thread::available_parallelism()
+            .map_or(1, |n| n.get())
+            .clamp(1, MAX_WORKERS)
+    }
+    /// Walks `root` (already counted as one directory in `counts`) with up to
+    /// [`MAX_WORKERS`] threads under `budget`. Entries that cannot be read are
+    /// skipped and reported; limits stop the whole walk.
+    fn walk(root: Stream, budget: &mut Budget, counts: &mut Counts) -> Result<(), Issue> {
         if budget.limits.depth == 0 {
             return Err(Issue::limit("Límite de profundidad de espacio alcanzado"));
         }
-        while !stack.is_empty() {
-            budget.time()?;
-            let depth = stack.len();
-            let frame = stack.last_mut().expect("nonempty traversal stack");
-            let fd = frame.fd();
-            let Some(name) = frame
-                .next()
-                .map_err(|e| Issue::io("No se pudo enumerar una subcarpeta", e))?
-            else {
-                stack.pop();
-                continue;
-            };
-            budget.visit()?;
-            if name.to_bytes().len() > MAX_NAME_BYTES {
-                return Err(Issue::limit("Nombre de subcarpeta fuera del límite"));
-            }
-            let stat = stat_at(fd, name)
-                .map_err(|e| Issue::io("No se pudo leer una entrada de subcarpeta", e))?;
-            match kind(&stat) {
-                NodeKind::File => file_bytes(&stat, counts)?,
-                NodeKind::Directory => {
-                    counts.directories += 1;
-                    if depth >= budget.limits.depth {
-                        return Err(Issue::limit("Límite de profundidad de espacio alcanzado"));
+        let walk = Walk {
+            limits: budget.limits,
+            started: budget.started,
+            visited: AtomicU64::new(budget.visited),
+            stop: AtomicBool::new(false),
+            issue: Mutex::new(None),
+            totals: Mutex::new(Ok(Counts::default())),
+            shared: Mutex::new(Shared {
+                queue: vec![(root, 1)],
+                idle: 0,
+                workers: 1,
+                spawned: false,
+                done: false,
+            }),
+            ready: Condvar::new(),
+            max: workers(),
+        };
+        std::thread::scope(|scope| {
+            let spawn = |s: &mut Shared| {
+                for _ in 1..walk.max {
+                    // Counted before the thread can look for work, so the
+                    // idle count never reaches the worker count early.
+                    s.workers += 1;
+                    let started = std::thread::Builder::new()
+                        .name("space-walk".into())
+                        .stack_size(WORKER_STACK)
+                        .spawn_scoped(scope, || walk.run(&|_| ()));
+                    if started.is_err() {
+                        s.workers -= 1;
+                        break;
                     }
-                    let child = child_directory(fd, name, &stat)
-                        .map_err(|e| Issue::io("No se pudo abrir una subcarpeta", e))?;
-                    stack.push(child);
                 }
-                NodeKind::Symlink | NodeKind::Other => (),
-            }
+            };
+            walk.run(&spawn);
+        });
+        budget.visited = walk.visited.into_inner();
+        let totals = walk.totals.into_inner().unwrap_or_else(|e| e.into_inner());
+        let issue = walk.issue.into_inner().unwrap_or_else(|e| e.into_inner());
+        let totals = totals?;
+        counts.bytes = counts.bytes.checked_add(totals.bytes).ok_or_else(|| {
+            Issue::io(
+                "Tamaño aparente fuera de rango",
+                io::Error::other("Desbordamiento de bytes"),
+            )
+        })?;
+        counts.files += totals.files;
+        counts.directories += totals.directories;
+        match issue {
+            Some(issue) => Err(issue),
+            None => Ok(()),
         }
-        Ok(())
     }
     fn inspect_entry(fd: i32, name: &CStr) -> (SpaceNode, Option<libc::stat>, Option<Issue>) {
         // The immediate-name budget was checked by the caller before this clone.
@@ -427,7 +678,7 @@ mod platform {
             directories: 1,
             ..Counts::default()
         };
-        let result = walk(vec![directory], &mut slice, &mut counts);
+        let result = walk(directory, &mut slice, &mut counts);
         budget.visited = slice.visited;
         node.observed_bytes = counts.bytes;
         node.files = counts.files;
@@ -489,6 +740,13 @@ mod platform {
             end -= 1;
         }
         let path = CString::new(&bytes[..end]).map_err(|_| "NUL en ruta de espacio".to_string())?;
+        // The helper runs under a 96 MiB address-space limit. Walk workers
+        // allocate little, so they share the main malloc arena instead of
+        // reserving a 64 MiB arena each.
+        #[cfg(target_env = "gnu")]
+        unsafe {
+            libc::mallopt(libc::M_ARENA_MAX, 1);
+        }
         let mut budget = Budget::new(limits);
         let root = file(unsafe {
             libc::open(
@@ -846,6 +1104,79 @@ mod platform {
             assert_eq!(child(b"large").bytes, Some(20));
             assert_eq!(child(b"large").files, 20);
             assert_eq!(report.total_bytes, 32);
+        }
+        #[test]
+        fn parallel_walk_counts_wide_and_deep_trees_exactly() {
+            let f = Fixture::new();
+            let mut expected = 0u64;
+            let mut entries = 1u64; // "tree" itself
+            for a in 0..12 {
+                let first = f.0.join("tree").join(a.to_string());
+                for b in 0..6 {
+                    let second = first.join(b.to_string());
+                    fs::create_dir_all(&second).unwrap();
+                    for c in 0..5 {
+                        fs::write(second.join(c.to_string()), vec![1u8; a + b + c]).unwrap();
+                        expected += (a + b + c) as u64;
+                    }
+                    entries += 1 + 5;
+                }
+                entries += 1;
+            }
+            fs::create_dir_all(f.0.join("tree/deep/1/2/3/4/5/6/7/8")).unwrap();
+            fs::write(f.0.join("tree/deep/1/2/3/4/5/6/7/8/end"), [0u8; 9]).unwrap();
+            expected += 9;
+            entries += 10;
+            for _ in 0..20 {
+                let report = defaults(&f.0);
+                assert!(report.complete, "{:?}", report.reason);
+                assert_eq!(report.total_bytes, expected);
+                assert_eq!(report.visited, entries);
+                assert_eq!(report.nodes[0].files, 12 * 6 * 5 + 1);
+            }
+            // The exact visit cap holds with several workers: a cap one short
+            // of the population is never reported complete.
+            let report = scan(
+                &f.0,
+                Limits {
+                    visited: entries - 1,
+                    ..Limits::default()
+                },
+            )
+            .unwrap();
+            assert!(!report.complete);
+            assert!(report.visited < entries);
+            assert_eq!(report.nodes[0].bytes, None);
+        }
+        #[test]
+        fn unreadable_subfolder_keeps_measuring_its_siblings() {
+            use std::os::unix::fs::PermissionsExt;
+            if unsafe { libc::geteuid() } == 0 {
+                return; // root reads mode 000 folders; nothing to observe
+            }
+            let f = Fixture::new();
+            fs::create_dir_all(f.0.join("work/locked")).unwrap();
+            fs::write(f.0.join("work/locked/hidden"), [0u8; 50]).unwrap();
+            for name in ["a", "b", "c"] {
+                fs::create_dir(f.0.join("work").join(name)).unwrap();
+                fs::write(f.0.join("work").join(name).join("data"), [0u8; 10]).unwrap();
+            }
+            fs::write(f.0.join("work/top"), [0u8; 5]).unwrap();
+            let locked = f.0.join("work/locked");
+            fs::set_permissions(&locked, fs::Permissions::from_mode(0o000)).unwrap();
+            let report = defaults(&f.0);
+            // Restore the mode so the retained fixture stays inspectable.
+            fs::set_permissions(&locked, fs::Permissions::from_mode(0o700)).unwrap();
+            let work = &report.nodes[0];
+            assert!(!report.complete);
+            assert_eq!(work.status, NodeStatus::Partial);
+            assert_eq!(work.bytes, None);
+            assert_eq!(work.observed_bytes, 35, "every readable sibling counted");
+            assert!(
+                work.error
+                    .as_deref()
+                    .is_some_and(|e| e.contains("subcarpeta"))
+            );
         }
         #[test]
         fn name_and_node_caps_stop_without_claiming_zero_omissions() {

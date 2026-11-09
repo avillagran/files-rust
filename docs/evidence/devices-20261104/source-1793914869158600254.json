@@ -1,0 +1,22 @@
+{
+  "functional_gate": "PASS",
+  "label": "source",
+  "binary_sha256": "17a488164c4c8eb2e5550448f73693743b24c6e6be439e76f47fe0b70c5b2126",
+  "helper_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "method": "fixture lsblk JSON + recorder udisksctl; real window; no disk touched",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "checks": {
+    "mount_then_open": "/home/node/.cache/files-test/devices-twdry6fq/mnt/DATOS",
+    "bookmark_in_sidebar": true,
+    "eject": [
+      "unmount -b /dev/sdz1 --no-user-interaction",
+      "power-off -b /dev/sdz --no-user-interaction"
+    ]
+  },
+  "captures": [
+    "/home/node/Work/files/docs/evidence/devices-20261104/source-rail-devices-1793914869312392963.png",
+    "/home/node/Work/files/docs/evidence/devices-20261104/source-after-eject-1793914869649903774.png"
+  ]
+}

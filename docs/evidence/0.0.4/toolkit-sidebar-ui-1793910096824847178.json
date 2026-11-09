@@ -1,0 +1,133 @@
+{
+  "functional_gate": "FAIL",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "method": "Files window framebuffer + toolkit Sidebar expand / focus::click_at fixture; no native input",
+  "captures": [
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-collapsed-1793910084716653203.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-expanded-1793910085204475581.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-downloads-1793910085692211847.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-device-1793910086179862072.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-context-menu-1793910086436917165.png",
+    "/home/node/Work/files/docs/evidence/0.0.4/toolkit-sidebar-drop-hover-1793910086654973135.png"
+  ],
+  "states": {
+    "start": {
+      "expanded": false,
+      "rail": false,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        52,
+        528
+      ],
+      "active": "-",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/files",
+      "keys": [
+        "fav",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "expanded": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        528
+      ],
+      "active": "-",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/files",
+      "keys": [
+        "fav",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "downloads": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        528
+      ],
+      "active": "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads",
+      "keys": [
+        "fav",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    },
+    "device": {
+      "expanded": true,
+      "rail": true,
+      "visible": true,
+      "rect": [
+        0,
+        90,
+        170,
+        528
+      ],
+      "active": "dev:/dev/sdz1",
+      "path": "/home/node/.cache/files-test/toolkit-sidebar-456sug8f/mnt/PENDRIVE",
+      "keys": [
+        "fav",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Pictures",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Music",
+        "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Videos",
+        "h:devices",
+        "dev:/dev/sdz1",
+        "dev:/dev/sdy2",
+        "trash"
+      ]
+    }
+  },
+  "udisks_calls": [
+    "unmount -b /dev/sdz1 --no-user-interaction",
+    "power-off -b /dev/sdz --no-user-interaction"
+  ],
+  "context_menu": {
+    "row": "place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents",
+    "picked": "Abrir en pesta\u00f1a nueva",
+    "tabs": 2
+  },
+  "error": "AssertionError(None)",
+  "log": "IDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 528) active=- path=/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/files keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_CAPTURE_OK id=0 redraw=false before=10 paint=10 width=1000 height=650\nFILES_TOOLKIT_SIDEBAR_CLICK key=place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads rect=Some((0, 201, 170, 51))\nFILES_TOOLKIT_FIXTURE action=sidebar-click:place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 528) active=place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads path=/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_CAPTURE_OK id=0 redraw=false before=18 paint=18 width=1000 height=650\nFILES_TOOLKIT_SIDEBAR_CLICK key=dev:/dev/sdz1 rect=Some((0, 491, 170, 80))\nFILES_TOOLKIT_FIXTURE action=sidebar-click:dev:/dev/sdz1\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 528) active=dev:/dev/sdz1 path=/home/node/.cache/files-test/toolkit-sidebar-456sug8f/mnt/PENDRIVE keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_TOOLKIT_SIDEBAR expanded=true rail=true visible=true rect=(0, 90, 170, 528) active=dev:/dev/sdz1 path=/home/node/.cache/files-test/toolkit-sidebar-456sug8f/mnt/PENDRIVE keys=fav|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Downloads|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Pictures|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Music|place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Videos|h:devices|dev:/dev/sdz1|dev:/dev/sdy2|trash\nFILES_TOOLKIT_FIXTURE action=sidebar-state\nFILES_CAPTURE_OK id=0 redraw=false before=29 paint=29 width=1000 height=650\nFILES_TOOLKIT_SIDEBAR_CLICK key=dev:/dev/sdz1 rect=Some((0, 491, 170, 80))\nFILES_TOOLKIT_FIXTURE action=sidebar-secondary:dev:/dev/sdz1\nFILES_DEVICE_DONE op=Eject node=/dev/sdz1 result=PENDRIVE expulsado: ya puedes retirarlo\nFILES_TOOLKIT_SIDEBAR_MENU row=3 entries=2\nFILES_TOOLKIT_SIDEBAR_CONTEXT key=place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents rect=Some((0, 252, 170, 51))\nFILES_TOOLKIT_FIXTURE action=sidebar-context:place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents\nFILES_CAPTURE_OK id=0 redraw=false before=35 paint=35 width=1000 height=650\nFILES_TOOLKIT_FIXTURE action=end\nFILES_TOOLKIT_SIDEBAR_PICK row=3 entry=1 pick=Run(TabNew,Navigate(/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents))\nFILES_TOOLKIT_FIXTURE action=pick\nFILES_TOOLKIT_SIDEBAR_TABS count=2 path=/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents\nFILES_TOOLKIT_FIXTURE action=sidebar-tabs\nFILES_TOOLKIT_SIDEBAR_DROP kind=sidebar-hover key=place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents point=Some((85, 277)) result=Ok(()) hover=Some(\"/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents\")\nFILES_TOOLKIT_FIXTURE action=sidebar-hover:place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents\nFILES_CAPTURE_OK id=0 redraw=false before=45 paint=45 width=1000 height=650\nFILES_TOOLKIT_SIDEBAR_DROP kind=sidebar-drop key=place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents point=Some((85, 277)) result=Ok(()) hover=None\nFILES_TOOLKIT_FIXTURE action=sidebar-drop:place:/home/node/.cache/files-test/toolkit-sidebar-456sug8f/home/Documents\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\nFILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=Some(\"No se import\u00f3 ning\u00fan grupo: El lector MIME debe ser no bloqueante\")\nFILES_TOOLKIT_FIXTURE action=sidebar-form\n",
+  "binary_sha256": "bca954d993633be73acf7c7ba87a586326ac83dd4ae6ac2112e7592ef4294c2a",
+  "helper_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a"
+}

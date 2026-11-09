@@ -43,6 +43,10 @@ pub fn device_glyph(removable: bool) -> &'static str {
     crate::fonts::icon(if removable { "\u{f287}" } else { "\u{f0a0}" }, "D")
 }
 
+pub fn pin_glyph() -> &'static str {
+    crate::fonts::icon("\u{f08d}", "P")
+}
+
 pub fn eject_glyph() -> &'static str {
     crate::fonts::icon("\u{f052}", "^")
 }
@@ -64,8 +68,6 @@ pub struct Rail {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Kind {
     Header,
-    /// Toggle between a pinned rail and automatic collapse.
-    Pin,
     Favorites,
     /// Recently used files (XDG recently-used.xbel), opened as a menu.
     Recent,
@@ -249,23 +251,22 @@ pub fn rail(m: &Model, pinned: bool, order: &[String]) -> Rail {
             },
         );
     }
-    out.push(
-        SidebarItem::new(
-            crate::fonts::icon("\u{f08d}", "P"),
-            if pinned { "Desfijar" } else { "Fijar barra" },
-        )
-        .key("pin")
-        .footer(),
-        None,
-        None,
-        Kind::Pin,
-    );
+    // Pinning is a small trailing button on the last footer row rather than a
+    // row of its own: it only matters while the rail is expanded.
     out.push(
         SidebarItem::new(trash_glyph(), "Papelera")
             .key("trash")
-            .footer(),
+            .footer()
+            .secondary(
+                pin_glyph(),
+                if pinned {
+                    "Desfijar barra"
+                } else {
+                    "Fijar barra"
+                },
+            ),
         Some(Action::OpenTrash),
-        None,
+        Some(Action::RailPin(!pinned)),
         Kind::Trash,
     );
     out
@@ -386,7 +387,7 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
             PopupItem::new(trash_glyph(), "Abrir Papelera"),
             Pick::Run(vec![Action::OpenTrash]),
         )),
-        Some(Kind::Header | Kind::Pin) | None => {}
+        Some(Kind::Header) | None => {}
     }
     let parent = match rail.kinds.get(i) {
         Some(Kind::Place(_)) => Some("h:places"),
@@ -422,6 +423,27 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
         }
     }
     out
+}
+
+/// Sections whose rows can be reordered by dragging or with the row menu.
+pub const ORDERED_SECTIONS: [&str; 3] = ["h:places", "h:devices", "h:marks"];
+
+/// What dropping row `key` at `index` among the other rows of section
+/// `parent` does: the same order change as "Mover arriba/abajo".
+pub fn drag_pick(m: &Model, rail: &Rail, key: &str, parent: &str, index: usize) -> Option<Pick> {
+    if !ORDERED_SECTIONS.contains(&parent) {
+        return None;
+    }
+    let keys = rail.section_keys(parent);
+    let from = keys.iter().position(|k| k == key)?;
+    if from == index {
+        return None;
+    }
+    if parent == "h:marks" {
+        return Some(Pick::MoveBookmark(key.to_string(), index));
+    }
+    crate::sidebar_order::moved(&m.rail_order, &keys, key, index)
+        .map(|order| Pick::Run(vec![Action::RailOrder(order)]))
 }
 
 /// Moves the bookmark identified by its stable key to `to` in document order.
@@ -589,15 +611,16 @@ mod tests {
         let last = rail.items.len() - 1;
         assert!(rail.items[last].footer);
         assert!(matches!(rail.actions[last], Some(Action::OpenTrash)));
-        let pin = last - 1;
-        assert_eq!(rail.kinds[pin], Kind::Pin);
-        assert!(rail.items[pin].footer);
-        assert_eq!(rail.items[pin].label, "Fijar barra");
+        assert!(matches!(rail.secondary[last], Some(Action::RailPin(true))));
+        assert_eq!(rail.items[last].secondary_tooltip, "Fijar barra");
         let pinned = super::rail(&m, true, &[]);
-        assert_eq!(pinned.items[pin].key, rail.items[pin].key);
-        assert_eq!(pinned.items[pin].label, "Desfijar");
+        assert!(matches!(
+            pinned.secondary[last],
+            Some(Action::RailPin(false))
+        ));
+        assert_eq!(pinned.items[last].secondary_tooltip, "Desfijar barra");
         for ((item, action), kind) in rail.items.iter().zip(&rail.actions).zip(&rail.kinds) {
-            let window_only = matches!(kind, Kind::Recent | Kind::Pin);
+            let window_only = matches!(kind, Kind::Recent);
             assert_eq!(
                 item.header || window_only,
                 action.is_none(),
@@ -707,5 +730,27 @@ mod tests {
         let rail = rail(&m, false, &[]);
         assert_eq!(rail.active, 3);
         assert!(matches!(&rail.actions[3], Some(Action::Navigate(p)) if *p == m.path));
+    }
+
+    #[test]
+    fn dragging_a_place_saves_the_same_order_as_the_row_menu() {
+        let mut m = Model::new("/fixture-rail-drag".into());
+        m.loaded = true;
+        let rail = rail(&m, false, &[]);
+        let keys = rail.section_keys("h:places");
+        assert!(keys.len() >= 3, "{keys:?}");
+        let Some(Pick::Run(actions)) = drag_pick(&m, &rail, &keys[0], "h:places", 2) else {
+            panic!("a place drag saves an order");
+        };
+        let [Action::RailOrder(order)] = actions.as_slice() else {
+            panic!("one RailOrder action");
+        };
+        let mut expected = keys.clone();
+        let first = expected.remove(0);
+        expected.insert(2, first);
+        assert_eq!(order, &expected);
+        assert!(drag_pick(&m, &rail, &keys[1], "h:places", 1).is_none());
+        assert!(drag_pick(&m, &rail, "fav", "", 0).is_none());
+        assert!(drag_pick(&m, &rail, &keys[0], "h:devices", 0).is_none());
     }
 }

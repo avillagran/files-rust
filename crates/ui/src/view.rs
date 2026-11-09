@@ -49,6 +49,85 @@ fn button(p: &mut dyn Painter, m: &mut Model, rect: Rect, label: &str, on: bool,
     );
     hit(m, rect, action);
 }
+/// Short human file type for the List view "Tipo" column. It is derived from
+/// the name only, like the Type sort key, so painting never touches the disk.
+pub(crate) fn kind_label(is_dir: bool, path: &std::path::Path) -> std::borrow::Cow<'static, str> {
+    use std::borrow::Cow;
+    if is_dir {
+        return Cow::Borrowed("Carpeta");
+    }
+    let mime = mime::mime(path);
+    let (major, minor) = mime.split_once('/').unwrap_or((mime, ""));
+    let label = match major {
+        "image" => "Imagen",
+        "video" => "Video",
+        "audio" => "Audio",
+        "font" => "Fuente",
+        "model" => "Modelo 3D",
+        _ if minor == "pdf" => "PDF",
+        _ if [
+            "zip",
+            "compressed",
+            "tar",
+            "gzip",
+            "bzip",
+            "xz",
+            "zstd",
+            "rar",
+            "archive",
+        ]
+        .iter()
+        .any(|k| minor.contains(k)) =>
+        {
+            "Comprimido"
+        }
+        _ if [
+            "shellscript",
+            "python",
+            "rust",
+            "javascript",
+            "x-c",
+            "java",
+            "asm",
+        ]
+        .iter()
+        .any(|k| minor.contains(k)) =>
+        {
+            "Código"
+        }
+        "text" => "Texto",
+        _ if ["json", "toml", "yaml", "xml"]
+            .iter()
+            .any(|k| minor.contains(k)) =>
+        {
+            "Datos"
+        }
+        _ if minor.contains("executable") => "Ejecutable",
+        _ if [
+            "document",
+            "msword",
+            "opendocument",
+            "spreadsheet",
+            "presentation",
+            "rtf",
+        ]
+        .iter()
+        .any(|k| minor.contains(k)) =>
+        {
+            "Documento"
+        }
+        _ => {
+            return match path.extension() {
+                Some(ext) => Cow::Owned(format!(
+                    "Archivo {}",
+                    files_core::name_label::label(ext).to_uppercase()
+                )),
+                None => Cow::Borrowed("Archivo"),
+            };
+        }
+    };
+    Cow::Borrowed(label)
+}
 fn badge_color(m: &Model, path: &std::path::Path) -> Color {
     let mime = mime::mime(path);
     let c = &m.palette;
@@ -203,16 +282,32 @@ pub fn status(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     };
     m.footer_status.clone_from(&left);
     let tips = tips_available(m, w);
+    // Omi blinks at the start of the status bar while Files is busy.
+    let mascot = if m.busy() {
+        let accent = m.palette.accent;
+        let pointer = m.pointer;
+        m.omi.paint(
+            p,
+            r(14, h - 26, 20, 20),
+            accent,
+            pointer,
+            std::time::Instant::now(),
+        );
+        28
+    } else {
+        0
+    };
+    let c = &m.palette;
     p.text(
         r(
-            16,
+            16 + mascot,
             h - 31,
             if tips {
-                180
+                180 - mascot
             } else if w < 640 || size_status {
-                (w - 212).max(100)
+                (w - 212 - mascot).max(100)
             } else {
-                (w - 520).max(100)
+                (w - 520 - mascot).max(100)
             },
             30,
         ),
@@ -694,6 +789,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         }
         m.hits.retain(|hit| hit.rect.h > 0);
         p.rect(r(left - 4, top, width + 8, LIST_HEADER), c.background);
+        let columns = crate::list_columns::Layout::new(width, crate::list_columns::Profile::Single);
         crate::sort_controls::paint(
             p,
             r(left, top, width, 26),
@@ -705,6 +801,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                 generation: m.generation,
                 pane: None,
                 query: &m.query,
+                columns: Some(&columns),
             },
         );
         y += m.order.len() as i32 * 38;
@@ -1403,6 +1500,16 @@ fn row(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
                 true,
             );
         }
+    }
+    if let Some(cell) = columns.kind {
+        p.text(
+            r(x + cell.x, y, cell.w, 38),
+            &kind_label(e.is_dir(), &path),
+            11,
+            c.dark_foreground,
+            false,
+            true,
+        );
     }
     hit(m, rect, Action::Entry(i));
     m.visible.push(i);

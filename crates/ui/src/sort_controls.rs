@@ -10,6 +10,9 @@ pub struct Header<'a> {
     pub generation: u64,
     pub pane: Option<(u64, u64)>,
     pub query: &'a str,
+    /// Row column layout; when every optional cell is visible the header
+    /// cells line up with the row cells beneath them.
+    pub columns: Option<&'a crate::list_columns::Layout>,
 }
 pub fn paint(
     p: &mut dyn Painter,
@@ -30,15 +33,31 @@ pub fn paint(
         80
     };
     let widths = [(area.w - 3 * side - 3 * gap).max(0), side, side, side];
+    let mut spans = [(0, 0); 4];
     let mut x = area.x;
-    for ((sort, icon, title), width) in [
+    for (span, width) in spans.iter_mut().zip(widths) {
+        *span = (x, width);
+        x += width + gap;
+    }
+    if let Some(l) = header.columns
+        && let (Some(size), Some(date), Some(kind)) = (l.size, l.date, l.kind)
+    {
+        spans = [
+            (area.x, l.name.x + l.name.w),
+            (area.x + size.x, size.w),
+            (area.x + date.x, date.w),
+            (area.x + kind.x, kind.w),
+        ];
+    }
+    let compact = compact && header.columns.is_none_or(|l| l.kind.is_none());
+    for ((sort, icon, title), (x, width)) in [
         (Sort::Name, "", "NOMBRE"),
         (Sort::Size, "", "TAMAÑO"),
         (Sort::Modified, "", "FECHA"),
         (Sort::Type, "\u{f15b}", "TIPO"),
     ]
     .into_iter()
-    .zip(widths)
+    .zip(spans)
     {
         if width <= 0 || area.h <= 0 {
             continue;
@@ -98,6 +117,5 @@ pub fn paint(
             action,
             generation: header.generation,
         });
-        x += width + gap;
     }
 }

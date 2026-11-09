@@ -377,6 +377,17 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
             12,
             false,
         );
+        if matches!(m.space_map.view(), View::Loading) {
+            let size = 72.min(body.w).min((body.y + body.h - map_y - 60).max(0));
+            let pointer = m.pointer;
+            m.omi.paint(
+                p,
+                Rect::new(body.x + (body.w - size) / 2, map_y + 60, size, size),
+                c.accent,
+                pointer,
+                std::time::Instant::now(),
+            );
+        }
         return;
     };
     let geometry_changed = m.space_geometry.prepare(

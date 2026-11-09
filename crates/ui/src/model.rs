@@ -663,6 +663,10 @@ pub struct Model {
     pub hits: Vec<Hit>,
     pub visible: Vec<usize>,
     pub hovered: Option<usize>,
+    /// Last pointer position over the canvas (window coordinates).
+    pub pointer: Option<(i32, i32)>,
+    /// The mascot shown while Files is busy.
+    pub omi: crate::omi::Omi,
     pub worker: Worker,
     pub loaded: bool,
     pub error: String,
@@ -886,6 +890,8 @@ impl Model {
             hits: Vec::new(),
             visible: Vec::new(),
             hovered: None,
+            pointer: None,
+            omi: crate::omi::Omi::default(),
             worker,
             loaded: false,
             error: String::new(),
@@ -1365,7 +1371,21 @@ impl Model {
     pub fn media_probe_stopped(&self) -> bool {
         self.media_guard.stopped()
     }
+    /// True while Files is doing work the user waits for: loading a folder,
+    /// measuring Space, copying, running a file operation or searching.
+    pub fn busy(&self) -> bool {
+        !self.loaded
+            || matches!(self.space_map.view(), crate::space_map_state::View::Loading)
+            || self.copy_busy()
+            || self.mutations.busy
+            || self.search.searching_current()
+    }
     pub fn pump(&mut self) -> bool {
+        let busy = self.busy();
+        let mascot = self.omi.tick(std::time::Instant::now(), busy, self.pointer);
+        self.pump_jobs() || mascot
+    }
+    fn pump_jobs(&mut self) -> bool {
         let deleted = self.pump_delete() | self.pump_open_with() | self.pump_devices();
         if let Some((id, control)) = &self.archive_preparing
             && (self.closing

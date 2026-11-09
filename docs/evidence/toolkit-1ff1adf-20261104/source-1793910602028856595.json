@@ -1,0 +1,57 @@
+{
+  "functional_gate": "PASS",
+  "label": "source",
+  "binary_sha256": "d5742176b75c1eaf7bf1e9965745c42109c1587c68b4dc5e4fd69b578f3e1817",
+  "helper_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+  "html_helper_sha256": null,
+  "backend": "x11",
+  "method": "toolkit popup fixture, tooltip::show probe, framebuffer captures; no OS input",
+  "sessions": {
+    "on": {
+      "tooltip_text": "Preferencias",
+      "tooltip_rect": [
+        753,
+        50,
+        106,
+        29
+      ],
+      "tooltip_painted": true,
+      "menu_rect": [
+        496,
+        48,
+        330,
+        456
+      ],
+      "early_differs_from_final": true
+    },
+    "off": {
+      "tooltip_text": "Preferencias",
+      "tooltip_rect": [
+        753,
+        50,
+        106,
+        29
+      ],
+      "tooltip_painted": true,
+      "menu_rect": [
+        496,
+        48,
+        330,
+        456
+      ],
+      "early_differs_from_final": false
+    }
+  },
+  "captures": [
+    "/home/node/Work/files/docs/evidence/toolkit-1ff1adf-20261104/source-on-tooltip-1793910602892852050.png",
+    "/home/node/Work/files/docs/evidence/toolkit-1ff1adf-20261104/source-on-no-tooltip-1793910603278650404.png",
+    "/home/node/Work/files/docs/evidence/toolkit-1ff1adf-20261104/source-on-menu-early-1793910603364172736.png",
+    "/home/node/Work/files/docs/evidence/toolkit-1ff1adf-20261104/source-on-menu-final-1793910604039725752.png",
+    "/home/node/Work/files/docs/evidence/toolkit-1ff1adf-20261104/source-off-tooltip-1793910605033047083.png",
+    "/home/node/Work/files/docs/evidence/toolkit-1ff1adf-20261104/source-off-no-tooltip-1793910605418764445.png",
+    "/home/node/Work/files/docs/evidence/toolkit-1ff1adf-20261104/source-off-menu-early-1793910605504446087.png",
+    "/home/node/Work/files/docs/evidence/toolkit-1ff1adf-20261104/source-off-menu-final-1793910606179644016.png"
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED"
+}

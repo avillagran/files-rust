@@ -1,0 +1,36 @@
+{
+  "functional_gate": "PASS",
+  "label": "cbc",
+  "binary_sha256": "95600f0976a77c4aecd007807291fe5cceea2811bec2a0b92b920b93b2f1d17e",
+  "helper_sha256": "77eea77e67016edbccd93395e8e75099128ed312e9dd6d6dd60df50395a0a241",
+  "html_helper_sha256": "c89088c3028bc1f9a692521f923c503354d5c5e1445da365b393381218b98758",
+  "method": "private nested Hyprland on a hidden special workspace; virtual pointer + wtype on the nested socket; nested clipboard only",
+  "checks": {
+    "empty_selection_keeps_clipboard": "previo",
+    "double_click_word": "segunda",
+    "triple_click_line": "segunda línea con más texto aquí\n",
+    "drag_ctrl_c": "primera línea del archivo de prueba\nsegunda línea",
+    "copy_button_after_hover": "primera",
+    "notices": [
+      "FILES_PREVIEW_COPY bytes=0 notice=Nada seleccionado: arrastra, doble clic (palabra), triple clic (línea) o Ctrl+A",
+      "FILES_PREVIEW_COPY bytes=7 notice=Copiado: 7 caracteres",
+      "FILES_PREVIEW_COPY bytes=36 notice=Copiado: 33 caracteres",
+      "FILES_PREVIEW_COPY bytes=51 notice=Copiado: 49 caracteres",
+      "FILES_PREVIEW_COPY bytes=7 notice=Copiado: 7 caracteres"
+    ]
+  },
+  "captures": [
+    "/home/node/Work/files/docs/evidence/preview-copy-20261105/cbc-empty-selection-notice-1794006153226300896.png",
+    "/home/node/Work/files/docs/evidence/preview-copy-20261105/cbc-copied-notice-1794006157664532490.png"
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "3609644"
+    ]
+  },
+  "nested_stopped": true
+}

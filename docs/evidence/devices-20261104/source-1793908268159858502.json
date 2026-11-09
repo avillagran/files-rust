@@ -1,0 +1,22 @@
+{
+  "functional_gate": "PASS",
+  "label": "source",
+  "binary_sha256": "293b3a3e55a0bbee23ada735d65ed08b2378c611c3396f7353ca4ac8002101be",
+  "helper_sha256": "1640d5f8597d024f9cb73143d5490e8d58e03a0e4f33997455d01b31729c827a",
+  "html_helper_sha256": null,
+  "method": "fixture lsblk JSON + recorder udisksctl; real window; no disk touched",
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "checks": {
+    "mount_then_open": "/home/node/.cache/files-test/devices-qac_8ptm/mnt/DATOS",
+    "bookmark_in_sidebar": true,
+    "eject": [
+      "unmount -b /dev/sdz1 --no-user-interaction",
+      "power-off -b /dev/sdz --no-user-interaction"
+    ]
+  },
+  "captures": [
+    "/home/node/Work/files/docs/evidence/devices-20261104/source-rail-devices-1793908268313575792.png",
+    "/home/node/Work/files/docs/evidence/devices-20261104/source-after-eject-1793908268651834594.png"
+  ]
+}

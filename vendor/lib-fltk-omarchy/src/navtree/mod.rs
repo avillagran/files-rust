@@ -1943,14 +1943,22 @@ impl NavTree {
                         self.toggle_id(id);
                         return;
                     }
-                    self.activate(id);
                     if self.st.borrow().reorder != Reorder::Off {
-                        self.st.borrow_mut().drag = Some(Drag {
+                        // With reordering on, a press may start a drag:
+                        // activation waits for a release that did not drag,
+                        // so dragging a row never navigates to it.
+                        let mut st = self.st.borrow_mut();
+                        st.cursor = Some(id);
+                        st.drag = Some(Drag {
                             id,
                             x0: ex,
                             y0: ey,
                             active: false,
                         });
+                        drop(st);
+                        self.redraw_all();
+                    } else {
+                        self.activate(id);
                     }
                 }
             },
@@ -2090,9 +2098,14 @@ impl NavTree {
         }
         let drag = self.st.borrow_mut().drag.take();
         let spot = self.st.borrow_mut().spot.take();
-        let Some(d) = drag.filter(|d| d.active) else {
+        let Some(d) = drag else {
             return false;
         };
+        if !d.active {
+            // A press that never moved past the drag threshold is a click.
+            self.activate(d.id);
+            return true;
+        }
         self.redraw_all();
         let Some((tid, place)) = spot else {
             return true;

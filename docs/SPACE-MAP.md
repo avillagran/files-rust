@@ -59,7 +59,7 @@ it is opened. It only retains results/names of immediate children:
 
 An uninterruptible FS syscall can delay kill/reap; the cooperative bound is not
 presented as a hard deadline for an offline mount. A single job is kept,
-without piling up children/threads after repeated navigation. The JSON protocol parser requires
+without piling up children after repeated navigation; its walk threads end with each subtree. The JSON protocol parser requires
 a UTF-8 root path; a visible error for a non-UTF-8 root, while raw child names are accepted.
 Scanner adapters for other OSes are explicitly pending. The bounds
 on names/wire/FD/objects are not equivalent to total PSS nor to a P09 LRU cache.

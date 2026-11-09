@@ -1,0 +1,76 @@
+{
+  "functional_gate": "FAIL",
+  "label": "control",
+  "binary_sha256": "3310acf6bbc55391b457a7724a5e35c7ba6597993b7f5b382f1b7fe5bd6a4bf5",
+  "method": "private nested Hyprland on a hidden special workspace; real Wayland DnD from a Files listing to another Files window's Sidebar row with the virtual pointer",
+  "checks": {
+    "drag": {
+      "from": [
+        160,
+        149
+      ],
+      "to": [
+        580,
+        240
+      ],
+      "row": "place:/home/node/.cache/files-test/sidebar-drop-7887p69b/home/Documents"
+    },
+    "target_log_tail": [
+      "FILES_TOOLKIT_SIDEBAR_FORM open=false destination= names=0 message=None"
+    ],
+    "logs": {
+      "source": [],
+      "target": []
+    }
+  },
+  "captures": [
+    "/home/node/Work/files/docs/evidence/sidebar-drop-20261105/control-target-before-1793911095889809192.png",
+    "/home/node/Work/files/docs/evidence/sidebar-drop-20261105/control-source-after-drag-1793911100240235696.png"
+  ],
+  "resource_gate": "NOT_MEASURED",
+  "startup_gate": "NOT_MEASURED",
+  "parent_socket": "wayland-1",
+  "nested": {
+    "socket": "wayland-2",
+    "pid": [
+      "836462"
+    ]
+  },
+  "nested_extent": [
+    550,
+    367
+  ],
+  "dispatch": [
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+  ],
+  "windows": {
+    "source": [
+      [
+        10,
+        10
+      ],
+      [
+        700,
+        440
+      ]
+    ],
+    "target": [
+      [
+        330,
+        40
+      ],
+      [
+        700,
+        440
+      ]
+    ]
+  },
+  "onto": "body",
+  "error": "AssertionError('no copy review in the target window')",
+  "nested_stopped": true
+}
