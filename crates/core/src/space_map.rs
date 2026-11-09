@@ -11,6 +11,11 @@ pub const MAX_NAME_BYTES: usize = 4096;
 pub const MAX_NAMES_BYTES: usize = 256 * 1024;
 pub const MAX_ERROR_BYTES: usize = 512;
 pub const MAX_ERRORS_BYTES: usize = 64 * 1024;
+/// Entries one Espacio scan may visit. A complete scan of a large home folder
+/// needs millions; memory stays bounded by depth, not by entry count.
+pub const MAX_VISITED: u64 = 100_000_000;
+/// Wall-clock budget of one Espacio scan, enforced by the helper itself.
+pub const MAX_SCAN_SECONDS: u64 = 600;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum NodeKind {
@@ -118,7 +123,7 @@ pub fn validate_report(report: &SpaceReport) -> Result<(), String> {
     let mut observed = 0u64;
     let mut counted = 0u64;
     let mut errors = report.reason.as_ref().map_or(0, String::len);
-    if errors > MAX_ERROR_BYTES || report.visited > 1_000_000 {
+    if errors > MAX_ERROR_BYTES || report.visited > MAX_VISITED {
         return Err("Informe de espacio fuera de sus límites".into());
     }
     let mut names = std::collections::HashSet::with_capacity(report.nodes.len());

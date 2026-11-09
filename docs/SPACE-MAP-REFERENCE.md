@@ -22,9 +22,12 @@ hiding later names and direct-file measurements. It now gathers bounded root
 metadata first, then shares the remaining cooperative time and visit budgets
 between admitted directories. Only one depth-bounded walk is active. Root
 omission knowledge is independent of whether individual subtrees complete.
-The shared deadline, 1,000,000 visits, 2,048 nodes and aggregate metadata caps
-remain; per-folder shares can finish with unused global budget. This is a
-fairness change, not a claim of faster complete scans.
+The shared deadline, 100,000,000 visits, 2,048 nodes and aggregate metadata caps
+remain. A subtree stopped only by its fair share is measured again from scratch
+after all its siblings, with every remaining visit and second, so unused budget
+completes it instead of leaving it partial (2026-11-09: a home folder whose
+largest child exceeded its share showed only a lower bound). Re-walked entries
+count again in `visited`.
 
 Partial sizes remain lower bounds and are never promoted to exact areas.
 Root-relative descriptor opens still reject final symlinks and verify the

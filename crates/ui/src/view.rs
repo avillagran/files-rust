@@ -1309,8 +1309,21 @@ fn row(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
     let x = rect.x;
     let y = rect.y;
     let path = m.path.join(&e.name);
+    let mut thumbnail_palette = c.clone();
+    thumbnail_palette.background = if m.selected == Some(i) {
+        c.selection
+    } else if m.selection.contains(&i) || m.hovered == Some(i) {
+        c.lighter_background
+    } else {
+        c.background
+    };
     if e.is_dir() {
         folder(p, x + 8, y + 4, c.blue);
+    } else if m
+        .thumbnails
+        .paint(p, &path, r(x + 6, y + 3, 32, 32), &thumbnail_palette)
+    {
+        // The verified thumbnail replaces the extension badge.
     } else {
         let bc = badge_color(m, &path);
         p.rounded_rect(r(x + 8, y + 5, 28, 28), m.badge_radius, bc);
@@ -2788,6 +2801,27 @@ mod pinned_list_header_tests {
             .collect();
         m.rebuild();
         m
+    }
+    #[test]
+    fn list_and_groups_rows_ask_for_thumbnails_of_visible_images() {
+        for (name, view) in [("list", View::List), ("groups", View::Groups)] {
+            let mut m = model();
+            m.view = view;
+            m.show_thumbnails = true;
+            m.media_visible = true;
+            m.inspector = false;
+            for (i, e) in m.entries.iter_mut().enumerate() {
+                e.name = format!("photo-{i:03}.png").into();
+            }
+            m.rebuild();
+            let mut p = Recorder::default();
+            paint(&mut p, &mut m, 1000, 650);
+            m.visible_generation = m.generation;
+            m.update_thumbnail_demand();
+            let images = m.visible.len().min(crate::thumbnail_cache::MAX_ENTRIES);
+            assert!(images > 0, "{name}");
+            assert_eq!(m.thumbnails.count(), images, "{name}");
+        }
     }
     #[test]
     fn list_header_stays_at_viewport_top_and_owns_its_hits_while_scrolled() {

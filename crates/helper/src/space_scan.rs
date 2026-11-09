@@ -11,8 +11,8 @@
 //! children: Some(0) requires EOF on the root stream, even if a listed subtree
 //! was partial. None is used whenever enumeration stopped before proving EOF.
 use files_core::space_map::{
-    MAX_ERROR_BYTES, MAX_ERRORS_BYTES, MAX_NAME_BYTES, MAX_NAMES_BYTES, MAX_NODES, NodeKind,
-    NodeStatus, SpaceNode, SpaceReport,
+    MAX_ERROR_BYTES, MAX_ERRORS_BYTES, MAX_NAME_BYTES, MAX_NAMES_BYTES, MAX_NODES,
+    MAX_SCAN_SECONDS, MAX_VISITED, NodeKind, NodeStatus, SpaceNode, SpaceReport,
 };
 use std::{
     path::Path,
@@ -30,9 +30,9 @@ struct Limits {
 impl Default for Limits {
     fn default() -> Self {
         Self {
-            visited: 1_000_000,
+            visited: MAX_VISITED,
             depth: 128,
-            elapsed: Duration::from_secs(15),
+            elapsed: Duration::from_secs(MAX_SCAN_SECONDS),
             nodes: MAX_NODES,
             names: MAX_NAMES_BYTES,
             errors: MAX_ERRORS_BYTES,
@@ -449,7 +449,7 @@ mod platform {
                     )
                 {
                     issue = Issue::io(
-                        "Medición parcial para repartir el presupuesto entre carpetas",
+                        SHARED_TURN,
                         io::Error::other("Las demás carpetas conservan su turno"),
                     );
                 }
@@ -457,6 +457,8 @@ mod platform {
             }
         }
     }
+    /// A subtree stopped only by its fair share; it is retried after its siblings.
+    const SHARED_TURN: &str = "Medición parcial para repartir el presupuesto entre carpetas";
     fn reason(report: &mut SpaceReport, issue: &Issue) {
         report.complete = false;
         if report.reason.is_none() {
@@ -467,9 +469,9 @@ mod platform {
         }
     }
     pub(super) fn scan(path: &Path, mut limits: Limits) -> Result<SpaceReport, String> {
-        limits.visited = limits.visited.min(1_000_000);
+        limits.visited = limits.visited.min(MAX_VISITED);
         limits.depth = limits.depth.min(128);
-        limits.elapsed = limits.elapsed.min(Duration::from_secs(15));
+        limits.elapsed = limits.elapsed.min(Duration::from_secs(MAX_SCAN_SECONDS));
         limits.nodes = limits.nodes.min(MAX_NODES);
         limits.names = limits.names.min(MAX_NAMES_BYTES);
         limits.errors = limits.errors.min(MAX_ERRORS_BYTES);
@@ -570,6 +572,13 @@ mod platform {
             }
         }
         let directories = pending.len();
+        // First pass: each subtree gets a fair share so a large one cannot hide
+        // its later siblings. Second pass: subtrees stopped only by that share
+        // are measured again from scratch with everything that remains, so a
+        // scan with enough budget is complete. Re-walked entries count again
+        // in `visited`, which is a cost, not a population.
+        let mut retry = Vec::new();
+        let mut measured = Vec::with_capacity(directories);
         for (rank, (index, expected)) in pending.iter().enumerate() {
             let issue = measure_directory(
                 root.fd(),
@@ -578,6 +587,23 @@ mod platform {
                 &mut budget,
                 directories - rank,
             );
+            match issue {
+                Some(issue) if issue.reason == SHARED_TURN => retry.push((*index, *expected)),
+                other => measured.push((*index, other)),
+            }
+        }
+        for (index, expected) in &retry {
+            let issue = measure_directory(
+                root.fd(),
+                &mut report.nodes[*index],
+                expected,
+                &mut budget,
+                1,
+            );
+            measured.push((*index, issue));
+        }
+        for (index, issue) in measured {
+            let index = &index;
             if let Some(issue) = issue {
                 reason(&mut report, &issue);
                 report.nodes[*index].error = budget.error(&issue);
@@ -791,6 +817,35 @@ mod platform {
             assert_eq!(child(b"large").status, NodeStatus::Partial);
             assert_eq!(child(b"large").bytes, None);
             assert!(child(b"large").observed_bytes > 0);
+        }
+        #[test]
+        fn subtree_stopped_by_its_share_is_completed_when_budget_remains() {
+            let f = Fixture::new();
+            fs::create_dir(f.0.join("large")).unwrap();
+            for index in 0..20 {
+                fs::write(f.0.join("large").join(index.to_string()), [1u8]).unwrap();
+            }
+            for name in ["a", "b", "c", "d"] {
+                fs::create_dir(f.0.join(name)).unwrap();
+                fs::write(f.0.join(name).join("data"), [2u8; 3]).unwrap();
+            }
+            // Any enumeration order gives "large" at most 17 visits in the
+            // first pass; the retry has room for all 20 of its entries.
+            let report = scan(
+                &f.0,
+                Limits {
+                    visited: 60,
+                    ..Limits::default()
+                },
+            )
+            .unwrap();
+            files_core::space_map::validate_report(&report).unwrap();
+            assert!(report.complete, "{:?}", report.reason);
+            let child = |name: &[u8]| report.nodes.iter().find(|n| n.name == name).unwrap();
+            assert_eq!(child(b"large").status, NodeStatus::Complete);
+            assert_eq!(child(b"large").bytes, Some(20));
+            assert_eq!(child(b"large").files, 20);
+            assert_eq!(report.total_bytes, 32);
         }
         #[test]
         fn name_and_node_caps_stop_without_claiming_zero_omissions() {

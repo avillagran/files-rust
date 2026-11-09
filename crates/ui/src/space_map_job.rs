@@ -18,7 +18,8 @@ use std::{
 };
 const MAX_REQUEST: usize = 64 * 1024;
 const MAX_RESPONSE: usize = 4 * 1024 * 1024;
-const TIMEOUT: Duration = Duration::from_secs(20);
+// The helper stops itself at its own budget; this only reaps a stuck helper.
+const TIMEOUT: Duration = Duration::from_secs(files_core::space_map::MAX_SCAN_SECONDS + 15);
 const MAX_DIAGNOSTIC: usize = 1024;
 #[cfg(all(test, target_os = "linux"))]
 thread_local! {

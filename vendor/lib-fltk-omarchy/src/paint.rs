@@ -218,8 +218,32 @@ pub fn elide(s: &str, max_w: i32) -> String {
 }
 
 /// A glyph centered in a box (Nerd Font icons).
+///
+/// The ink, not the advance, is centered: Nerd Font icons often advance by one
+/// text cell while their outline is wider, so advance centering leaves every
+/// icon sharing a left edge and wide ones visibly off to the right.
 pub fn glyph(g: &str, x: i32, y: i32, w: i32, h: i32, size: i32, color: Rgb) {
-    text(g, x, y, w, h, size, false, color, Align::Center);
+    text(g, x + ink_offset(g, size), y, w, h, size, false, color, Align::Center);
+}
+
+/// Horizontal shift that moves `g`'s ink center onto its advance center.
+fn ink_offset(g: &str, size: i32) -> i32 {
+    if g.is_empty() {
+        return 0;
+    }
+    draw::set_font(font(false), size);
+    let advance = draw::width(g);
+    let (ink_x, _, ink_w, _) = draw::text_extents(g);
+    if ink_w <= 0 || !advance.is_finite() {
+        return 0;
+    }
+    // Centered text starts at (box - advance) / 2; its ink spans
+    // ink_x..ink_x + ink_w from there.
+    ink_center_shift(advance, ink_x, ink_w)
+}
+
+fn ink_center_shift(advance: f64, ink_x: i32, ink_w: i32) -> i32 {
+    ((advance - f64::from(ink_w)) / 2.0 - f64::from(ink_x)).round() as i32
 }
 
 /// FLTK treats '@' as a symbol prefix in labels; draw it literally.
@@ -243,5 +267,26 @@ pub fn alpha_fill(x: i32, y: i32, w: i32, h: i32, color: Rgb, alpha: f64) {
     if let Ok(mut img) = fltk::image::RgbImage::new(&[color.r(), color.g(), color.b(), a], 1, 1, fltk::enums::ColorDepth::Rgba8) {
         img.scale(w, h, false, true);
         img.draw(x, y, w, h);
+    }
+}
+
+#[cfg(test)]
+mod ink_tests {
+    use super::ink_center_shift;
+
+    #[test]
+    fn wide_icon_overflowing_its_cell_moves_left_to_center_its_ink() {
+        // One 10 px cell of advance, 16 px of outline starting at the origin.
+        assert_eq!(ink_center_shift(10.0, 0, 16), -3);
+    }
+
+    #[test]
+    fn ink_already_centered_in_its_advance_stays_put() {
+        assert_eq!(ink_center_shift(16.0, 2, 12), 0);
+    }
+
+    #[test]
+    fn ink_with_a_left_bearing_is_pulled_back() {
+        assert_eq!(ink_center_shift(14.0, 4, 10), -2);
     }
 }

@@ -656,7 +656,14 @@ mod tests {
         ));
         assert_eq!(
             labels(&menu(&m, &rail, usb)),
-            ["Abrir", "Abrir en pestaña nueva", "Desmontar", "Expulsar"]
+            // Devices reorder among themselves since the persistent sidebar order.
+            [
+                "Abrir",
+                "Abrir en pestaña nueva",
+                "Desmontar",
+                "Expulsar",
+                "Mover abajo"
+            ]
         );
         assert!((rail.items[usb].usage.unwrap() - 0.6).abs() < 1e-9);
         let datos = at(&crate::sidebar_order::path_key(
@@ -666,7 +673,7 @@ mod tests {
         assert!(rail.items[datos].dimmed && rail.items[datos].secondary_icon.is_empty());
         assert_eq!(
             labels(&menu(&m, &rail, datos)),
-            ["Montar y abrir", "Montar"]
+            ["Montar y abrir", "Montar", "Mover arriba"]
         );
         assert_eq!(labels(&menu(&m, &rail, at("trash"))), ["Abrir Papelera"]);
         assert!(menu(&m, &rail, at("h:devices")).is_empty());

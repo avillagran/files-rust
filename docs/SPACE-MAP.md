@@ -44,7 +44,9 @@ it is opened. It only retains results/names of immediate children:
 
 - 2048 nodes, name 4096 B, names in total 256 KiB; diagnostics 512 B/node and 64 KiB
   in total (including the report's reason), before cloning them.
-- 1M observed entries, depth 128 and 15 s cooperative. Incomplete folders/files
+- 100M visited entries, depth 128 and 600 s cooperative (the UI reaps a stuck
+  helper 15 s later). Memory is bounded by depth, not entry count, so a large
+  home folder scans completely. Incomplete folders/files
   never declare exact bytes. Unknown omissions are None,
   not a made-up zero; Some(0) requires EOF of the root enumeration.
 - Request 64 KiB, response 4 MiB, writer/reader bounded before growing the buffer.

@@ -1247,7 +1247,9 @@ impl Model {
         {
             indices.push(i);
         }
-        if self.view == View::Grid && self.visible_generation == self.generation {
+        if matches!(self.view, View::Grid | View::List | View::Groups)
+            && self.visible_generation == self.generation
+        {
             for &i in &self.visible {
                 if indices.len() == 32 {
                     break;
