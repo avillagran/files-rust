@@ -387,6 +387,9 @@ def main():
             leaf = create_directory(leaf, segment)
         write_private(home / 'A' / 'Nested' / 'inside.txt', b'Private size fixture\n')
         write_private(home / 'A' / 'Nested' / 'thumbnail.png', fixture_png((210, 40, 55)))
+        # List-view thumbnails: images beside the leaf folder, opened last via Alt+Up.
+        for name, color in (('list-red.png', (210, 40, 55)), ('list-green.png', (40, 180, 70))):
+            write_private(leaf.parent / name, fixture_png(color))
         create_directory(base, 'retained-originals')
         for number in range(45):
             folder = create_directory(leaf, f'Folder{number:02d}')
@@ -736,12 +739,32 @@ int main(int argc, char **argv) {
         key('-M', 'alt', '-k', 'Up', '-m', 'alt')
         parent = usability('up-parent', lambda s: s['loaded'] and bytes(s['path']) == os.fsencode(leaf.parent))
         capture('up-parent')
+        def list_thumbnail_pixels(label):
+            capture(label)
+            rgb = subprocess.run(['magick', str(base / (label + '.png')), '-depth', '8', 'rgb:-'],
+                                 stdout=subprocess.PIPE, env=env, check=True, timeout=15).stdout
+            size = subprocess.run(['magick', 'identify', '-format', '%w %h', str(base / (label + '.png'))],
+                                  stdout=subprocess.PIPE, env=env, check=True, timeout=15).stdout.split()
+            w, h = int(size[0]), int(size[1])
+            found = {}
+            for name, color in (('red', (210, 40, 55)), ('green', (40, 180, 70))):
+                found[name] = sum(1 for y in range(90, h - 40) for x in range(56, 130)
+                                  if all(abs(rgb[(y * w + x) * 3 + k] - color[k]) <= 12 for k in range(3)))
+            return found
+        for attempt in range(40):
+            pixels = list_thumbnail_pixels(f'up-parent-list-thumbnails-{attempt:02d}')
+            if pixels['red'] >= 200 and pixels['green'] >= 200:
+                break
+            time.sleep(.25)
+        report['list_thumbnail_pixels'] = pixels
+        assert pixels['red'] >= 200 and pixels['green'] >= 200, pixels
         report['checks'] = ['deep breadcrumb overflow renders and opens; pointer outcome separately reported',
                             'group and list views rendered with bounded private folder fixtures',
                             'native Enter and Backspace restore Folder20 selection',
                             'native Alt+Up navigates to the actual parent',
                             'measured folder sizes carry no summation mark',
-                            'List view reaches Folder20 scrolled; header pinning needs visual review']
+                            'List view reaches Folder20 scrolled; header pinning needs visual review',
+                            'List view paints verified image thumbnails in place of extension badges']
         report['functional_scope'] = 'breadcrumb overflow, group and list folder size presentation'
         report['functional_gate'] = 'PASS'
         report['profile_gate'] = 'PASS'
