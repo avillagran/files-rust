@@ -1520,6 +1520,8 @@ pub fn run_since(start: Instant) -> bool {
             m.rail_width = Some(width.clamp(places_sidebar::RAIL, places_sidebar::WIDE));
             painted_tabs.sync(&mut m, f.w());
             let previous_scroll = m.scroll;
+            m.motion.elsewhere =
+                app::focus().is_some_and(|w| w.as_widget_ptr() == rail_sidebar.as_widget_ptr());
             view::paint(&mut p, &mut m, f.w(), f.h());
             m.toolbar.schedule(f);
             m.clamp_scroll(f.h() - 134);

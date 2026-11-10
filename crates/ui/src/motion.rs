@@ -179,6 +179,9 @@ pub struct State {
     /// The ring was drawn this frame; a later `flush` is a no-op. A view
     /// whose rows sit under a pinned header flushes inside its row clip.
     flushed: bool,
+    /// Keyboard focus is in another widget (the places rail): the list keeps
+    /// its cursor position but does not draw a second focus ring.
+    pub elsewhere: bool,
 }
 
 impl State {
@@ -276,7 +279,9 @@ impl State {
             self.animating = true;
         }
         let screen = Rect::new(at.x - f.scroll.0, at.y - f.scroll.1, at.w, at.h);
-        outline(p, screen, f.radius, 2, f.color);
+        if !self.elsewhere {
+            outline(p, screen, f.radius, 2, f.color);
+        }
     }
 }
 
