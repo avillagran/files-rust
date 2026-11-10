@@ -18,6 +18,8 @@ struct Demand {
     checked: Option<Instant>,
     error: Option<String>,
     failed: Option<Revision>,
+    /// When the bitmap last arrived; drives the fade-in (visible demand only).
+    arrived: Option<Instant>,
 }
 struct Active {
     id: u64,
@@ -37,6 +39,7 @@ pub struct State {
     pub notice: Option<String>,
     viewport: Viewport,
     pub painted: usize,
+    fading: bool,
 }
 impl State {
     pub fn new() -> Self {
@@ -53,7 +56,16 @@ impl State {
             notice: None,
             viewport: Default::default(),
             painted: 0,
+            fading: false,
         }
+    }
+    pub fn begin_paint(&mut self) {
+        self.painted = 0;
+        self.fading = false;
+    }
+    /// True when the last paint still had a thumbnail fading in.
+    pub fn fading(&self) -> bool {
+        self.fading
     }
     pub fn directory_target(&self) -> Option<(u64, &Path)> {
         self.directory
@@ -114,6 +126,7 @@ impl State {
                         checked: None,
                         error: None,
                         failed: None,
+                        arrived: None,
                     }
                 }
             })
@@ -136,6 +149,7 @@ impl State {
         for d in &mut self.demand {
             d.verified = None;
             d.checked = None;
+            d.arrived = None;
         }
     }
     pub fn authorize(&mut self) {
@@ -201,6 +215,7 @@ impl State {
                             d.verified = revision;
                             d.failed = None;
                             d.error = None;
+                            d.arrived = Some(fltk_omarchy::anim::now());
                         }
                         Err(error) => {
                             self.cache.release();
@@ -301,7 +316,27 @@ impl State {
             body.h.clamp(1, 160),
         );
         self.viewport.reset_content();
-        self.viewport.paint_thumbnail(p, bitmap, body, palette);
+        // A bitmap that just arrived fades in from the card colour for
+        // `THUMB_MS`; scrolled-back cached ones are opaque at once.
+        let alpha = match d.arrived {
+            Some(at) if fltk_omarchy::anim::enabled() => {
+                let t = fltk_omarchy::anim::now()
+                    .saturating_duration_since(at)
+                    .as_secs_f64()
+                    * 1000.0
+                    / f64::from(crate::motion::THUMB_MS);
+                fltk_omarchy::anim::Ease::OutCubic.apply(t.clamp(0.0, 1.0))
+            }
+            _ => 1.0,
+        };
+        if alpha < 1.0 {
+            self.fading = true;
+            let mut fade = crate::motion::FadePainter::new(p, palette.background, alpha);
+            self.viewport
+                .paint_thumbnail(&mut fade, bitmap, body, palette);
+        } else {
+            self.viewport.paint_thumbnail(p, bitmap, body, palette);
+        }
         debug_assert!(self.viewport.buffer_capacity() <= crate::thumbnail_cache::SCRATCH_BYTES);
         self.painted += 1;
         true

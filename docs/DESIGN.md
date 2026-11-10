@@ -559,6 +559,40 @@ blocked because it is incompatible with the budget, without holding back other c
   complete HTML preview is declared. Allocator/resources/contrast/packaging and a budget are missing.
   Current phase is integration/captures only: no new measurements until it is lifted.
 
+## Motion (browser views)
+
+"No continuous animations" still holds: every transition below is a short,
+one-shot interpolation (at most 160 ms) that stops by itself, and an idle window
+schedules no redraws. The canvas asks for one more frame after a paint only
+while a transition is mid-flight (`motion::schedule`).
+
+Rules:
+
+1. Input never waits for motion. `selected`, marks and the logical scroll target
+   change synchronously; only painted values animate.
+2. A transition in flight is retargeted, never queued. Holding a key
+   (auto-repeat) keeps pace: a reveal is computed against the glide's destination
+   and re-aims the same `Scroll` slot the wheel uses.
+3. Time comes from `anim::now()` and durations from `crates/ui/src/motion.rs`.
+   With animations disabled (`OMARCHY_FLTK_ANIM=off`, Hyprland animations off)
+   every value is final immediately; tests freeze the clock with `anim::clock`.
+4. State is bounded and per view, not per row: one focus-ring rectangle, one hover
+   tween, one listing tween, and a timestamp per visible thumbnail.
+
+What moves: keyboard reveal glides the scroll (120 ms, `wheel_scroll::glide`);
+the focus ring (accent outline plus bar, distinct from the mark fill) glides
+between rows in 80 ms and jumps when the target was off screen or the list
+changed; a newly hovered row fades in over 60 ms; the first visible listing of a
+navigation fades from 40% to 100% over 120 ms (not on refreshes of the same
+folder); a thumbnail fades in over 120 ms when its bitmap arrives.
+
+A same-folder refresh during a glide first lands the scroll on the glide's
+logical target (`wheel_scroll::settle`), so the restored viewport keeps the
+cursor where the reveal was heading. The ring is drawn once per frame; List
+and Spatial draw it inside their row clip so it never covers a pinned header
+or toolbar. Spatial follows the same rule as the other views: the mark is the
+fill, focus alone is only the ring.
+
 ## Explicit window decision (2026-10-26, 0.0.4)
 
 The user replaces the forced borderless Linux window with Normal by default, managed

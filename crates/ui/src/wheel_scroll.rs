@@ -22,8 +22,32 @@ struct Scope {
 pub struct State {
     scope: Option<Scope>,
     slots: [Scroll; SLOTS],
+    /// Where a keyboard glide is heading, per slot. Only meaningful while the
+    /// slot is running; the model's offset is the painted value.
+    targets: [Option<i32>; SLOTS],
 }
 impl State {
+    pub fn running(&self) -> bool {
+        self.slots.iter().any(Scroll::running)
+    }
+    /// The offset a keyboard reveal must be computed against: the glide's
+    /// destination while one is in flight, otherwise the painted offset.
+    fn logical(&self, slot: usize, painted: i32) -> i32 {
+        match self.targets[slot] {
+            Some(t) if self.slots[slot].running() => t,
+            _ => painted,
+        }
+    }
+    /// Starts (or retargets) a glide from the painted offset to `to`.
+    fn glide(&mut self, slot: usize, from: i32, to: i32, max: i32) -> i32 {
+        if to == self.logical(slot, from) {
+            return from;
+        }
+        self.slots[slot].jump(from as i64);
+        let v = self.slots[slot].wheel(from as i64, (to - from) as f64, max as i64) as i32;
+        self.targets[slot] = Some(to);
+        v
+    }
     pub fn cancel(&mut self) {
         *self = Self::default();
     }
@@ -122,6 +146,7 @@ pub fn wheel(m: &mut Model, x: i32, delta: i32, horizontal: bool, h: i32) {
     };
     let mut state = std::mem::take(&mut m.wheel_scroll);
     state.sync(m);
+    state.targets[slot] = None;
     let value =
         state.slots[slot].wheel(position as i64, delta as f64 * step as f64, max as i64) as i32;
     set(m, slot, value);
@@ -134,6 +159,8 @@ pub fn advance(m: &mut Model, canvas: &Frame) {
     }
 }
 
+/// Moves every running slot to its current painted offset; true while one
+/// still runs. A slot that stops forgets its glide target.
 pub(crate) fn advance_offsets(m: &mut Model, height: i32) -> bool {
     let mut state = std::mem::take(&mut m.wheel_scroll);
     state.sync(m);
@@ -143,6 +170,7 @@ pub(crate) fn advance_offsets(m: &mut Model, height: i32) -> bool {
         // Idle motion must not clamp programmatic restoration against the
         // previous frame's geometry. The model clamps after the current paint.
         if !state.slots[slot].running() {
+            state.targets[slot] = None;
             continue;
         }
         let Some((position, max)) = offset else {
@@ -150,8 +178,186 @@ pub(crate) fn advance_offsets(m: &mut Model, height: i32) -> bool {
         };
         let value = state.slots[slot].position(position as i64, max as i64) as i32;
         set(m, slot, value);
-        running |= state.slots[slot].running();
+        if state.slots[slot].running() {
+            running = true;
+        } else {
+            state.targets[slot] = None;
+        }
     }
     m.wheel_scroll = state;
     running
+}
+
+/// Lands every keyboard glide in flight on its logical target and stops
+/// motion. A same-folder refresh calls this before it captures the viewport,
+/// so the refreshed listing restores where the reveal was heading, not a
+/// mid-glide offset that may leave the cursor partly off screen.
+pub(crate) fn settle(m: &mut Model) {
+    let mut state = std::mem::take(&mut m.wheel_scroll);
+    state.sync(m);
+    for slot in 0..SLOTS {
+        if let Some(target) = state.targets[slot]
+            && state.slots[slot].running()
+        {
+            set(m, slot, target);
+        }
+    }
+    state.cancel();
+    m.wheel_scroll = state;
+}
+
+/// Runs a keyboard reveal and glides the painted offsets to its result.
+///
+/// The reveal is computed against the logical target (the destination of a
+/// glide in flight), so holding a key keeps pace: each repeat retargets the
+/// same `Scroll` slot the wheel uses instead of queueing. The model's offset
+/// stays the painted value; the selection was already updated by the caller.
+/// With animations off the reveal applies instantly, as before.
+pub fn glide(m: &mut Model, h: i32, reveal: impl FnOnce(&mut Model)) {
+    if !anim::enabled() {
+        reveal(m);
+        return;
+    }
+    let mut state = std::mem::take(&mut m.wheel_scroll);
+    state.sync(m);
+    let painted = offsets(m, h);
+    for (slot, o) in painted.iter().enumerate() {
+        if let Some((from, _)) = o {
+            let logical = state.logical(slot, *from);
+            if logical != *from {
+                set(m, slot, logical);
+            }
+        }
+    }
+    reveal(m);
+    let after = offsets(m, h);
+    for slot in 0..SLOTS {
+        if let (Some((from, _)), Some((to, max))) = (painted[slot], after[slot]) {
+            // `glide` starts the slot (`Scroll::wheel`), so it counts as
+            // running and `advance_offsets` steps it.
+            let value = state.glide(slot, from, to, max);
+            set(m, slot, value);
+        }
+    }
+    m.wheel_scroll = state;
+}
+
+/// Same for the Columns horizontal offset, whose reveal runs during paint.
+/// `reveal` maps the logical horizontal offset to the wanted one.
+pub fn glide_horizontal(m: &mut Model, max: i32, reveal: impl FnOnce(i32) -> i32) -> i32 {
+    let painted = m.columns.horizontal;
+    if !anim::enabled() {
+        return reveal(painted);
+    }
+    let mut state = std::mem::take(&mut m.wheel_scroll);
+    state.sync(m);
+    let to = reveal(state.logical(SLOTS - 1, painted)).clamp(0, max);
+    let value = state.glide(SLOTS - 1, painted, to, max);
+    m.wheel_scroll = state;
+    value
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use files_core::listing::{Entry, Kind};
+    use std::time::Duration;
+
+    fn list_model(root: &std::path::Path) -> Model {
+        let mut m = Model::new(root.to_path_buf());
+        m.view = View::List;
+        m.entries = (0..100)
+            .map(|i| Entry {
+                name: format!("item-{i:03}").into(),
+                kind: Kind::File,
+                metadata: None,
+                stat_attempted: false,
+            })
+            .collect();
+        m.rebuild();
+        m.content_height = 100 * 38 + 60;
+        m.selected = Some(7);
+        m.selection = [7].into_iter().collect();
+        m
+    }
+    fn root(tag: &str) -> std::path::PathBuf {
+        let p = std::env::temp_dir().join(format!("files-glide-{tag}-{}", std::process::id()));
+        std::fs::create_dir_all(&p).unwrap();
+        p
+    }
+
+    #[test]
+    fn keyboard_reveal_glides_after_the_selection_is_final() {
+        anim::set_enabled(true);
+        let dir = root("glide");
+        let mut m = list_model(&dir);
+        crate::keyboard_nav::key(&mut m, fltk::enums::Key::Down, false, false, 800, 440);
+        // Input did not wait: the cursor moved, the painted scroll has not yet.
+        assert_eq!(m.selected, Some(8));
+        assert!(m.wheel_scroll.running());
+        assert!(advance_offsets(&mut m, 440));
+        assert!(m.scroll < 66, "still gliding at {}", m.scroll);
+        std::thread::sleep(Duration::from_millis(170));
+        assert!(!advance_offsets(&mut m, 440));
+        assert_eq!(m.scroll, 66);
+        anim::set_enabled(None);
+    }
+
+    #[test]
+    fn held_key_retargets_and_ends_where_the_instant_reveal_ends() {
+        anim::set_enabled(false);
+        let instant_dir = root("instant");
+        let mut instant = list_model(&instant_dir);
+        for _ in 0..20 {
+            crate::keyboard_nav::key(&mut instant, fltk::enums::Key::Down, false, false, 800, 440);
+        }
+        assert!(!instant.wheel_scroll.running());
+        let want = instant.scroll;
+        assert!(want > 0);
+
+        anim::set_enabled(true);
+        let dir = root("held");
+        let mut m = list_model(&dir);
+        let mut last = 0;
+        for _ in 0..20 {
+            crate::keyboard_nav::key(&mut m, fltk::enums::Key::Down, false, false, 800, 440);
+            advance_offsets(&mut m, 440);
+            // Never overshoots the final offset and never goes backwards.
+            assert!(m.scroll <= want && m.scroll >= last);
+            last = m.scroll;
+        }
+        assert_eq!(m.selected, instant.selected);
+        std::thread::sleep(Duration::from_millis(170));
+        advance_offsets(&mut m, 440);
+        assert_eq!(m.scroll, want);
+        anim::set_enabled(None);
+    }
+
+    #[test]
+    fn settle_lands_a_glide_in_flight_on_its_logical_target() {
+        anim::set_enabled(true);
+        let dir = root("settle");
+        let mut m = list_model(&dir);
+        crate::keyboard_nav::key(&mut m, fltk::enums::Key::Down, false, false, 800, 440);
+        assert!(m.wheel_scroll.running());
+        assert!(m.scroll < 66);
+        // A same-folder refresh settles before capturing the viewport.
+        settle(&mut m);
+        assert_eq!(m.scroll, 66);
+        assert!(!m.wheel_scroll.running());
+        assert!(!advance_offsets(&mut m, 440));
+        assert_eq!(m.scroll, 66);
+        anim::set_enabled(None);
+    }
+
+    #[test]
+    fn disabled_animation_reveals_instantly() {
+        anim::set_enabled(false);
+        let dir = root("off");
+        let mut m = list_model(&dir);
+        crate::keyboard_nav::key(&mut m, fltk::enums::Key::Down, false, false, 800, 440);
+        assert_eq!(m.scroll, 66);
+        assert!(!m.wheel_scroll.running());
+        anim::set_enabled(None);
+    }
 }

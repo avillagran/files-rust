@@ -1,5 +1,6 @@
 use crate::{
     model::{Action, Hit, Model, View},
+    motion::{FadePainter, mix},
     painter::{Painter, Rect},
 };
 use files_core::spatial::Position;
@@ -464,16 +465,32 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
         if y + h < top || y >= bottom || x + w < area.x || x >= area.x + area.w {
             continue;
         }
-        let on = m.selection.contains(&i) || m.selected == Some(i);
-        if on || m.hovered == Some(i) {
-            p.rounded_rect(
+        // Marks are the fill; keyboard focus is the ring (it may be on an
+        // unmarked item, e.g. after Ctrl+arrows). The listing fade dims
+        // everything this item draws.
+        let mut fade = FadePainter::new(p, c.background, m.motion.listing_alpha());
+        let p: &mut dyn Painter = &mut fade;
+        let fill = if m.selection.contains(&i) {
+            Some(c.selection)
+        } else if m.hovered == Some(i) {
+            Some(mix(
+                c.lighter_background,
+                c.background,
+                m.motion.hover_mix(i),
+            ))
+        } else {
+            None
+        };
+        if let Some(fill) = fill {
+            p.rounded_rect(rect(x, y, w, h), 8 * m.radius, fill);
+        }
+        if m.selected == Some(i) {
+            m.motion.focus(
+                (m.generation, View::Spatial as u64),
                 rect(x, y, w, h),
+                (m.pan_x.round() as i32, m.scroll),
                 8 * m.radius,
-                if on {
-                    c.selection
-                } else {
-                    c.lighter_background
-                },
+                c.accent,
             );
         }
         let name = files_core::name_label::label(&e.name);
@@ -518,6 +535,8 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
         });
     }
     m.content_height = extent.max(area.h);
+    // The ring stays inside the item area, under the zoom toolbar.
+    m.motion.flush(p);
     p.unclip();
 }
 

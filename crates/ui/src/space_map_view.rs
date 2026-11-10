@@ -1019,6 +1019,7 @@ mod tests {
     }
     #[test]
     fn keyboard_range_focus_and_scroll_follow_map_order_with_shuffled_entry_indices() {
+        fltk_omarchy::anim::set_enabled(false);
         use fltk::enums::Key;
         let (report, entries) = extreme_fixture();
         let mut m = Model::new(std::env::temp_dir());

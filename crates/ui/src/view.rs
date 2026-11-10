@@ -407,10 +407,11 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         }
     }
     m.pump_media_source();
-    m.thumbnails.painted = 0;
+    m.thumbnails.begin_paint();
     m.hits.clear();
     m.visible.clear();
     m.visible_generation = m.generation;
+    m.motion.begin(m.hovered, &m.path, !m.order.is_empty());
     let c = m.palette.clone();
     let rad = m.radius;
     p.rect(r(0, 0, w, h), c.background);
@@ -779,8 +780,12 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         p.clip(r(left - 4, rows_top, width + 8, (vh - LIST_HEADER).max(0)));
         for pos in first..end {
             let i = m.order[pos];
-            row(p, m, i, r(left, y + pos as i32 * 38, width, 38));
+            faded(p, m, |p, m| {
+                row(p, m, i, r(left, y + pos as i32 * 38, width, 38))
+            });
         }
+        // The ring stays under the pinned column header, like the rows.
+        m.motion.flush(p);
         p.unclip();
         for target in &mut m.hits[rows_hits..] {
             let end = target.rect.y + target.rect.h;
@@ -849,7 +854,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                 let tx = left + (pos as i32 % cols) * (cw + 8);
                 let ty = y + (pos as i32 / cols) * 82;
                 if ty + 74 > top && ty < bottom {
-                    tile(p, m, i, r(tx, ty, cw, 74));
+                    faded(p, m, |p, m| tile(p, m, i, r(tx, ty, cw, 74)));
                 }
             }
             y += ((folders as i32 + cols - 1) / cols) * 82 + 6;
@@ -877,11 +882,16 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             let last = ((bottom - y).max(0) as usize).div_ceil(38).min(count);
             for rank in first..last {
                 let i = m.order[start + rank];
-                row(p, m, i, r(left, y + rank as i32 * 38, width, 38));
+                faded(p, m, |p, m| {
+                    row(p, m, i, r(left, y + rank as i32 * 38, width, 38))
+                });
             }
             y += count as i32 * 38 + 10;
         }
     }
+    // Draws the ring queued during the dispatch above (a no-op when the view
+    // already flushed inside its own row clip).
+    m.motion.flush(p);
     if m.order.is_empty() && !m.dual.enabled && !matches!(m.view, View::Columns | View::SpaceMap) {
         p.text(
             r(left, top + 80, width, 30),
@@ -1320,26 +1330,39 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         );
     }
 }
+/// Paints one item while the folder's listing fades in (opaque otherwise).
+fn faded(p: &mut dyn Painter, m: &mut Model, f: impl FnOnce(&mut dyn Painter, &mut Model)) {
+    let alpha = m.motion.listing_alpha();
+    if alpha >= 1.0 {
+        f(p, m);
+    } else {
+        let mut fade = crate::motion::FadePainter::new(p, m.palette.background, alpha);
+        f(&mut fade, m);
+    }
+}
 fn tile(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
     let c = m.palette.clone();
-    let on = m.selection.contains(&i) || m.selected == Some(i);
+    // The mark is the fill; focus alone is only the ring and the bar.
+    let marked = m.selection.contains(&i);
     p.rounded_rect(
         rect,
         11 * m.radius,
-        if on { c.accent } else { c.lighter_background },
-    );
-    let inner = r(rect.x + 1, rect.y + 1, rect.w - 2, rect.h - 2);
-    p.rounded_rect(
-        inner,
-        10 * m.radius,
-        if on {
+        if marked {
             c.selection
         } else {
             c.lighter_background
         },
     );
+    let inner = r(rect.x + 1, rect.y + 1, rect.w - 2, rect.h - 2);
     if m.selected == Some(i) {
         p.rect(r(rect.x + 4, rect.y + 8, 2, (rect.h - 16).max(0)), c.accent);
+        m.motion.focus(
+            (m.generation, m.view as u64),
+            rect,
+            (0, m.scroll),
+            11 * m.radius,
+            c.accent,
+        );
     }
     folder(p, rect.x + 12, rect.y + 22, c.blue);
     p.clip(inner);
@@ -1389,31 +1412,38 @@ fn row(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
     let c = m.palette.clone();
     let columns = crate::list_columns::Layout::new(rect.w, crate::list_columns::Profile::Single);
     let e = &m.entries[i];
-    if m.selection.contains(&i) || m.selected == Some(i) || m.hovered == Some(i) {
-        p.rounded_rect(
-            rect,
-            9 * m.radius,
-            if m.selected == Some(i) {
-                c.selection
-            } else {
-                c.lighter_background
-            },
-        );
+    // The mark is the fill; keyboard focus is the ring and the bar, so a
+    // focused-but-unmarked row (after Ctrl+arrows) no longer looks marked.
+    let fill = if m.selection.contains(&i) {
+        Some(c.selection)
+    } else if m.hovered == Some(i) {
+        Some(crate::motion::mix(
+            c.lighter_background,
+            c.background,
+            m.motion.hover_mix(i),
+        ))
+    } else {
+        None
+    };
+    if let Some(fill) = fill {
+        p.rounded_rect(rect, 9 * m.radius, fill);
     }
     if m.selected == Some(i) {
         p.rect(r(rect.x + 1, rect.y + 4, 2, (rect.h - 8).max(0)), c.accent);
+        m.motion.focus(
+            (m.generation, m.view as u64),
+            rect,
+            (0, m.scroll),
+            9 * m.radius,
+            c.accent,
+        );
     }
     let x = rect.x;
     let y = rect.y;
     let path = m.path.join(&e.name);
     let mut thumbnail_palette = c.clone();
-    thumbnail_palette.background = if m.selected == Some(i) {
-        c.selection
-    } else if m.selection.contains(&i) || m.hovered == Some(i) {
-        c.lighter_background
-    } else {
-        c.background
-    };
+    // The thumbnail matte follows the row fill: focus alone paints none.
+    thumbnail_palette.background = fill.unwrap_or(c.background);
     if e.is_dir() {
         folder(p, x + 8, y + 4, c.blue);
     } else if m

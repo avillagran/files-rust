@@ -637,6 +637,7 @@ pub struct Model {
     pub path_edit: crate::path_edit::State,
     pub scroll: i32,
     pub wheel_scroll: crate::wheel_scroll::State,
+    pub motion: crate::motion::State,
     pub content_height: i32,
     pub group_ends: [usize; 5],
     /// Rail expanded. With the toolkit Sidebar it mirrors the widget.
@@ -873,6 +874,7 @@ impl Model {
             path_edit: Default::default(),
             scroll: 0,
             wheel_scroll: crate::wheel_scroll::State::default(),
+            motion: crate::motion::State::default(),
             content_height: 0,
             group_ends: [0; 5],
             breadcrumbs: Default::default(),
@@ -949,6 +951,7 @@ impl Model {
         self.refresh_selection.is_some() && !self.loaded
     }
     pub fn refresh_current(&mut self) {
+        crate::wheel_scroll::settle(self);
         self.text_paste.invalidate();
         if let Some(job) = &self.du_job {
             job.cancel();

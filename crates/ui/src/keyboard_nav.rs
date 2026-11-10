@@ -261,7 +261,7 @@ pub fn key(m: &mut Model, key: Key, ctrl: bool, shift: bool, w: i32, h: i32) -> 
         }
     }
     m.move_browser_focus(delta, shift, ctrl);
-    crate::view::reveal_selection(m, w, h);
+    crate::wheel_scroll::glide(m, h, |m| crate::view::reveal_selection(m, w, h));
     true
 }
 #[cfg(test)]

@@ -5,7 +5,7 @@ use fltk::{
     image::RgbImage,
     prelude::*,
 };
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct Rect {
     pub x: i32,
     pub y: i32,

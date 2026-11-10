@@ -437,6 +437,7 @@ fn background_menu_keeps_selection_action_results_and_compact_selection_menu_fit
 
 #[test]
 fn keyboard_ranges_focus_only_and_true_empty_navigation_work_in_visible_order() {
+    fltk_omarchy::anim::set_enabled(false);
     use files_core::listing::Kind;
     use fltk::enums::Key;
     let mut f = Fixture::new();

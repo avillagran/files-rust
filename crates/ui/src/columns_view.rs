@@ -64,6 +64,8 @@ fn column(
     generation: u64,
     hits: &mut Vec<Hit>,
     visible: &mut Vec<usize>,
+    motion: &mut crate::motion::State,
+    scroll_x: i32,
 ) {
     let clip = clipped(rect, viewport);
     if clip.w == 0 {
@@ -120,8 +122,8 @@ fn column(
         };
         let y = rows.y + rank as i32 * ROW - list.scroll;
         let r = Rect::new(rect.x + 3, y, rect.w - 6, ROW - 2);
-        let selected = list.selection.contains(&i);
-        if selected {
+        let marked = list.selection.contains(&i);
+        if marked {
             p.rounded_rect(
                 r,
                 4,
@@ -134,6 +136,13 @@ fn column(
         }
         if list.selected == Some(i) && active {
             p.rect(Rect::new(r.x, r.y, 2, r.h), palette.accent);
+            motion.focus(
+                (generation, 1000 + id),
+                r,
+                (scroll_x, list.scroll),
+                4,
+                palette.accent,
+            );
         }
         p.text(
             Rect::new(r.x + 6, y, 22, ROW - 2),
@@ -246,11 +255,16 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
     if let Some(index) = m.columns.reveal.take() {
         let left = index as i32 * WIDTH;
         let right = left + WIDTH;
-        if left < m.columns.horizontal {
-            m.columns.horizontal = left;
-        } else if right > m.columns.horizontal + area.w {
-            m.columns.horizontal = (right - area.w).max(0);
-        }
+        let aw = area.w;
+        m.columns.horizontal = crate::wheel_scroll::glide_horizontal(m, max, |h| {
+            if left < h {
+                left
+            } else if right > h + aw {
+                (right - aw).max(0)
+            } else {
+                h
+            }
+        });
     }
     m.columns.horizontal = m.columns.horizontal.clamp(0, max);
     p.text(
@@ -316,6 +330,8 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
                 m.generation,
                 &mut m.hits,
                 &mut m.visible,
+                &mut m.motion,
+                m.columns.horizontal,
             );
         } else {
             if c.data.loaded {
@@ -362,6 +378,8 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
                 m.generation,
                 &mut m.hits,
                 &mut Vec::new(),
+                &mut m.motion,
+                m.columns.horizontal,
             );
         }
     }

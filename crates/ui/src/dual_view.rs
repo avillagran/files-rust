@@ -46,6 +46,7 @@ fn list(
     sizes: &crate::size_queue::State,
     generation: u64,
     hits: &mut Vec<Hit>,
+    motion: &mut crate::motion::State,
 ) -> Vec<usize> {
     p.rect(
         area,
@@ -173,6 +174,7 @@ fn list(
         }
         if focused == Some(i) && active {
             p.rect(Rect::new(r.x, r.y, 2, r.h), palette.accent);
+            motion.focus((generation, 2000 + id), r, (0, *scroll), 4, palette.accent);
         }
         p.text(
             Rect::new(r.x + 6, y, 22, ROW - 2),
@@ -321,6 +323,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
         &m.sizes,
         m.generation,
         &mut m.hits,
+        &mut m.motion,
     );
     m.content_height = m.order.len() as i32 * ROW + 92;
     if let Some(b) = &mut m.dual.other {
@@ -345,6 +348,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
             &m.sizes,
             m.generation,
             &mut m.hits,
+            &mut m.motion,
         );
         b.request_stats(&visible);
     }
@@ -430,6 +434,7 @@ mod narrow_name_tests {
                     &Default::default(),
                     9,
                     &mut hits,
+                    &mut Default::default(),
                 );
                 assert_eq!(visible, vec![1, 0]);
                 for name in &names {

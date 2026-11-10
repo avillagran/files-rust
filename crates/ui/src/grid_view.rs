@@ -1,7 +1,8 @@
 //! Auto-arranged icon grid, distinct from persistent free-position Spatial.
 //! Only visible rows produce draw commands/hits and bounded thumbnail demand; no UI I/O.
 use crate::{
-    model::{Action, Hit, Model},
+    model::{Action, Hit, Model, View},
+    motion::{FadePainter, mix},
     painter::{Painter, Rect},
 };
 use std::ops::Range;
@@ -158,21 +159,37 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
             (cell.w - 8).max(0),
             (cell.h - 6).max(0),
         );
-        let on = m.selection.contains(&i) || m.selected == Some(i);
-        if on || m.hovered == Some(i) {
-            p.rounded_rect(
-                card,
-                8 * m.radius,
-                if on {
-                    m.palette.selection
-                } else {
-                    m.palette.lighter_background
-                },
-            );
+        // Marks are the fill; keyboard focus is the ring and bar (it may be
+        // on an unmarked tile, e.g. after Ctrl+arrows). The listing fade
+        // dims everything this tile draws, thumbnails included.
+        let mut fade = FadePainter::new(p, m.palette.background, m.motion.listing_alpha());
+        let p: &mut dyn Painter = &mut fade;
+        let on = m.selection.contains(&i);
+        let hover_fill = (m.hovered == Some(i)).then(|| {
+            mix(
+                m.palette.lighter_background,
+                m.palette.background,
+                m.motion.hover_mix(i),
+            )
+        });
+        let fill = if on {
+            Some(m.palette.selection)
+        } else {
+            hover_fill
+        };
+        if let Some(fill) = fill {
+            p.rounded_rect(card, 8 * m.radius, fill);
         }
         if m.selected == Some(i) {
             p.rect(
                 Rect::new(card.x + 3, card.y + 6, 2, (card.h - 12).max(0)),
+                m.palette.accent,
+            );
+            m.motion.focus(
+                (m.generation, View::Grid as u64),
+                card,
+                (0, m.scroll),
+                8 * m.radius,
                 m.palette.accent,
             );
         }
@@ -200,13 +217,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
         let icon_h = (cell.h - 55).max(1);
         let path = m.path.join(&e.name);
         let mut palette = m.palette.clone();
-        palette.background = if on {
-            m.palette.selection
-        } else if m.hovered == Some(i) {
-            m.palette.lighter_background
-        } else {
-            m.palette.background
-        };
+        palette.background = fill.unwrap_or(m.palette.background);
         if !m.thumbnails.paint(
             p,
             &path,

@@ -77,6 +77,7 @@ mod markdown_preview_job;
 mod markdown_render;
 mod media_watch;
 mod model;
+mod motion;
 mod mutation_scene;
 mod mutation_sheet_state;
 mod mutation_sheets;
@@ -674,7 +675,7 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             }
             if key == Key::Insert && !m.editing && !ctrl {
                 m.mark_and_advance();
-                view::reveal_selection(m, w, h);
+                wheel_scroll::glide(m, h, |m| view::reveal_selection(m, w, h));
                 return true;
             }
             if ctrl
@@ -1589,6 +1590,7 @@ pub fn run_since(start: Instant) -> bool {
             toolbar::paint_tooltip(&mut p, &mut m, f.w());
             drawn_size.set((f.w(), f.h()));
             drawn_revision.set(drawn_revision.get().wrapping_add(1));
+            motion::schedule(&m, f);
         }
         if !painted {
             eprintln!("FILES_FIRST_PAINT_US={}", start.elapsed().as_micros());

@@ -728,4 +728,59 @@ mod tests {
             RailKey::ReturnToList
         ));
     }
+
+    #[test]
+    fn escape_leaves_the_focused_row_marked_with_fill_and_ring() {
+        use crate::painter::{Image, Painter, Rect};
+        use files_core::theme::Color;
+        #[derive(Default)]
+        struct Fills(Vec<(Rect, Color)>);
+        impl Painter for Fills {
+            fn rect(&mut self, r: Rect, c: Color) {
+                self.0.push((r, c));
+            }
+            fn rounded_rect(&mut self, r: Rect, _: i32, c: Color) {
+                self.0.push((r, c));
+            }
+            fn text(&mut self, _: Rect, _: &str, _: i32, _: Color, _: bool, _: bool) {}
+            fn image(&mut self, _: Rect, _: &Image<'_>) {}
+            fn clip(&mut self, _: Rect) {}
+            fn unclip(&mut self) {}
+        }
+        fltk_omarchy::anim::set_enabled(false);
+        let mut m = model();
+        listed(&mut m);
+        m.view = View::List;
+        m.selected = Some(1);
+        m.selection = [0, 1, 2].into();
+        let frame = |m: &mut Model| {
+            let mut p = Fills::default();
+            crate::view::paint(&mut p, m, 1000, 650);
+            let (selection, accent) = (m.palette.selection, m.palette.accent);
+            let rows: Vec<i32> =
+                p.0.iter()
+                    .filter(|(r, c)| *c == selection && r.h == 38)
+                    .map(|(r, _)| r.y)
+                    .collect();
+            // The ring's top strip: 2 px of accent across the row.
+            let ring =
+                p.0.iter()
+                    .any(|(r, c)| *c == accent && r.h == 2 && r.w > 100);
+            (rows, ring)
+        };
+        let (marked, ring) = frame(&mut m);
+        assert_eq!(marked.len(), 3);
+        assert!(ring);
+        m.escape_browser();
+        let (marked, ring) = frame(&mut m);
+        // Only the focused row keeps the mark fill, and it still has the ring.
+        assert_eq!(marked.len(), 1);
+        assert!(ring);
+        m.selection.clear();
+        let (marked, ring) = frame(&mut m);
+        // Focus alone: the ring without any mark fill.
+        assert!(marked.is_empty());
+        assert!(ring);
+        fltk_omarchy::anim::set_enabled(None);
+    }
 }
