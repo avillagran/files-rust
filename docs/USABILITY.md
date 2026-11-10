@@ -213,6 +213,7 @@ Ctrl+1..5, Ctrl+I, Ctrl+N, Ctrl+Space, Alt+Down and Ctrl+F are unchanged.
 | Ctrl+Enter / Shift+Enter | Focused folder in a new foreground / background tab; a file opens as with Enter |
 | `/` or `~` | With no filter or edit open, start the location field seeded with that character (`~` alone goes home) |
 | Ctrl+L | Edit the location (whole field selected) |
+| Tab / Shift+Tab in the location field | Complete the last path component to the longest common prefix (folders preferred, folder links count as folders; case-insensitive only when nothing matches exactly; `~` expands; hidden entries only after a typed `.`). A unique folder gets a trailing `/`. Several candidates are listed in the notice line; Tab, Shift+Tab, Up or Down cycle them, Enter accepts the highlighted one (a second Enter navigates) and Esc closes the list before cancelling the edit. One bounded `read_dir` (at most 5000 entries) runs per Tab; the listed folder is answered from its listing; folders on network/FUSE mounts, `file://` and network URIs and the network password prompt are never completed |
 | Esc | Cancel an edit, else clear the filter (back to the top), else shrink a marked batch to the focused row; never resets scroll otherwise |
 | Alt+Left / Alt+Right / Alt+Up, Backspace | History back / forward / parent |
 | Alt+Home | Home folder |

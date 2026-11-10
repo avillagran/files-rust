@@ -14,6 +14,149 @@ pub struct State {
     points: Vec<(usize, f64)>,
     painted: u64,
     pub dragging: bool,
+    /// Open Tab-completion suggestions, if any.
+    pub completion: Option<Completion>,
+}
+/// Most directory entries one Tab completion scans before giving up on the
+/// rest; keeps the read on the UI thread short even in huge folders.
+pub(crate) const COMPLETION_SCAN: usize = 5000;
+/// Most suggestions kept, and most symlinks resolved, per completion.
+const COMPLETION_ITEMS: usize = 256;
+const COMPLETION_LINKS: usize = 64;
+/// Suggestions left by an ambiguous Tab: Up/Down or Tab cycle them.
+#[derive(Debug, Default)]
+pub struct Completion {
+    /// Field text before the completed component (ends with '/' or is empty).
+    base: String,
+    /// Candidate names and whether each browses as a folder.
+    pub items: Vec<(String, bool)>,
+    pub index: Option<usize>,
+    /// The `operation_message` text this completion shows and owns.
+    notice: String,
+}
+impl Completion {
+    fn text(&self, i: usize) -> String {
+        let (name, dir) = &self.items[i];
+        format!("{}{name}{}", self.base, if *dir { "/" } else { "" })
+    }
+    fn render(&self) -> String {
+        let mut out = String::from("Tab ·");
+        for (i, (name, dir)) in self.items.iter().enumerate() {
+            if out.len() > 400 {
+                out.push_str(&format!(" … ({})", self.items.len()));
+                break;
+            }
+            let shown = format!("{name}{}", if *dir { "/" } else { "" });
+            if self.index == Some(i) {
+                out.push_str(&format!(" [{shown}]"));
+            } else {
+                out.push_str(&format!(" {shown}"));
+            }
+        }
+        out
+    }
+}
+/// Splits the field text into the part kept and the last component typed.
+fn split_component(text: &str) -> (&str, &str) {
+    match text.rfind('/') {
+        Some(i) => (&text[..=i], &text[i + 1..]),
+        None => ("", text),
+    }
+}
+fn completion_dir(base: &str, current: &Path) -> PathBuf {
+    if base.is_empty() {
+        current.to_path_buf()
+    } else if let Some(rest) = base.strip_prefix("~/") {
+        files_core::theme::home().join(rest)
+    } else if base.starts_with('/') {
+        PathBuf::from(base)
+    } else {
+        current.join(base)
+    }
+}
+/// One bounded `read_dir`: at most [`COMPLETION_SCAN`] entries, names that are
+/// not UTF-8 skipped, and only matching symlinks resolved (one `stat` each).
+fn read_candidates(dir: &Path, partial: &str) -> std::io::Result<Vec<(String, bool)>> {
+    let lower = partial.to_lowercase();
+    let mut out = Vec::new();
+    let mut links = 0;
+    for item in std::fs::read_dir(dir)?.take(COMPLETION_SCAN) {
+        let Ok(item) = item else { continue };
+        let Ok(name) = item.file_name().into_string() else {
+            continue;
+        };
+        if !name.to_lowercase().starts_with(&lower) {
+            continue;
+        }
+        let folder = match item.file_type() {
+            Ok(t) if t.is_dir() => true,
+            Ok(t) if t.is_symlink() && links < COMPLETION_LINKS => {
+                links += 1;
+                std::fs::metadata(item.path()).is_ok_and(|m| m.is_dir())
+            }
+            _ => false,
+        };
+        out.push((name, folder));
+    }
+    Ok(out)
+}
+/// Names matching the typed component: case-sensitive first, otherwise
+/// case-insensitive; hidden names only when the component starts with '.';
+/// folders only when any folder matches.
+pub(crate) fn completion_matches(
+    names: impl IntoIterator<Item = (String, bool)>,
+    partial: &str,
+) -> Vec<(String, bool)> {
+    let hidden = partial.starts_with('.');
+    let all: Vec<_> = names
+        .into_iter()
+        .filter(|(n, _)| hidden || !n.starts_with('.'))
+        .collect();
+    let mut found: Vec<_> = all
+        .iter()
+        .filter(|(n, _)| n.starts_with(partial))
+        .cloned()
+        .collect();
+    if found.is_empty() {
+        let lower = partial.to_lowercase();
+        found = all
+            .into_iter()
+            .filter(|(n, _)| n.to_lowercase().starts_with(&lower))
+            .collect();
+    }
+    if found.iter().any(|(_, dir)| *dir) {
+        found.retain(|(_, dir)| *dir);
+    }
+    found.sort_by(|a, b| {
+        a.0.to_lowercase()
+            .cmp(&b.0.to_lowercase())
+            .then_with(|| a.0.cmp(&b.0))
+    });
+    found.dedup();
+    found.truncate(COMPLETION_ITEMS);
+    found
+}
+/// Longest prefix shared by every candidate, compared case-insensitively
+/// when the matches were case-insensitive; spelled as the first candidate.
+fn common_prefix(items: &[(String, bool)], insensitive: bool) -> &str {
+    let first = &items[0].0;
+    let mut end = first.len();
+    for (name, _) in &items[1..] {
+        let mut shared = 0;
+        for ((i, a), b) in first.char_indices().zip(name.chars()) {
+            let same = if insensitive {
+                a.to_lowercase().eq(b.to_lowercase())
+            } else {
+                a == b
+            };
+            if !same || i >= end {
+                break;
+            }
+            shared = i + a.len_utf8();
+        }
+        end = end.min(shared);
+    }
+    &first[..end]
 }
 pub enum KeyResult {
     Unhandled,
@@ -126,6 +269,121 @@ pub fn destination(text: &str, current: &Path) -> Result<PathBuf, &'static str> 
     })
 }
 impl Model {
+    fn set_path_text(&mut self, text: &str) {
+        let limit = edit_limit(&self.edit, 0..self.edit.len(), text);
+        if self
+            .path_edit
+            .cursor
+            .insert_bounded(&mut self.edit, text, true, limit)
+            .is_ok()
+        {
+            self.replace_edit = false;
+        }
+    }
+    fn show_completion_notice(&mut self, text: String) {
+        let owned = self
+            .path_edit
+            .completion
+            .as_ref()
+            .map(|c| c.notice.as_str());
+        if self.operation_message.is_none() || self.operation_message.as_deref() == owned {
+            self.operation_message = Some(text.clone());
+        }
+        if let Some(c) = self.path_edit.completion.as_mut() {
+            c.notice = text;
+        }
+    }
+    /// Closes Tab suggestions, removing only the notice they showed.
+    pub fn close_path_completion(&mut self) -> bool {
+        let Some(c) = self.path_edit.completion.take() else {
+            return false;
+        };
+        if self.operation_message.as_deref() == Some(c.notice.as_str()) {
+            self.operation_message = None;
+        }
+        true
+    }
+    /// Tab in the location field: completes the last component like a shell.
+    /// Never runs for the network password prompt, network or file:// URIs,
+    /// catalog prefixes, or folders on network/FUSE mounts not already listed.
+    pub fn complete_path(&mut self, backwards: bool) {
+        if !self.editing || self.network.prompt.is_some() {
+            return;
+        }
+        if let Some(c) = self.path_edit.completion.as_mut()
+            && c.items.len() > 1
+        {
+            let n = c.items.len();
+            let i = match (c.index, backwards) {
+                (None, false) => 0,
+                (None, true) => n - 1,
+                (Some(i), false) => (i + 1) % n,
+                (Some(i), true) => (i + n - 1) % n,
+            };
+            c.index = Some(i);
+            let (text, notice) = (c.text(i), c.render());
+            self.set_path_text(&text);
+            self.show_completion_notice(notice);
+            return;
+        }
+        self.close_path_completion();
+        let text = self.edit.clone();
+        if files_core::network::is_network_uri(&text)
+            || is_uri(&text)
+            || matches!(text.as_bytes().first(), Some(b'>' | b':'))
+            || text.chars().any(char::is_control)
+        {
+            return;
+        }
+        if text == "~" {
+            self.set_path_text("~/");
+            return;
+        }
+        let (base, partial) = split_component(&text);
+        let dir = completion_dir(base, &self.path);
+        let names: Vec<(String, bool)> = if dir == self.path && self.loaded {
+            // Already listed: no filesystem access at all.
+            self.entries
+                .iter()
+                .filter_map(|e| Some((e.name.to_str()?.to_owned(), e.browses_as_dir())))
+                .collect()
+        } else if files_core::network::gvfs_dir().is_some_and(|g| dir.starts_with(g))
+            || !crate::automatic_sizes::background_location(&dir, &self.mounts, false)
+        {
+            self.path_edit.completion = Some(Completion::default());
+            self.show_completion_notice("Tab: sin autocompletar en ubicaciones de red".into());
+            return;
+        } else {
+            read_candidates(&dir, partial).unwrap_or_default()
+        };
+        let found = completion_matches(names, partial);
+        if found.is_empty() {
+            self.path_edit.completion = Some(Completion::default());
+            self.show_completion_notice("Tab: sin coincidencias".into());
+            return;
+        }
+        let base = base.to_owned();
+        if let [(name, dir)] = found.as_slice() {
+            let text = format!("{base}{name}{}", if *dir { "/" } else { "" });
+            self.set_path_text(&text);
+            return;
+        }
+        let insensitive = !found.iter().all(|(n, _)| n.starts_with(partial));
+        let prefix = common_prefix(&found, insensitive);
+        if prefix.len() >= partial.len() && prefix != partial {
+            let text = format!("{base}{prefix}");
+            self.set_path_text(&text);
+        }
+        let c = Completion {
+            base,
+            items: found,
+            index: None,
+            notice: String::new(),
+        };
+        let notice = c.render();
+        self.path_edit.completion = Some(c);
+        self.show_completion_notice(notice);
+    }
     /// Text export only: never decode a presentation label or substitute raw bytes.
     pub(crate) fn copy_path_with(&mut self, sink: impl FnOnce(&str)) {
         let result = (|| {
@@ -173,6 +431,7 @@ impl Model {
         }
     }
     pub fn end_path_edit(&mut self) {
+        self.close_path_completion();
         if self.network.prompt.take().is_some() {
             // A password never outlives its prompt.
             self.edit.clear();
@@ -242,6 +501,7 @@ impl Model {
         }
     }
     pub fn path_input(&mut self, text: &str) -> Result<(), &'static str> {
+        self.close_path_completion();
         let range = if self.replace_edit {
             0..self.edit.len()
         } else {
@@ -259,6 +519,7 @@ impl Model {
     }
     pub fn path_compose(&mut self, text: &str, bytes: usize) -> Result<(), &'static str> {
         self.text_paste.invalidate();
+        self.close_path_completion();
         let range = self
             .path_edit
             .cursor
@@ -282,6 +543,47 @@ impl Model {
             return KeyResult::Unhandled;
         }
         self.text_paste.invalidate();
+        let suggesting = self
+            .path_edit
+            .completion
+            .as_ref()
+            .is_some_and(|c| !c.items.is_empty());
+        match key {
+            Key::Tab if !ctrl => {
+                self.complete_path(shift);
+                return KeyResult::Handled;
+            }
+            Key::Up | Key::Down if suggesting => {
+                self.complete_path(key == Key::Up);
+                return KeyResult::Handled;
+            }
+            Key::Escape if self.close_path_completion() => return KeyResult::Handled,
+            Key::Enter | Key::KPEnter
+                if self
+                    .path_edit
+                    .completion
+                    .as_ref()
+                    .is_some_and(|c| c.index.is_some()) =>
+            {
+                // Accept the highlighted suggestion; a second Enter navigates.
+                self.close_path_completion();
+                return KeyResult::Handled;
+            }
+            Key::Up | Key::Down | Key::PageUp | Key::PageDown | Key::Tab => {}
+            // Pressing a modifier (Shift for Shift+Tab) keeps the suggestions.
+            Key::ShiftL
+            | Key::ShiftR
+            | Key::ControlL
+            | Key::ControlR
+            | Key::AltL
+            | Key::AltR
+            | Key::MetaL
+            | Key::MetaR
+            | Key::CapsLock => {}
+            _ => {
+                self.close_path_completion();
+            }
+        }
         if self.replace_edit {
             self.path_edit.cursor.all(&self.edit);
             self.replace_edit = false;
@@ -682,6 +984,184 @@ mod tests {
         assert!(m.copy_form.is_none());
         m.path_key(Key::Escape, false, false, false);
         assert!(!m.editing);
+    }
+    /// A fresh completion fixture under the private test TMPDIR; retained.
+    fn completion_fixture() -> (PathBuf, Model) {
+        use std::sync::atomic::{AtomicU64, Ordering};
+        static ID: AtomicU64 = AtomicU64::new(0);
+        let root = std::env::temp_dir().join(format!(
+            "files-path-complete-{}-{}",
+            std::process::id(),
+            ID.fetch_add(1, Ordering::Relaxed)
+        ));
+        std::fs::create_dir(&root).unwrap();
+        for dir in [
+            "Documents",
+            "Downloads",
+            "Music",
+            "proj-alpha",
+            "proj-beta",
+            ".hidden",
+        ] {
+            std::fs::create_dir(root.join(dir)).unwrap();
+        }
+        std::fs::write(root.join("Dockerfile"), b"x").unwrap();
+        std::fs::write(root.join("notes.txt"), b"x").unwrap();
+        #[cfg(unix)]
+        std::os::unix::fs::symlink("Music", root.join("tunes")).unwrap();
+        // The model browses a different private folder: completion must read
+        // the typed folder, not the listing.
+        let elsewhere = root.join("Documents");
+        let mut m = Model::new(elsewhere);
+        let (tx, _) = std::sync::mpsc::sync_channel(4);
+        let (_, rx) = std::sync::mpsc::channel();
+        m.aux = crate::aux_io::AuxIo { tx, rx };
+        m.begin_path_edit();
+        (root, m)
+    }
+    fn typed(m: &mut Model, text: &str) {
+        m.path_key(Key::from_char('a'), true, false, false);
+        m.path_input(text).unwrap();
+    }
+    fn tab(m: &mut Model, shift: bool) {
+        assert!(matches!(
+            m.path_key(Key::Tab, false, shift, false),
+            KeyResult::Handled
+        ));
+    }
+    #[test]
+    fn tab_completes_unique_folders_files_case_and_hidden_like_a_shell() {
+        let (root, mut m) = completion_fixture();
+        let base = format!("{}/", root.display());
+        typed(&mut m, &format!("{base}Doc"));
+        tab(&mut m, false);
+        assert_eq!(m.edit, format!("{base}Documents/"));
+        assert!(m.path_edit.completion.is_none());
+        // Case-insensitive only when nothing matches case-sensitively.
+        typed(&mut m, &format!("{base}mus"));
+        tab(&mut m, false);
+        assert_eq!(m.edit, format!("{base}Music/"));
+        // A file completes without a slash when no folder matches.
+        typed(&mut m, &format!("{base}Dockerf"));
+        tab(&mut m, false);
+        assert_eq!(m.edit, format!("{base}Dockerfile"));
+        // A link to a folder completes as a folder.
+        typed(&mut m, &format!("{base}tu"));
+        tab(&mut m, false);
+        assert_eq!(m.edit, format!("{base}tunes/"));
+        // Hidden entries only when the component starts with '.'.
+        typed(&mut m, &format!("{base}hid"));
+        tab(&mut m, false);
+        assert_eq!(m.edit, format!("{base}hid"));
+        assert_eq!(
+            m.operation_message.as_deref(),
+            Some("Tab: sin coincidencias")
+        );
+        typed(&mut m, &format!("{base}.h"));
+        assert!(m.operation_message.is_none(), "typing drops the notice");
+        tab(&mut m, false);
+        assert_eq!(m.edit, format!("{base}.hidden/"));
+        typed(&mut m, "~");
+        tab(&mut m, false);
+        assert_eq!(m.edit, "~/");
+        assert!(m.editing);
+    }
+    #[test]
+    fn ambiguous_tab_extends_prefix_lists_and_cycles_then_enter_accepts() {
+        let (root, mut m) = completion_fixture();
+        let base = format!("{}/", root.display());
+        typed(&mut m, &format!("{base}pr"));
+        tab(&mut m, false);
+        assert_eq!(m.edit, format!("{base}proj-"));
+        let listed = m.operation_message.clone().unwrap();
+        assert!(listed.contains("proj-alpha/") && listed.contains("proj-beta/"));
+        tab(&mut m, false);
+        assert_eq!(m.edit, format!("{base}proj-alpha/"));
+        m.path_key(Key::ShiftL, false, true, false);
+        tab(&mut m, false);
+        assert_eq!(m.edit, format!("{base}proj-beta/"));
+        tab(&mut m, true);
+        assert_eq!(m.edit, format!("{base}proj-alpha/"));
+        m.path_key(Key::Down, false, false, false);
+        assert_eq!(m.edit, format!("{base}proj-beta/"));
+        m.path_key(Key::Up, false, false, false);
+        assert_eq!(m.edit, format!("{base}proj-alpha/"));
+        assert!(
+            m.operation_message
+                .as_deref()
+                .unwrap_or_default()
+                .contains("[proj-alpha/]")
+        );
+        let path = m.path.clone();
+        m.path_key(Key::Enter, false, false, false);
+        assert!(m.editing && m.path_edit.completion.is_none());
+        assert_eq!(m.path, path, "Enter first accepts the suggestion");
+        assert!(m.operation_message.is_none());
+        // Folders are preferred over files sharing the prefix.
+        typed(&mut m, &format!("{base}Do"));
+        tab(&mut m, false);
+        assert_eq!(m.edit, format!("{base}Do"));
+        let items = &m.path_edit.completion.as_ref().unwrap().items;
+        assert_eq!(
+            items,
+            &[
+                ("Documents".to_owned(), true),
+                ("Downloads".to_owned(), true)
+            ]
+        );
+        // Esc closes the suggestions first, then cancels editing.
+        m.path_key(Key::Escape, false, false, false);
+        assert!(m.editing && m.path_edit.completion.is_none());
+        m.path_key(Key::Escape, false, false, false);
+        assert!(!m.editing);
+    }
+    #[test]
+    fn completion_uses_listing_and_never_runs_for_network_or_password() {
+        let (root, mut m) = completion_fixture();
+        // The current folder is answered from the listing, not the disk.
+        m.path = root.clone();
+        m.loaded = true;
+        m.entries = vec![files_core::listing::Entry {
+            name: "only-listed".into(),
+            kind: files_core::listing::Kind::Directory,
+            metadata: None,
+            stat_attempted: false,
+            link: None,
+        }];
+        typed(&mut m, "only");
+        tab(&mut m, false);
+        assert_eq!(m.edit, "only-listed/");
+        typed(&mut m, "smb://host/sha");
+        tab(&mut m, false);
+        assert_eq!(m.edit, "smb://host/sha");
+        typed(&mut m, &format!("file://{}/Doc", root.display()));
+        tab(&mut m, false);
+        assert!(m.edit.ends_with("/Doc") && m.path_edit.completion.is_none());
+        m.network.prompt = Some(crate::network_ui::Prompt {
+            location: files_core::network::parse("smb://host/share").unwrap(),
+        });
+        m.edit = "Doc".into();
+        m.path_edit = State::default();
+        tab(&mut m, false);
+        assert_eq!(m.edit, "Doc");
+        assert!(m.path_edit.completion.is_none());
+    }
+    #[test]
+    fn completion_matching_and_common_prefix_rules() {
+        let names = |v: &[(&str, bool)]| {
+            v.iter()
+                .map(|(n, d)| ((*n).to_owned(), *d))
+                .collect::<Vec<_>>()
+        };
+        let found = completion_matches(
+            names(&[("Alpha", false), ("alps", false), (".al", true)]),
+            "al",
+        );
+        assert_eq!(found, names(&[("alps", false)]));
+        let found = completion_matches(names(&[("Alpha", false), ("ALPS", false)]), "al");
+        assert_eq!(common_prefix(&found, true), "Alp");
+        assert_eq!(split_component("/a/b"), ("/a/", "b"));
+        assert_eq!(split_component("b"), ("", "b"));
     }
     #[test]
     fn ime_replaces_bytes_at_cursor_atomically_and_undo_restores_cursor() {

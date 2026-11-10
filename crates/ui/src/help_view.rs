@@ -59,6 +59,10 @@ pub const ITEMS: &[(&str, &str)] = &[
     ),
     ("Ctrl+L", "Editar ruta: selecciona todo el campo"),
     (
+        "Tab en ruta",
+        "Completar carpeta; repetir o ↑ ↓ recorre opciones, Enter acepta, Esc cierra",
+    ),
+    (
         "/ o ~ en la lista",
         "Editar ruta empezando con ese carácter",
     ),

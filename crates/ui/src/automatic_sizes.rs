@@ -31,7 +31,7 @@ fn reusable(value: Observation, now: SystemTime) -> bool {
     now.duration_since(value.at)
         .is_ok_and(|age| age < REUSE_FOR)
 }
-fn background_location(
+pub(crate) fn background_location(
     path: &Path,
     mounts: &[files_core::places::Mount],
     descendants: bool,
