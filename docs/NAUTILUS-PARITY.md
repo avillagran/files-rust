@@ -23,7 +23,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 2 | Configurable columns and sort by type/owner/permissions/dates | partial | block 5: sort by type; configurable columns and owner/permissions/creation missing | P2 |
 | 3 | Expandable folders in list | no | — (Columns/Miller as an alternative) | P3 |
 | 4 | Tabs, per-tab history | yes | keyed toolkit strip, drag/keyboard/menu reorder and native context/close in a0f1fff/e47cf81; tear-off and native macOS acceptance pending | P2 |
-| 5 | Path bar + Ctrl+L, `/` and `~` | yes | hidden ancestors, Alt+Down and background destinations verified in 74d205f | — |
+| 5 | Path bar + Ctrl+L, `/` and `~` | yes | hidden ancestors, Alt+Down and background destinations verified in 74d205f; 2026-11-10: typing `/` or `~` in the list opens the field, Tab completes paths (candidates in the status line) | — |
 | 6 | Type to filter | yes | — | — |
 | 7 | Hidden files Ctrl+H | yes | — | — |
 | 8 | Image/video/PDF/cover thumbnails | partial | PDF, audio cover art, list | P2 |
@@ -47,12 +47,12 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 26 | Recent | partial | bounded local XBEL menu locates an existing file in its folder; no dedicated recent-files view or remote entries | P2 |
 | 27 | Sidebar: bookmarks, live devices, network | partial | toolkit Sidebar: places, bookmark reorder, row menus, device actions and reviewed folder drops; network browsing missing; motion acceptance remains separate | P3 |
 | 28 | Mount/unmount/eject, space per device | **yes** | block 4: udisksctl, free space, eject with power-off | — |
-| 29 | Network: sftp/smb/ftp/dav/nfs | partial | SFTP only | P3 |
+| 29 | Network: sftp/smb/ftp/dav/nfs | partial | typed URIs mount through the session's GVfs (d636633; FTP exercised end to end, SMB/WebDAV not against a real server); no discovery or keyring | P3 |
 | 30 | Search with filters and full text | yes | — | — |
 | 31 | Executables and `.desktop` | no | — | P2 |
 | 32 | File chooser (portal) | no | — | P3 |
 | 33 | `org.freedesktop.FileManager1` and `.desktop` | partial | explicit three-method service and select/folders/properties CLI implemented; startup context and cancellable presentation through toolkit fac0705 in source; async NODE/M2 acceptance and installation passed; automatic desktop activation/default registration remains open | P1 |
-| 34 | Shortcut help | yes | — | — |
+| 34 | Shortcut help | yes | F1 or Ctrl+?; lists every binding; the palette and tooltips carry the chords | — |
 | 35 | Bookmarks Ctrl+D | yes | — | — |
 | 36 | Copy path | **yes** | block 1: Ctrl+Alt+C and context menu | — |
 | 37 | Free space | yes | — | — |
@@ -61,6 +61,8 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 40 | AT-SPI accessibility | no | toolkit has optional AccessKit adapters; Files leaves `a11y` disabled and its browser canvas lacks complete virtual rows/actions and native AT-SPI validation | P2 |
 | 41 | Space preview | yes | Files goes further (video, PDF, HTML, DOCX, ZIP) | — |
 | 42 | Checksum | partial | not in properties | P3 |
+| 43 | Keyboard: tab chords, open in new tab, places rail | **yes** | 2026-11-10 (3a955e5): Ctrl+PgUp/PgDn, Alt+1..9, Ctrl/Shift+Enter, Enter opens every marked item, Alt+Home, rail focus with Tab or Ctrl+Alt+S. Kept on purpose and differing from Nautilus: F5 copy, F6 move, F9 dual pane, Ctrl+1/2 Groups/List, Ctrl+I invert, Ctrl+N new file, Ctrl+Space folder size, Alt+Down ancestors | owner decision |
+| 44 | Symlinked folders browse as folders | **yes** | 2026-11-10 (c1b6db8): icon, folders-first order, Enter/new tab keep the link path; recursive and mutating code still treats them as links | — |
 
 What Files already has and Nautilus does not: dual pane (F9), Columns/Miller,
 space map, folder sizes, compare/sync folders, duplicates,
