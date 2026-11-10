@@ -2214,6 +2214,7 @@ mod inspector_tabs_tests {
                                 original: Some(format!("/original/file{i}.txt").into()),
                                 deletion_date: None,
                                 issue: None,
+                                volume: None,
                             })
                             .collect(),
                         limited: false,

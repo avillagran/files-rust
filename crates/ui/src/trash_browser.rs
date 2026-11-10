@@ -166,19 +166,22 @@ impl Model {
                             .and_then(|p| p.file_name())
                             .unwrap_or(&i.name),
                     );
-                    (i.name.clone(), label)
+                    (i.name.clone(), label, i.volume.clone())
                 });
                 let target = match (command, item) {
                     (Command::Empty, _) if count > 0 => {
                         crate::delete_ui::Target::TrashEmpty { count }
                     }
-                    (Command::Restore, Some((name, _))) => {
-                        crate::delete_ui::Target::TrashRestore { name }
+                    (Command::Restore, Some((name, _, volume))) => {
+                        crate::delete_ui::Target::TrashRestore { name, volume }
                     }
-                    (Command::Purge, Some((name, label))) => crate::delete_ui::Target::TrashItem {
-                        name,
-                        label: label.into_owned(),
-                    },
+                    (Command::Purge, Some((name, label, volume))) => {
+                        crate::delete_ui::Target::TrashItem {
+                            name,
+                            label: label.into_owned(),
+                            volume,
+                        }
+                    }
                     _ => return,
                 };
                 self.request_trash_operation(target);
@@ -200,6 +203,21 @@ impl Model {
         true
     }
 }
+/// Second row line: issue or date, plus the volume for per-volume items.
+fn row_detail(item: &files_core::trash::CatalogItem) -> String {
+    let base = item
+        .issue
+        .as_deref()
+        .or(item.deletion_date.as_deref())
+        .unwrap_or("Fecha no disponible");
+    match &item.volume {
+        Some(volume) => format!(
+            "{base} · Volumen {}",
+            files_core::name_label::label(volume.topdir.as_os_str())
+        ),
+        None => base.to_owned(),
+    }
+}
 pub fn advance(m: &mut Model, frame: &Frame) {
     if let Some(p) = m.trash_browser.as_mut() {
         p.scroll = p.motion.position(p.scroll as i64, p.max() as i64) as i32;
@@ -219,7 +237,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     p.clip(rect);
     p.text(
         Rect::new(26, 28, w - 260, 32),
-        "Papelera de Inicio",
+        "Papelera",
         18,
         c.foreground,
         true,
@@ -275,7 +293,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         )
     } else {
         format!(
-            "{} elementos · consulta de la papelera del usuario",
+            "{} elementos · papelera del usuario y de los volúmenes montados",
             s.catalog.items.len()
         )
     };
@@ -332,10 +350,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         );
         p.text(
             Rect::new(r.x + 8, r.y + 23, r.w - 16, 18),
-            item.issue
-                .as_deref()
-                .or(item.deletion_date.as_deref())
-                .unwrap_or("Fecha no disponible"),
+            &row_detail(item),
             11,
             c.dark_foreground,
             false,

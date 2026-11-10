@@ -31,7 +31,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 10 | Select by pattern Ctrl+S | **yes** | block 6 | — |
 | 11 | Clipboard with other apps | partial | block 3: Ctrl+V pastes the most recent copy (Files or system); private native file-import end-to-end coverage remains pending | P2 |
 | 12 | Drag and drop with other apps | partial | real Files-to-Files Wayland drop onto the Sidebar verified on NODE/M2; other-app interoperability remains pending; drops use copy review | P2 |
-| 13 | Trash: empty, restore selected, Shift+Delete | **yes** | block 1: Shift+Delete with confirmation, Restore/Delete/Empty in the catalog | — |
+| 13 | Trash: empty, restore selected, Shift+Delete | **yes** | block 1: Shift+Delete with confirmation, Restore/Delete/Empty in the catalog; 2026-11-10: per-volume trash (`$topdir/.Trash/$uid` or `.Trash-$uid`, relative `Path=`) for items on other filesystems, merged into the catalog, Empty and Undo; verified only with simulated volumes, no real second filesystem exercised | — |
 | 14 | Undo/redo operations | partial | only rename and the last batch sent to trash | P2 |
 | 15 | Rename and bulk rename | yes | (Files goes further: regex, sequences) | — |
 | 16 | New folder, with selection, `~/Templates` templates | **yes** | block 5 | — |

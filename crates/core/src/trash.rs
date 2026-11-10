@@ -1,12 +1,14 @@
-//! Linux same-filesystem home-trash storage, one item per operation. No erase,
-//! cross-device copy fallback, permanent deletion, batch journal or crash-atomic
-//! claim. UI callers must bound receipt history and run all filesystem work off UI.
+//! Linux freedesktop trash storage, one item per operation: the home trash for
+//! items on its filesystem and the per-volume trash (`$topdir/.Trash/$uid` or
+//! `$topdir/.Trash-$uid`) for items on other volumes. No cross-device copy
+//! fallback, deletion on failure, batch journal or crash-atomic claim. UI
+//! callers must bound receipt history and run all filesystem work off UI.
 use std::{
     fs::File,
     io,
     path::{Path, PathBuf},
     sync::{
-        Arc,
+        Arc, Mutex,
         atomic::{AtomicBool, Ordering},
     },
 };
@@ -21,11 +23,83 @@ struct Context {
     root: File,
     files: File,
     info: File,
+    /// Per-volume trash: the volume topdir path and its pinned descriptor.
+    /// `Path=` keys are written and resolved relative to it.
+    volume: Option<(PathBuf, File)>,
 }
-/// Share one context across a bounded undo batch: three shared directory FDs.
-#[derive(Clone, Debug)]
+/// A per-volume trash directory of the effective user.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct Volume {
+    /// Mount point of the volume; relative `Path=` keys resolve against it.
+    pub topdir: PathBuf,
+    /// `$topdir/.Trash/$uid` or `$topdir/.Trash-$uid`.
+    pub trash: PathBuf,
+}
+/// Volume lookups used to route items and enumerate volume trashes. They are
+/// injectable so tests can simulate a second volume with private directories.
+/// Results only choose WHERE to look; every mutation still verifies devices
+/// and identities through descriptors.
+pub trait Volumes: Send + Sync {
+    /// Filesystem identifier of an existing directory (st_dev on Linux).
+    fn device(&self, directory: &Path) -> io::Result<u64>;
+    /// Topdir (mount point) of the filesystem containing `directory`.
+    fn topdir(&self, directory: &Path) -> io::Result<PathBuf>;
+    /// Topdirs of mounted local volumes whose trash may be listed or emptied.
+    /// Network and pseudo filesystems are excluded before touching them.
+    fn mounted(&self) -> Vec<PathBuf>;
+}
+/// The real system: st_dev, the topmost same-device ancestor, mountinfo.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct SystemVolumes;
+impl Volumes for SystemVolumes {
+    fn device(&self, directory: &Path) -> io::Result<u64> {
+        platform::system_device(directory)
+    }
+    fn topdir(&self, directory: &Path) -> io::Result<PathBuf> {
+        platform::system_topdir(directory)
+    }
+    fn mounted(&self) -> Vec<PathBuf> {
+        platform::system_mounted()
+    }
+}
+/// Home trash only: real devices, no volume topdir and no mounted volumes.
+/// Items on other filesystems fail with a clear error, origin intact.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct HomeOnly;
+impl Volumes for HomeOnly {
+    fn device(&self, directory: &Path) -> io::Result<u64> {
+        platform::system_device(directory)
+    }
+    fn topdir(&self, _: &Path) -> io::Result<PathBuf> {
+        Err(io::Error::new(
+            io::ErrorKind::CrossesDevices,
+            "Papelera por volumen desactivada en este modo: origen intacto",
+        ))
+    }
+    fn mounted(&self) -> Vec<PathBuf> {
+        Vec::new()
+    }
+}
+/// At most this many volume contexts (four FDs each) are cached per batch.
+const MAX_VOLUME_CONTEXTS: usize = 16;
+/// Share one context across a bounded undo batch: three shared home FDs plus
+/// lazily opened per-volume contexts. Receipts pin the context they used.
+#[derive(Clone)]
 pub struct TrashContext {
     inner: Arc<Context>,
+    home_device: u64,
+    volumes: Arc<dyn Volumes>,
+    cache: VolumeCache,
+}
+/// Volume contexts opened during a batch, keyed by the injected device.
+type VolumeCache = Arc<Mutex<Vec<(u64, Arc<Context>)>>>;
+impl std::fmt::Debug for TrashContext {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("TrashContext")
+            .field("inner", &self.inner)
+            .field("home_device", &self.home_device)
+            .finish_non_exhaustive()
+    }
 }
 /// Read-only observations, never authority for a later restore or deletion.
 #[derive(Debug, Default)]
@@ -39,11 +113,27 @@ pub struct CatalogItem {
     pub original: Option<PathBuf>,
     pub deletion_date: Option<String>,
     pub issue: Option<String>,
+    /// `None`: the home trash. `Some`: the per-volume trash holding the item.
+    pub volume: Option<Volume>,
 }
 /// Home-trash catalog, bounded to 4096 names / 4 MiB. Does not create a
 /// missing trash, follow stored objects, or grant mutation permissions.
 pub fn catalog(root: &Path, cancel: &AtomicBool) -> io::Result<Catalog> {
     platform::catalog(root, cancel)
+}
+/// Home trash plus the existing per-volume trashes of mounted local volumes,
+/// sharing the same 4096 names / 4 MiB budget. Never creates a trash; an
+/// unreadable or insecure volume trash is skipped.
+pub fn catalog_all(root: &Path, cancel: &AtomicBool) -> io::Result<Catalog> {
+    catalog_all_with(root, &SystemVolumes, cancel)
+}
+pub fn catalog_all_with(
+    root: &Path,
+    volumes: &dyn Volumes,
+    cancel: &AtomicBool,
+) -> io::Result<Catalog> {
+    check_cancel(cancel)?;
+    platform::catalog_all(root, volumes, cancel)
 }
 /// Three per-item FDs pin the original parent, object and metadata inode. A
 /// receipt is intentionally not Clone. Dropping it never erases a trashed item.
@@ -114,17 +204,52 @@ impl std::error::Error for Failure {
 }
 impl TrashContext {
     /// Root parent must already exist, be owned by the effective user and not be
-    /// group/world writable. Ancestors must not be symlinks or writable by others.
+    /// group/world writable. Ancestors must not be symlinks or writable by others
+    /// (root- or user-owned sticky directories such as /tmp are accepted).
     /// Only root/files/info are created; existing private modes are never changed.
+    /// Items on other filesystems use their volume trash (real system lookups).
     pub fn open(root: &Path) -> Result<Self, Failure> {
-        platform::open_context(root)
-            .map(|inner| Self {
-                inner: Arc::new(inner),
-            })
-            .map_err(Into::into)
+        Self::open_with(root, Arc::new(SystemVolumes))
+    }
+    /// Like `open`, with injected volume lookups.
+    pub fn open_with(root: &Path, volumes: Arc<dyn Volumes>) -> Result<Self, Failure> {
+        let inner = Arc::new(platform::open_context(root)?);
+        let home_device = volumes.device(root)?;
+        Ok(Self {
+            inner,
+            home_device,
+            volumes,
+            cache: Arc::new(Mutex::new(Vec::new())),
+        })
     }
     pub fn trash(&self, source: &Path, cancel: &AtomicBool) -> Result<Receipt, Failure> {
-        platform::trash(source, Arc::clone(&self.inner), cancel)
+        check_cancel(cancel)?;
+        let context = self.context_for(source)?;
+        platform::trash(source, context, cancel)
+    }
+    /// Home context when the item's parent shares the home trash device,
+    /// otherwise the (possibly created) trash of the parent's volume.
+    fn context_for(&self, source: &Path) -> io::Result<Arc<Context>> {
+        validate_path(source)?;
+        let parent = source
+            .parent()
+            .ok_or_else(|| invalid("Falta padre de origen"))?
+            .canonicalize()?;
+        let device = self.volumes.device(&parent)?;
+        if device == self.home_device {
+            return Ok(Arc::clone(&self.inner));
+        }
+        let mut cache = self.cache.lock().unwrap_or_else(|e| e.into_inner());
+        if let Some((_, context)) = cache.iter().find(|(d, _)| *d == device) {
+            return Ok(Arc::clone(context));
+        }
+        let topdir = self.volumes.topdir(&parent)?;
+        let context = Arc::new(platform::open_volume_context(&topdir)?);
+        if cache.len() >= MAX_VOLUME_CONTEXTS {
+            cache.remove(0);
+        }
+        cache.push((device, Arc::clone(&context)));
+        Ok(context)
     }
 }
 pub fn trash(source: &Path, trash_root: &Path, cancel: &AtomicBool) -> Result<Receipt, Failure> {
@@ -145,7 +270,17 @@ pub fn restore_item(
     cancel: &AtomicBool,
 ) -> io::Result<(PathBuf, Option<String>)> {
     check_cancel(cancel)?;
-    platform::restore_item(root, name, cancel)
+    platform::restore_item(Location::Home(root), name, cancel)
+}
+/// `restore_item` for a per-volume trash; a relative `Path=` resolves against
+/// the volume topdir.
+pub fn restore_volume_item(
+    volume: &Volume,
+    name: &std::ffi::OsStr,
+    cancel: &AtomicBool,
+) -> io::Result<(PathBuf, Option<String>)> {
+    check_cancel(cancel)?;
+    platform::restore_item(Location::Volume(volume), name, cancel)
 }
 /// Permanently deletes the catalog item `name` and then its metadata.
 pub fn purge_item(
@@ -155,7 +290,17 @@ pub fn purge_item(
     progress: &crate::remove_tree::Progress,
 ) -> io::Result<crate::remove_tree::Report> {
     check_cancel(cancel)?;
-    platform::purge_item(root, name, cancel, progress)
+    platform::purge_item(Location::Home(root), name, cancel, progress)
+}
+/// `purge_item` for a per-volume trash.
+pub fn purge_volume_item(
+    volume: &Volume,
+    name: &std::ffi::OsStr,
+    cancel: &AtomicBool,
+    progress: &crate::remove_tree::Progress,
+) -> io::Result<crate::remove_tree::Report> {
+    check_cancel(cancel)?;
+    platform::purge_item(Location::Volume(volume), name, cancel, progress)
 }
 /// Permanently deletes everything in the home trash, plus orphan metadata.
 pub fn empty(
@@ -165,6 +310,29 @@ pub fn empty(
 ) -> io::Result<crate::remove_tree::Report> {
     check_cancel(cancel)?;
     platform::empty(root, cancel, progress)
+}
+/// `empty` for the home trash and every existing per-volume trash of the
+/// mounted local volumes (never creating one).
+pub fn empty_all(
+    root: &Path,
+    cancel: &AtomicBool,
+    progress: &crate::remove_tree::Progress,
+) -> io::Result<crate::remove_tree::Report> {
+    empty_all_with(root, &SystemVolumes, cancel, progress)
+}
+pub fn empty_all_with(
+    root: &Path,
+    volumes: &dyn Volumes,
+    cancel: &AtomicBool,
+    progress: &crate::remove_tree::Progress,
+) -> io::Result<crate::remove_tree::Report> {
+    check_cancel(cancel)?;
+    platform::empty_all(root, volumes, cancel, progress)
+}
+#[derive(Clone, Copy)]
+enum Location<'a> {
+    Home(&'a Path),
+    Volume(&'a Volume),
 }
 impl Receipt {
     /// Historical original path recorded in .trashinfo, NOT a current rescue path.
@@ -179,6 +347,10 @@ impl Receipt {
     }
     pub fn info_path(&self) -> io::Result<PathBuf> {
         platform::verified_child_path(&self.context.info, &self.info_name, &self.info_identity)
+    }
+    /// The volume topdir when this item went to a per-volume trash.
+    pub fn volume_topdir(&self) -> Option<&Path> {
+        self.context.volume.as_ref().map(|(path, _)| path.as_path())
     }
 }
 fn invalid(message: &str) -> io::Error {
@@ -210,10 +382,47 @@ fn validate_path(path: &Path) -> io::Result<()> {
     }
     Ok(())
 }
-/// Lossless URI-byte escaping for home-trash absolute Path=. '/' remains a path
-/// separator; '%' and all non-unreserved bytes are escaped exactly once.
+/// A volume-relative `Path=` key: non-empty, at most 4096 bytes, no NUL, no
+/// leading '/', no empty, `.` or `..` components.
+fn validate_relative(path: &Path) -> io::Result<()> {
+    let bytes = path.as_os_str().as_encoded_bytes();
+    if bytes.is_empty()
+        || bytes.len() > 4096
+        || bytes.contains(&0)
+        || bytes
+            .split(|b| *b == b'/')
+            .any(|part| matches!(part, b"" | b"." | b".."))
+    {
+        return Err(invalid(
+            "Ruta relativa de papelera de volumen no válida (sin . ni .., máximo 4096 bytes)",
+        ));
+    }
+    Ok(())
+}
+/// A volume topdir: absolute, bounded, without `.`/`..`; `/` is allowed.
+fn validate_topdir(path: &Path) -> io::Result<()> {
+    if path.as_os_str().as_encoded_bytes() == b"/" {
+        return Ok(());
+    }
+    validate_path(path)
+}
+/// The `Path=` key for `original` in the trash of `topdir`: relative to it.
+fn relative_key(original: &Path, topdir: &Path) -> io::Result<PathBuf> {
+    let relative = original
+        .strip_prefix(topdir)
+        .map_err(|_| invalid("El elemento no está bajo la raíz de su volumen; origen intacto"))?;
+    validate_relative(relative)?;
+    Ok(relative.to_path_buf())
+}
+/// Lossless URI-byte escaping for Path=: absolute for the home trash, relative
+/// to the topdir for a volume trash. '/' remains a path separator; '%' and all
+/// non-unreserved bytes are escaped exactly once.
 fn metadata(original: &Path, date: &str) -> io::Result<Vec<u8>> {
-    validate_path(original)?;
+    if original.is_absolute() {
+        validate_path(original)?;
+    } else {
+        validate_relative(original)?;
+    }
     if date.len() != 19
         || !date.bytes().enumerate().all(|(i, b)| match i {
             4 | 7 => b == b'-',
@@ -338,11 +547,18 @@ mod platform {
         }
         Ok(current)
     }
+    /// Root- or user-owned sticky directory (/tmp, a spec `.Trash`): others
+    /// may add entries but cannot rename or remove the ones we own.
+    fn trusted_sticky(s: &libc::stat) -> bool {
+        s.st_mode & libc::S_IFMT == libc::S_IFDIR
+            && s.st_mode & libc::S_ISVTX != 0
+            && (s.st_uid == 0 || s.st_uid == unsafe { libc::geteuid() })
+    }
     fn secure_parent(directory: &File, require_owner: bool) -> io::Result<()> {
         let s = stat(directory)?;
         let uid = unsafe { libc::geteuid() };
         if s.st_mode & libc::S_IFMT != libc::S_IFDIR
-            || s.st_mode & 0o022 != 0
+            || (s.st_mode & 0o022 != 0 && (require_owner || !trusted_sticky(&s)))
             || (require_owner && s.st_uid != uid)
             || (!require_owner && s.st_uid != uid && s.st_uid != 0)
         {
@@ -393,45 +609,217 @@ mod platform {
         )?;
         let files = ensure_private(&root, OsStr::new("files"))?;
         let info = ensure_private(&root, OsStr::new("info"))?;
-        Ok(Context { root, files, info })
+        Ok(Context {
+            root,
+            files,
+            info,
+            volume: None,
+        })
+    }
+    fn uid_name() -> OsString {
+        OsString::from(unsafe { libc::geteuid() }.to_string())
+    }
+    fn private_trash_name() -> OsString {
+        OsString::from(format!(".Trash-{}", unsafe { libc::geteuid() }))
+    }
+    /// `$topdir/.Trash` usable per the spec: a real directory (never a
+    /// symlink) with the sticky bit, owned by root or by us. The opened
+    /// descriptor must be the same inode that was checked.
+    fn shared_trash(top: &File) -> Option<File> {
+        let name = OsStr::new(".Trash");
+        let checked = lstat_at(top, name).ok()?;
+        if !trusted_sticky(&checked) {
+            return None;
+        }
+        let directory = open_at(top, name, libc::O_RDONLY | libc::O_DIRECTORY).ok()?;
+        let opened = stat(&directory).ok()?;
+        (id(&opened) == id(&checked) && trusted_sticky(&opened)).then_some(directory)
+    }
+    fn lstat_at(parent: &File, name: &OsStr) -> io::Result<libc::stat> {
+        let name = c(name)?;
+        let mut out = std::mem::MaybeUninit::uninit();
+        if unsafe {
+            libc::fstatat(
+                parent.as_raw_fd(),
+                name.as_ptr(),
+                out.as_mut_ptr(),
+                libc::AT_SYMLINK_NOFOLLOW,
+            )
+        } != 0
+        {
+            return Err(io::Error::last_os_error());
+        }
+        Ok(unsafe { out.assume_init() })
+    }
+    /// Clear Spanish reason for a volume trash that cannot be created/used.
+    fn volume_error(topdir: &Path, error: io::Error) -> io::Error {
+        let reason = if error.raw_os_error() == Some(libc::EROFS) {
+            "el volumen es de solo lectura".to_string()
+        } else if error.kind() == io::ErrorKind::PermissionDenied {
+            format!("no se puede crear ni usar su papelera ({error})")
+        } else {
+            error_text(&error)
+        };
+        io::Error::new(
+            error.kind(),
+            format!(
+                "Papelera del volumen {} no disponible: {reason}; el origen queda intacto y no se copia ni se borra",
+                topdir.display()
+            ),
+        )
+    }
+    fn create_trash_in(parent: &File, name: &OsStr) -> io::Result<(File, File, File)> {
+        let root = ensure_private(parent, name)?;
+        let files = ensure_private(&root, OsStr::new("files"))?;
+        let info = ensure_private(&root, OsStr::new("info"))?;
+        Ok((root, files, info))
+    }
+    /// Opens or creates the trash of a volume: `$topdir/.Trash/$uid` when
+    /// `.Trash` is valid, else `$topdir/.Trash-$uid` (mode 0700). Never
+    /// follows symlinks; existing private modes are never changed.
+    pub(super) fn open_volume_context(topdir: &Path) -> io::Result<Context> {
+        validate_topdir(topdir)?;
+        let top = directory(topdir, true).map_err(|e| volume_error(topdir, e))?;
+        if let Some(shared) = shared_trash(&top)
+            && let Ok((root, files, info)) = create_trash_in(&shared, &uid_name())
+        {
+            return Ok(Context {
+                root,
+                files,
+                info,
+                volume: Some((topdir.to_path_buf(), top)),
+            });
+        }
+        let (root, files, info) =
+            create_trash_in(&top, &private_trash_name()).map_err(|e| volume_error(topdir, e))?;
+        Ok(Context {
+            root,
+            files,
+            info,
+            volume: Some((topdir.to_path_buf(), top)),
+        })
+    }
+    fn existing_in(parent: &File, name: &OsStr) -> io::Result<(File, File, File)> {
+        let root = open_at(parent, name, libc::O_RDONLY | libc::O_DIRECTORY)?;
+        private(&root)?;
+        let files = open_at(
+            &root,
+            OsStr::new("files"),
+            libc::O_RDONLY | libc::O_DIRECTORY,
+        )?;
+        let info = open_at(
+            &root,
+            OsStr::new("info"),
+            libc::O_RDONLY | libc::O_DIRECTORY,
+        )?;
+        private(&files)?;
+        private(&info)?;
+        Ok((root, files, info))
+    }
+    /// The existing trashes of a volume (none is created): `.Trash/$uid`
+    /// then `.Trash-$uid`. Missing, insecure or unreadable ones are skipped.
+    fn existing_volume_contexts(topdir: &Path) -> Vec<(Volume, Context)> {
+        let mut found = Vec::new();
+        if validate_topdir(topdir).is_err() {
+            return found;
+        }
+        let Ok(top) = directory(topdir, true) else {
+            return found;
+        };
+        let shared = shared_trash(&top).and_then(|shared| existing_in(&shared, &uid_name()).ok());
+        let own = existing_in(&top, &private_trash_name()).ok();
+        for (trash, opened) in [
+            (topdir.join(".Trash").join(uid_name()), shared),
+            (topdir.join(private_trash_name()), own),
+        ] {
+            let Some((root, files, info)) = opened else {
+                continue;
+            };
+            let Ok(top) = top.try_clone() else {
+                continue;
+            };
+            let context = Context {
+                root,
+                files,
+                info,
+                volume: Some((topdir.to_path_buf(), top)),
+            };
+            if validate_context(&context).is_ok() {
+                let volume = Volume {
+                    topdir: topdir.to_path_buf(),
+                    trash,
+                };
+                found.push((volume, context));
+            }
+        }
+        found
+    }
+    /// One named existing volume trash; only the two spec locations of the
+    /// effective user are accepted.
+    fn existing_volume_context(volume: &Volume) -> io::Result<Context> {
+        validate_topdir(&volume.topdir)?;
+        let top = directory(&volume.topdir, true)?;
+        let (root, files, info) = if volume.trash == volume.topdir.join(".Trash").join(uid_name()) {
+            let shared = shared_trash(&top).ok_or_else(|| {
+                invalid(".Trash del volumen ya no es un directorio compartido válido")
+            })?;
+            existing_in(&shared, &uid_name())?
+        } else if volume.trash == volume.topdir.join(private_trash_name()) {
+            existing_in(&top, &private_trash_name())?
+        } else {
+            return Err(invalid("Papelera de volumen no reconocida"));
+        };
+        let context = Context {
+            root,
+            files,
+            info,
+            volume: Some((volume.topdir.clone(), top)),
+        };
+        validate_context(&context)?;
+        Ok(context)
     }
     pub(super) fn catalog(root: &Path, cancel: &AtomicBool) -> io::Result<Catalog> {
-        catalog_limited(root, cancel, 4096, 4 * 1024 * 1024)
+        catalog_limited(root, cancel, CATALOG_COUNT, CATALOG_BYTES)
     }
+    const CATALOG_COUNT: usize = 4096;
+    const CATALOG_BYTES: usize = 4 * 1024 * 1024;
     fn catalog_limited(
         root: &Path,
         cancel: &AtomicBool,
         count_limit: usize,
         byte_limit: usize,
     ) -> io::Result<Catalog> {
-        use std::io::Read;
         check_cancel(cancel)?;
         validate_path(root)?;
-        let root_fd = match directory(root, true) {
-            Ok(fd) => fd,
-            Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(Catalog::default()),
+        let mut result = Catalog::default();
+        let context = match existing_context(root) {
+            Ok(context) => context,
+            Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(result),
             Err(e) => return Err(e),
         };
-        private(&root_fd)?;
-        let files = open_at(
-            &root_fd,
-            OsStr::new("files"),
-            libc::O_RDONLY | libc::O_DIRECTORY,
-        )?;
-        let info = open_at(
-            &root_fd,
-            OsStr::new("info"),
-            libc::O_RDONLY | libc::O_DIRECTORY,
-        )?;
-        private(&files)?;
-        private(&info)?;
-        let context = Context {
-            root: root_fd,
-            files,
-            info,
-        };
-        let mut result = Catalog::default();
         let mut bytes = 0usize;
+        catalog_context(
+            &context,
+            None,
+            cancel,
+            count_limit,
+            byte_limit,
+            &mut result,
+            &mut bytes,
+        )?;
+        result.items.sort_unstable_by(|a, b| a.name.cmp(&b.name));
+        Ok(result)
+    }
+    /// Appends the items of one opened trash, sharing the caller's budget.
+    fn catalog_context(
+        context: &Context,
+        volume: Option<&Volume>,
+        cancel: &AtomicBool,
+        count_limit: usize,
+        byte_limit: usize,
+        result: &mut Catalog,
+        bytes: &mut usize,
+    ) -> io::Result<()> {
         // /proc resolves our pinned descriptor, not the historical trash path.
         for entry in std::fs::read_dir(format!("/proc/self/fd/{}", context.files.as_raw_fd()))? {
             check_cancel(cancel)?;
@@ -440,24 +828,7 @@ mod platform {
                 result.limited = true;
                 break;
             }
-            let mut info_name = name.clone();
-            info_name.push(".trashinfo");
-            let metadata = (|| -> io::Result<(PathBuf, Option<String>)> {
-                let file = open_at(&context.info, &info_name, libc::O_RDONLY | libc::O_NONBLOCK)?;
-                let st = stat(&file)?;
-                if st.st_mode & libc::S_IFMT != libc::S_IFREG || st.st_size > 65536 {
-                    return Err(invalid(
-                        "Metadatos de papelera no regulares o demasiado grandes",
-                    ));
-                }
-                let mut data = Vec::new();
-                file.take(65537).read_to_end(&mut data)?;
-                if data.len() > 65536 {
-                    return Err(invalid("Metadatos de papelera demasiado grandes"));
-                }
-                parse_catalog_info(&data)
-            })();
-            let (original, deletion_date, issue) = match metadata {
+            let (original, deletion_date, issue) = match read_info(context, &info_name(&name)) {
                 Ok((path, date)) => (Some(path), date, None),
                 Err(_) => (
                     None,
@@ -465,21 +836,96 @@ mod platform {
                     Some("Metadatos no disponibles o no válidos".into()),
                 ),
             };
-            let charge = name.len() + original.as_ref().map_or(0, |p| p.as_os_str().len()) + 256;
+            let charge = name.len()
+                + original.as_ref().map_or(0, |p| p.as_os_str().len())
+                + volume.map_or(0, |v| {
+                    v.topdir.as_os_str().len() + v.trash.as_os_str().len()
+                })
+                + 256;
             if bytes.saturating_add(charge) > byte_limit {
                 result.limited = true;
                 break;
             }
-            bytes += charge;
+            *bytes += charge;
             result.items.push(CatalogItem {
                 name,
                 original,
                 deletion_date,
                 issue,
+                volume: volume.cloned(),
             });
         }
-        validate_context(&context)?;
-        result.items.sort_unstable_by(|a, b| a.name.cmp(&b.name));
+        validate_context(context)
+    }
+    /// Trash roots already covered, by identity (bind mounts, home on a volume).
+    fn same_root(seen: &[Identity], context: &Context) -> io::Result<bool> {
+        let here = fd_identity(&context.root)?;
+        Ok(seen.contains(&here))
+    }
+    pub(super) fn catalog_all(
+        root: &Path,
+        volumes: &dyn Volumes,
+        cancel: &AtomicBool,
+    ) -> io::Result<Catalog> {
+        catalog_all_limited(root, volumes, cancel, CATALOG_COUNT, CATALOG_BYTES)
+    }
+    fn catalog_all_limited(
+        root: &Path,
+        volumes: &dyn Volumes,
+        cancel: &AtomicBool,
+        count_limit: usize,
+        byte_limit: usize,
+    ) -> io::Result<Catalog> {
+        validate_path(root)?;
+        let mut result = Catalog::default();
+        let mut bytes = 0usize;
+        let mut seen = Vec::new();
+        match existing_context(root) {
+            Ok(context) => {
+                seen.push(fd_identity(&context.root)?);
+                catalog_context(
+                    &context,
+                    None,
+                    cancel,
+                    count_limit,
+                    byte_limit,
+                    &mut result,
+                    &mut bytes,
+                )?;
+            }
+            Err(e) if e.kind() == io::ErrorKind::NotFound => (),
+            Err(e) => return Err(e),
+        }
+        for topdir in volumes.mounted() {
+            for (volume, context) in existing_volume_contexts(&topdir) {
+                check_cancel(cancel)?;
+                if result.limited || same_root(&seen, &context).unwrap_or(true) {
+                    continue;
+                }
+                // An unreadable volume trash is skipped as a whole.
+                let mut part = Catalog::default();
+                let mut part_bytes = bytes;
+                match catalog_context(
+                    &context,
+                    Some(&volume),
+                    cancel,
+                    count_limit.saturating_sub(result.items.len()),
+                    byte_limit,
+                    &mut part,
+                    &mut part_bytes,
+                ) {
+                    Ok(()) => {
+                        seen.push(fd_identity(&context.root)?);
+                        bytes = part_bytes;
+                        result.limited |= part.limited;
+                        result.items.append(&mut part.items);
+                    }
+                    Err(e) if e.kind() == io::ErrorKind::Interrupted => return Err(e),
+                    Err(_) => (),
+                }
+            }
+        }
+        result.items.sort_by(|a, b| a.name.cmp(&b.name));
         Ok(result)
     }
     /// An existing, private home trash (never created here).
@@ -503,9 +949,18 @@ mod platform {
             root: root_fd,
             files,
             info,
+            volume: None,
         };
         validate_context(&context)?;
         Ok(context)
+    }
+    fn location_context(location: Location) -> io::Result<(Context, PathBuf)> {
+        match location {
+            Location::Home(root) => Ok((existing_context(root)?, root.to_path_buf())),
+            Location::Volume(volume) => {
+                Ok((existing_volume_context(volume)?, volume.trash.clone()))
+            }
+        }
     }
     fn item_name(name: &OsStr) -> io::Result<()> {
         let b = name.as_bytes();
@@ -533,7 +988,7 @@ mod platform {
         if data.len() > 65536 {
             return Err(invalid("Metadatos de papelera demasiado grandes"));
         }
-        parse_catalog_info(&data)
+        parse_catalog_info(&data, context.volume.as_ref().map(|(top, _)| top.as_path()))
     }
     fn unlink_plain(dir: &File, name: &OsStr) -> io::Result<()> {
         let name = c(name)?;
@@ -543,12 +998,12 @@ mod platform {
         Ok(())
     }
     pub(super) fn restore_item(
-        root: &Path,
+        location: Location,
         name: &OsStr,
         cancel: &AtomicBool,
     ) -> io::Result<(PathBuf, Option<String>)> {
         item_name(name)?;
-        let context = existing_context(root)?;
+        let (context, _) = location_context(location)?;
         let info = info_name(name);
         let (original, _) = read_info(&context, &info)?;
         let (parent_path, target) = match (original.parent(), original.file_name()) {
@@ -583,13 +1038,14 @@ mod platform {
         Ok((original, cleanup))
     }
     pub(super) fn purge_item(
-        root: &Path,
+        location: Location,
         name: &OsStr,
         cancel: &AtomicBool,
         progress: &crate::remove_tree::Progress,
     ) -> io::Result<crate::remove_tree::Report> {
         item_name(name)?;
-        let context = existing_context(root)?;
+        let (context, root) = location_context(location)?;
+        let root = root.as_path();
         let mut report = crate::remove_tree::Report::default();
         crate::remove_tree::platform::remove_at(
             &context.files,
@@ -621,6 +1077,53 @@ mod platform {
             Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(Default::default()),
             Err(e) => return Err(e),
         };
+        empty_context(&context, root, cancel, progress)
+    }
+    pub(super) fn empty_all(
+        root: &Path,
+        volumes: &dyn Volumes,
+        cancel: &AtomicBool,
+        progress: &crate::remove_tree::Progress,
+    ) -> io::Result<crate::remove_tree::Report> {
+        let mut seen = Vec::new();
+        let mut report = match existing_context(root) {
+            Ok(context) => {
+                seen.push(fd_identity(&context.root)?);
+                empty_context(&context, root, cancel, progress)?
+            }
+            Err(e) if e.kind() == io::ErrorKind::NotFound => Default::default(),
+            Err(e) => return Err(e),
+        };
+        for topdir in volumes.mounted() {
+            for (volume, context) in existing_volume_contexts(&topdir) {
+                if report.cancelled || cancel.load(Ordering::Acquire) {
+                    report.cancelled = true;
+                    return Ok(report);
+                }
+                if same_root(&seen, &context).unwrap_or(true) {
+                    continue;
+                }
+                seen.push(fd_identity(&context.root)?);
+                match empty_context(&context, &volume.trash, cancel, progress) {
+                    Ok(one) => report.merge(one),
+                    Err(e) => {
+                        report.failed += 1;
+                        if report.failures.len() < 32 {
+                            report.failures.push((volume.trash.clone(), e.to_string()));
+                        }
+                    }
+                }
+            }
+        }
+        Ok(report)
+    }
+    /// Empties one opened trash; `root` is only the diagnostic path.
+    fn empty_context(
+        context: &Context,
+        root: &Path,
+        cancel: &AtomicBool,
+        progress: &crate::remove_tree::Progress,
+    ) -> io::Result<crate::remove_tree::Report> {
         let mut report = crate::remove_tree::Report::default();
         let names: Vec<OsString> =
             std::fs::read_dir(format!("/proc/self/fd/{}", context.files.as_raw_fd()))?
@@ -665,7 +1168,12 @@ mod platform {
         }
         Ok(report)
     }
-    fn parse_catalog_info(data: &[u8]) -> io::Result<(PathBuf, Option<String>)> {
+    /// `topdir` is the volume of a per-volume trash: a relative `Path=`
+    /// resolves against it. The home trash accepts only absolute paths.
+    fn parse_catalog_info(
+        data: &[u8],
+        topdir: Option<&Path>,
+    ) -> io::Result<(PathBuf, Option<String>)> {
         let mut lines = data
             .split(|&b| b == b'\n')
             .map(|l| l.strip_suffix(b"\r").unwrap_or(l));
@@ -701,7 +1209,13 @@ mod platform {
                         return Err(invalid("Ruta fuera de límite"));
                     }
                 }
-                let original = PathBuf::from(OsString::from_vec(decoded));
+                let mut original = PathBuf::from(OsString::from_vec(decoded));
+                if !original.is_absolute() {
+                    let top =
+                        topdir.ok_or_else(|| invalid("Ruta relativa en la papelera de inicio"))?;
+                    validate_relative(&original)?;
+                    original = top.join(original);
+                }
                 validate_path(&original)?;
                 path = Some(original);
             } else if let Some(raw) = line.strip_prefix(b"DeletionDate=") {
@@ -754,7 +1268,7 @@ mod platform {
             if e.raw_os_error() == Some(libc::EXDEV) {
                 return Err(io::Error::new(
                     io::ErrorKind::CrossesDevices,
-                    "Papelera en otro sistema de archivos: origen intacto; papelera por volumen pendiente",
+                    "Papelera y destino en sistemas de archivos distintos: origen intacto; no se copia ni se borra",
                 ));
             }
             return Err(e);
@@ -936,10 +1450,27 @@ mod platform {
             )
             .into());
         }
+        // Real devices, independent of the routing lookups: never a copy.
         if expected.device != fd_identity(&context.files)?.device {
-            return Err(io::Error::new(io::ErrorKind::CrossesDevices, "Papelera en otro sistema de archivos: origen intacto; papelera por volumen pendiente").into());
+            return Err(io::Error::new(
+                io::ErrorKind::CrossesDevices,
+                "El elemento y su papelera están en sistemas de archivos distintos: origen intacto; no se copia ni se borra",
+            )
+            .into());
         }
-        let data = metadata(&original, &date()?)?;
+        let key = match &context.volume {
+            None => original.clone(),
+            Some((topdir, top)) => {
+                if !ancestor(&parent, &fd_identity(top)?)? {
+                    return Err(invalid(
+                        "El elemento no está dentro del volumen de esta papelera; origen intacto",
+                    )
+                    .into());
+                }
+                relative_key(&original, topdir)?
+            }
+        };
+        let data = metadata(&key, &date()?)?;
         let mut before_commit = Some(before_commit);
         for _ in 0..MAX_ATTEMPTS {
             check_cancel(cancel)?;
@@ -954,7 +1485,13 @@ mod platform {
             ) {
                 Ok(file) => file,
                 Err(e) if e.kind() == io::ErrorKind::AlreadyExists => continue,
-                Err(e) => return Err(e.into()),
+                Err(e) => {
+                    return Err(match &context.volume {
+                        Some((topdir, _)) => volume_error(topdir, e),
+                        None => e,
+                    }
+                    .into());
+                }
             };
             let info_identity = fd_identity(&info_file)?;
             let preparation = private_info(&info_file)
@@ -1159,6 +1696,105 @@ mod platform {
         ensure_identity(&parent, name, &fd_identity(object)?)?;
         Ok(path)
     }
+    pub(super) fn system_device(directory: &Path) -> io::Result<u64> {
+        use std::os::unix::fs::MetadataExt;
+        Ok(std::fs::symlink_metadata(directory)?.dev())
+    }
+    /// Topmost ancestor on the same device, walked through descriptors.
+    pub(super) fn system_topdir(path: &Path) -> io::Result<PathBuf> {
+        let mut current = directory(path, false)?;
+        let device = stat(&current)?.st_dev;
+        for _ in 0..4096 {
+            let parent = open_at(
+                &current,
+                OsStr::new(".."),
+                libc::O_RDONLY | libc::O_DIRECTORY,
+            )?;
+            let up = fd_identity(&parent)?;
+            if up.device != device || up == fd_identity(&current)? {
+                return current_directory(&current);
+            }
+            current = parent;
+        }
+        Err(invalid(
+            "Demasiados ancestros para hallar la raíz del volumen",
+        ))
+    }
+    /// Filesystems never listed for volume trash: pseudo, network, FUSE
+    /// (sshfs, gvfs, portals; ntfs-3g/exfat-fuse report `fuseblk`, kept),
+    /// automount and read-only images. Filtered before any stat.
+    pub(super) fn skipped_filesystem(kind: &[u8]) -> bool {
+        kind == b"fuse"
+            || kind.starts_with(b"fuse.")
+            || matches!(
+                kind,
+                b"proc"
+                    | b"sysfs"
+                    | b"devtmpfs"
+                    | b"devpts"
+                    | b"cgroup"
+                    | b"cgroup2"
+                    | b"pstore"
+                    | b"bpf"
+                    | b"securityfs"
+                    | b"debugfs"
+                    | b"tracefs"
+                    | b"configfs"
+                    | b"fusectl"
+                    | b"mqueue"
+                    | b"hugetlbfs"
+                    | b"autofs"
+                    | b"binfmt_misc"
+                    | b"efivarfs"
+                    | b"nsfs"
+                    | b"rpc_pipefs"
+                    | b"selinuxfs"
+                    | b"ramfs"
+                    | b"overlay"
+                    | b"squashfs"
+                    | b"iso9660"
+                    | b"nfs"
+                    | b"nfs4"
+                    | b"nfsd"
+                    | b"cifs"
+                    | b"smb3"
+                    | b"smbfs"
+                    | b"ncpfs"
+                    | b"afs"
+                    | b"ceph"
+                    | b"glusterfs"
+                    | b"9p"
+                    | b"virtiofs"
+                    | b"davfs"
+                    | b"coda"
+                    | b"lustre"
+                    | b"ocfs2"
+                    | b"gfs2"
+            )
+    }
+    /// Mount points of local volumes from a bounded mountinfo read. A table
+    /// that cannot be read or parsed lists no volume (home trash only).
+    pub(super) fn system_mounted() -> Vec<PathBuf> {
+        use std::io::Read;
+        let mut data = Vec::new();
+        if File::open("/proc/self/mountinfo")
+            .and_then(|f| f.take(1024 * 1024 + 1).read_to_end(&mut data))
+            .is_err()
+        {
+            return Vec::new();
+        }
+        let Ok(mounts) = crate::mount_table::parse(&data) else {
+            return Vec::new();
+        };
+        let mut points: Vec<PathBuf> = mounts
+            .into_iter()
+            .filter(|m| !skipped_filesystem(&m.filesystem))
+            .map(|m| m.point)
+            .collect();
+        points.sort();
+        points.dedup();
+        points
+    }
     #[cfg(test)]
     fn restore_with_resolver(
         receipt: &Receipt,
@@ -1270,11 +1906,11 @@ mod platform {
             root: PathBuf,
         }
         impl Fixture {
+            /// A new exclusive directory under the invocation's private
+            /// TMPDIR. Fixtures are retained as evidence: never deleted here.
             fn new() -> Self {
-                let cache = crate::theme::home().join(".cache/files-test");
-                fs::create_dir_all(&cache).unwrap();
-                let base = cache.join(format!(
-                    "trash-core-{}-{}",
+                let base = std::env::temp_dir().join(format!(
+                    "files-trash-core-{}-{}",
                     std::process::id(),
                     NEXT.fetch_add(1, Ordering::Relaxed)
                 ));
@@ -1294,13 +1930,289 @@ mod platform {
                 path
             }
         }
-        impl Drop for Fixture {
-            fn drop(&mut self) {
-                let _ = fs::remove_dir_all(&self.base);
-            }
-        }
         fn flag() -> AtomicBool {
             AtomicBool::new(false)
+        }
+        /// Simulated volumes: each listed private directory is its own
+        /// "filesystem"; everything else shares the home device. Nothing is
+        /// mounted and no real mount point is consulted.
+        struct FakeVolumes(Vec<PathBuf>);
+        impl Volumes for FakeVolumes {
+            fn device(&self, directory: &Path) -> io::Result<u64> {
+                Ok(self
+                    .0
+                    .iter()
+                    .position(|v| directory.starts_with(v))
+                    .map_or(1, |i| i as u64 + 2))
+            }
+            fn topdir(&self, directory: &Path) -> io::Result<PathBuf> {
+                self.0
+                    .iter()
+                    .find(|v| directory.starts_with(v))
+                    .cloned()
+                    .ok_or_else(|| io::Error::other("no simulated volume"))
+            }
+            fn mounted(&self) -> Vec<PathBuf> {
+                self.0.clone()
+            }
+        }
+        impl Fixture {
+            fn volume(&self, name: &str) -> PathBuf {
+                let path = self.base.join(name);
+                fs::create_dir(&path).unwrap();
+                fs::create_dir(path.join("dir")).unwrap();
+                path
+            }
+            fn context_with(&self, volumes: &[&PathBuf]) -> TrashContext {
+                let volumes = FakeVolumes(volumes.iter().map(|v| (*v).clone()).collect());
+                TrashContext::open_with(&self.root, Arc::new(volumes)).unwrap()
+            }
+        }
+        fn uid() -> String {
+            unsafe { libc::geteuid() }.to_string()
+        }
+        fn mode(path: &Path) -> u32 {
+            fs::symlink_metadata(path).unwrap().permissions().mode() & 0o7777
+        }
+        fn count(path: &Path) -> usize {
+            fs::read_dir(path).unwrap().count()
+        }
+        #[test]
+        fn cross_volume_item_goes_to_private_volume_trash_with_relative_path() {
+            let f = Fixture::new();
+            let vol = f.volume("vol");
+            let item = vol
+                .join("dir")
+                .join(OsString::from_vec(b"a b%\xff".to_vec()));
+            fs::write(&item, b"volume").unwrap();
+            let receipt = f.context_with(&[&vol]).trash(&item, &flag()).unwrap();
+            assert!(fs::symlink_metadata(&item).is_err());
+            let trash = vol.join(format!(".Trash-{}", uid()));
+            let trashed = receipt.trashed_path().unwrap();
+            assert!(trashed.starts_with(trash.join("files")), "{trashed:?}");
+            assert_eq!(fs::read(&trashed).unwrap(), b"volume");
+            let info = fs::read_to_string(receipt.info_path().unwrap()).unwrap();
+            assert!(info.contains("\nPath=dir/a%20b%25%FF\n"), "{info}");
+            assert_eq!(receipt.volume_topdir(), Some(vol.as_path()));
+            assert_eq!(receipt.original_path(), item);
+            for path in [&trash, &trash.join("files"), &trash.join("info")] {
+                assert_eq!(mode(path), 0o700);
+            }
+            assert!(!vol.join(".Trash").exists());
+            assert_eq!(count(&f.root.join("files")), 0);
+            // Undo of the batch: the receipt pins the volume context.
+            let info_path = receipt.info_path().unwrap();
+            let report = restore(&receipt, &flag()).unwrap();
+            assert_eq!(report.restored_path.as_deref(), Some(item.as_path()));
+            assert_eq!(fs::read(&item).unwrap(), b"volume");
+            assert!(!info_path.exists());
+            assert_eq!(count(&trash.join("files")), 0);
+        }
+        #[test]
+        fn valid_sticky_shared_trash_is_preferred() {
+            let f = Fixture::new();
+            let vol = f.volume("vol");
+            fs::create_dir(vol.join(".Trash")).unwrap();
+            fs::set_permissions(vol.join(".Trash"), fs::Permissions::from_mode(0o1777)).unwrap();
+            let item = vol.join("dir/item");
+            fs::write(&item, b"shared").unwrap();
+            let receipt = f.context_with(&[&vol]).trash(&item, &flag()).unwrap();
+            let trash = vol.join(".Trash").join(uid());
+            assert!(
+                receipt
+                    .trashed_path()
+                    .unwrap()
+                    .starts_with(trash.join("files"))
+            );
+            assert_eq!(mode(&trash), 0o700);
+            assert!(!vol.join(format!(".Trash-{}", uid())).exists());
+            let info = fs::read_to_string(receipt.info_path().unwrap()).unwrap();
+            assert!(info.contains("\nPath=dir/item\n"), "{info}");
+            restore(&receipt, &flag()).unwrap();
+            assert_eq!(fs::read(&item).unwrap(), b"shared");
+        }
+        #[test]
+        fn symlinked_or_non_sticky_shared_trash_is_rejected() {
+            let f = Fixture::new();
+            // A symlinked .Trash pointing to a sticky directory of this fixture.
+            let vol = f.volume("vol");
+            let elsewhere = f.base.join("shared-elsewhere");
+            fs::create_dir(&elsewhere).unwrap();
+            fs::set_permissions(&elsewhere, fs::Permissions::from_mode(0o1777)).unwrap();
+            symlink(&elsewhere, vol.join(".Trash")).unwrap();
+            // A real .Trash without the sticky bit.
+            let plain = f.volume("plain");
+            fs::create_dir(plain.join(".Trash")).unwrap();
+            fs::set_permissions(plain.join(".Trash"), fs::Permissions::from_mode(0o777)).unwrap();
+            let ctx = f.context_with(&[&vol, &plain]);
+            for top in [&vol, &plain] {
+                let item = top.join("dir/item");
+                fs::write(&item, b"x").unwrap();
+                let receipt = ctx.trash(&item, &flag()).unwrap();
+                let own = top.join(format!(".Trash-{}", uid()));
+                assert!(
+                    receipt
+                        .trashed_path()
+                        .unwrap()
+                        .starts_with(own.join("files"))
+                );
+            }
+            assert_eq!(count(&elsewhere), 0);
+            assert_eq!(fs::read_link(vol.join(".Trash")).unwrap(), elsewhere);
+            assert_eq!(count(&plain.join(".Trash")), 0);
+        }
+        #[test]
+        fn listing_merges_home_and_volume_and_restores_from_the_volume_trash() {
+            let f = Fixture::new();
+            let progress = crate::remove_tree::Progress::default();
+            let vol = f.volume("vol");
+            let untouched = f.volume("no-trash");
+            let fake = FakeVolumes(vec![vol.clone(), untouched.clone()]);
+            let ctx = f.context_with(&[&vol, &untouched]);
+            let home_item = f.file("home.txt");
+            let volume_item = vol.join("dir/volume.txt");
+            fs::write(&volume_item, b"on volume").unwrap();
+            ctx.trash(&home_item, &flag()).unwrap();
+            ctx.trash(&volume_item, &flag()).unwrap();
+            let all = catalog_all_with(&f.root, &fake, &flag()).unwrap();
+            assert_eq!(all.items.len(), 2, "{all:?}");
+            assert!(!all.limited);
+            let home = all.items.iter().find(|i| i.volume.is_none()).unwrap();
+            assert_eq!(home.original.as_ref(), Some(&home_item));
+            let on_volume = all.items.iter().find(|i| i.volume.is_some()).unwrap();
+            assert_eq!(on_volume.original.as_ref(), Some(&volume_item));
+            let volume = on_volume.volume.clone().unwrap();
+            assert_eq!(
+                volume,
+                Volume {
+                    topdir: vol.clone(),
+                    trash: vol.join(format!(".Trash-{}", uid())),
+                }
+            );
+            // Listing never creates a trash.
+            assert!(!untouched.join(format!(".Trash-{}", uid())).exists());
+            assert!(!untouched.join(".Trash").exists());
+            assert_eq!(catalog(&f.root, &flag()).unwrap().items.len(), 1);
+            // The shared budget also limits volume items.
+            let limited = catalog_all_limited(&f.root, &fake, &flag(), 1, 1 << 20).unwrap();
+            assert!(limited.limited && limited.items.len() == 1);
+            // Occupied original: refused, nothing replaced.
+            fs::write(&volume_item, b"newer").unwrap();
+            let occupied = restore_volume_item(&volume, &on_volume.name, &flag()).unwrap_err();
+            assert_eq!(occupied.kind(), io::ErrorKind::AlreadyExists);
+            assert_eq!(fs::read(&volume_item).unwrap(), b"newer");
+            fs::rename(&volume_item, vol.join("dir/kept-newer")).unwrap();
+            let (restored, cleanup) =
+                restore_volume_item(&volume, &on_volume.name, &flag()).unwrap();
+            assert_eq!((restored.as_path(), cleanup), (volume_item.as_path(), None));
+            assert_eq!(fs::read(&volume_item).unwrap(), b"on volume");
+            assert_eq!(count(&volume.trash.join("info")), 0);
+            // A volume trash outside the two spec names is not accepted.
+            let foreign = Volume {
+                topdir: vol.clone(),
+                trash: vol.join("dir"),
+            };
+            assert!(restore_volume_item(&foreign, &on_volume.name, &flag()).is_err());
+            // Purge one volume item, then empty both trashes (plain files).
+            ctx.trash(&volume_item, &flag()).unwrap();
+            let name = catalog_all_with(&f.root, &fake, &flag())
+                .unwrap()
+                .items
+                .into_iter()
+                .find(|i| i.volume.is_some())
+                .unwrap()
+                .name;
+            let report = purge_volume_item(&volume, &name, &flag(), &progress).unwrap();
+            assert!(report.complete() && report.removed == 1, "{report:?}");
+            assert_eq!(count(&volume.trash.join("info")), 0);
+            fs::write(&volume_item, b"again").unwrap();
+            ctx.trash(&volume_item, &flag()).unwrap();
+            let report = empty_all_with(&f.root, &fake, &flag(), &progress).unwrap();
+            assert!(report.complete() && report.removed == 2, "{report:?}");
+            for trash in [&f.root, &volume.trash] {
+                assert_eq!(count(&trash.join("files")), 0);
+                assert_eq!(count(&trash.join("info")), 0);
+            }
+            assert!(!untouched.join(format!(".Trash-{}", uid())).exists());
+        }
+        #[test]
+        fn uncreatable_volume_trash_leaves_origin_intact_with_clear_error() {
+            let message = volume_error(
+                Path::new("/media/usb"),
+                io::Error::from_raw_os_error(libc::EROFS),
+            );
+            assert!(message.to_string().contains("solo lectura"), "{message}");
+            assert!(message.to_string().contains("origen queda intacto"));
+            assert_eq!(
+                message.kind(),
+                io::Error::from_raw_os_error(libc::EROFS).kind()
+            );
+            if unsafe { libc::geteuid() } == 0 {
+                return; // root bypasses the permission fixture below
+            }
+            let f = Fixture::new();
+            let vol = f.volume("vol");
+            let item = vol.join("dir/item");
+            fs::write(&item, b"keep me").unwrap();
+            fs::set_permissions(&vol, fs::Permissions::from_mode(0o555)).unwrap();
+            let failure = f.context_with(&[&vol]).trash(&item, &flag()).unwrap_err();
+            fs::set_permissions(&vol, fs::Permissions::from_mode(0o755)).unwrap();
+            let text = failure.cause.to_string();
+            assert!(text.contains("Papelera del volumen"), "{text}");
+            assert!(text.contains("origen queda intacto"), "{text}");
+            assert_eq!(failure.cause.kind(), io::ErrorKind::PermissionDenied);
+            assert_eq!(fs::read(&item).unwrap(), b"keep me");
+            assert!(!vol.join(format!(".Trash-{}", uid())).exists());
+            assert_eq!(count(&f.root.join("files")), 0);
+            assert_eq!(count(&f.root.join("info")), 0);
+        }
+        #[test]
+        fn volume_symlink_item_is_trashed_as_link() {
+            let f = Fixture::new();
+            let vol = f.volume("vol");
+            let target = vol.join("dir/target");
+            fs::write(&target, b"target bytes").unwrap();
+            let link = vol.join("dir/link");
+            symlink(&target, &link).unwrap();
+            let receipt = f.context_with(&[&vol]).trash(&link, &flag()).unwrap();
+            let trashed = receipt.trashed_path().unwrap();
+            assert!(
+                fs::symlink_metadata(&trashed)
+                    .unwrap()
+                    .file_type()
+                    .is_symlink()
+            );
+            assert_eq!(fs::read_link(&trashed).unwrap(), target);
+            assert_eq!(fs::read(&target).unwrap(), b"target bytes");
+            let info = fs::read_to_string(receipt.info_path().unwrap()).unwrap();
+            assert!(info.contains("\nPath=dir/link\n"), "{info}");
+            restore(&receipt, &flag()).unwrap();
+            assert_eq!(fs::read_link(&link).unwrap(), target);
+            assert_eq!(fs::read(&target).unwrap(), b"target bytes");
+        }
+        #[test]
+        fn network_and_pseudo_filesystems_are_never_listed() {
+            for kind in [
+                b"nfs4".as_slice(),
+                b"cifs",
+                b"fuse.sshfs",
+                b"fuse.gvfsd-fuse",
+                b"proc",
+                b"autofs",
+                b"overlay",
+            ] {
+                assert!(skipped_filesystem(kind));
+            }
+            for kind in [
+                b"ext4".as_slice(),
+                b"btrfs",
+                b"vfat",
+                b"exfat",
+                b"fuseblk",
+                b"tmpfs",
+            ] {
+                assert!(!skipped_filesystem(kind));
+            }
         }
         #[test]
         fn catalog_is_read_only_lossless_and_keeps_orphan_objects_visible() {
@@ -1336,22 +2248,22 @@ mod platform {
             f.context().trash(&a, &flag()).unwrap();
             let name = catalog(&f.root, &flag()).unwrap().items[0].name.clone();
             fs::write(&a, b"newer").unwrap();
-            let occupied = restore_item(&f.root, &name, &flag()).unwrap_err();
+            let occupied = crate::trash::restore_item(&f.root, &name, &flag()).unwrap_err();
             assert_eq!(occupied.kind(), io::ErrorKind::AlreadyExists);
             assert_eq!(fs::read(&a).unwrap(), b"newer");
             fs::remove_file(&a).unwrap();
-            let (restored, cleanup) = restore_item(&f.root, &name, &flag()).unwrap();
+            let (restored, cleanup) = crate::trash::restore_item(&f.root, &name, &flag()).unwrap();
             assert_eq!((restored.as_path(), cleanup), (a.as_path(), None));
             assert_eq!(fs::read(&a).unwrap(), b"original");
             assert!(catalog(&f.root, &flag()).unwrap().items.is_empty());
-            assert!(restore_item(&f.root, OsStr::new("../x"), &flag()).is_err());
+            assert!(crate::trash::restore_item(&f.root, OsStr::new("../x"), &flag()).is_err());
             // Purge one item: object and metadata gone.
             let dir = f.source.join("dir");
             fs::create_dir_all(dir.join("sub")).unwrap();
             fs::write(dir.join("sub/f"), b"123").unwrap();
             f.context().trash(&dir, &flag()).unwrap();
             let name = catalog(&f.root, &flag()).unwrap().items[0].name.clone();
-            let report = purge_item(&f.root, &name, &flag(), &progress).unwrap();
+            let report = crate::trash::purge_item(&f.root, &name, &flag(), &progress).unwrap();
             assert!(report.complete(), "{report:?}");
             assert_eq!(report.removed, 3);
             assert!(catalog(&f.root, &flag()).unwrap().items.is_empty());
@@ -1415,8 +2327,25 @@ mod platform {
                 "/a\nPath=/b",
             ] {
                 let data = format!("[Trash Info]\nPath={path}\n");
-                assert!(parse_catalog_info(data.as_bytes()).is_err(), "{path}");
+                assert!(parse_catalog_info(data.as_bytes(), None).is_err(), "{path}");
             }
+            let top = Path::new("/volume");
+            for path in ["../x", "a/../b", "a//b", "./a", "a%00b"] {
+                let data = format!("[Trash Info]\nPath={path}\n");
+                assert!(
+                    parse_catalog_info(data.as_bytes(), Some(top)).is_err(),
+                    "{path}"
+                );
+            }
+            let data = b"[Trash Info]\nPath=dir/a%20b\nDeletionDate=2026-11-10T10:00:00\n";
+            let (path, date) = parse_catalog_info(data, Some(top)).unwrap();
+            assert_eq!(path, Path::new("/volume/dir/a b"));
+            assert_eq!(date.as_deref(), Some("2026-11-10T10:00:00"));
+            let absolute = b"[Trash Info]\nPath=/elsewhere/x\n";
+            assert_eq!(
+                parse_catalog_info(absolute, Some(top)).unwrap().0,
+                Path::new("/elsewhere/x")
+            );
         }
         #[test]
         fn file_roundtrip_metadata_lossless_and_no_clobber() {
@@ -1869,15 +2798,38 @@ mod platform {
     pub(super) fn catalog(_: &Path, _: &AtomicBool) -> io::Result<Catalog> {
         Err(unsupported())
     }
-    pub(super) fn restore_item(
+    pub(super) fn catalog_all(_: &Path, _: &dyn Volumes, _: &AtomicBool) -> io::Result<Catalog> {
+        Err(unsupported())
+    }
+    pub(super) fn open_volume_context(_: &Path) -> io::Result<Context> {
+        Err(unsupported())
+    }
+    pub(super) fn system_device(_: &Path) -> io::Result<u64> {
+        Err(unsupported())
+    }
+    pub(super) fn system_topdir(_: &Path) -> io::Result<PathBuf> {
+        Err(unsupported())
+    }
+    pub(super) fn system_mounted() -> Vec<PathBuf> {
+        Vec::new()
+    }
+    pub(super) fn empty_all(
         _: &Path,
+        _: &dyn Volumes,
+        _: &AtomicBool,
+        _: &crate::remove_tree::Progress,
+    ) -> io::Result<crate::remove_tree::Report> {
+        Err(unsupported())
+    }
+    pub(super) fn restore_item(
+        _: Location,
         _: &std::ffi::OsStr,
         _: &AtomicBool,
     ) -> io::Result<(PathBuf, Option<String>)> {
         Err(unsupported())
     }
     pub(super) fn purge_item(
-        _: &Path,
+        _: Location,
         _: &std::ffi::OsStr,
         _: &AtomicBool,
         _: &crate::remove_tree::Progress,

@@ -131,7 +131,12 @@ impl AuxIo {
                     ),
                     Request::TrashCatalog(id, root, cancel) => Response::TrashCatalog(
                         id,
-                        files_core::trash::catalog(&root, &cancel).map_err(|e| e.to_string()),
+                        files_core::trash::catalog_all_with(
+                            &root,
+                            &*crate::trash_history::volumes(),
+                            &cancel,
+                        )
+                        .map_err(|e| e.to_string()),
                     ),
                     Request::PrepareCreateArchive(
                         id,

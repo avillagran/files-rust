@@ -66,6 +66,16 @@ pub fn root() -> Result<PathBuf, String> {
     }
     Ok(data.join("Trash"))
 }
+/// Volume lookups for trash routing, listing and emptying. Unit tests and
+/// scripted test sessions (`FILES_TEST_PREVIEW`) never consult or modify the
+/// trash of real mounted volumes: they use the home trash only.
+pub fn volumes() -> std::sync::Arc<dyn files_core::trash::Volumes> {
+    if cfg!(test) || std::env::var_os("FILES_TEST_PREVIEW").is_some() {
+        std::sync::Arc::new(files_core::trash::HomeOnly)
+    } else {
+        std::sync::Arc::new(files_core::trash::SystemVolumes)
+    }
+}
 #[derive(Default)]
 pub struct History {
     receipts: Vec<Receipt>,
@@ -98,7 +108,7 @@ impl History {
         if cancel.load(Ordering::Acquire) {
             return self.failure("Papelera cancelada antes de empezar".into(), Vec::new());
         }
-        let context = match TrashContext::open(root) {
+        let context = match TrashContext::open_with(root, volumes()) {
             Ok(c) => c,
             Err(e) => {
                 return self.failure(
@@ -219,8 +229,7 @@ impl History {
 }
 fn cause_message(error: &std::io::Error) -> String {
     if error.raw_os_error() == Some(libc::EXDEV) {
-        return "Otra unidad: papelera por volumen pendiente; no se copia ni borra el origen"
-            .into();
+        return "Otra unidad sin papelera utilizable; no se copia ni borra el origen".into();
     }
     match error.kind() {
         std::io::ErrorKind::AlreadyExists => {
@@ -270,14 +279,13 @@ mod tests {
     #[test]
     fn replaced_trash_slot_is_recovery_only_not_stale_undo() {
         static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
-        let dir = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "trash-history-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
-        std::fs::create_dir_all(&dir).unwrap();
+        // Exclusive directory in the invocation's private TMPDIR, retained.
+        let dir = std::env::temp_dir().join(format!(
+            "files-trash-history-{}-{}",
+            std::process::id(),
+            NEXT.fetch_add(1, Ordering::Relaxed)
+        ));
+        std::fs::create_dir(&dir).unwrap();
         let source = dir.join("original");
         std::fs::write(&source, b"preserved").unwrap();
         let root = dir.join("Trash");
@@ -308,7 +316,6 @@ mod tests {
         assert!(!source.exists());
         drop(history);
         drop(context);
-        std::fs::remove_dir_all(dir).unwrap();
     }
     #[test]
     fn preflight_checks_borrowed_selection_and_recovers() {

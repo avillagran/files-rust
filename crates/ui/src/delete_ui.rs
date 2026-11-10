@@ -23,31 +23,24 @@ pub enum Target {
     /// Selected entries of the current folder.
     Paths(Vec<PathBuf>),
     /// One trash item (name under `files/`) and its label for the dialog.
+    /// `volume` is `None` for the home trash, else the per-volume trash.
     TrashItem {
         name: OsString,
         label: String,
+        volume: Option<files_core::trash::Volume>,
     },
-    TrashEmpty {
-        count: usize,
-    },
+    /// Home trash plus the per-volume trashes of mounted volumes.
+    TrashEmpty { count: usize },
     TrashRestore {
         name: OsString,
+        volume: Option<files_core::trash::Volume>,
     },
     /// Shift+Ctrl+M: symbolic links to these targets inside a folder.
-    Links {
-        dir: PathBuf,
-        targets: Vec<PathBuf>,
-    },
+    Links { dir: PathBuf, targets: Vec<PathBuf> },
     /// "Nuevo: <plantilla>": copy of a ~/Templates file into a folder.
-    Template {
-        template: PathBuf,
-        dir: PathBuf,
-    },
+    Template { template: PathBuf, dir: PathBuf },
     /// "Nueva carpeta con la selección".
-    FolderWith {
-        dir: PathBuf,
-        names: Vec<OsString>,
-    },
+    FolderWith { dir: PathBuf, names: Vec<OsString> },
 }
 
 #[derive(Debug)]
@@ -86,13 +79,21 @@ impl Job {
                     Target::Paths(paths) => Ok(Outcome::Deleted(
                         files_core::remove_tree::remove_paths(&paths, &c, &pr),
                     )),
+                    Target::TrashItem {
+                        name,
+                        volume: Some(volume),
+                        ..
+                    } => files_core::trash::purge_volume_item(&volume, &name, &c, &pr)
+                        .map(Outcome::Deleted)
+                        .map_err(|e| e.to_string()),
                     Target::TrashItem { name, .. } => root().and_then(|r| {
                         files_core::trash::purge_item(&r, &name, &c, &pr)
                             .map(Outcome::Deleted)
                             .map_err(|e| e.to_string())
                     }),
                     Target::TrashEmpty { .. } => root().and_then(|r| {
-                        files_core::trash::empty(&r, &c, &pr)
+                        let volumes = crate::trash_history::volumes();
+                        files_core::trash::empty_all_with(&r, &*volumes, &c, &pr)
                             .map(Outcome::Deleted)
                             .map_err(|e| e.to_string())
                     }),
@@ -109,7 +110,13 @@ impl Job {
                     Target::Links { dir, targets } => {
                         Ok(Outcome::Linked(files_core::links::create(&dir, &targets)))
                     }
-                    Target::TrashRestore { name } => root().and_then(|r| {
+                    Target::TrashRestore {
+                        name,
+                        volume: Some(volume),
+                    } => files_core::trash::restore_volume_item(&volume, &name, &c)
+                        .map(|(path, cleanup)| Outcome::Restored { path, cleanup })
+                        .map_err(|e| e.to_string()),
+                    Target::TrashRestore { name, .. } => root().and_then(|r| {
                         files_core::trash::restore_item(&r, &name, &c)
                             .map(|(path, cleanup)| Outcome::Restored { path, cleanup })
                             .map_err(|e| e.to_string())
@@ -445,9 +452,10 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         ),
         Target::TrashEmpty { count } => (
             "¿Vaciar la Papelera?".into(),
-            vec![format!(
-                "Se eliminarán {count} elementos de forma permanente"
-            )],
+            vec![
+                format!("Se eliminarán {count} elementos de forma permanente"),
+                "Incluye las papeleras de los volúmenes montados".into(),
+            ],
         ),
         Target::TrashRestore { .. }
         | Target::Links { .. }
