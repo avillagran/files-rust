@@ -71,7 +71,8 @@ other preferences. Turning it off revokes visible proof, cancels admitted work
 and blocks new thumbnail demand. Explicit Space previews remain independent.
 
 The existing worker performs cache IO; draw and UI do no filesystem reads.
-`thumbnail-cache-v3` under Files' configuration root has 256 direct-mapped slots,
+`thumbnail-cache-v3` under Files' configuration root has 256 direct-mapped slots
+(1024 since 2026-11-10; see [THUMBNAILS](THUMBNAILS.md) for PDF/SVG and the shared cache),
 each bounded to 80 KiB, plus one bounded unpublished scratch file. Hash collisions
 are misses or ordinary eviction, never identity matches. A record compares the
 full raw source path, descriptor-derived device/inode/size/mtime/ctime including

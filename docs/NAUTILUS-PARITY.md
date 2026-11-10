@@ -26,7 +26,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 5 | Path bar + Ctrl+L, `/` and `~` | yes | hidden ancestors, Alt+Down and background destinations verified in 74d205f; 2026-11-10: typing `/` or `~` in the list opens the field, Tab completes paths (candidates in the status line) | — |
 | 6 | Type to filter | yes | — | — |
 | 7 | Hidden files Ctrl+H | yes | — | — |
-| 8 | Image/video/PDF/cover thumbnails | partial | PDF, audio cover art, list | P2 |
+| 8 | Image/video/PDF/cover thumbnails | partial | 2026-11-10: PDF first page (pdftoppm) and SVG (rsvg-convert), both degrading quietly to the icon when the tool is missing; reads and writes the freedesktop shared cache `~/.cache/thumbnails` (see THUMBNAILS.md). Audio cover art, office documents and thumbnails in the list view are still missing; interop with other apps' thumbnails is untested on a real desktop | P2 |
 | 9 | Rubber-band (marquee) selection | **yes** | block 3: Groups/List/Grid, Ctrl/Shift adds, click on empty space clears | — |
 | 10 | Select by pattern Ctrl+S | **yes** | block 6 | — |
 | 11 | Clipboard with other apps | partial | block 3: Ctrl+V pastes the most recent copy (Files or system); private native file-import end-to-end coverage remains pending | P2 |
