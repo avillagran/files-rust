@@ -112,7 +112,9 @@ pub fn destination(text: &str, current: &Path) -> Result<PathBuf, &'static str> 
             "Este campo admite rutas locales, file://, smb://, sftp://, ftp://, dav://, nfs:// y afp://",
         );
     }
-    let path = if let Some(s) = text.strip_prefix("~/") {
+    let path = if text == "~" {
+        files_core::theme::home()
+    } else if let Some(s) = text.strip_prefix("~/") {
         files_core::theme::home().join(s)
     } else {
         PathBuf::from(text)

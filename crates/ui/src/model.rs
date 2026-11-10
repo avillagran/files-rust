@@ -235,6 +235,16 @@ pub enum Action {
     RetrySaves,
     CancelClose,
     DiscardClose,
+    /// Alt+Home: the home folder.
+    GoHome,
+    /// Ctrl+plus/minus/0 where a zoom exists: +1 in, -1 out, 0 reset.
+    ZoomStep(i8),
+    /// Keyboard focus to the places rail (Ctrl+Alt+S, Tab).
+    FocusRail,
+    /// Keyboard focus to the tab strip (Ctrl+Alt+T).
+    FocusTabs,
+    /// Close every tab of the pane except the active one.
+    CloseOtherTabs,
 }
 impl Action {
     pub fn accessible_name(&self) -> Option<&'static str> {
@@ -277,13 +287,13 @@ impl Action {
             Self::CommandFocus => Some("Buscar comando, Ctrl+A reemplaza"),
             Self::CommandRecapture => Some("Usar selección, panel y carpeta actuales"),
             Self::DualPane => Some("Doble panel, F9; Tab cambia foco"),
-            Self::View(View::Groups) => Some("Vista Grupos"),
-            Self::View(View::List) => Some("Vista Lista"),
+            Self::View(View::Groups) => Some("Vista Grupos, Ctrl+1"),
+            Self::View(View::List) => Some("Vista Lista, Ctrl+2"),
             Self::View(View::Grid) => Some("Vista Grilla, Ctrl+5"),
             Self::View(View::Spatial | View::Columns) => Some("Vista Columnas tipo Finder, Ctrl+3"),
-            Self::View(View::SpaceMap) => Some("Vista Espacio, tamaños proporcionales"),
+            Self::View(View::SpaceMap) => Some("Vista Espacio, tamaños proporcionales, Ctrl+4"),
             Self::ToggleHidden => Some("Mostrar ocultos, Ctrl+H"),
-            Self::Refresh => Some("Actualizar carpeta"),
+            Self::Refresh => Some("Actualizar carpeta, Ctrl+R"),
             Self::Filter => Some("Filtrar aquí, Ctrl+F; subcarpetas, Ctrl+Shift+F"),
             Self::ClipboardCopy => Some("Copiar archivos al portapapeles privado de files, Ctrl+C"),
             Self::ClipboardCut => {
@@ -295,7 +305,7 @@ impl Action {
             Self::NewEntry(true) => Some("Crear carpeta, F7"),
             Self::Undo(false) => Some("Deshacer, Ctrl+Z"),
             Self::Undo(true) => Some("Rehacer, Ctrl+Shift+Z"),
-            Self::Terminal => Some("Terminal en la carpeta actual; Ctrl+Shift+P → terminal"),
+            Self::Terminal => Some("Terminal en la carpeta actual, Ctrl+."),
             Self::CompareFolders => Some("Comparar dos carpetas, sólo lectura"),
             Self::ReviewSyncFolders => Some("Preparar sincronización, sólo revisión sin cambios"),
             Self::Comparison(_, command) => Some(command.name()),
@@ -373,7 +383,7 @@ impl Action {
             Self::ViewMenu(_, _) => Some("Cambiar vista"),
             Self::Omni => Some("Editar ruta, Ctrl+L"),
             Self::Breadcrumbs => Some("Ancestros de la ruta, Alt+↓"),
-            Self::BackgroundNavigate(_) => Some("Abrir en pestaña de fondo"),
+            Self::BackgroundNavigate(_) => Some("Abrir en pestaña de fondo; clic central"),
             Self::PathCommit => Some("Confirmar ruta, Enter"),
             Self::PathCancel => Some("Cancelar edición de ruta, Esc"),
             Self::SelectionMenu(_, _) => Some("Herramientas de selección"),
@@ -431,24 +441,31 @@ impl Action {
             Self::PreviewNeighbor(1) => Some("Elemento siguiente de la carpeta, Alt+Abajo"),
             Self::Tab(crate::tabs::Command::New) => Some("Nueva pestaña, Ctrl+T"),
             Self::Tab(crate::tabs::Command::Close(_)) => Some("Cerrar pestaña, Ctrl+W"),
-            Self::Tab(_) => Some("Cambiar pestaña, Ctrl+Tab; reabrir Ctrl+Shift+T"),
+            Self::Tab(_) => Some("Cambiar pestaña, Ctrl+Tab o Alt+1…9; reabrir Ctrl+Shift+T"),
             Self::SpaceRefresh => Some("Actualizar cálculo de Espacio"),
             Self::SpaceCancel => Some("Cancelar cálculo de Espacio"),
             Self::SpaceListScroll(_) => Some("Desplazar lista sin área de Espacio"),
-            Self::Settings => Some("Preferencias"),
-            Self::Help => Some("Ayuda de atajos, F1"),
+            Self::Settings => Some("Preferencias, Ctrl+,"),
+            Self::Help => Some("Ayuda de atajos, F1 o Ctrl+?"),
+            Self::GoHome => Some("Ir a la carpeta personal, Alt+Inicio"),
+            Self::ZoomStep(0) => Some("Restablecer zoom de la Grilla, Ctrl+0"),
+            Self::ZoomStep(1) => Some("Acercar Grilla, Ctrl++"),
+            Self::ZoomStep(_) => Some("Alejar Grilla, Ctrl+-"),
+            Self::FocusRail => Some("Foco en la barra de lugares, Ctrl+Alt+S"),
+            Self::FocusTabs => Some("Foco en las pestañas, Ctrl+Alt+T"),
+            Self::CloseOtherTabs => Some("Cerrar las demás pestañas"),
             Self::HelpClose => Some("Cerrar ayuda, Esc"),
             Self::Parent => Some("Arriba, Alt+Arriba"),
             Self::History(false) => Some("Atrás, Alt+Izquierda"),
             Self::History(true) => Some("Adelante, Alt+Derecha"),
-            Self::Actions => Some("Acciones"),
+            Self::Actions => Some("Acciones, F10"),
             Self::RenameRegex => Some("Alternar reemplazo literal o regex"),
             Self::PreviewRotate(-1) => {
                 Some("Girar vista a la izquierda, Shift+R; no modifica el archivo")
             }
             Self::PreviewRotate(1) => Some("Girar vista a la derecha, R; no modifica el archivo"),
             Self::PreviewPdfText => Some("Alternar página o texto PDF, T"),
-            Self::Properties => Some("Propiedades y permisos"),
+            Self::Properties => Some("Propiedades y permisos, Alt+Enter"),
             Self::PropertyApply => Some("Confirmar y aplicar permisos"),
             Self::PropertyReload => Some("Recargar propiedades"),
             Self::NativePaste => Some("Pegar archivos MIME del sistema"),
@@ -655,6 +672,10 @@ pub struct Model {
     pub grid_zoom: f32,
     pub status_tips: crate::status_tips::State,
     pub open_job: Option<crate::open_job::Job>,
+    /// Marked files waiting for their launcher, one at a time (Enter on a batch).
+    pub open_queue: std::collections::VecDeque<PathBuf>,
+    /// Keyboard focus change the window applies after this event.
+    pub focus_request: Option<crate::key_commands::FocusTarget>,
     pub launch_notice: Option<&'static str>,
     pub window_mode: WindowMode,
     pub alternate_theme: bool,
@@ -880,6 +901,8 @@ impl Model {
             grid_zoom: 1.0,
             status_tips: Default::default(),
             open_job: None,
+            open_queue: Default::default(),
+            focus_request: None,
             launch_notice: None,
             window_mode: prefs.window_mode,
             alternate_theme: false,
@@ -1479,6 +1502,11 @@ impl Model {
                     eprintln!("FILES_OPEN_OUTCOME={status}");
                 }
             }
+            // A missing launcher fails every queued file the same way.
+            if status == "unavailable" {
+                self.open_queue.clear();
+            }
+            self.start_next_open();
             dirty = true;
         }
         dirty |= self.pump_copy();
@@ -3184,6 +3212,13 @@ impl Model {
                 }
             }
             Action::Breadcrumbs => crate::breadcrumb_ui::open(self),
+            Action::GoHome => self.go_home(),
+            Action::ZoomStep(step) => self.zoom_step(step),
+            Action::FocusRail => self.focus_request = Some(crate::key_commands::FocusTarget::Rail),
+            Action::FocusTabs => self.focus_request = Some(crate::key_commands::FocusTarget::Tabs),
+            Action::CloseOtherTabs => {
+                self.tab_command(crate::tabs::Command::CloseOthers(self.tabs.active))
+            }
             Action::BackgroundNavigate(p) => {
                 crate::tab_gestures::middle(self, Some(Action::Navigate(p)))
             }

@@ -199,3 +199,50 @@ capability checks use the shared I/O worker. Ctrl1–4/AltUpDown, existing rich
 cursor/undo/text paste and mouse fields are available; review is explicit and
 does not connect. Missing sshfs is visible. No mount transport is advertised.
 See SFTP-PREPARATION.md and SFTP-MOUNT-CONTRACT.md; N01 stays open.
+
+## Keyboard map (2026-11-10)
+
+Browser chords, as dispatched by `event()` in `crates/ui/src/lib.rs` and the
+model helpers in `crates/ui/src/key_commands.rs`. Modal panels (preview,
+search, dialogs, palette) take keys first; F5 copy, F6 move, F9 dual pane,
+Ctrl+1..5, Ctrl+I, Ctrl+N, Ctrl+Space, Alt+Down and Ctrl+F are unchanged.
+
+| Keys | Action |
+| --- | --- |
+| Enter | Open the focused item; with a marked batch beyond the focus, open every marked item (at most 20): folders in background tabs, files with their applications one launcher at a time |
+| Ctrl+Enter / Shift+Enter | Focused folder in a new foreground / background tab; a file opens as with Enter |
+| `/` or `~` | With no filter or edit open, start the location field seeded with that character (`~` alone goes home) |
+| Ctrl+L | Edit the location (whole field selected) |
+| Esc | Cancel an edit, else clear the filter (back to the top), else shrink a marked batch to the focused row; never resets scroll otherwise |
+| Alt+Left / Alt+Right / Alt+Up, Backspace | History back / forward / parent |
+| Alt+Home | Home folder |
+| Ctrl+T / Ctrl+W / Ctrl+Shift+T | New / close / reopen tab |
+| Ctrl+Tab, Ctrl+PgDn / Ctrl+Shift+Tab, Ctrl+PgUp | Next / previous tab (an open PDF preview keeps Ctrl+PgUp/PgDn for pages) |
+| Alt+1..Alt+9 | Tab N; Alt+9 is the last tab |
+| Ctrl+Shift+PgUp/PgDn, Ctrl+Shift+F10 | Move the active tab, tab actions |
+| Ctrl+Alt+T | Keyboard focus to the tab strip (Esc returns) |
+| Ctrl+Alt+S | Keyboard focus to the places rail and back; works in dual-pane mode |
+| Tab / Shift+Tab | Single pane: list → rail → tab strip; dual pane: switch panes |
+| Ctrl+plus / Ctrl+minus / Ctrl+0 | Grid zoom in / out / reset. List, Groups, Columns and Space have no zoom concept |
+| Ctrl+S, Ctrl+Shift+O, Ctrl+M, Ctrl+Shift+M | Select by pattern, open with, link to the copied items, create links |
+| Shift+Delete, Delete/F8 | Delete permanently (confirmed), move to trash |
+| Shift+F10 / Menu | Item menu; Up/Down/Home/End/Enter/KP Enter inside it |
+| F3 / Space | Preview; F3, Space or Esc closes it |
+| F1 / Ctrl+? | Shortcut help |
+| Ctrl+Shift+P, F10, Ctrl+, | Command palette, actions menu, preferences |
+
+Places rail (keyboard focus via Tab or Ctrl+Alt+S; the toolkit draws the
+focus ring on the cursor row): Up/Down/Home/End/PgUp/PgDn move, Enter or
+Space opens, Ctrl+Enter opens in a new tab, Shift+Enter in a background tab,
+Menu/Shift+F10 opens the row menu, Alt+Up/Alt+Down move a Files bookmark
+(`mark:` rows only, same rule as dragging), Delete removes a bookmark (on a
+device, network or trash row the toolkit runs that row's trailing action:
+eject, disconnect or pin), and Esc or Right returns focus to the list. Other
+keys that would act on the hidden file selection are swallowed; safe global
+chords (tabs, F1, palette, Ctrl+L, history) return focus to the list first.
+
+The palette lists the same commands with their chords, including select by
+pattern, open with, create/paste link, delete permanently, edit location,
+breadcrumb menu, zoom, close other tabs, focus tab strip/rail, actions menu
+and go home. The trash browser has no Enter binding: it has no non-mutating
+default action.

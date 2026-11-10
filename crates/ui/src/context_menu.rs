@@ -856,7 +856,17 @@ pub fn key(m: &mut Model, key: Key) {
                 break;
             }
         }
-    } else if key == Key::Enter {
+    } else if key == Key::Home || key == Key::End {
+        let enabled = |i: &usize| menu.items[*i].action.is_some();
+        let target = if key == Key::Home {
+            (0..menu.items.len()).find(enabled)
+        } else {
+            (0..menu.items.len()).rev().find(enabled)
+        };
+        if let Some(i) = target {
+            menu.focused = i;
+        }
+    } else if key == Key::Enter || key == Key::KPEnter {
         let index = menu.focused;
         activate(m, index);
     }

@@ -317,7 +317,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "copy-path",
         "Copiar ruta del elemento",
-        "",
+        "Ctrl+Alt+C",
         "path ruta copiar",
         Focus,
         Action::CopyPath
@@ -397,7 +397,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "tab-next",
         "Pestaña siguiente",
-        "Ctrl+Tab",
+        "Ctrl+Tab / Ctrl+PgDn",
         "next tab pestana",
         Root,
         Action::Tab(crate::tabs::Command::Cycle(1))
@@ -405,10 +405,130 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "tab-prev",
         "Pestaña anterior",
-        "Ctrl+Shift+Tab",
+        "Ctrl+Shift+Tab / Ctrl+PgUp",
         "previous tab pestana",
         Root,
         Action::Tab(crate::tabs::Command::Cycle(-1))
+    ),
+    spec!(
+        "select-pattern",
+        "Seleccionar por patrón",
+        "Ctrl+S",
+        "select pattern patron glob marcar seleccionar",
+        Listing,
+        Action::SelectPattern
+    ),
+    spec!(
+        "open-with",
+        "Abrir con otra aplicación",
+        "Ctrl+Shift+O",
+        "open with abrir con aplicacion app",
+        Focus,
+        Action::OpenWith
+    ),
+    spec!(
+        "create-link",
+        "Crear enlaces simbólicos de la selección",
+        "Ctrl+Shift+M",
+        "symlink link enlace simbolico crear",
+        Selection,
+        Action::CreateLinks
+    ),
+    spec!(
+        "paste-link",
+        "Enlace a lo copiado en el buffer de files",
+        "Ctrl+M",
+        "paste link pegar enlace simbolico",
+        Root,
+        Action::LinkCopied
+    ),
+    spec!(
+        "delete-permanently",
+        "Eliminar definitivamente",
+        "Shift+Supr",
+        "delete permanently eliminar borrar definitivo",
+        Selection,
+        Action::DeletePermanently
+    ),
+    spec!(
+        "edit-location",
+        "Editar ubicación",
+        "Ctrl+L / ~ / /",
+        "location path ruta ubicacion omnibar",
+        Root,
+        Action::Omni
+    ),
+    spec!(
+        "breadcrumbs",
+        "Menú de carpetas superiores",
+        "Alt+Abajo",
+        "breadcrumbs ancestros ruta migas",
+        Root,
+        Action::Breadcrumbs
+    ),
+    spec!(
+        "go-home",
+        "Ir a la carpeta personal",
+        "Alt+Inicio",
+        "home inicio carpeta personal",
+        Root,
+        Action::GoHome
+    ),
+    spec!(
+        "zoom-in",
+        "Acercar Grilla",
+        "Ctrl++",
+        "zoom in acercar iconos grilla",
+        Root,
+        Action::ZoomStep(1)
+    ),
+    spec!(
+        "zoom-out",
+        "Alejar Grilla",
+        "Ctrl+-",
+        "zoom out alejar iconos grilla",
+        Root,
+        Action::ZoomStep(-1)
+    ),
+    spec!(
+        "zoom-reset",
+        "Restablecer zoom de la Grilla",
+        "Ctrl+0",
+        "zoom reset restablecer grilla",
+        Root,
+        Action::ZoomStep(0)
+    ),
+    spec!(
+        "tab-close-others",
+        "Cerrar las demás pestañas",
+        "",
+        "close other tabs cerrar demas pestanas",
+        Root,
+        Action::CloseOtherTabs
+    ),
+    spec!(
+        "focus-tabs",
+        "Foco en la barra de pestañas",
+        "Ctrl+Alt+T",
+        "focus tabs foco pestanas teclado",
+        Root,
+        Action::FocusTabs
+    ),
+    spec!(
+        "focus-rail",
+        "Foco en la barra de lugares",
+        "Ctrl+Alt+S",
+        "focus sidebar rail lugares foco teclado",
+        Root,
+        Action::FocusRail
+    ),
+    spec!(
+        "actions-menu",
+        "Menú Acciones",
+        "F10",
+        "actions menu acciones",
+        Root,
+        Action::Actions
     ),
     spec!(
         "folder-view-save",
@@ -573,7 +693,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "terminal",
         "Terminal en esta carpeta",
-        "",
+        "Ctrl+.",
         "terminal shell consola here aqui carpeta",
         Root,
         Action::Terminal
@@ -581,7 +701,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "inspector",
         "Alternar inspector (un panel)",
-        "",
+        "Ctrl+Alt+I",
         "inspector information informacion",
         Root,
         Action::Inspector
@@ -621,7 +741,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "help",
         "Ayuda y atajos",
-        "F1",
+        "F1 / Ctrl+?",
         "help keyboard ayuda atajos",
         Root,
         Action::Help
@@ -977,7 +1097,7 @@ impl State {
             {
                 Some("Espera el buffer o la operación en curso")
             }
-            "clipboard-paste" if m.clipboard_state.count() == 0 => {
+            "clipboard-paste" | "paste-link" if m.clipboard_state.count() == 0 => {
                 Some("El buffer de files está vacío")
             }
             "undo" if !m.can_undo => Some("No hay operación para deshacer"),
@@ -989,7 +1109,13 @@ impl State {
                 Some("Límite de ocho pestañas")
             }
             "tab-reopen" if m.tabs.closed.is_empty() => Some("No hay pestañas cerradas"),
-            "tab-next" | "tab-prev" if m.tabs.rows.len() < 2 => Some("Sólo hay una pestaña"),
+            "tab-next" | "tab-prev" | "tab-close-others" if m.tabs.rows.len() < 2 => {
+                Some("Sólo hay una pestaña")
+            }
+            "zoom-in" | "zoom-out" | "zoom-reset" if m.view != View::Grid => {
+                Some("El zoom sólo existe en la vista Grilla")
+            }
+            "focus-rail" if !m.sidebar_widget => Some("La barra de lugares no está disponible"),
             "filtered" if m.query.trim().is_empty() => Some("Escribe primero un filtro local"),
             "save-session" if !matches!(m.session.mode, crate::session_state::Mode::Writable) => {
                 Some("La sesión no está habilitada para escritura")

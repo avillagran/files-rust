@@ -872,7 +872,8 @@ pub fn event(m: &mut Model, ev: Event) -> bool {
         }
         Event::KeyDown | Event::Shortcut => {
             let key = app::event_key();
-            if key == Key::Escape || key == Key::from_char(' ') {
+            // F3 toggles the preview it opened, like Space.
+            if key == Key::Escape || key == Key::from_char(' ') || key == Key::F3 {
                 m.action(Action::ClosePreview);
             } else if ctrl && key == Key::from_char('c') {
                 m.copy_preview();

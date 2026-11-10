@@ -284,7 +284,7 @@ pub fn key(m: &mut Model, key: Key, mods: Shortcut, h: i32) {
         m.action(Action::PropertyStep(if key == Key::Left { -1 } else { 1 }));
     } else if key == Key::Escape {
         m.action(Action::PropertyClose);
-    } else if key == Key::Enter {
+    } else if key == Key::Enter || key == Key::KPEnter {
         m.action(Action::PropertyApply);
     } else if key == Key::Tab {
         if let Some(d) = &mut m.properties_dialog {

@@ -64,6 +64,7 @@ mod html_display_list;
 mod html_preview_job;
 mod image_preview_job;
 mod image_preview_view;
+mod key_commands;
 mod keyboard_nav;
 mod line_edit;
 mod line_field;
@@ -292,7 +293,14 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
     {
         return true;
     }
-    if matches!(ev, Event::KeyDown | Event::Shortcut) && app::event_key() == Key::F1 {
+    if matches!(ev, Event::KeyDown | Event::Shortcut)
+        && (app::event_key() == Key::F1
+            || crate::key_commands::help_chord(
+                app::event_key(),
+                app::event_state(),
+                &app::event_text(),
+            ))
+    {
         m.action(Action::Help);
         return true;
     }
@@ -321,6 +329,15 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             m.action(Action::Tab(command));
             return true;
         }
+    }
+    // Ctrl+PgUp/PgDn and Alt+1..9; an open PDF preview keeps Ctrl+PgUp/PgDn.
+    if matches!(ev, Event::KeyDown | Event::Shortcut)
+        && !(m.preview.visible() && m.preview.pdf_available())
+        && let Some(command) =
+            crate::key_commands::tab_chord(m, app::event_key(), app::event_state())
+    {
+        m.action(Action::Tab(command));
+        return true;
     }
     if m.help.is_some() {
         match ev {
@@ -364,6 +381,29 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             return true;
         }
         return crate::mutations::event(m, ev);
+    }
+    if matches!(ev, Event::KeyDown | Event::Shortcut)
+        && crate::key_commands::rail_chord(app::event_key(), app::event_state())
+    {
+        m.action(Action::FocusRail);
+        return true;
+    }
+    // Single pane: Tab goes to the places rail, Shift+Tab to the tab strip.
+    // Dual pane keeps Tab for switching panes (below).
+    if ev == Event::KeyDown
+        && app::event_key() == Key::Tab
+        && !m.dual.enabled
+        && !m.filter_edit.active
+        && !m.editing
+        && m.sidebar_widget
+        && !app::event_state().intersects(Shortcut::Ctrl | Shortcut::Meta | Shortcut::Alt)
+    {
+        m.focus_request = Some(if app::event_state().intersects(Shortcut::Shift) {
+            crate::key_commands::FocusTarget::Tabs
+        } else {
+            crate::key_commands::FocusTarget::Rail
+        });
+        return true;
     }
     if !m.editing && matches!(ev, Event::KeyDown | Event::Shortcut) && app::event_key() == Key::F9 {
         m.action(Action::DualPane);
@@ -748,6 +788,11 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
                 m.action(Action::Parent);
                 return true;
             }
+            if key == Key::Home && app::event_state().contains(Shortcut::Alt) && !ctrl && !m.editing
+            {
+                m.action(Action::GoHome);
+                return true;
+            }
             if ctrl
                 && app::event_state().contains(Shortcut::Alt)
                 && key == Key::from_char('i')
@@ -829,6 +874,10 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
                 }));
                 return true;
             }
+            if ctrl && key == Key::from_char('0') && matches!(m.view, View::Grid | View::Spatial) {
+                m.action(Action::ZoomStep(0));
+                return true;
+            }
             if ctrl && key == Key::from_char('4') {
                 m.action(Action::View(View::SpaceMap));
                 return true;
@@ -881,18 +930,19 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
                 } else if m.editing {
                     m.end_path_edit();
                 } else {
-                    m.folder_restore = None;
-                    m.query.clear();
-                    m.preserve_empty_selection = false;
-                    m.scroll = 0;
-                    m.rebuild();
+                    m.escape_browser();
                 }
                 return true;
             }
             if key == Key::Enter || key == Key::KPEnter {
+                let mods = app::event_state();
                 if m.editing {
                     m.commit_path_edit();
-                } else {
+                } else if mods.intersects(Shortcut::Ctrl | Shortcut::Meta) {
+                    m.open_focused_in_tab(true);
+                } else if mods.intersects(Shortcut::Shift) {
+                    m.open_focused_in_tab(false);
+                } else if !m.open_marked() {
                     m.open_selected();
                 }
                 return true;
@@ -924,6 +974,9 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             let text = app::event_text();
             if !text.is_empty() && text.chars().all(|c| !c.is_control()) {
                 if let Some(delete) = app::compose() {
+                    if delete <= 0 && m.seed_location(&text) {
+                        return true;
+                    }
                     if m.editing {
                         if let Err(error) = m.path_compose(&text, delete.max(0) as usize) {
                             m.error = error.into();
@@ -935,7 +988,9 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
                     }
                     return true;
                 }
-                input(m, &text);
+                if !m.seed_location(&text) {
+                    input(m, &text);
+                }
                 return true;
             }
             false
@@ -1387,7 +1442,9 @@ pub fn run_since(start: Instant) -> bool {
             });
     }
     sidebar.resize(0, 90, places_sidebar::RAIL, (size.1 - 122).max(0));
-    // Tab stays with the browser (it switches panes); the rail is pointer-driven.
+    // The rail joins the Tab order only on an explicit keyboard request (Tab
+    // in a single pane, Ctrl+Alt+S, palette); a pointer press never keeps
+    // keyboard focus there.
     sidebar.clear_visible_focus();
     let fixture_sidebar = sidebar.clone();
     let fixture_rail = rail_state.clone();
@@ -1548,7 +1605,18 @@ pub fn run_since(start: Instant) -> bool {
     let mut deferred_click = None;
     let event_tabs = tab_strip.clone();
     let event_notices = notice_input.clone();
+    // Keyboard focus in the places rail: the toolkit Sidebar takes it only on
+    // request (Tab, Ctrl+Alt+S, palette) and gives it back to the list.
+    let rail_cursor: Rc<Cell<Option<usize>>> = Rc::new(Cell::new(None));
+    let event_sidebar = sidebar.clone();
+    let event_rail_cursor = rail_cursor.clone();
     canvas.handle(move |f, e| {
+        if e == Event::Focus {
+            // Back in the list: the rail leaves the Tab order again so a
+            // pointer press on it never keeps keyboard focus there.
+            event_sidebar.clone().clear_visible_focus();
+            event_rail_cursor.set(None);
+        }
         // A native modal owns text and navigation. In particular, a late
         // canvas paste must not bypass the sheet's stamped admission queue.
         if m.try_borrow().is_ok_and(|m| m.toolkit_mutation_sheet_open)
@@ -1772,7 +1840,30 @@ pub fn run_since(start: Instant) -> bool {
         if plain_press {
             state.arm_outgoing_drag(app::event_x(), app::event_y());
         }
+        let focus = state.focus_request.take();
+        let tabs_key = (focus == Some(key_commands::FocusTarget::Tabs)
+            && tab_strip::begin_intent(&mut state))
+        .then(|| state.pane_owner());
+        let rail_open = state.sidebar_widget && !places_sidebar::covered(&state);
         drop(state);
+        match focus {
+            Some(key_commands::FocusTarget::Tabs) if tabs_key.is_some() => {
+                event_tabs.widget.focus_key(&tabs_key.expect("tab key"));
+            }
+            Some(key_commands::FocusTarget::Tabs | key_commands::FocusTarget::Rail)
+                if rail_open =>
+            {
+                let mut rail = event_sidebar.clone();
+                rail.set_visible_focus();
+                if rail.take_focus().is_ok() {
+                    event_rail_cursor.set(Some(rail.cursor()));
+                    rail.redraw();
+                } else {
+                    rail.clear_visible_focus();
+                }
+            }
+            _ => {}
+        }
         if handled {
             f.redraw();
         }
@@ -1784,6 +1875,7 @@ pub fn run_since(start: Instant) -> bool {
     let auxiliary_fixture = fixture_dispatch.clone();
     let auxiliary_tabs = tab_strip.clone();
     let auxiliary_notices = notice_input.clone();
+    let auxiliary_rail_cursor = rail_cursor.clone();
     let mut auxiliary_pressed = false;
     // FLTK groups otherwise dispatch children before our handler. Intercept
     // auxiliary buttons before the canvas or Sidebar treats them as primary.
@@ -1845,6 +1937,80 @@ pub fn run_since(start: Instant) -> bool {
                     let _ = aux_canvas.take_focus();
                 }
                 return true;
+            }
+        }
+        // Keys the focused places rail leaves unused bubble up here (the
+        // toolkit already moved its cursor, activated rows, opened the row
+        // menu or ran a row's trailing action).
+        if matches!(event, Event::KeyDown | Event::KeyUp | Event::Shortcut)
+            && (!isolate_fixture_input || auxiliary_fixture.get())
+            && app::focus().is_some_and(|w| w.as_widget_ptr() == aux_sidebar.as_widget_ptr())
+        {
+            let cursor = aux_sidebar.cursor();
+            let to_list = |canvas: &mut Frame| {
+                let _ = canvas.take_focus();
+                canvas.redraw();
+            };
+            match event {
+                Event::KeyDown => {
+                    let command = match native_window_model.try_borrow() {
+                        Ok(m) => key_commands::rail_key(
+                            &m,
+                            &aux_rail.borrow(),
+                            cursor,
+                            app::event_key(),
+                            app::event_state(),
+                        ),
+                        Err(_) => return true,
+                    };
+                    match command {
+                        key_commands::RailKey::ReturnToList => to_list(&mut aux_canvas),
+                        key_commands::RailKey::Pick(pick) => {
+                            let opens_tab = matches!(pick, places_sidebar::Pick::Run(_));
+                            if let Ok(mut m) = native_window_model.try_borrow_mut() {
+                                places_sidebar::apply(&mut m, pick);
+                            }
+                            if opens_tab {
+                                to_list(&mut aux_canvas);
+                            }
+                            aux_canvas.redraw();
+                        }
+                        key_commands::RailKey::Background(path) => {
+                            if let Ok(mut m) = native_window_model.try_borrow_mut() {
+                                m.action(Action::BackgroundNavigate(path));
+                            }
+                            aux_canvas.redraw();
+                        }
+                        key_commands::RailKey::Pass => {
+                            // The list handles the chord as a shortcut next.
+                            to_list(&mut aux_canvas);
+                            return false;
+                        }
+                        key_commands::RailKey::Consume => {}
+                    }
+                    return true;
+                }
+                Event::KeyUp => {
+                    // The toolkit uses Esc to fold the expanded rail and Right
+                    // to enter a section; once released they return to the
+                    // list unless Right just moved the cursor or sits on a
+                    // section header.
+                    let before = auxiliary_rail_cursor.replace(Some(cursor));
+                    let header = matches!(
+                        aux_rail.borrow().kinds.get(cursor),
+                        Some(places_sidebar::Kind::Header)
+                    );
+                    let key = app::event_key();
+                    if key == Key::Escape
+                        || (key == Key::Right && before == Some(cursor) && !header)
+                    {
+                        to_list(&mut aux_canvas);
+                    }
+                    return true;
+                }
+                // Arrows the rail did not use are offered as shortcuts; they
+                // must not move the file list behind it.
+                _ => return true,
             }
         }
         if event == Event::Push {
