@@ -343,6 +343,7 @@ fn recovery_review_stamps_and_full_queue_rejection_return_original_result() {
         id: 1,
         result: Err(copy_job::Failure::Archive(error)),
         progress: Default::default(),
+        fence: None,
     }));
     m.copy_notice_id = Some(1);
     m.notice_open = true;

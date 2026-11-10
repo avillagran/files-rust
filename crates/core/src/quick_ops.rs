@@ -64,6 +64,16 @@ pub fn numbered(name: &OsStr, n: u32) -> OsString {
 
 /// Copies `template` into `dir` under a free name; returns the new path.
 pub fn from_template(template: &Path, dir: &Path) -> io::Result<PathBuf> {
+    from_template_recorded(template, dir).map(|(path, _)| path)
+}
+
+/// Like [`from_template`], plus the Undo identity receipt taken from the new
+/// file's own handle after its contents were written and synced (`None`
+/// when the receipt could not be taken, which leaves it not undoable).
+pub fn from_template_recorded(
+    template: &Path,
+    dir: &Path,
+) -> io::Result<(PathBuf, Option<crate::undo_ops::Created>)> {
     let name = template
         .file_name()
         .ok_or_else(|| io::Error::other("plantilla sin nombre"))?;
@@ -88,7 +98,17 @@ pub fn from_template(template: &Path, dir: &Path) -> io::Result<PathBuf> {
             let _ = std::fs::remove_file(&path);
             return Err(e);
         }
-        return Ok(path);
+        #[cfg(target_os = "linux")]
+        let receipt = path
+            .parent()
+            .and_then(|p| p.canonicalize().ok())
+            .zip(path.file_name())
+            .and_then(|(parent, name)| {
+                crate::undo_ops::Created::from_file(parent.join(name), &dst, false).ok()
+            });
+        #[cfg(not(target_os = "linux"))]
+        let receipt = None;
+        return Ok((path, receipt));
     }
     Err(io::Error::other("no hay un nombre libre"))
 }

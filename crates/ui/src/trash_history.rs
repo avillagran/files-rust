@@ -87,6 +87,10 @@ impl History {
     pub fn available(&self) -> bool {
         !self.receipts.is_empty()
     }
+    /// Receipts held (each pins about three descriptors), including recovery.
+    pub fn len(&self) -> usize {
+        self.receipts.len() + self.recovery.len()
+    }
     pub fn clear(&mut self) {
         self.receipts.clear();
         self.recovery.clear();
@@ -227,7 +231,7 @@ impl History {
         }
     }
 }
-fn cause_message(error: &std::io::Error) -> String {
+pub(crate) fn cause_message(error: &std::io::Error) -> String {
     if error.raw_os_error() == Some(libc::EXDEV) {
         return "Otra unidad sin papelera utilizable; no se copia ni borra el origen".into();
     }
@@ -250,7 +254,7 @@ fn push_detail(details: &mut Vec<String>, message: String) {
         details.push("Informe truncado; revisa los metadatos de la Papelera".into());
     }
 }
-fn failure_details(failure: &Failure) -> Vec<String> {
+pub(crate) fn failure_details(failure: &Failure) -> Vec<String> {
     let mut details = Vec::new();
     for path in &failure.preserved_paths {
         push_detail(&mut details, format!("Conservado: {path:?}"));

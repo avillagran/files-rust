@@ -1487,6 +1487,7 @@ mod tests {
                 ..Default::default()
             }),
             progress: Default::default(),
+            fence: None,
         };
         m.clipboard_state.acknowledge(
             &crate::file_clipboard::JobTag {

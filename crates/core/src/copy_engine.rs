@@ -136,6 +136,12 @@ pub struct CopyReport {
     /// Verified published roots assigned a numbered destination; no deletion authority.
     pub renamed_count: u64,
     pub completed_omitted: u64,
+    /// Identity receipts of the roots in `completed` that this job created,
+    /// taken from the engine's own held root handle at publication (same cap).
+    /// Undo acts only on these; a root missing here is never undoable.
+    pub created: Vec<crate::undo_ops::Created>,
+    /// Identity receipts of roots moved by the native same-filesystem engine.
+    pub moved: Vec<crate::undo_ops::Moved>,
     /// Logical bytes transferred, including staged bytes discarded after failure.
     pub bytes_copied: u64,
     pub files_copied: u64,
@@ -1519,6 +1525,22 @@ mod linux {
                     if actual_path.as_os_str().len() > PATH_BYTES {
                         self.report.completed_omitted += 1;
                     } else {
+                        let handle = stage.root_handle.as_ref().expect("Root handle held");
+                        if let Ok(stat) = stat_fd(handle).and_then(|stat| {
+                            if identity(&stat) == root_identity {
+                                Ok(stat)
+                            } else {
+                                Err(io::Error::other("Published root identity changed"))
+                            }
+                        }) {
+                            self.report
+                                .created
+                                .push(crate::undo_ops::Created::from_stat(
+                                    actual_path.clone(),
+                                    &stat,
+                                    true,
+                                ));
+                        }
                         self.report.completed.push(actual_path);
                     }
                 }

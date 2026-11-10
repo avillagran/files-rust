@@ -187,6 +187,7 @@ mod toolkit_menu;
 mod trash_browser;
 mod trash_history;
 mod trash_scene;
+mod undo_history;
 mod video_preview_job;
 mod video_stream_job;
 mod view;

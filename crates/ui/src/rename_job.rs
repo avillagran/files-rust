@@ -488,6 +488,12 @@ pub enum Request {
         name: String,
         folder: bool,
     },
+    /// History bookkeeping from other workers (copy/move, links, templates).
+    /// No filesystem access; answered with `Response::Recorded`.
+    Record {
+        id: u64,
+        commands: Vec<crate::undo_history::Command>,
+    },
 }
 impl Request {
     fn fixture_phase(&self) -> Option<&'static str> {
@@ -506,6 +512,7 @@ impl Request {
             | Self::Apply { id, .. }
             | Self::History { id, .. }
             | Self::Create { id, .. }
+            | Self::Record { id, .. }
             | Self::Trash { id, .. } => *id,
         }
     }
@@ -521,12 +528,22 @@ pub enum Response {
     Properties(u64, Box<crate::properties_job::Reply>),
     Planned(u64, Result<PreparedRename, String>),
     Finished(u64, Outcome, Option<PathBuf>),
+    /// A `Request::Record` was applied; only the history labels changed.
+    Recorded,
 }
+type Labels = Arc<std::sync::Mutex<(Option<String>, Option<String>)>>;
 pub struct Worker {
     tx: Option<SyncSender<Request>>,
     rx: Option<Receiver<Response>>,
     cancel: Arc<AtomicBool>,
     pub busy: bool,
+    /// Labels of the history's top Undo/Redo entries, published by the worker.
+    labels: Labels,
+    /// Commands waiting for an idle worker, flushed by `flush_history`.
+    queue: Vec<crate::undo_history::Command>,
+    /// Bookkeeping requests sent but not yet acknowledged. They never make
+    /// the worker `busy`, so they do not gate close, trash or rename.
+    records_in_flight: usize,
 }
 impl Worker {
     pub fn new() -> Self {
@@ -535,6 +552,73 @@ impl Worker {
             rx: None,
             cancel: Arc::new(AtomicBool::new(false)),
             busy: false,
+            labels: Arc::default(),
+            queue: Vec::new(),
+            records_in_flight: 0,
+        }
+    }
+    /// "Deshacer copiar 3 elementos" / "Rehacer …" for menus and the palette.
+    pub fn labels(&self) -> (Option<String>, Option<String>) {
+        self.labels
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .clone()
+    }
+    /// Queue a history command; it reaches the worker when it is idle.
+    pub fn enqueue(&mut self, command: crate::undo_history::Command) {
+        use crate::undo_history::Command;
+        if matches!(command, Command::InvalidateTrash | Command::InvalidateAll)
+            && self
+                .queue
+                .last()
+                .is_some_and(|c| std::mem::discriminant(c) == std::mem::discriminant(&command))
+        {
+            return;
+        }
+        // Bounded like the history itself: the oldest pending record is
+        // dropped (it simply becomes not undoable); invalidations are kept.
+        if self.queue.len() >= crate::undo_history::MAX_ENTRIES
+            && let Some(i) = self
+                .queue
+                .iter()
+                .position(|c| matches!(c, Command::Record(_)))
+        {
+            self.queue.remove(i);
+        }
+        self.queue.push(command);
+    }
+    /// True while recorded operations have not reached the history yet.
+    pub fn history_pending(&self) -> bool {
+        !self.queue.is_empty() || self.records_in_flight > 0
+    }
+    /// Send queued commands when idle, without marking the worker busy and
+    /// without touching the cancellation flag. Returns true when sent.
+    pub fn flush_history(&mut self, id: u64) -> bool {
+        if self.busy || self.queue.is_empty() || self.records_in_flight > 0 {
+            return false;
+        }
+        if self.tx.is_none() {
+            self.start();
+        }
+        let commands = std::mem::take(&mut self.queue);
+        match self
+            .tx
+            .as_ref()
+            .expect("worker started")
+            .try_send(Request::Record { id, commands })
+        {
+            Ok(()) => {
+                self.records_in_flight += 1;
+                true
+            }
+            Err(
+                mpsc::TrySendError::Full(Request::Record { commands, .. })
+                | mpsc::TrySendError::Disconnected(Request::Record { commands, .. }),
+            ) => {
+                self.queue = commands;
+                false
+            }
+            Err(_) => false,
         }
     }
     fn start(&mut self) {
@@ -544,11 +628,11 @@ impl Worker {
         let (tx, input) = mpsc::sync_channel::<Request>(1);
         let (output, rx) = mpsc::sync_channel(1);
         let flag = self.cancel.clone();
+        let labels = Arc::clone(&self.labels);
         std::thread::spawn(move || {
-            // A single token bounds retained history, including its directory FD.
-            let mut history: Option<(UndoToken, bool)> = None;
-            let mut history_directory: Option<PathBuf> = None;
-            let mut trash_history = crate::trash_history::History::default();
+            // One linear, bounded history (undo_history.rs), including the
+            // descriptors pinned by rename tokens and trash receipts.
+            let mut history = crate::undo_history::History::default();
             while let Ok(request) = input.recv() {
                 let id = request.id();
                 let fixture_phase = request.fixture_phase();
@@ -560,7 +644,7 @@ impl Worker {
                     Request::Create { directory, .. } | Request::Trash { directory, .. } => {
                         Some(directory.clone())
                     }
-                    Request::History { .. } => history_directory.clone(),
+                    Request::History { redo, .. } => history.directory(*redo),
                     _ => None,
                 };
                 let response = match request {
@@ -571,9 +655,8 @@ impl Worker {
                     Request::Permissions { snapshot, mode, .. } => {
                         let reply = crate::properties_job::apply(snapshot, mode, &flag);
                         if reply.changed {
-                            history_directory = None;
-                            history = None;
-                            trash_history.clear();
+                            // Not undoable: keep the history linear.
+                            history.clear();
                         }
                         Response::Properties(id, Box::new(reply))
                     }
@@ -583,43 +666,45 @@ impl Worker {
                         options,
                         ..
                     } => Response::Planned(id, plan(directory, &selected, &options, &flag)),
-                    Request::Apply { prepared, .. } => match prepared.execute_cancellable(&flag) {
-                        Ok(token) => {
-                            let details = cleanup_details(&token);
-                            trash_history.clear();
-                            history_directory = refresh_directory.clone();
-                            history = Some((token, false));
-                            Response::Finished(
-                                id,
-                                Outcome {
-                                    success: true,
-                                    message: "Nombres actualizados".into(),
-                                    details,
+                    Request::Apply { prepared, .. } => {
+                        let count = prepared.len();
+                        match prepared.execute_cancellable(&flag) {
+                            Ok(token) => {
+                                let details = cleanup_details(&token);
+                                history.push_rename(
+                                    token,
+                                    refresh_directory.clone().unwrap_or_default(),
+                                    count,
+                                );
+                                Response::Finished(
+                                    id,
+                                    Outcome {
+                                        success: true,
+                                        message: "Nombres actualizados".into(),
+                                        details,
+                                        undo: true,
+                                        redo: false,
+                                    },
+                                    refresh_directory,
+                                )
+                            }
+                            Err(error) => Response::Finished(id, failed(error), refresh_directory),
+                        }
+                    }
+                    Request::History { redo, .. } => {
+                        let outcome = if redo {
+                            history.redo(&flag)
+                        } else {
+                            match crate::trash_history::root() {
+                                Ok(root) => history.undo(&root, &flag),
+                                Err(message) => Outcome {
+                                    success: false,
+                                    message,
+                                    details: Vec::new(),
                                     undo: true,
                                     redo: false,
                                 },
-                                refresh_directory,
-                            )
-                        }
-                        Err(error) => {
-                            history = None;
-                            let mut outcome = failed(error);
-                            if trash_history.available() {
-                                outcome.undo = true;
-                                outcome.redo = false;
                             }
-                            Response::Finished(id, outcome, refresh_directory)
-                        }
-                    },
-                    Request::History { redo, .. } => {
-                        let outcome = if trash_history.available() {
-                            if redo {
-                                Outcome {success:false,message:"Rehacer papelera no está disponible; Deshacer conserva los elementos pendientes".into(),details:Vec::new(),undo:true,redo:false}
-                            } else {
-                                trash_history.restore(&flag)
-                            }
-                        } else {
-                            run_history(&mut history, redo, &flag)
                         };
                         Response::Finished(id, outcome, refresh_directory)
                     }
@@ -629,18 +714,9 @@ impl Worker {
                         root,
                         ..
                     } => {
-                        let mut outcome =
-                            trash_history.send(&directory, &names, &root, &flag, || {
-                                history = None;
-                                history_directory = Some(directory.clone());
-                            });
-                        if !trash_history.available() {
-                            let (undo, redo) = history
-                                .as_ref()
-                                .map_or((false, false), |(_, redo)| (!*redo, *redo));
-                            outcome.undo = undo;
-                            outcome.redo = redo;
-                        }
+                        let mut batch = crate::trash_history::History::default();
+                        let outcome = batch.send(&directory, &names, &root, &flag, || {});
+                        history.push_trash(batch, directory);
                         Response::Finished(id, outcome, refresh_directory)
                     }
                     Request::Create {
@@ -649,36 +725,64 @@ impl Worker {
                         folder,
                         ..
                     } => {
-                        let result = create(&directory, &name, folder, &flag);
-                        let outcome = match result {
-                            Ok(()) => {
-                                history_directory = None;
-                                history = None;
-                                trash_history.clear();
+                        let outcome = match create(&directory, &name, folder, &flag) {
+                            Ok(created) => {
+                                let mut details = Vec::new();
+                                match created
+                                    .ok_or_else(|| std::io::Error::other("sin recibo de identidad"))
+                                {
+                                    Ok(object) => match files_core::undo_ops::fence() {
+                                        Ok(fence) => {
+                                            history.apply(crate::undo_history::Command::Record(
+                                                Box::new(crate::undo_history::Record::Created {
+                                                    kind: if folder {
+                                                        crate::undo_history::Kind::NewFolder
+                                                    } else {
+                                                        crate::undo_history::Kind::NewFile
+                                                    },
+                                                    objects: vec![object],
+                                                    fence,
+                                                }),
+                                            ))
+                                        }
+                                        Err(e) => details.push(format!("Sin Deshacer: {e}")),
+                                    },
+                                    Err(e) => details.push(format!("Sin Deshacer: {e}")),
+                                }
                                 Outcome {
                                     success: true,
                                     message: format!("Creado: {name}"),
-                                    details: Vec::new(),
+                                    details,
                                     undo: false,
                                     redo: false,
                                 }
                             }
-                            Err(e) => {
-                                let (undo, redo) = history
-                                    .as_ref()
-                                    .map_or((false, false), |(_, is_redo)| (!*is_redo, *is_redo));
-                                Outcome {
-                                    success: false,
-                                    message: format!("No se pudo crear: {e}"),
-                                    details: Vec::new(),
-                                    undo: undo || trash_history.available(),
-                                    redo: redo && !trash_history.available(),
-                                }
-                            }
+                            Err(e) => Outcome {
+                                success: false,
+                                message: format!("No se pudo crear: {e}"),
+                                details: Vec::new(),
+                                undo: false,
+                                redo: false,
+                            },
                         };
                         Response::Finished(id, outcome, refresh_directory)
                     }
+                    Request::Record { commands, .. } => {
+                        for command in commands {
+                            history.apply(command);
+                        }
+                        Response::Recorded
+                    }
                 };
+                let response = match response {
+                    Response::Finished(id, mut outcome, directory) => {
+                        outcome.undo = history.can_undo();
+                        outcome.redo = history.can_redo();
+                        Response::Finished(id, outcome, directory)
+                    }
+                    other => other,
+                };
+                *labels.lock().unwrap_or_else(|e| e.into_inner()) = history.labels();
                 if let (Some(gate), Some(phase)) = (&gate, fixture_phase) {
                     gate.wait(phase, id, &flag, true);
                 }
@@ -715,13 +819,22 @@ impl Worker {
     pub fn poll(&mut self) -> Option<Response> {
         let rx = self.rx.as_ref()?;
         match rx.try_recv() {
+            Ok(Response::Recorded) => {
+                self.records_in_flight = self.records_in_flight.saturating_sub(1);
+                Some(Response::Recorded)
+            }
             Ok(value) => {
                 self.busy = false;
                 Some(value)
             }
             Err(mpsc::TryRecvError::Empty) => None,
+            Err(mpsc::TryRecvError::Disconnected) if self.records_in_flight > 0 && !self.busy => {
+                self.records_in_flight = 0;
+                None
+            }
             Err(mpsc::TryRecvError::Disconnected) if self.busy => {
                 self.busy = false;
+                self.records_in_flight = 0;
                 Some(Response::Finished(0, Outcome { success: false, message: "El trabajador terminó sin respuesta; revisa las rutas antes de continuar".into(), details: Vec::new(), undo: false, redo: false },None))
             }
             _ => None,
@@ -809,49 +922,7 @@ fn plan_with_entry_limit(
     )
     .map_err(|e| e.to_string())
 }
-fn run_history(history: &mut Option<(UndoToken, bool)>, redo: bool, flag: &AtomicBool) -> Outcome {
-    let result = match history.as_ref() {
-        Some((token, is_redo)) if *is_redo == redo => token.undo_cancellable(flag),
-        _ => Err(
-            std::io::Error::other("No hay una operación compatible para deshacer/rehacer").into(),
-        ),
-    };
-    match result {
-        Ok(token) => {
-            let details = cleanup_details(&token);
-            *history = Some((token, !redo));
-            Outcome {
-                success: true,
-                message: if redo {
-                    "Renombrado rehecho"
-                } else {
-                    "Renombrado deshecho"
-                }
-                .into(),
-                details,
-                undo: redo,
-                redo: !redo,
-            }
-        }
-        Err(error) => {
-            let restored = error.preserved_object_count == 0
-                && error.unresolved_preserved_objects == 0
-                && error.rollback_errors.is_empty()
-                && error.omitted_rollback_errors == 0;
-            let mut outcome = failed(error);
-            if restored {
-                if let Some((_, is_redo)) = history {
-                    outcome.undo = !*is_redo;
-                    outcome.redo = *is_redo;
-                }
-            } else {
-                *history = None;
-            }
-            outcome
-        }
-    }
-}
-fn cleanup_details(token: &UndoToken) -> Vec<String> {
+pub(crate) fn cleanup_details(token: &UndoToken) -> Vec<String> {
     token
         .cleanup_errors
         .iter()
@@ -864,7 +935,7 @@ fn cleanup_details(token: &UndoToken) -> Vec<String> {
         )
         .collect()
 }
-fn failed(error: TransactionError) -> Outcome {
+pub(crate) fn failed(error: TransactionError) -> Outcome {
     let mut details = error.rollback_errors;
     details.extend(
         error
@@ -887,12 +958,14 @@ fn failed(error: TransactionError) -> Outcome {
         redo: false,
     }
 }
+/// Creates without replacing; on Linux also returns the Undo identity receipt
+/// of exactly the inode this call created (`None` if it could not be taken).
 fn create(
     directory: &std::path::Path,
     name: &str,
     folder: bool,
     cancel: &AtomicBool,
-) -> std::io::Result<()> {
+) -> std::io::Result<Option<files_core::undo_ops::Created>> {
     check(cancel).map_err(std::io::Error::other)?;
     rename_plan::valid_name(name, true).map_err(std::io::Error::other)?;
     if name.len() > 255 {
@@ -902,17 +975,36 @@ fn create(
     }
     #[cfg(target_os = "linux")]
     {
+        use std::os::fd::FromRawFd;
         use std::os::{fd::AsRawFd, unix::fs::OpenOptionsExt};
         let canonical = directory.canonicalize()?;
         let parent = fs::OpenOptions::new()
             .read(true)
             .custom_flags(libc::O_DIRECTORY | libc::O_NOFOLLOW | libc::O_CLOEXEC)
-            .open(canonical)?;
+            .open(&canonical)?;
         let component = std::ffi::CString::new(name).map_err(std::io::Error::other)?;
+        let path = canonical.join(name);
         if folder {
             if unsafe { libc::mkdirat(parent.as_raw_fd(), component.as_ptr(), 0o777) } != 0 {
                 return Err(std::io::Error::last_os_error());
             }
+            // No handle comes back from mkdirat: open it without following,
+            // and accept the receipt only for an empty directory.
+            let fd = unsafe {
+                libc::openat(
+                    parent.as_raw_fd(),
+                    component.as_ptr(),
+                    libc::O_RDONLY | libc::O_DIRECTORY | libc::O_NOFOLLOW | libc::O_CLOEXEC,
+                )
+            };
+            if fd < 0 {
+                return Ok(None);
+            }
+            let handle = unsafe { fs::File::from_raw_fd(fd) };
+            let empty = fs::read_dir(&path).is_ok_and(|mut d| d.next().is_none());
+            Ok(empty
+                .then(|| files_core::undo_ops::Created::from_file(path, &handle, false).ok())
+                .flatten())
         } else {
             let fd = unsafe {
                 libc::openat(
@@ -929,23 +1021,21 @@ fn create(
             if fd < 0 {
                 return Err(std::io::Error::last_os_error());
             }
-            unsafe {
-                libc::close(fd);
-            }
+            let handle = unsafe { fs::File::from_raw_fd(fd) };
+            Ok(files_core::undo_ops::Created::from_file(path, &handle, false).ok())
         }
-        Ok(())
     }
     #[cfg(not(target_os = "linux"))]
     {
         let target = directory.join(name);
         if folder {
-            fs::create_dir(target)
+            fs::create_dir(target).map(|()| None)
         } else {
             fs::OpenOptions::new()
                 .write(true)
                 .create_new(true)
                 .open(target)
-                .map(drop)
+                .map(|_| None)
         }
     }
 }
@@ -992,7 +1082,7 @@ mod tests {
                 assert_eq!(id, expected);
                 outcome
             }
-            Response::Planned(_, _) | Response::Properties(_, _) => {
+            Response::Planned(_, _) | Response::Properties(_, _) | Response::Recorded => {
                 panic!("expected finished mutation")
             }
         }
@@ -1132,11 +1222,13 @@ mod tests {
             .unwrap()
             .execute_cancellable(&AtomicBool::new(false))
             .unwrap();
-        let mut history = Some((token, false));
-        let result = run_history(&mut history, false, &AtomicBool::new(true));
+        let mut history = crate::undo_history::History::default();
+        history.push_rename(token, dir.0.clone(), 1);
+        let root = dir.0.join("Trash");
+        let result = history.undo(&root, &AtomicBool::new(true));
         assert!(!result.success && result.undo && !result.redo);
         assert!(dir.0.join("after").exists());
-        let result = run_history(&mut history, false, &AtomicBool::new(false));
+        let result = history.undo(&root, &AtomicBool::new(false));
         assert!(result.success && !result.undo && result.redo);
         assert_eq!(fs::read(dir.0.join("before")).unwrap(), b"data");
     }

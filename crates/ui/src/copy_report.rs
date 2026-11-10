@@ -369,6 +369,7 @@ mod tests {
             id: 19,
             result,
             progress: ProgressStats::default(),
+            fence: None,
         }
     }
     #[test]

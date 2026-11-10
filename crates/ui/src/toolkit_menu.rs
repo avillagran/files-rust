@@ -279,8 +279,30 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
             (row("  Enviar a Papelera", "", false), Action::Trash),
             (row("  Crear archivo", "", false), Action::NewEntry(false)),
             (row("  Crear carpeta", "", false), Action::NewEntry(true)),
-            (row("  Deshacer", "", false), Action::Undo(false)),
-            (row("  Rehacer", "", false), Action::Undo(true)),
+            (
+                {
+                    let label = m.history_labels().0;
+                    let item = row(
+                        &format!("  {}", label.as_deref().unwrap_or("Deshacer")),
+                        "",
+                        false,
+                    );
+                    if m.can_undo { item } else { item.disabled() }
+                },
+                Action::Undo(false),
+            ),
+            (
+                {
+                    let label = m.history_labels().1;
+                    let item = row(
+                        &format!("  {}", label.as_deref().unwrap_or("Rehacer")),
+                        "",
+                        false,
+                    );
+                    if m.can_redo { item } else { item.disabled() }
+                },
+                Action::Undo(true),
+            ),
             (
                 {
                     let item = row("  Último resultado de operación", "", false);

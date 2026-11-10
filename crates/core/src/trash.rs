@@ -225,7 +225,22 @@ impl TrashContext {
     pub fn trash(&self, source: &Path, cancel: &AtomicBool) -> Result<Receipt, Failure> {
         check_cancel(cancel)?;
         let context = self.context_for(source)?;
-        platform::trash(source, context, cancel)
+        platform::trash(source, context, cancel, None)
+    }
+    /// Like `trash`, but only when the object pinned at `source` (never
+    /// following a final symlink) is exactly `(device, inode)`. The engine's
+    /// own pre-commit check then proves the same inode is what it renames.
+    /// Used by Undo, which may act only on objects Files provably created.
+    pub fn trash_expected(
+        &self,
+        source: &Path,
+        device: u64,
+        inode: u64,
+        cancel: &AtomicBool,
+    ) -> Result<Receipt, Failure> {
+        check_cancel(cancel)?;
+        let context = self.context_for(source)?;
+        platform::trash(source, context, cancel, Some((device, inode)))
     }
     /// Home context when the item's parent shares the home trash device,
     /// otherwise the (possibly created) trash of the parent's volume.
@@ -1406,9 +1421,11 @@ mod platform {
         source: &Path,
         context: Arc<Context>,
         cancel: &AtomicBool,
+        expect: Option<(u64, u64)>,
     ) -> Result<Receipt, Failure> {
-        trash_inner(source, context, cancel, || {})
+        trash_checked(source, context, cancel, expect, || {}, || {})
     }
+    #[cfg(test)]
     fn trash_inner(
         source: &Path,
         context: Arc<Context>,
@@ -1417,10 +1434,21 @@ mod platform {
     ) -> Result<Receipt, Failure> {
         trash_hooks(source, context, cancel, before_commit, || {})
     }
+    #[cfg(test)]
     fn trash_hooks(
         source: &Path,
         context: Arc<Context>,
         cancel: &AtomicBool,
+        before_commit: impl FnOnce(),
+        after_move: impl FnOnce(),
+    ) -> Result<Receipt, Failure> {
+        trash_checked(source, context, cancel, None, before_commit, after_move)
+    }
+    fn trash_checked(
+        source: &Path,
+        context: Arc<Context>,
+        cancel: &AtomicBool,
+        expect: Option<(u64, u64)>,
         before_commit: impl FnOnce(),
         after_move: impl FnOnce(),
     ) -> Result<Receipt, Failure> {
@@ -1442,6 +1470,14 @@ mod platform {
         validate_path(&original)?;
         let object = open_at(&parent, &name, libc::O_PATH)?;
         let expected = fd_identity(&object)?;
+        if expect
+            .is_some_and(|(device, inode)| expected.device != device || expected.inode != inode)
+        {
+            return Err(io::Error::other(
+                "El objeto ya no es el que creó Files; se conserva sin cambios",
+            )
+            .into());
+        }
         if ancestor(&parent, &fd_identity(&context.root)?)?
             || (expected.kind == libc::S_IFDIR && ancestor(&context.root, &expected)?)
         {
@@ -2843,7 +2879,12 @@ mod platform {
     ) -> io::Result<crate::remove_tree::Report> {
         Err(unsupported())
     }
-    pub(super) fn trash(_: &Path, _: Arc<Context>, _: &AtomicBool) -> Result<Receipt, Failure> {
+    pub(super) fn trash(
+        _: &Path,
+        _: Arc<Context>,
+        _: &AtomicBool,
+        _: Option<(u64, u64)>,
+    ) -> Result<Receipt, Failure> {
         Err(unsupported().into())
     }
     pub(super) fn restore(_: &Receipt, _: &AtomicBool) -> Result<RestoreReport, Failure> {

@@ -709,6 +709,20 @@ impl Model {
                         && outcome.report().is_none_or(|r| r.completed_count == 0);
                     self.notice_open =
                         (error && !clean_close_cancel) || cleanup || recovery || report.truncated;
+                    // Undo receipts come only from this job's own report.
+                    match crate::undo_history::from_copy(&outcome, unknown) {
+                        Ok(Some(record)) => {
+                            self.record_undo(crate::undo_history::Command::Record(Box::new(record)))
+                        }
+                        Ok(None) => self.sync_history_flags(),
+                        Err(reason) => {
+                            if let Some(message) = &mut self.operation_message {
+                                message.push_str(" · ");
+                                message.push_str(reason);
+                            }
+                            self.sync_history_flags();
+                        }
+                    }
                     self.copy_last = Some(outcome); // Exactly one full result, never an unbounded history.
                     self.operation_feedback
                         .publish_copy(id, self.operation_message.as_deref().unwrap_or_default());

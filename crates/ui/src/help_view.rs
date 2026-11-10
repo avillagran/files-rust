@@ -402,7 +402,7 @@ pub const ITEMS: &[(Keys, &str)] = &[
     (C(&[Cmd::NewWindow]), "Nueva ventana en la carpeta actual"),
     (C(&[Cmd::NewFolder]), "Crear carpeta"),
     (C(&[Cmd::Undo]), "Deshacer cuando esté disponible"),
-    (C(&[Cmd::Redo]), "Rehacer renombrado disponible"),
+    (C(&[Cmd::Redo]), "Rehacer la última operación deshecha"),
     (C(&[Cmd::Properties]), "Propiedades y permisos"),
     (T(""), "PREVIEW Y CONFIGURACIÓN"),
     (T("Space / F3 / Esc"), "Abrir / cerrar vista previa"),

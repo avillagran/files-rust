@@ -53,7 +53,16 @@ pub struct Spec {
     dispatch: Dispatch,
 }
 impl Spec {
-    fn label_for(&self, m: &Model) -> &'static str {
+    fn label_for(&self, m: &Model) -> std::borrow::Cow<'static, str> {
+        // The history's top entry, e.g. "Deshacer copiar 3 elementos".
+        match (self.id, m.history_labels()) {
+            ("undo", (Some(label), _)) if m.can_undo => return label.into(),
+            ("redo", (_, Some(label))) if m.can_redo => return label.into(),
+            _ => {}
+        }
+        self.static_label(m).into()
+    }
+    fn static_label(&self, m: &Model) -> &'static str {
         if crate::selection_tools::is_map(m) {
             match self.dispatch {
                 Dispatch::Existing(Action::Refresh) => "Recalcular Espacio y actualizar carpeta",
@@ -422,7 +431,7 @@ pub const ITEMS: &[Spec] = &[
     ),
     spec!(
         "redo",
-        "Rehacer renombrado disponible",
+        "Rehacer operación deshecha",
         "",
         "redo rehacer",
         Listing,
@@ -1242,7 +1251,7 @@ impl State {
                 Some("El buffer de files está vacío")
             }
             "undo" if !m.can_undo => Some("No hay operación para deshacer"),
-            "redo" if !m.can_redo => Some("No hay renombrado para rehacer"),
+            "redo" if !m.can_redo => Some("No hay operación para rehacer"),
             "history-back" if !m.history.can_back() => Some("Sin historial anterior"),
             "history-forward" if !m.history.can_forward() => Some("Sin historial posterior"),
             "parent" if m.path.parent().is_none() => Some("Ya estás en la raíz"),
@@ -1444,7 +1453,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         }
         p.text(
             Rect::new(body.x + 6, y, body.w - 12, 22),
-            ITEMS[i].label_for(m),
+            &ITEMS[i].label_for(m),
             12,
             if reason.is_some() {
                 c.dark_foreground

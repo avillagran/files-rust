@@ -793,6 +793,7 @@ mod tests {
             id: 1,
             result,
             progress: Default::default(),
+            fence: None,
         };
         assert_eq!(outcome.report().unwrap().completed_count, 1);
         assert_eq!(outcome.report().unwrap().completed, [f.0.join("out/first")]);

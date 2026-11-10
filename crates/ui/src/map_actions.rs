@@ -115,7 +115,7 @@ pub fn reason(m: &Model, action: &Action) -> Option<&'static str> {
             Some("El buffer de files está vacío")
         }
         Action::Undo(false) if !m.can_undo => Some("No hay operación para deshacer"),
-        Action::Undo(true) if !m.can_redo => Some("No hay renombrado para rehacer"),
+        Action::Undo(true) if !m.can_redo => Some("No hay operación para rehacer"),
         _ => None,
     }
 }

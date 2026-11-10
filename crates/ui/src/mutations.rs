@@ -188,11 +188,18 @@ impl Model {
             }
         }
     }
+    /// Ctrl+Z / Ctrl+Shift+Z: the top entry of the window's linear history
+    /// (rename, trash batch, creation, link, copy or move; see docs/UNDO.md).
     pub fn undo_rename(&mut self, redo: bool) {
         if self.mutations.busy
             || self.mutation_applied
             || if redo { !self.can_redo } else { !self.can_undo }
         {
+            return;
+        }
+        if self.copy_busy() || self.delete.busy() || self.mutations.history_pending() {
+            self.operation_message =
+                Some("Espera a que termine la operación en curso para deshacer".into());
             return;
         }
         let id = self.next_mutation_id();
@@ -202,11 +209,30 @@ impl Model {
             self.notice_open = false;
         }
     }
+    /// Hands a completed operation (or an invalidation) to the history.
+    pub(crate) fn record_undo(&mut self, command: crate::undo_history::Command) {
+        self.mutations.enqueue(command);
+    }
+    /// Re-derive the Undo/Redo availability from the worker's history.
+    pub(crate) fn sync_history_flags(&mut self) {
+        let (undo, redo) = self.mutations.labels();
+        self.can_undo = undo.is_some();
+        self.can_redo = redo.is_some();
+    }
+    /// Top-entry labels: "Deshacer copiar 3 elementos" / "Rehacer …".
+    pub fn history_labels(&self) -> (Option<String>, Option<String>) {
+        self.mutations.labels()
+    }
     pub fn pump_mutations(&mut self) -> bool {
         let mut dirty = false;
+        if !self.closing && !self.mutation_applied {
+            // History bookkeeping only (id 0): never a filesystem request.
+            self.mutations.flush_history(0);
+        }
         if let Some(response) = self.mutations.poll() {
             dirty = true;
             match response {
+                Response::Recorded => self.sync_history_flags(),
                 Response::Properties(id, reply) => self.properties_reply(id, *reply),
                 Response::Planned(id, result) => {
                     if let Some(dialog) = &mut self.rename_dialog
@@ -1148,6 +1174,7 @@ mod tests {
             id: 77,
             result: Ok(Default::default()),
             progress: Default::default(),
+            fence: None,
         }));
         let mut p = ReportPainter::default();
         m.notice_open = true;

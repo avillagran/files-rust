@@ -298,6 +298,7 @@ fn recovery_controls_fit_narrow_notice_and_terminal_results_offer_no_recovery() 
         id: 4,
         result: Ok(Default::default()),
         progress: Default::default(),
+        fence: None,
     }));
     assert!(model.recovery_context().is_none());
     assert_eq!(model.recovery_actions(), (false, false));

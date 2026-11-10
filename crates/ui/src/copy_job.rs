@@ -268,6 +268,9 @@ pub struct Outcome {
     pub id: u64,
     pub result: Result<CopyReport, Failure>,
     pub progress: ProgressStats,
+    /// Taken on the worker right after a copy published roots: a time below
+    /// every later inode change, the basis of Undo's "unchanged" proof.
+    pub fence: Option<files_core::undo_ops::Stamp>,
 }
 impl Outcome {
     pub fn report(&self) -> Option<&CopyReport> {
@@ -588,6 +591,7 @@ impl Worker {
                     id,
                     result: Err(Failure::WorkerLost),
                     progress: ProgressStats::default(),
+                    fence: None,
                 });
             }
             state.request = None;
@@ -782,6 +786,14 @@ fn run(shared: Arc<Shared>) {
         }));
         let panicked = result.is_err();
         let result = result.unwrap_or(Err(Failure::WorkerPanicked));
+        let created = match &result {
+            Ok(report) => !report.created.is_empty(),
+            Err(Failure::Engine(error)) => !error.report.created.is_empty(),
+            _ => false,
+        };
+        let fence = (created && !moving && !extracting && !creating && archive_action.is_none())
+            .then(files_core::undo_ops::fence)
+            .and_then(Result::ok);
         // Input storage is released before ACK becomes readable.
         drop(request);
         let mut state = lock(&shared);
@@ -796,6 +808,7 @@ fn run(shared: Arc<Shared>) {
             id,
             result,
             progress: stats,
+            fence,
         });
         if panicked {
             state.closing = true;
@@ -1061,6 +1074,7 @@ mod tests {
                 id: 50,
                 result: Err(Failure::Engine(Box::new(error))),
                 progress: ProgressStats::default(),
+                fence: None,
             });
         }
         assert!(worker.busy());

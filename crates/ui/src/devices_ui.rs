@@ -152,8 +152,14 @@ impl Model {
                     format!("{title} montado")
                 }
                 (Ok(_), Op::Mount) => format!("{title} montado"),
-                (Ok(_), Op::Unmount) => format!("{title} desmontado"),
-                (Ok(_), Op::Eject) => format!("{title} expulsado: ya puedes retirarlo"),
+                (Ok(_), Op::Unmount) => {
+                    self.record_undo(crate::undo_history::Command::InvalidateAll);
+                    format!("{title} desmontado")
+                }
+                (Ok(_), Op::Eject) => {
+                    self.record_undo(crate::undo_history::Command::InvalidateAll);
+                    format!("{title} expulsado: ya puedes retirarlo")
+                }
                 (Err(e), _) => format!("{title}: {e}"),
             };
             eprintln!(

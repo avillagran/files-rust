@@ -112,6 +112,8 @@ pub mod quick_ops;
 /// Permanent deletion (Shift+Delete, empty trash).
 pub mod remove_tree;
 pub mod trash;
+/// Identity receipts and verification for Undo/Redo of completed operations.
+pub mod undo_ops;
 
 pub mod file_properties;
 pub mod properties_details;

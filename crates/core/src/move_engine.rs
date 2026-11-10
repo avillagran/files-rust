@@ -398,6 +398,35 @@ mod linux {
                 identities,
             })
         }
+        /// Undo receipt from the pinned parents: canonical original location,
+        /// published location and the three identities. `None` when either
+        /// parent cannot be resolved, which leaves the root not undoable.
+        fn receipt(
+            &self,
+            request: &CopyRequest,
+            published: &Path,
+            id: Identity,
+        ) -> Option<crate::undo_ops::Moved> {
+            let to_parent = identity(&stat(&self.destination).ok()?);
+            let from_parent = identity(&stat(&self.source).ok()?);
+            let from = current_path(&self.source)
+                .ok()?
+                .join(request.source.file_name()?);
+            let convert = |i: Identity| crate::undo_ops::Identity {
+                device: i.device,
+                inode: i.inode,
+                kind: i.kind,
+            };
+            (published.parent()? == current_path(&self.destination).ok()?.as_path()).then(|| {
+                crate::undo_ops::Moved {
+                    from,
+                    to: published.to_path_buf(),
+                    identity: convert(id),
+                    from_parent: convert(from_parent),
+                    to_parent: convert(to_parent),
+                }
+            })
+        }
         pub fn paths(&self) -> &Vec<CopyRequest> {
             &self.requests
         }
@@ -489,7 +518,12 @@ mod linux {
                     };
                     if report.completed.len() < 128 {
                         match current_path(&self.roots[i]) {
-                            Ok(p) => report.completed.push(p),
+                            Ok(p) => {
+                                if let Some(moved) = self.receipt(r, &p, id) {
+                                    report.moved.push(moved);
+                                }
+                                report.completed.push(p)
+                            }
                             Err(_) => report.completed_omitted += 1,
                         }
                     } else {

@@ -1187,6 +1187,7 @@ mod tests {
             id: 1,
             result: Err(copy_job::Failure::Engine(Box::new(error))),
             progress: copy_job::ProgressStats::default(),
+            fence: None,
         };
         let error = outcome.engine_error().unwrap();
         let report = outcome.report().unwrap();

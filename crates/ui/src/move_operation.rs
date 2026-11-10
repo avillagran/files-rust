@@ -244,6 +244,9 @@ fn merge_native_report(total: &mut CopyReport, part: &CopyReport) {
     for p in &part.completed {
         if total.completed.len() < files_core::multi_origin::MAX_ROOTS {
             total.completed.push(p.clone());
+            if let Some(moved) = part.moved.iter().find(|m| &m.to == p) {
+                total.moved.push(moved.clone());
+            }
         } else {
             total.completed_omitted += 1;
         }

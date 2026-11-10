@@ -50,8 +50,12 @@ pub enum Outcome {
         path: PathBuf,
         cleanup: Option<String>,
     },
-    Linked(Vec<Result<PathBuf, String>>),
-    Created(PathBuf),
+    /// Results plus the Undo record (only when every link has a receipt).
+    Linked(
+        Vec<Result<PathBuf, String>>,
+        Option<crate::undo_history::Record>,
+    ),
+    Created(PathBuf, Option<crate::undo_history::Record>),
     Grouped(files_core::quick_ops::FolderWith),
 }
 
@@ -98,8 +102,16 @@ impl Job {
                             .map_err(|e| e.to_string())
                     }),
                     Target::Template { template, dir } => {
-                        files_core::quick_ops::from_template(&template, &dir)
-                            .map(Outcome::Created)
+                        files_core::quick_ops::from_template_recorded(&template, &dir)
+                            .map(|(path, receipt)| {
+                                let record = receipt.and_then(|object| {
+                                    created_record(
+                                        crate::undo_history::Kind::Template,
+                                        vec![object],
+                                    )
+                                });
+                                Outcome::Created(path, record)
+                            })
                             .map_err(|e| e.to_string())
                     }
                     Target::FolderWith { dir, names } => {
@@ -108,7 +120,22 @@ impl Job {
                             .map_err(|e| e.to_string())
                     }
                     Target::Links { dir, targets } => {
-                        Ok(Outcome::Linked(files_core::links::create(&dir, &targets)))
+                        let results = files_core::links::create(&dir, &targets);
+                        let made = results.iter().filter(|r| r.is_ok()).count();
+                        // Receipts are taken right after symlink(2), without
+                        // following the link; one missing receipt makes the
+                        // whole batch not undoable rather than ambiguous.
+                        let objects: Vec<_> = results
+                            .iter()
+                            .filter_map(|r| r.as_ref().ok())
+                            .filter_map(|p| {
+                                files_core::undo_ops::Created::just_created(p, false).ok()
+                            })
+                            .collect();
+                        let record = (objects.len() == made)
+                            .then(|| created_record(crate::undo_history::Kind::Links, objects))
+                            .flatten();
+                        Ok(Outcome::Linked(results, record))
                     }
                     Target::TrashRestore {
                         name,
@@ -165,6 +192,23 @@ fn is_trash(t: &Target) -> bool {
             | Target::Template { .. }
             | Target::FolderWith { .. }
     )
+}
+
+/// Undo record with a completion fence taken on this worker; `None` keeps the
+/// operation out of the history (it is then simply not undoable).
+fn created_record(
+    kind: crate::undo_history::Kind,
+    objects: Vec<files_core::undo_ops::Created>,
+) -> Option<crate::undo_history::Record> {
+    if objects.is_empty() || objects.len() > crate::undo_history::MAX_OBJECTS {
+        return None;
+    }
+    let fence = files_core::undo_ops::fence().ok()?;
+    Some(crate::undo_history::Record::Created {
+        kind,
+        objects,
+        fence,
+    })
 }
 
 impl Model {
@@ -334,6 +378,21 @@ impl Model {
             Err(mpsc::TryRecvError::Disconnected) => Err("El borrado terminó sin respuesta".into()),
         };
         let job = self.delete.job.take().expect("job");
+        let mut result = result;
+        let record = match &mut result {
+            Ok(Outcome::Created(_, record) | Outcome::Linked(_, record)) => record.take(),
+            _ => None,
+        };
+        if let Some(record) = record {
+            self.record_undo(crate::undo_history::Command::Record(Box::new(record)));
+        }
+        if matches!(
+            job.target,
+            Target::TrashEmpty { .. } | Target::TrashItem { .. } | Target::TrashRestore { .. }
+        ) {
+            // Receipts may no longer describe the trash: drop those entries.
+            self.record_undo(crate::undo_history::Command::InvalidateTrash);
+        }
         let text = match &result {
             Ok(Outcome::Deleted(report)) => report.summary(),
             Ok(Outcome::Restored { path, cleanup }) => {
@@ -346,7 +405,7 @@ impl Model {
                 }
                 s
             }
-            Ok(Outcome::Created(path)) => {
+            Ok(Outcome::Created(path, _)) => {
                 format!(
                     "Creado {}",
                     files_core::name_label::label(path.file_name().unwrap_or_default())
@@ -367,7 +426,7 @@ impl Model {
                 }
                 s
             }
-            Ok(Outcome::Linked(results)) => {
+            Ok(Outcome::Linked(results, _)) => {
                 let made = results.iter().filter(|r| r.is_ok()).count();
                 let mut s = if made == 1 {
                     let path = results.iter().find_map(|r| r.as_ref().ok()).expect("one");
