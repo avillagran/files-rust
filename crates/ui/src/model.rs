@@ -632,6 +632,12 @@ pub struct Model {
     pub next_revision: u64,
     pub saves: crate::save_queue::SaveQueue,
     pub closing: bool,
+    /// View that type-ahead left (Space cannot filter) and its folder; Esc
+    /// clearing the filter there returns to it.
+    pub filter_return_view: Option<(View, PathBuf)>,
+    /// Keyboard focus in the close-with-pending-saves dialog: 0 keep
+    /// working (default), 1 retry, 2 close without the pending saves.
+    pub closing_focus: u8,
     pub discard_close: bool,
     pub config_revision: u64,
     pub config_in_flight: Option<u64>,
@@ -874,6 +880,8 @@ impl Model {
             next_revision: 0,
             saves: Default::default(),
             closing: false,
+            closing_focus: 0,
+            filter_return_view: None,
             discard_close: false,
             config_revision: 0,
             config_in_flight: None,
@@ -3184,6 +3192,7 @@ impl Model {
                 self.query.clear();
                 self.scroll = 0;
                 self.rebuild();
+                self.restore_filter_view();
             }
             Action::None => {}
             Action::Properties => self.open_properties(),
@@ -3245,6 +3254,7 @@ impl Model {
             Action::RetrySaves => self.retry_saves(),
             Action::CancelClose => {
                 self.closing = false;
+                self.closing_focus = 0;
                 self.session.closing_saved = false;
             }
             Action::DiscardClose => self.discard_close = true,
@@ -3284,6 +3294,8 @@ impl Model {
             Action::Navigate(p) => self.navigate(p),
             Action::Parent => crate::keyboard_nav::backspace(self),
             Action::View(v) => {
+                // An explicit view choice replaces any type-ahead return.
+                self.filter_return_view = None;
                 if self.dual.enabled {
                     self.toggle_dual();
                     if self.dual.enabled {

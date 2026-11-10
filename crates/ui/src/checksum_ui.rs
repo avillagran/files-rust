@@ -1022,7 +1022,7 @@ pub fn event(m: &mut Model, event: Event) -> bool {
                 Key::F6 => Some(Command::Recapture),
                 Key::Left => Some(Command::Page(-1)),
                 Key::Right => Some(Command::Page(1)),
-                Key::Enter => Some(Command::Locate),
+                Key::Enter | Key::KPEnter => Some(Command::Locate),
                 Key::Up if ctrl => Some(Command::Group(-1)),
                 Key::Down if ctrl => Some(Command::Group(1)),
                 Key::Up => Some(Command::Move(-1)),

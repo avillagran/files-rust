@@ -427,7 +427,7 @@ impl State {
     }
 }
 pub fn key(m: &mut Model, key: Key) {
-    if matches!(key, Key::Escape | Key::F1) {
+    if matches!(key, Key::Escape | Key::F1 | Key::Enter | Key::KPEnter) {
         m.action(Action::HelpClose);
         return;
     }

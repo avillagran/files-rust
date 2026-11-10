@@ -143,6 +143,9 @@ impl Job {
 #[derive(Default)]
 pub struct State {
     pub confirm: Option<Target>,
+    /// The destructive button holds keyboard focus. Every confirmation opens
+    /// on Cancel, so Enter alone never deletes.
+    pub confirm_destructive: bool,
     pub job: Option<Job>,
     /// Last finished trash operation, shown in the trash catalog.
     pub trash_notice: Option<String>,
@@ -278,6 +281,7 @@ impl Model {
         let Some(target) = self.delete.confirm.take() else {
             return;
         };
+        self.delete.confirm_destructive = false;
         self.hits.clear();
         if confirmed {
             self.start_delete(target);
@@ -489,39 +493,103 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         false,
     );
     let by = y + ch - 48;
+    let destructive = m.delete.confirm_destructive;
+    let cancel = Rect::new(x + cw - 330, by, 150, 30);
+    let delete = Rect::new(x + cw - 170, by, 150, 30);
+    // Focus ring on the button Enter activates; Tab moves it.
+    let focused = if destructive { delete } else { cancel };
+    p.rounded_rect(
+        Rect::new(focused.x - 3, focused.y - 3, focused.w + 6, focused.h + 6),
+        8 * m.radius,
+        c.accent,
+    );
+    p.rounded_rect(
+        Rect::new(focused.x - 1, focused.y - 1, focused.w + 2, focused.h + 2),
+        7 * m.radius,
+        c.darker_background,
+    );
     button(
         p,
         m,
-        Rect::new(x + cw - 300, by, 130, 30),
-        "Cancelar · Esc",
+        cancel,
+        if destructive {
+            "Cancelar · Esc"
+        } else {
+            "Cancelar · Enter/Esc"
+        },
         Action::DeleteAnswer(false),
         false,
     );
     button(
         p,
         m,
-        Rect::new(x + cw - 160, by, 140, 30),
-        "Eliminar · Enter",
+        delete,
+        if destructive {
+            "Eliminar · Enter"
+        } else {
+            "Eliminar · Alt+E"
+        },
         Action::DeleteAnswer(true),
         true,
     );
+    p.text(
+        Rect::new(x + 20, by, cw - 360, 30),
+        "Tab cambia de botón",
+        11,
+        c.dark_foreground,
+        false,
+        false,
+    );
 }
 
-/// Keys while the confirmation is open: Enter confirms, Esc cancels.
+/// What a key does in the permanent-deletion confirmation.
+#[derive(Debug, PartialEq, Eq)]
+pub enum ConfirmKey {
+    Answer(bool),
+    /// Move focus between Cancel and the destructive button.
+    Toggle,
+    Ignore,
+}
+/// Enter/KP Enter activate the focused button (Cancel when it opens), Esc
+/// cancels, Tab/Shift+Tab or Left/Right move between the two buttons and
+/// Alt+E deletes explicitly.
+pub fn confirm_key(
+    destructive: bool,
+    key: fltk::enums::Key,
+    mods: fltk::enums::Shortcut,
+) -> ConfirmKey {
+    use fltk::enums::{Key, Shortcut};
+    let alt = mods.intersects(Shortcut::Alt);
+    let ctrl = mods.intersects(Shortcut::Ctrl | Shortcut::Meta);
+    match key {
+        Key::Escape => ConfirmKey::Answer(false),
+        Key::Enter | Key::KPEnter if !alt && !ctrl => ConfirmKey::Answer(destructive),
+        Key::Tab | Key::Left | Key::Right if !alt && !ctrl => ConfirmKey::Toggle,
+        k if alt && !ctrl && k == Key::from_char('e') => ConfirmKey::Answer(true),
+        _ => ConfirmKey::Ignore,
+    }
+}
+
+/// Keys while the confirmation is open: see [`confirm_key`].
 pub fn event(m: &mut Model, ev: fltk::enums::Event) -> bool {
-    use fltk::{
-        app,
-        enums::{Event, Key},
-    };
+    use fltk::{app, enums::Event};
     if m.delete.confirm.is_none() {
         return false;
     }
     match ev {
-        Event::KeyDown | Event::Shortcut => match app::event_key() {
-            Key::Enter | Key::KPEnter => m.answer_delete(true),
-            Key::Escape => m.answer_delete(false),
-            _ => {}
-        },
+        Event::KeyDown | Event::Shortcut => {
+            match confirm_key(
+                m.delete.confirm_destructive,
+                app::event_key(),
+                app::event_state(),
+            ) {
+                ConfirmKey::Answer(yes) => m.answer_delete(yes),
+                ConfirmKey::Toggle => {
+                    m.delete.confirm_destructive = !m.delete.confirm_destructive;
+                }
+                ConfirmKey::Ignore => {}
+            }
+        }
         Event::Push => m.pointer_down(app::event_x(), app::event_y(), false, false, false),
         _ => {}
     }
@@ -531,6 +599,59 @@ pub fn event(m: &mut Model, ev: fltk::enums::Event) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn permanent_delete_confirmation_defaults_to_cancel() {
+        use fltk::enums::{Key, Shortcut};
+        let none = Shortcut::None;
+        assert_eq!(
+            confirm_key(false, Key::Enter, none),
+            ConfirmKey::Answer(false)
+        );
+        assert_eq!(
+            confirm_key(false, Key::KPEnter, none),
+            ConfirmKey::Answer(false)
+        );
+        assert_eq!(
+            confirm_key(false, Key::Escape, none),
+            ConfirmKey::Answer(false)
+        );
+        assert_eq!(confirm_key(false, Key::Tab, none), ConfirmKey::Toggle);
+        assert_eq!(
+            confirm_key(false, Key::Tab, Shortcut::Shift),
+            ConfirmKey::Toggle
+        );
+        assert_eq!(
+            confirm_key(true, Key::Enter, none),
+            ConfirmKey::Answer(true)
+        );
+        assert_eq!(
+            confirm_key(true, Key::Escape, none),
+            ConfirmKey::Answer(false)
+        );
+        assert_eq!(
+            confirm_key(false, Key::from_char('e'), Shortcut::Alt),
+            ConfirmKey::Answer(true)
+        );
+        assert_eq!(
+            confirm_key(false, Key::from_char('e'), none),
+            ConfirmKey::Ignore
+        );
+        assert_eq!(
+            confirm_key(false, Key::Enter, Shortcut::Ctrl),
+            ConfirmKey::Ignore
+        );
+    }
+
+    #[test]
+    fn confirmation_reopens_on_cancel_after_tab() {
+        let mut m = Model::new(std::env::temp_dir().join("files-delete-confirm-fixture"));
+        m.delete.confirm = Some(Target::TrashEmpty { count: 1 });
+        m.delete.confirm_destructive = true;
+        m.answer_delete(false);
+        assert!(m.delete.confirm.is_none());
+        assert!(!m.delete.confirm_destructive);
+    }
 
     #[test]
     fn job_deletes_paths_and_reports() {

@@ -342,6 +342,7 @@ impl Model {
             self.preserve_empty_selection = false;
             self.scroll = 0;
             self.rebuild();
+            self.restore_filter_view();
             return;
         }
         if focus_only(self) || self.selection_refreshing() {
@@ -354,6 +355,18 @@ impl Model {
         }
         self.anchor = self.selected;
         self.preserve_empty_selection = self.selection.is_empty();
+    }
+
+    /// Back to the view type-ahead left (Space), when still in the List it
+    /// switched to and in the same folder.
+    pub fn restore_filter_view(&mut self) {
+        if let Some((view, path)) = self.filter_return_view.take()
+            && self.view == View::List
+            && path == self.path
+            && !self.dual.enabled
+        {
+            self.action(Action::View(view));
+        }
     }
 
     /// Nautilus F6: list → places rail → tab strip → list. The rail and the
@@ -644,6 +657,69 @@ mod tests {
         m.escape_browser();
         assert!(m.query.is_empty());
         assert_eq!(m.scroll, 0);
+    }
+
+    #[test]
+    fn type_ahead_filters_and_escape_restores_the_view_it_left() {
+        let mut m = model();
+        listed(&mut m);
+        // List: typing filters, Esc in the field clears it.
+        m.view = View::List;
+        m.filter_input("dir").unwrap();
+        assert_eq!(m.query, "dir");
+        assert!(m.filter_edit.active);
+        m.filter_key(Key::Escape, Shortcut::None, "", 0);
+        assert!(m.query.is_empty() && !m.filter_edit.active);
+        assert!(m.view == View::List);
+        // Space cannot filter: type-ahead continues in List, Esc returns.
+        m.view = View::SpaceMap;
+        m.filter_input("c").unwrap();
+        assert!(m.view == View::List);
+        assert_eq!(m.query, "c");
+        m.filter_key(Key::Escape, Shortcut::None, "", 0);
+        assert!(m.view == View::SpaceMap);
+        // Leaving the field first (Enter) keeps the filter; the browser Esc
+        // then clears it and also returns to Space.
+        m.filter_input("c").unwrap();
+        m.filter_key(Key::Enter, Shortcut::None, "", 0);
+        assert!(m.view == View::List);
+        assert_eq!(m.query, "c");
+        m.escape_browser();
+        assert!(m.query.is_empty());
+        assert!(m.view == View::SpaceMap);
+        // An explicit view change in between cancels the return.
+        m.filter_input("c").unwrap();
+        m.action(Action::View(View::Grid));
+        m.action(Action::View(View::List));
+        m.escape_browser();
+        m.end_filter_edit();
+        m.action(Action::ClearFilter);
+        assert!(m.view == View::List);
+    }
+
+    #[test]
+    fn sort_menu_lists_criteria_focused_on_the_current_one() {
+        let mut m = model();
+        listed(&mut m);
+        m.action(Action::Sort(files_core::listing::Sort::Size));
+        let descending = m.descending;
+        m.action(Action::SortMenu(1000, 650));
+        let menu = m.context_menu.as_ref().expect("sort menu");
+        assert_eq!(menu.target, crate::context_menu::Target::Sort);
+        assert_eq!(menu.items.len(), 5);
+        assert_eq!(menu.focused, 1);
+        assert!(menu.items[1].label.contains("(actual)"));
+        // Enter on the reverse row flips the current criterion.
+        crate::context_menu::key(&mut m, Key::End);
+        crate::context_menu::key(&mut m, Key::Enter);
+        assert!(m.context_menu.is_none());
+        assert_eq!(m.sort, files_core::listing::Sort::Size);
+        assert_ne!(m.descending, descending);
+        // Down then Enter picks the next criterion.
+        m.action(Action::SortMenu(1000, 650));
+        crate::context_menu::key(&mut m, Key::Down);
+        crate::context_menu::key(&mut m, Key::Enter);
+        assert_eq!(m.sort, files_core::listing::Sort::Modified);
     }
 
     #[test]

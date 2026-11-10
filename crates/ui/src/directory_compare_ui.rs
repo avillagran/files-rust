@@ -1300,7 +1300,7 @@ pub fn event(m: &mut Model, event: Event) -> bool {
             p.reset();
             return true;
         }
-        if key == Key::Enter {
+        if matches!(key, Key::Enter | Key::KPEnter) {
             m.comparison_command(stamp, Command::Start);
             return true;
         }
@@ -1323,7 +1323,7 @@ pub fn event(m: &mut Model, event: Event) -> bool {
             Key::PageDown => Some(Command::Move(p.rows as i32)),
             Key::Left => Some(Command::Pan(-80)),
             Key::Right => Some(Command::Pan(80)),
-            Key::Enter => Some(Command::Locate(usize::from(shift))),
+            Key::Enter | Key::KPEnter => Some(Command::Locate(usize::from(shift))),
             _ if ctrl && key == Key::from_char('c') => Some(Command::Copy),
             _ => None,
         };

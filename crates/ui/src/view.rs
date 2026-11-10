@@ -1322,7 +1322,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                 36,
             ),
             "Seguir trabajando",
-            false,
+            m.closing_focus == 0,
             Action::CancelClose,
         );
         button(
@@ -1335,7 +1335,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                 36,
             ),
             "Reintentar",
-            false,
+            m.closing_focus == 1,
             Action::RetrySaves,
         );
         button(
@@ -1348,7 +1348,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                 36,
             ),
             "Cerrar sin guardar pendientes",
-            false,
+            m.closing_focus == 2,
             Action::DiscardClose,
         );
     }

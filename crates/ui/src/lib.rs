@@ -323,6 +323,25 @@ fn browser_chord(m: &mut Model, cmd: Cmd, key: Key, w: i32, h: i32) -> bool {
     true
 }
 
+/// Keys of the close-with-pending-saves dialog: Esc keeps working, Tab and
+/// Shift+Tab move between its three buttons and Enter runs the focused one
+/// (keep working when it opens).
+fn closing_key(m: &mut Model, key: Key, mods: Shortcut) {
+    match key {
+        Key::Escape => m.action(Action::CancelClose),
+        Key::Tab => {
+            let back = mods.intersects(Shortcut::Shift);
+            m.closing_focus = (m.closing_focus + if back { 2 } else { 1 }) % 3;
+        }
+        Key::Enter | Key::KPEnter => m.action(match m.closing_focus {
+            1 => Action::RetrySaves,
+            2 => Action::DiscardClose,
+            _ => Action::CancelClose,
+        }),
+        _ => {}
+    }
+}
+
 fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
     if matches!(ev, Event::Push | Event::KeyDown | Event::Shortcut) {
         m.cancel_parent_return_focus();
@@ -342,9 +361,8 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
         if ev == Event::Push {
             m.pointer_down(app::event_x(), app::event_y(), false, false, false);
         }
-        if (ev == Event::KeyDown || ev == Event::Shortcut) && app::event_key() == Key::Escape {
-            m.closing = false;
-            m.session.closing_saved = false;
+        if ev == Event::KeyDown || ev == Event::Shortcut {
+            closing_key(m, app::event_key(), app::event_state());
         }
         return true;
     }
@@ -3960,3 +3978,35 @@ fn smoke_test(model: &Rc<RefCell<Model>>, canvas: &mut Frame) {
 mod move_operation;
 
 mod move_catalog;
+
+#[cfg(test)]
+mod closing_dialog_tests {
+    use super::*;
+
+    #[test]
+    fn closing_dialog_tabs_between_buttons_and_enter_runs_the_focused_one() {
+        let dir = std::env::temp_dir().join(format!("files-closing-{}", std::process::id()));
+        std::fs::create_dir(&dir).unwrap();
+        let mut m = Model::new(dir);
+        let (tx, _) = std::sync::mpsc::sync_channel(4);
+        let (_, rx) = std::sync::mpsc::channel();
+        m.aux = crate::aux_io::AuxIo { tx, rx };
+        m.closing = true;
+        // Opens on "keep working": Enter and KP Enter cancel the close.
+        closing_key(&mut m, Key::KPEnter, Shortcut::None);
+        assert!(!m.closing && !m.discard_close);
+        m.closing = true;
+        closing_key(&mut m, Key::Tab, Shortcut::None);
+        closing_key(&mut m, Key::Tab, Shortcut::None);
+        assert_eq!(m.closing_focus, 2);
+        closing_key(&mut m, Key::Tab, Shortcut::Shift);
+        assert_eq!(m.closing_focus, 1);
+        closing_key(&mut m, Key::Tab, Shortcut::None);
+        closing_key(&mut m, Key::Enter, Shortcut::None);
+        assert!(m.discard_close);
+        m.discard_close = false;
+        closing_key(&mut m, Key::Escape, Shortcut::None);
+        assert!(!m.closing);
+        assert_eq!(m.closing_focus, 0);
+    }
+}

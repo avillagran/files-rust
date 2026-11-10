@@ -403,11 +403,11 @@ pub fn event(m: &mut Model, ev: Event) -> bool {
                 if ctrl && key == Key::from_char('c') {
                     m.action(Action::CopyNotice);
                 }
-                if key == Key::Enter {
+                if matches!(key, Key::Enter | Key::KPEnter) {
                     m.notice_open = false;
                 }
             } else if !m.mutations.busy {
-                if key == Key::Enter {
+                if matches!(key, Key::Enter | Key::KPEnter) {
                     m.apply_rename();
                 } else if let Some(d) = &mut m.rename_dialog {
                     if key == Key::Tab {

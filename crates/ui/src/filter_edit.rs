@@ -76,7 +76,12 @@ impl Model {
             return false;
         }
         if self.view == crate::model::View::SpaceMap {
+            // The map cannot filter: type-ahead continues in List, and Esc
+            // (clearing the filter) brings the map back.
             self.action(crate::model::Action::View(crate::model::View::List));
+            if self.view == crate::model::View::List {
+                self.filter_return_view = Some((crate::model::View::SpaceMap, self.path.clone()));
+            }
         }
         if self.filter_edit.current(self) {
             self.text_paste.invalidate();
