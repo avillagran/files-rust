@@ -166,6 +166,10 @@ pub struct Preferences {
     /// Keyboard shortcut profile; absent means the Files profile.
     #[serde(default)]
     pub shortcuts: ShortcutProfile,
+    /// Add files Files opens with an application to the desktop's
+    /// `recently-used.xbel`; absent means on.
+    #[serde(default = "enabled")]
+    pub record_recent: bool,
 }
 impl Default for Preferences {
     fn default() -> Self {
@@ -180,6 +184,7 @@ impl Default for Preferences {
             operation_bar: false,
             preview_muted: None,
             shortcuts: ShortcutProfile::default(),
+            record_recent: true,
         }
     }
 }
@@ -292,6 +297,13 @@ mod tests {
     }
     #[test]
     fn background_sizes_default_on_without_overwriting_explicit_preferences() {
+        assert!(Preferences::default().record_recent);
+        assert!(parse_preferences("").unwrap().record_recent);
+        assert!(
+            !parse_preferences("record_recent = false")
+                .unwrap()
+                .record_recent
+        );
         assert!(Preferences::default().auto_folder_sizes);
         assert!(parse_preferences("").unwrap().auto_folder_sizes);
         assert!(

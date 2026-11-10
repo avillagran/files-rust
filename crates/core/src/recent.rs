@@ -7,8 +7,10 @@ use std::path::{Path, PathBuf};
 
 /// Largest `recently-used.xbel` read (bigger files are cut there).
 pub const MAX_BYTES: u64 = 8 * 1024 * 1024;
-/// Entries returned.
+/// Entries returned for the quick menu.
 pub const MAX_ITEMS: usize = 40;
+/// Entries of the browsable "Recientes" listing.
+pub const MAX_LISTED: usize = 200;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Recent {
@@ -88,6 +90,28 @@ pub fn parse(xml: &str) -> Vec<Recent> {
 /// The newest existing regular files listed in `data_home/recently-used.xbel`.
 /// A missing file is an empty list.
 pub fn read(data_home: &Path) -> io::Result<Vec<Recent>> {
+    Ok(read_raw(data_home)?
+        .into_iter()
+        .filter(|r| std::fs::metadata(&r.path).is_ok_and(|m| m.is_file()))
+        .take(MAX_ITEMS)
+        .collect())
+}
+
+/// The newest existing files and folders listed in the document, at most
+/// `max`, for the browsable listing (folders are marked as such).
+pub fn read_listing(data_home: &Path, max: usize) -> io::Result<Vec<Recent>> {
+    Ok(read_raw(data_home)?
+        .into_iter()
+        .filter_map(|mut r| {
+            let meta = std::fs::metadata(&r.path).ok()?;
+            r.folder = meta.is_dir();
+            Some(r)
+        })
+        .take(max)
+        .collect())
+}
+
+fn read_raw(data_home: &Path) -> io::Result<Vec<Recent>> {
     let file = match std::fs::File::open(data_home.join("recently-used.xbel")) {
         Ok(f) => f,
         Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(Vec::new()),
@@ -96,11 +120,7 @@ pub fn read(data_home: &Path) -> io::Result<Vec<Recent>> {
     let mut bytes = Vec::new();
     file.take(MAX_BYTES).read_to_end(&mut bytes)?;
     let xml = String::from_utf8_lossy(&bytes);
-    Ok(parse(&xml)
-        .into_iter()
-        .filter(|r| std::fs::metadata(&r.path).is_ok_and(|m| m.is_file()))
-        .take(MAX_ITEMS)
-        .collect())
+    Ok(parse(&xml))
 }
 
 /// `2026-11-05T21:03:09.12Z` → `2026-11-05 21:03` (UTC as written).
