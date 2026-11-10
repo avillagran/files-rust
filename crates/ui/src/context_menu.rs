@@ -11,6 +11,8 @@ pub enum Target {
     Selection,
     Views,
     Sort,
+    /// A row of the Recientes / Destacados listing ([`open_virtual`]).
+    Virtual,
 }
 pub struct Item {
     pub label: std::borrow::Cow<'static, str>,
@@ -109,7 +111,20 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
         section: true,
         intent: None,
     };
+    let starred = {
+        let mut marked: Vec<usize> = m.selection.iter().copied().collect();
+        if marked.is_empty() {
+            marked.extend(m.selected);
+        }
+        !marked.is_empty()
+            && marked.iter().all(|&i| {
+                m.entries
+                    .get(i)
+                    .is_some_and(|e| m.starred.contains(&m.path.join(&e.name)))
+            })
+    };
     let items = match target {
+        Target::Virtual => Vec::new(),
         Target::Sort => {
             use files_core::listing::Sort;
             let arrow = if m.descending { " ↓" } else { " ↑" };
@@ -229,6 +244,15 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
                 "  Crear enlace",
                 Action::CreateLinks,
                 !busy && !m.delete.busy(),
+            ),
+            item(
+                if starred {
+                    "\u{f006}  Quitar de destacados"
+                } else {
+                    "\u{f005}  Destacar"
+                },
+                Action::StarToggle,
+                true,
             ),
             header("COMPRIMIR"),
             item(
@@ -433,6 +457,7 @@ pub fn layout(target: Target) -> Option<&'static [Node]> {
                 |a| matches!(a, Action::MoveFiles),
                 |a| matches!(a, Action::FolderWithSelection),
                 |a| matches!(a, Action::CreateLinks),
+                |a| matches!(a, Action::StarToggle),
                 |a| matches!(a, Action::DeletePermanently),
             ],
         ),
@@ -505,7 +530,7 @@ pub fn layout(target: Target) -> Option<&'static [Node]> {
     match target {
         Target::Entries => Some(ENTRIES),
         Target::Background => Some(BACKGROUND),
-        Target::Views | Target::Selection | Target::Sort => None,
+        Target::Views | Target::Selection | Target::Sort | Target::Virtual => None,
     }
 }
 /// A placed layout row: a flat item index, or a titled group of indices.
@@ -837,6 +862,91 @@ pub fn open_keyboard(m: &mut Model, w: i32, h: i32) -> bool {
         open_at(m, m.browser_left() + 2, h - 45, w, h)
     }
 }
+/// The menu of the focused row of an open Recientes / Destacados listing.
+/// Only listing commands appear: no file action is offered there.
+pub fn open_virtual(m: &mut Model, x: i32, y: i32) {
+    use crate::shortcuts::{Cmd, primary};
+    use crate::virtual_list::{Command, Source};
+    let Some(panel) = m.virtual_list.panel.as_ref() else {
+        return;
+    };
+    let Some(item) = panel.focused().cloned() else {
+        return;
+    };
+    let (id, source) = (panel.id, panel.source);
+    let starred = m.starred.contains(&item.path);
+    let profile = m.shortcuts;
+    let entry = |label: String, command: Command, enabled: bool| Item {
+        label: label.into(),
+        action: enabled.then(|| Action::VirtualList(id, command.clone())),
+        section: false,
+        intent: Some(Action::VirtualList(id, command)),
+    };
+    let with = |label: &str, chord: &str| {
+        if chord.is_empty() {
+            label.to_string()
+        } else {
+            format!("{label} · {chord}")
+        }
+    };
+    let items = vec![
+        entry(
+            with("\u{f07c}  Abrir", "Enter"),
+            Command::Open,
+            item.available,
+        ),
+        entry(
+            with(
+                "\u{f115}  Abrir carpeta contenedora",
+                primary(profile, Cmd::OpenContaining),
+            ),
+            Command::OpenContaining,
+            item.path.parent().is_some_and(std::path::Path::is_dir),
+        ),
+        entry(
+            with(
+                match source {
+                    Source::Recent => "\u{f00d}  Quitar de Recientes (no borra el archivo)",
+                    Source::Starred => "\u{f00d}  Quitar de Destacados (no borra el archivo)",
+                },
+                "Supr",
+            ),
+            Command::Remove,
+            true,
+        ),
+        entry(
+            with(
+                if starred {
+                    "\u{f006}  Quitar de destacados"
+                } else {
+                    "\u{f005}  Destacar"
+                },
+                primary(profile, Cmd::StarToggle),
+            ),
+            Command::Star,
+            true,
+        ),
+    ];
+    let area = m.listing_rect;
+    let mut menu = Menu {
+        target: Target::Virtual,
+        items,
+        focused: 0,
+        generation: m.generation,
+        rect: Rect::new(x, y, 0, 0),
+        anchor: (x, y),
+        scroll: 0,
+        map: crate::selection_tools::map_stamp(m),
+    };
+    menu.fit(
+        (area.x + area.w + 16).max(320),
+        (area.y + area.h + 40).max(200),
+    );
+    m.settings = false;
+    m.actions_menu = false;
+    m.hits.clear();
+    m.context_menu = Some(menu);
+}
 pub fn dismiss(m: &mut Model) {
     m.context_menu = None;
     m.hits.clear();
@@ -938,6 +1048,12 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             Target::Selection => "SELECCIÓN · VISIBLES".into(),
             Target::Background => "CARPETA · FONDO".into(),
             Target::Entries => format!("{} SELECCIONADOS", m.selection.len()),
+            Target::Virtual => m
+                .virtual_list
+                .panel
+                .as_ref()
+                .map_or("LISTA", |p| p.source.title())
+                .to_uppercase(),
         },
         10,
         c.dark_foreground,

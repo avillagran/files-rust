@@ -159,6 +159,7 @@ mod space_map_state;
 mod space_map_view;
 mod space_map_zoom;
 mod spatial_view;
+mod starred_state;
 mod status_tips;
 mod svg_thumbnail;
 mod tab_context;
@@ -189,6 +190,7 @@ mod trash_scene;
 mod video_preview_job;
 mod video_stream_job;
 mod view;
+mod virtual_list;
 mod wheel_scroll;
 mod window_chrome;
 mod window_presentation;
@@ -310,6 +312,10 @@ fn browser_chord(m: &mut Model, cmd: Cmd, key: Key, w: i32, h: i32) -> bool {
         Cmd::ClearSelection => Action::Selection(Sel::Clear),
         Cmd::InvertSelection => Action::Selection(Sel::Invert),
         Cmd::SortMenu => Action::SortMenu(w, h),
+        Cmd::GoRecent => Action::OpenRecentView,
+        Cmd::GoStarred => Action::OpenStarredView,
+        Cmd::StarToggle => Action::StarToggle,
+        Cmd::OpenContaining => Action::OpenContaining,
         // Backspace and plain Enter keep their dedicated handlers below.
         Cmd::Parent if key != Key::BackSpace => Action::Parent,
         Cmd::Open if !matches!(key, Key::Enter | Key::KPEnter) => {
@@ -516,6 +522,10 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
             crate::key_commands::FocusTarget::Rail
         });
         return true;
+    }
+    // Recientes / Destacados own the keys below the modal surfaces above.
+    if m.virtual_list.panel.is_some() {
+        return crate::virtual_list::event(m, ev);
     }
     if !m.editing && chord(Cmd::DualPane) {
         m.action(Action::DualPane);
@@ -1122,6 +1132,11 @@ pub fn run_since(start: Instant) -> bool {
     model.borrow_mut().start_devices();
     model.borrow_mut().start_network();
     model.borrow_mut().start_ofolder();
+    {
+        let mut m = model.borrow_mut();
+        m.start_starred();
+        open_job::set_recording(m.record_recent);
+    }
     // Scripted media checks were written for a paused, muted first frame.
     // They keep it unless they ask for the product behaviour (autoplay and,
     // with no saved preference, sound on).
@@ -1214,15 +1229,10 @@ pub fn run_since(start: Instant) -> bool {
             canvas.redraw();
         };
         let (m1, r1, c1) = (model.clone(), rail_state.clone(), canvas.clone());
-        let recent = recent.clone();
         let (m2, r2, c2) = (model.clone(), rail_state.clone(), canvas.clone());
         fltk_omarchy::widgets::Sidebar::new(Vec::new(), &rail_selected)
             .widths(places_sidebar::RAIL, places_sidebar::WIDE)
             .on_activate(move |i| {
-                if r1.borrow().kinds.get(i) == Some(&places_sidebar::Kind::Recent) {
-                    open_recent(&recent);
-                    return;
-                }
                 let action = r1.borrow().actions.get(i).cloned().flatten();
                 run(&m1, &c1, action);
             })

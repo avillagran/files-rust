@@ -1220,6 +1220,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         );
     }
     if !m.closing {
+        crate::virtual_list::paint(p, m);
         crate::copy_ui::paint(p, m, w, h);
         crate::text_preview::paint(p, m, w, h);
         if let Some(band) = m.marquee.as_ref().filter(|b| b.moved) {
@@ -1492,6 +1493,17 @@ fn row(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
             &ext,
             9,
             c.darker_background,
+            true,
+            false,
+        );
+    }
+    if m.starred.contains(&path) {
+        // Star emblem over the icon's top corner (Destacados).
+        p.text(
+            r(x + 26, y + 2, 14, 14),
+            crate::fonts::icon("\u{f005}", "*"),
+            9,
+            c.yellow,
             true,
             false,
         );

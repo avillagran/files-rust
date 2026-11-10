@@ -31,6 +31,11 @@ pub fn star_glyph() -> &'static str {
     crate::fonts::icon("\u{f005}", "*")
 }
 
+/// Destacados (starred items); distinct from the bookmarks' Favoritos star.
+pub fn starred_glyph() -> &'static str {
+    crate::fonts::icon("\u{f006}", "S")
+}
+
 pub fn trash_glyph() -> &'static str {
     crate::fonts::icon("\u{f1f8}", "TR")
 }
@@ -77,8 +82,11 @@ pub struct Rail {
 pub enum Kind {
     Header,
     Favorites,
-    /// Recently used files (XDG recently-used.xbel), opened as a menu.
+    /// Recently used files and folders: the browsable Recientes listing
+    /// (its menu keeps the quick menu).
     Recent,
+    /// Starred items: the browsable Destacados listing.
+    Starred,
     Place(PathBuf),
     Bookmark(PathBuf),
     Device {
@@ -152,11 +160,20 @@ pub fn rail(m: &Model, pinned: bool, order: &[String]) -> Rail {
         None,
         Kind::Favorites,
     );
+    let open = m.virtual_list.panel.as_ref().map(|p| p.source);
+    activate(&mut out, open == Some(crate::virtual_list::Source::Recent));
     out.push(
         SidebarItem::new(recent_glyph(), "Recientes").key("recent"),
-        None,
+        Some(Action::OpenRecentView),
         None,
         Kind::Recent,
+    );
+    activate(&mut out, open == Some(crate::virtual_list::Source::Starred));
+    out.push(
+        SidebarItem::new(starred_glyph(), "Destacados").key("starred"),
+        Some(Action::OpenStarredView),
+        None,
+        Kind::Starred,
     );
     out.push(
         SidebarItem::header("Lugares").key("h:places"),
@@ -366,6 +383,8 @@ fn action_name(a: &Action) -> String {
         Action::Bookmarks => "Bookmarks".into(),
         Action::BookmarkAdd => "BookmarkAdd".into(),
         Action::OpenTrash => "OpenTrash".into(),
+        Action::OpenRecentView => "OpenRecentView".into(),
+        Action::OpenStarredView => "OpenStarredView".into(),
         _ => "Other".into(),
     }
 }
@@ -394,9 +413,19 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
                 Pick::Run(vec![Action::BookmarkAdd]),
             ));
         }
-        Some(Kind::Recent) => out.push((
-            PopupItem::new(recent_glyph(), "Abrir recientes"),
-            Pick::OpenRecent,
+        Some(Kind::Recent) => {
+            out.push((
+                PopupItem::new(recent_glyph(), "Abrir Recientes"),
+                Pick::Run(vec![Action::OpenRecentView]),
+            ));
+            out.push((
+                PopupItem::new(recent_glyph(), "Menú rápido de recientes"),
+                Pick::OpenRecent,
+            ));
+        }
+        Some(Kind::Starred) => out.push((
+            PopupItem::new(starred_glyph(), "Abrir Destacados"),
+            Pick::Run(vec![Action::OpenStarredView]),
         )),
         Some(Kind::Place(p)) => {
             out.push((PopupItem::new(folder, "Abrir"), open(p)));
@@ -722,16 +751,13 @@ mod tests {
             Some(Action::RailPin(false))
         ));
         assert_eq!(pinned.items[last].secondary_tooltip, "Desfijar barra");
-        for ((item, action), kind) in rail.items.iter().zip(&rail.actions).zip(&rail.kinds) {
-            let window_only = matches!(kind, Kind::Recent);
-            assert_eq!(
-                item.header || window_only,
-                action.is_none(),
-                "{}",
-                item.label
-            );
+        for (item, action) in rail.items.iter().zip(&rail.actions) {
+            assert_eq!(item.header, action.is_none(), "{}", item.label);
         }
         assert_eq!(rail.kinds[1], Kind::Recent);
+        assert!(matches!(rail.actions[1], Some(Action::OpenRecentView)));
+        assert_eq!(rail.kinds[2], Kind::Starred);
+        assert!(matches!(rail.actions[2], Some(Action::OpenStarredView)));
         let mut keys: Vec<_> = rail.items.iter().map(|i| i.key.clone()).collect();
         keys.sort();
         keys.dedup();
@@ -934,8 +960,8 @@ mod tests {
         };
         m.path = first;
         let rail = rail(&m, false, &[]);
-        assert_eq!(rail.active, 3);
-        assert!(matches!(&rail.actions[3], Some(Action::Navigate(p)) if *p == m.path));
+        assert_eq!(rail.active, 4);
+        assert!(matches!(&rail.actions[4], Some(Action::Navigate(p)) if *p == m.path));
     }
 
     #[test]

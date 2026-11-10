@@ -90,6 +90,10 @@ pub enum Cmd {
     ClearSelection,
     InvertSelection,
     SortMenu,
+    GoRecent,
+    GoStarred,
+    StarToggle,
+    OpenContaining,
 }
 
 type Row = (Cmd, &'static [&'static str]);
@@ -172,6 +176,12 @@ const COMMON: &[Row] = &[
     (Cmd::ClearSelection, &["Ctrl+Shift+D"]),
     (Cmd::InvertSelection, &["Ctrl+I"]),
     (Cmd::SortMenu, &["Ctrl+Shift+S"]),
+    // Free in both profiles (GNOME Files binds none of them; Ctrl+Alt+O is
+    // its "Open Item Location" in Recent and Search).
+    (Cmd::GoRecent, &["Ctrl+Alt+R"]),
+    (Cmd::GoStarred, &["Ctrl+Alt+E"]),
+    (Cmd::StarToggle, &["Ctrl+E"]),
+    (Cmd::OpenContaining, &["Ctrl+Alt+O"]),
 ];
 
 /// Files keeps today's bindings: everything comes from [`COMMON`].
@@ -429,6 +439,10 @@ pub fn palette_id(cmd: Cmd) -> Option<&'static str> {
         Cmd::SelectFiltered => "filtered",
         Cmd::ClearSelection => "clear",
         Cmd::InvertSelection => "invert",
+        Cmd::GoRecent => "go-recent",
+        Cmd::GoStarred => "go-starred",
+        Cmd::StarToggle => "star-toggle",
+        Cmd::OpenContaining => "open-containing",
         _ => return None,
     })
 }
@@ -512,6 +526,10 @@ pub fn cmd_for_action(action: &Action) -> Option<Cmd> {
         Action::Selection(Sel::Clear) => Cmd::ClearSelection,
         Action::Selection(Sel::Invert) => Cmd::InvertSelection,
         Action::SortMenu(..) => Cmd::SortMenu,
+        Action::OpenRecentView => Cmd::GoRecent,
+        Action::OpenStarredView => Cmd::GoStarred,
+        Action::StarToggle => Cmd::StarToggle,
+        Action::OpenContaining => Cmd::OpenContaining,
         Action::OperationBar(_, _, index) => crate::operation_bar::command(*index)?,
         _ => return None,
     })
@@ -675,6 +693,12 @@ mod tests {
             assert_eq!(resolves(p, chord), Some(cmd), "{chord}");
         }
         assert_eq!(resolves(p, "Ctrl+Shift+I"), None);
+        for profile in BOTH {
+            assert_eq!(resolves(profile, "Ctrl+Alt+R"), Some(Cmd::GoRecent));
+            assert_eq!(resolves(profile, "Ctrl+Alt+E"), Some(Cmd::GoStarred));
+            assert_eq!(resolves(profile, "Ctrl+E"), Some(Cmd::StarToggle));
+            assert_eq!(resolves(profile, "Ctrl+Alt+O"), Some(Cmd::OpenContaining));
+        }
         assert!(chords(p, Cmd::NewWindow).is_empty());
         assert!(chords(p, Cmd::FocusCycle).is_empty());
     }

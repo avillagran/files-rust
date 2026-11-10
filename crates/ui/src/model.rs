@@ -51,6 +51,17 @@ pub enum Action {
     OpenWithCmd(crate::open_with_ui::Command),
     OpenTrash,
     TrashBrowser(u64, crate::trash_browser::Command),
+    /// The browsable "Recientes" listing (a virtual location).
+    OpenRecentView,
+    /// The browsable "Destacados" listing (a virtual location).
+    OpenStarredView,
+    /// Star or unstar the selection, or the focused row of a virtual listing.
+    StarToggle,
+    /// Go to the folder of the focused virtual-listing item and select it.
+    OpenContaining,
+    /// Turn recording opened files in `recently-used.xbel` on or off.
+    RecordRecentToggle,
+    VirtualList(u64, crate::virtual_list::Command),
     Commands,
     Checksums,
     CompareFolders,
@@ -614,6 +625,11 @@ pub struct Model {
     pub operation_details: Vec<String>,
     pub notice_open: bool,
     pub trash_browser: Option<crate::trash_browser::Panel>,
+    /// "Recientes" / "Destacados": virtual listings over the browser.
+    pub virtual_list: crate::virtual_list::State,
+    pub starred: crate::starred_state::State,
+    /// Files opened with an application join `recently-used.xbel`.
+    pub record_recent: bool,
     pub copy_notice_id: Option<u64>,
     pub notice_scroll: usize,
     pub notice_pan: i32,
@@ -789,6 +805,9 @@ impl Model {
             rail_order: prefs.rail_order.clone(),
             auto_folder_sizes: prefs.auto_folder_sizes,
             show_thumbnails: prefs.show_thumbnails,
+            record_recent: prefs.record_recent,
+            virtual_list: Default::default(),
+            starred: Default::default(),
             listing_sync: Default::default(),
             refresh_viewport: None,
             native_transfer: Default::default(),
@@ -1475,7 +1494,9 @@ impl Model {
             | self.pump_open_with()
             | self.pump_devices()
             | self.pump_network()
-            | self.pump_ofolder();
+            | self.pump_ofolder()
+            | self.pump_starred()
+            | self.pump_virtual();
         if let Some((id, control)) = &self.archive_preparing
             && (self.closing
                 || self
@@ -2624,6 +2645,11 @@ impl Model {
         {
             return;
         }
+        // Virtual listings refuse every file action here, whatever its origin
+        // (key, palette, menu, toolbar): see `virtual_list::gate`.
+        let Some(a) = crate::virtual_list::gate(self, a) else {
+            return;
+        };
         if let Action::Checksum(stamp, command) = a {
             self.checksum_command(stamp, command);
             return;
@@ -2940,6 +2966,15 @@ impl Model {
             Action::OfolderUnfavorite(path) => self.share_favorite(path, false),
             Action::OpenWithCmd(_) => {}
             Action::OpenTrash => self.open_trash_browser(),
+            Action::OpenRecentView => self.open_virtual(crate::virtual_list::Source::Recent),
+            Action::OpenStarredView => self.open_virtual(crate::virtual_list::Source::Starred),
+            Action::StarToggle => self.toggle_star_selection(),
+            Action::OpenContaining => {
+                self.operation_message =
+                    Some("Abrir carpeta contenedora: disponible en Recientes y Destacados".into());
+            }
+            Action::RecordRecentToggle => self.set_record_recent(!self.record_recent),
+            Action::VirtualList(id, command) => self.virtual_command(id, command),
             Action::TrashBrowser(..) => {}
             Action::CopyDestination => {
                 if let Some(form) = self.copy_form.as_mut().filter(|d| !d.options_open) {

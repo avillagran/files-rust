@@ -20,6 +20,31 @@ use std::{
 };
 
 const MAX_PATH_BYTES: usize = 4096;
+static RECORD: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// Whether files opened with an application join `recently-used.xbel` (the
+/// `record_recent` preference). Test builds never record from here; the
+/// recorder itself is tested in `files_core::recent_store`.
+pub fn set_recording(on: bool) {
+    if !cfg!(test) {
+        RECORD.store(on, std::sync::atomic::Ordering::Relaxed);
+    }
+}
+
+/// Records a launched file on the open worker (never on the UI thread).
+fn record_opened(path: &Path) {
+    if !RECORD.load(std::sync::atomic::Ordering::Relaxed) {
+        return;
+    }
+    let mime = files_core::apps::detect_mime(path);
+    match files_core::recent_store::Recorder::from_env(true).opened(path, &mime) {
+        Ok(files_core::recent_store::Outcome::Skipped(reason)) => {
+            eprintln!("FILES_RECENT record skipped: {reason}");
+        }
+        Err(e) => eprintln!("FILES_RECENT record failed: {e}"),
+        Ok(_) => {}
+    }
+}
 const MAX_ERROR_BYTES: usize = 512;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -107,10 +132,14 @@ impl Job {
             .name("files-open".into())
             .spawn(move || {
                 let outcome = match resolve(&path, app) {
-                    Ok(id) => run_app(program, path, id),
+                    Ok(id) => run_app(program, path.clone(), id),
                     Err(e) => Outcome::Failed(bounded(e)),
                 };
+                let opened = outcome == Outcome::Opened;
                 let _ = tx.send(outcome);
+                if opened {
+                    record_opened(&path);
+                }
             })
             .map_err(|e| bounded(format!("No se pudo iniciar el trabajador de apertura: {e}")))?;
         Ok(Self {

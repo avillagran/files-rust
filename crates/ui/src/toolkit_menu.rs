@@ -92,6 +92,14 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
                 Action::AutoFolderSizes(!m.auto_folder_sizes),
             ),
             (
+                row(
+                    "Registrar archivos abiertos en Recientes",
+                    "",
+                    m.record_recent,
+                ),
+                Action::RecordRecentToggle,
+            ),
+            (
                 row("Mantener barra lateral abierta", "", m.rail_pinned),
                 Action::RailPin(!m.rail_pinned),
             ),

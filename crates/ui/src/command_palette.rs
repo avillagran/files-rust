@@ -285,6 +285,46 @@ pub const ITEMS: &[Spec] = &[
         Action::Trash
     ),
     spec!(
+        "go-recent",
+        "Ir a Recientes",
+        "",
+        "recent recientes recently used historial archivos abiertos",
+        Root,
+        Action::OpenRecentView
+    ),
+    spec!(
+        "go-starred",
+        "Ir a Destacados",
+        "",
+        "starred destacados estrella star marcados",
+        Root,
+        Action::OpenStarredView
+    ),
+    spec!(
+        "star-toggle",
+        "Destacar / quitar de destacados",
+        "",
+        "star estrella destacar starred favorito marcar",
+        Root,
+        Action::StarToggle
+    ),
+    spec!(
+        "open-containing",
+        "Abrir carpeta contenedora (Recientes, Destacados)",
+        "",
+        "locate localizar ubicacion carpeta contenedora location",
+        Root,
+        Action::OpenContaining
+    ),
+    spec!(
+        "record-recent",
+        "Registrar archivos abiertos en Recientes (activar/desactivar)",
+        "",
+        "recent recientes privacidad historial xbel registrar",
+        Root,
+        Action::RecordRecentToggle
+    ),
+    spec!(
         "open-trash",
         "Abrir Papelera de Inicio",
         "",

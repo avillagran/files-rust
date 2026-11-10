@@ -144,6 +144,22 @@ pub const ITEMS: &[(Keys, &str)] = &[
         "Guardar carpeta / abrir favoritos y lugares",
     ),
     (
+        C(&[Cmd::GoRecent, Cmd::GoStarred]),
+        "Recientes / Destacados: listas virtuales, sin acciones de archivo",
+    ),
+    (
+        C(&[Cmd::StarToggle]),
+        "Destacar o quitar el elemento enfocado",
+    ),
+    (
+        C(&[Cmd::OpenContaining]),
+        "En Recientes/Destacados: abrir la carpeta contenedora",
+    ),
+    (
+        T("Supr en Recientes/Destacados"),
+        "Quitar la entrada de la lista; el archivo no se toca",
+    ),
+    (
         T("F2 / Supr en lugares"),
         "Etiqueta / quitar favorito; carpeta intacta",
     ),
