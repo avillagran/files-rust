@@ -25,6 +25,7 @@ Not verified: no real second filesystem, USB drive, read-only mount or vfat/exfa
 
 - `TrashContext::open(root) -> Result<TrashContext, Failure>`: opens or creates only `root`, `root/files` and `root/info`. The parent of `root` must exist.
 - `context.trash(source, cancel) -> Result<Receipt, Failure>` and the convenience `trash(source, root, cancel)` for one object.
+- `context.trash_expected(source, device, inode, cancel)`: the same, but refused before anything is written unless the object pinned at `source` (final symlink not followed) is exactly that inode; the pre-commit identity check then proves the renamed object is it. Undo uses only this entry point ([UNDO.md](UNDO.md)).
 - `restore(&receipt, cancel) -> Result<RestoreReport, Failure>`: returns the object to the **original parent's descriptor**, even if that directory was renamed. The original final name is kept, without replacing any new occupant.
 - `Receipt::original_path()` is historical and matches the metadata. `current_original_path()`, `trashed_path()` and `info_path()` resolve current locations through `/proc/self/fd` and verify identities. A resolution error is never turned into an old path presented as rescue.
 - `Failure` keeps `cause`, `preserved_paths`, `cleanup_paths`, `rollback_errors`, `unresolved_paths` and `restore_retryable`. The latter starts as `false` and, when a restore fails, only becomes `true` if a fresh check finds both the expected object and its expected metadata still in their Trash slots. The error type does not decide the retry; any error while checking identities keeps `false`. Paths of preserved objects and of leftover metadata have different roles; the caller must show them.
@@ -69,8 +70,9 @@ If after the move the original parent's name holds a different identity, that fo
 Actions/Delete sends the selection to the single mutation worker; it does not open or probe
 the filesystem on the UI thread. The borrowed preflight rejects batches of more than 64
 objects, repeated names or more than 256 KiB before cloning. It never silently truncates a selection.
-The first confirmed commit replaces the previous history; earlier failures
-keep Undo. A failed creation does not clear the history either. There is no
+Since 2026-11-10 a batch with at least one confirmed commit is pushed onto the
+window's linear Undo history ([UNDO.md](UNDO.md)) instead of replacing it;
+earlier failures keep Undo. A failed creation does not clear the history either. There is no
 Trash redo nor atomic rollback of a batch: receipts of the confirmed objects
 are kept and errors and rescue paths are shown.
 

@@ -24,8 +24,9 @@ paths, unverified old ones and omitted counters are shown in a copyable
 report. The report does not turn old paths into safe current locations.
 
 A history token is kept; undo/redo revalidates and can be cancelled.
-A failed Create keeps its indicators. A successful Create invalidates that history;
-**undoing a creation is still pending**. Create uses shared portable validation and a
+A failed Create keeps its indicators. Since 2026-11-10 a successful Create is
+pushed onto the window's linear history and its Undo sends the new, unchanged
+object to the trash (see [UNDO.md](UNDO.md)). Create uses shared portable validation and a
 255 B limit, with mkdirat/openat O_EXCL anchored to the directory; it never overwrites.
 
 There is no durable journal or recovery against kill/power loss: a normal close
