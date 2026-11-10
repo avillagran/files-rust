@@ -356,7 +356,12 @@ mod tests {
         symlink(root.join("sub"), root.join("ln")).unwrap();
         let readable = measure_contents(&root, Limits::default(), |_| Ok(())).unwrap();
         assert_eq!(
-            (readable.files, readable.folders, readable.links, readable.bytes),
+            (
+                readable.files,
+                readable.folders,
+                readable.links,
+                readable.bytes
+            ),
             (4, 3, 1, 12 + 13),
             "the link is one item and sub is visited exactly once"
         );
