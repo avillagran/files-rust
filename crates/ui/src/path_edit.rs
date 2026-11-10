@@ -108,7 +108,9 @@ pub fn destination(text: &str, current: &Path) -> Result<PathBuf, &'static str> 
                 .bytes()
                 .all(|b| b.is_ascii_alphanumeric() || b"+.-".contains(&b))
     }) {
-        return Err("Este campo admite rutas locales o URI file://; otros esquemas pendientes");
+        return Err(
+            "Este campo admite rutas locales, file://, smb://, sftp://, ftp://, dav://, nfs:// y afp://",
+        );
     }
     let path = if let Some(s) = text.strip_prefix("~/") {
         files_core::theme::home().join(s)
@@ -169,6 +171,11 @@ impl Model {
         }
     }
     pub fn end_path_edit(&mut self) {
+        if self.network.prompt.take().is_some() {
+            // A password never outlives its prompt.
+            self.edit.clear();
+            self.operation_message = None;
+        }
         self.end_filter_edit();
         self.text_paste.invalidate();
         self.editing = false;
@@ -179,6 +186,18 @@ impl Model {
         }
     }
     pub fn commit_path_edit(&mut self) {
+        if self.network.prompt.is_some() {
+            self.submit_network_password();
+            return;
+        }
+        if files_core::network::is_network_uri(&self.edit) {
+            let text = self.edit.clone();
+            if files_core::network::parse(&text).is_ok() {
+                self.end_path_edit();
+            }
+            self.connect_network(&text);
+            return;
+        }
         if matches!(self.edit.as_bytes().first(), Some(b'>' | b':')) {
             let prefix = self.edit.as_bytes()[0];
             let query = self.edit[1..].trim();
@@ -293,6 +312,9 @@ impl Model {
             k if ctrl && (k == Key::from_char('z') || k == Key::from_char('y')) => {
                 c.undo(&mut self.edit, shift || k == Key::from_char('y'))
             }
+            k if ctrl
+                && (k == Key::from_char('c') || k == Key::from_char('x'))
+                && self.network.prompt.is_some() => {}
             k if ctrl && (k == Key::from_char('c') || k == Key::from_char('x')) => {
                 let range = c.range(&self.edit);
                 let copy = self.edit[range].to_string();
@@ -310,6 +332,8 @@ impl Model {
     }
 }
 pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
+    // A network password is drawn as one dot per character.
+    let secret = m.network.prompt.is_some();
     let state = &mut m.path_edit;
     if m.replace_edit && state.cursor.range(&m.edit) != (0..m.edit.len()) {
         state.cursor.all(&m.edit);
@@ -322,9 +346,14 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
     }
     state.points.push((0, 0.));
     let mut width = 0f64;
+    let dot = f64::from(p.text_width("•", 13, true).max(0.));
     for (i, c) in m.edit.char_indices() {
         let mut buf = [0; 4];
-        width += f64::from(p.text_width(c.encode_utf8(&mut buf), 13, true).max(0.));
+        width += if secret {
+            dot
+        } else {
+            f64::from(p.text_width(c.encode_utf8(&mut buf), 13, true).max(0.))
+        };
         state.points.push((i + c.len_utf8(), width));
     }
     let caret = state
@@ -366,9 +395,22 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
             m.palette.selection,
         );
     }
+    if secret && m.edit.is_empty() {
+        p.literal_text(
+            Rect::new(area.x + 12, area.y, (area.w - 12).max(1), area.h),
+            "Contraseña",
+            13,
+            m.palette.muted,
+        );
+    }
+    let shown = if secret {
+        std::borrow::Cow::Owned("•".repeat(m.edit.chars().count()))
+    } else {
+        std::borrow::Cow::Borrowed(m.edit.as_str())
+    };
     p.literal_text(
         Rect::new(x, area.y, (width.ceil() as i32 + 8).max(1), area.h),
-        &m.edit,
+        &shown,
         13,
         m.palette.accent,
     );

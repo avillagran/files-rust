@@ -349,7 +349,20 @@ shared memory/a temporary file) and dies when it finishes or after N idle second
 - URLs in the omnibar: `smb://nas/fotos`, `sftp://user@host/path`. They appear in the rail under
   "Network" with a connection status. Copy operations go through the same engine (section L)
   with streaming, without downloading to a temporary file unless the destination requires it.
-- No GVFS nor KIO: they are permanent daemons and Linux-only.
+- ~~No GVFS nor KIO~~ — revised 2026-11-09: on Linux, network locations go through the
+  session's **GVfs**, which the desktop already runs (Omarchy ships `gvfs`, `gvfs-smb`,
+  `gvfs-nfs` and the sftp/ftp/dav backends). Files adds no daemon: `gio mount` asks the
+  running GVfs to connect and every location is browsed as a plain folder under
+  `$XDG_RUNTIME_DIR/gvfs` (FUSE bridge), so listing, previews, copies and other apps
+  keep using ordinary paths. The rail's "Red" section lists the bridge entries and
+  offers "Conectar a servidor…"; the location field accepts `smb://`, `sftp://`,
+  `ftp://`, `ftps://`, `dav://`, `davs://`, `nfs://` and `afp://`. Passwords are typed
+  in the masked location field and written to `gio`'s stdin only (never argv, logs or
+  Files' own storage; GVfs may offer its keyring). Files never answers GVfs questions
+  such as trusting an unknown SSH host key on the person's behalf. Without GVfs the
+  section only offers connecting and reports why it fails. The own-backend plan above
+  (helper `net`, libsmbclient, russh…) remains the route for other platforms; the
+  explicit SSHFS SFTP controls (N01) stay as they are.
 
 ## L. Hyper-optimized copy
 

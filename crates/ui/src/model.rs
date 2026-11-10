@@ -42,6 +42,10 @@ pub enum Action {
     FolderWithSelection,
     /// Sidebar device: open (mounting first) or an explicit operation.
     Device(PathBuf, Option<files_core::devices::Op>),
+    /// "Connect to server…": the location field, ready for a network URI.
+    NetworkConnect,
+    /// Disconnect the network location mounted at this folder.
+    NetworkDisconnect(PathBuf),
     OpenWithCmd(crate::open_with_ui::Command),
     OpenTrash,
     TrashBrowser(u64, crate::trash_browser::Command),
@@ -249,6 +253,8 @@ impl Action {
             Self::ToggleOperationBar => Some("Barra de operaciones MC, Ctrl+Alt+B"),
             Self::OperationBar(_, _, index) => crate::operation_bar::label(*index),
             Self::Sftp => Some("Conectar y controlar montajes SFTP"),
+            Self::NetworkConnect => Some("Conectar a servidor: smb, sftp, ftp, dav, nfs"),
+            Self::NetworkDisconnect(_) => Some("Desconectar ubicación de red"),
             Self::SftpCommand(_, cmd) => Some(cmd.name()),
             Self::Bookmarks => Some("Favoritos y lugares, Ctrl+Alt+D"),
             Self::BookmarkAdd => Some("Añadir carpeta actual a favoritos, Ctrl+D"),
@@ -501,6 +507,7 @@ pub struct Model {
     pub open_with: Option<crate::open_with_ui::Panel>,
     /// Drives in the sidebar (event-driven watcher thread).
     pub devices: crate::devices_ui::State,
+    pub network: crate::network_ui::State,
     /// Listing area of the last paint (rubber-band selection starts here).
     pub listing_rect: Rect,
     /// Ctrl+S: the filter being typed selects its matches on Enter.
@@ -737,6 +744,7 @@ impl Model {
             delete: Default::default(),
             open_with: None,
             devices: Default::default(),
+            network: Default::default(),
             listing_rect: Rect::default(),
             marquee: None,
             select_pattern: false,
@@ -1379,6 +1387,8 @@ impl Model {
             || self.copy_busy()
             || self.mutations.busy
             || self.search.searching_current()
+            || self.devices.busy()
+            || self.network.busy()
     }
     pub fn pump(&mut self) -> bool {
         let busy = self.busy();
@@ -1386,7 +1396,8 @@ impl Model {
         self.pump_jobs() || mascot
     }
     fn pump_jobs(&mut self) -> bool {
-        let deleted = self.pump_delete() | self.pump_open_with() | self.pump_devices();
+        let deleted =
+            self.pump_delete() | self.pump_open_with() | self.pump_devices() | self.pump_network();
         if let Some((id, control)) = &self.archive_preparing
             && (self.closing
                 || self
@@ -2822,6 +2833,8 @@ impl Model {
             Action::NewFromTemplate(t) => self.new_from_template(t),
             Action::FolderWithSelection => self.folder_with_selection(),
             Action::Device(node, op) => self.device_action(node, op),
+            Action::NetworkConnect => self.connect_server_prompt(),
+            Action::NetworkDisconnect(path) => self.disconnect_network(path),
             Action::OpenWithCmd(_) => {}
             Action::OpenTrash => self.open_trash_browser(),
             Action::TrashBrowser(..) => {}

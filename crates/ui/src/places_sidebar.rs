@@ -47,6 +47,14 @@ pub fn pin_glyph() -> &'static str {
     crate::fonts::icon("\u{f08d}", "P")
 }
 
+pub fn network_glyph() -> &'static str {
+    crate::fonts::icon("\u{f233}", "N")
+}
+
+pub fn connect_glyph() -> &'static str {
+    crate::fonts::icon("\u{f067}", "+")
+}
+
 pub fn eject_glyph() -> &'static str {
     crate::fonts::icon("\u{f052}", "^")
 }
@@ -78,6 +86,10 @@ pub enum Kind {
         mount: Option<PathBuf>,
         removable: bool,
     },
+    /// A connected network location (GVfs), at its FUSE folder.
+    Network(PathBuf),
+    /// "Connect to server…".
+    Connect,
     Trash,
 }
 
@@ -115,7 +127,7 @@ impl Rail {
     /// devices; none for headers, Favorites, the trash or unmounted devices.
     pub fn drop_dir(&self, i: usize) -> Option<&Path> {
         match self.kinds.get(i)? {
-            Kind::Place(p) | Kind::Bookmark(p) => Some(p),
+            Kind::Place(p) | Kind::Bookmark(p) | Kind::Network(p) => Some(p),
             Kind::Device { mount, .. } => mount.as_deref(),
             _ => None,
         }
@@ -251,6 +263,7 @@ pub fn rail(m: &Model, pinned: bool, order: &[String]) -> Rail {
             },
         );
     }
+    network_rows(m, &mut out, &activate);
     // Pinning is a small trailing button on the last footer row rather than a
     // row of its own: it only matters while the rail is expanded.
     out.push(
@@ -270,6 +283,38 @@ pub fn rail(m: &Model, pinned: bool, order: &[String]) -> Rail {
         Kind::Trash,
     );
     out
+}
+
+/// The "Red" section: connected GVfs locations and "Connect to server…".
+fn network_rows(m: &Model, out: &mut Rail, activate: &dyn Fn(&mut Rail, bool)) {
+    out.push(
+        SidebarItem::header("Red").collapsible().key("h:network"),
+        None,
+        None,
+        Kind::Header,
+    );
+    let busy = m.network.busy();
+    for share in &m.network.list {
+        activate(out, m.path.starts_with(&share.path));
+        let item = SidebarItem::new(network_glyph(), &share.title)
+            .key(&crate::sidebar_order::path_key("net", &share.path))
+            .detail(&share.detail())
+            .secondary(eject_glyph(), "Desconectar");
+        out.push(
+            item,
+            Some(Action::Navigate(share.path.clone())),
+            Some(Action::NetworkDisconnect(share.path.clone())),
+            Kind::Network(share.path.clone()),
+        );
+    }
+    out.push(
+        SidebarItem::new(connect_glyph(), "Conectar…")
+            .key("net:connect")
+            .busy(busy),
+        Some(Action::NetworkConnect),
+        None,
+        Kind::Connect,
+    );
 }
 
 /// What a context-menu entry of the rail does.
@@ -383,6 +428,21 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
                 }
             }
         }
+        Some(Kind::Network(p)) => {
+            out.push((PopupItem::new(folder, "Abrir"), open(p)));
+            out.push((
+                PopupItem::new(plus, "Abrir en pestaña nueva").divider(),
+                tab(p),
+            ));
+            out.push((
+                PopupItem::new(eject_glyph(), "Desconectar"),
+                Pick::Run(vec![Action::NetworkDisconnect(p.clone())]),
+            ));
+        }
+        Some(Kind::Connect) => out.push((
+            PopupItem::new(connect_glyph(), "Conectar a servidor…"),
+            Pick::Run(vec![Action::NetworkConnect]),
+        )),
         Some(Kind::Trash) => out.push((
             PopupItem::new(trash_glyph(), "Abrir Papelera"),
             Pick::Run(vec![Action::OpenTrash]),
@@ -706,6 +766,45 @@ mod tests {
             assert_eq!(rail.drop_dir(at(key)), None, "{key}");
         }
         assert_eq!(rail.drop_dir(datos), None);
+    }
+
+    #[test]
+    fn network_section_lists_shares_and_always_offers_connect() {
+        let mut m = Model::new("/fixture-rail".into());
+        m.loaded = true;
+        let empty = rail(&m, false, &[]);
+        let connect = empty
+            .items
+            .iter()
+            .position(|i| i.key == "net:connect")
+            .unwrap();
+        assert_eq!(empty.items[connect - 1].key, "h:network");
+        assert!(matches!(
+            empty.actions[connect],
+            Some(Action::NetworkConnect)
+        ));
+        assert_eq!(labels(&menu(&m, &empty, connect)), ["Conectar a servidor…"]);
+        let path = Path::new("/fixture-rail/gvfs/smb-share:server=nas,share=fotos");
+        m.network.list = vec![files_core::network::share(
+            path,
+            "smb-share:server=nas,share=fotos",
+        )];
+        m.path = path.join("2024");
+        let rail = rail(&m, false, &[]);
+        let row = rail
+            .items
+            .iter()
+            .position(|i| i.label == "fotos en nas")
+            .unwrap();
+        assert_eq!(rail.items[row].detail, "SMB");
+        assert_eq!(rail.active, row);
+        assert_eq!(rail.drop_dir(row), Some(path));
+        assert!(matches!(&rail.secondary[row], Some(Action::NetworkDisconnect(p)) if p == path));
+        assert_eq!(
+            labels(&menu(&m, &rail, row)),
+            ["Abrir", "Abrir en pestaña nueva", "Desconectar"]
+        );
+        assert_eq!(rail.drop_dir(row + 1), None);
     }
 
     #[test]

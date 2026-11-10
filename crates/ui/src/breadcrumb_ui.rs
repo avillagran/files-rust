@@ -40,7 +40,15 @@ pub fn open(m: &mut Model) {
 }
 
 pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
-    let all = crate::breadcrumbs::build(&m.path, &files_core::theme::home());
+    let mut all = crate::breadcrumbs::build(&m.path, &files_core::theme::home());
+    // Inside a network location the trail starts at the location, named as
+    // in the rail, instead of at the GVfs bridge's internal folders.
+    if let Some(share) = m.network.list.iter().find(|s| m.path.starts_with(&s.path))
+        && let Some(i) = all.iter().position(|c| c.path == share.path)
+    {
+        all[i].label = share.title.clone();
+        all.drain(..i);
+    }
     let layout = crate::breadcrumbs::layout(&all, area.w, |s| p.text_width(s, 12, false));
     let compact_menu = layout.overflow_width == 0 && !layout.hidden.is_empty();
     let y = area.y + (area.h - 24) / 2;

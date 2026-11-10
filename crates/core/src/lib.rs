@@ -6,8 +6,8 @@ pub mod archive_member;
 pub mod bookmarks;
 pub mod copy_engine;
 pub mod file_manager;
-pub mod folder_usage;
 pub mod folder_size_cache;
+pub mod folder_usage;
 pub mod folder_views;
 pub mod listing;
 pub mod media_source;
@@ -94,6 +94,8 @@ pub mod apps;
 pub mod devices;
 /// "Create link" to selected items.
 pub mod links;
+/// Network locations (SMB, SFTP, FTP, WebDAV, NFS) through the session's GVfs.
+pub mod network;
 /// New document from templates, new folder with selection.
 pub mod quick_ops;
 /// Permanent deletion (Shift+Delete, empty trash).

@@ -86,6 +86,7 @@ mod native_transfer;
 mod native_transfer_io;
 #[cfg(test)]
 mod navigation_tests;
+mod network_ui;
 mod notice_navigation;
 mod office_preview_job;
 mod omarchy_theme;
@@ -1193,6 +1194,7 @@ pub fn run_since(start: Instant) -> bool {
         omarchy_theme::apply(&mut model.borrow_mut());
     }
     model.borrow_mut().start_devices();
+    model.borrow_mut().start_network();
     // Scripted media checks were written for a paused, muted first frame.
     // They keep it unless they ask for the product behaviour (autoplay and,
     // with no saved preference, sound on).
