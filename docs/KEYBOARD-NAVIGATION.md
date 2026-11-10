@@ -16,8 +16,17 @@ key routing; a path editor does not move the underlying browser on PageUp/Down.
 - Columns keeps unmodified Left/Right for parent/child navigation; vertical keys,
   endpoints and pages act within the active column. Dual-pane navigation uses
   list rows even when its underlying saved view is Grid or Groups.
-- Treemap Espacio keeps its distinct measured-tile navigation and single-selection
-  behavior. Retired internal Spatial compatibility is not a new public view.
+- Treemap Espacio moves spatially: an arrow focuses the nearest block whose edge
+  faces the focused block in that direction, preferring blocks that share its
+  row or column span. Down from the bottom of the map enters the list of blocks
+  without area (Up/Down/Left/Right then step through it) and Up from its first
+  row returns to the bottom of the map. Home/End and pages keep the map order;
+  Shift/Ctrl keep their range and keep-marks meaning. Enter opens a folder block
+  (zoom in) and Backspace/Alt+Up returns to the parent, focusing the block you
+  came from once the parent's map is painted. Typing a name continues in List
+  with the filter (Espacio cannot filter) and Esc returns. Focus is the accent
+  ring, marks the light band. Retired internal Spatial compatibility is not a
+  new public view.
 
 Groups now orders its model by the same folder/date sections it paints. Shift
 ranges, mouse ranges, endpoints and preview neighbors use that order. The original

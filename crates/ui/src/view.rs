@@ -758,6 +758,9 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     m.native_transfer
         .painted(m.pane_owner(), m.generation, r(left, top, width, vh));
     p.clip(r(left - 4, top, width + 8, vh));
+    if m.dual.enabled || m.view != View::SpaceMap {
+        m.space_zoom.leave();
+    }
     let mut y = top - m.scroll;
     if m.dual.enabled {
         m.dual_width = width;

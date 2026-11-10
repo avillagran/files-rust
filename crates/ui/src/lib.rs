@@ -157,6 +157,7 @@ mod space_map_job;
 mod space_map_scene;
 mod space_map_state;
 mod space_map_view;
+mod space_map_zoom;
 mod spatial_view;
 mod status_tips;
 mod svg_thumbnail;

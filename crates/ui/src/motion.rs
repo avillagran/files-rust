@@ -2,8 +2,9 @@
 //!
 //! Rules (see docs/DESIGN.md, "Motion"): input never waits for motion, so
 //! `selected`, marks and the logical scroll target change synchronously and
-//! only painted values animate. Every transition is at most 160 ms, retargets
-//! instead of queueing, uses the toolkit clock (`anim::now`) and jumps to its
+//! only painted values animate. Every row transition is at most 160 ms (the
+//! Espacio block zoom in `space_map_zoom` takes 220 ms), retargets instead of
+//! queueing, uses the toolkit clock (`anim::now`) and jumps to its
 //! final value when animations are disabled. Nothing here runs a timer: the
 //! canvas asks `State::animating` after painting and requests one more frame
 //! only while something is mid-flight, so an idle window schedules nothing.
@@ -145,9 +146,17 @@ impl Painter for FadePainter<'_> {
 /// Asks for one more frame while any transition is mid-flight; an idle
 /// window requests nothing.
 pub fn schedule(m: &crate::model::Model, canvas: &fltk::frame::Frame) {
-    if m.motion.animating() || m.wheel_scroll.running() || m.thumbnails.fading() {
+    if wants_frame(m) {
         anim::request_redraw(canvas);
     }
+}
+
+/// True while any paint-only transition is mid-flight after the last paint.
+pub fn wants_frame(m: &crate::model::Model) -> bool {
+    m.motion.animating()
+        || m.wheel_scroll.running()
+        || m.thumbnails.fading()
+        || m.space_zoom.animating()
 }
 
 /// Which list the ring belongs to: a different key jumps instead of gliding.

@@ -591,6 +591,7 @@ pub struct Model {
     media_guard: crate::media_watch::Guard,
     pub space_map: crate::space_map_state::State,
     pub space_geometry: crate::space_map_view::Geometry,
+    pub space_zoom: crate::space_map_zoom::Zoom,
     pub space_requested: bool,
     pub text_viewport: crate::text_preview_view::Viewport,
     pub mutations: crate::rename_job::Worker,
@@ -844,6 +845,7 @@ impl Model {
             text_viewport: Default::default(),
             space_map: crate::space_map_state::State::new(),
             space_geometry: Default::default(),
+            space_zoom: Default::default(),
             space_requested: false,
             mutations: crate::rename_job::Worker::new(),
             rename_dialog: None,
@@ -2222,6 +2224,17 @@ impl Model {
         self.move_browser_focus(delta, false, false);
     }
     pub fn move_browser_focus(&mut self, delta: i32, extend: bool, keep_marks: bool) {
+        let target = if self.view == View::SpaceMap && !self.dual.enabled {
+            let indices = self.space_geometry.navigation_indices();
+            crate::keyboard_nav::target(indices, self.selected, delta).map(|p| indices[p])
+        } else {
+            crate::keyboard_nav::target(&self.order, self.selected, delta).map(|p| self.order[p])
+        };
+        self.move_browser_focus_to(target, extend, keep_marks);
+    }
+    /// Keyboard focus move to an already chosen entry (Espacio's spatial
+    /// arrows), with the same mark/anchor semantics as rank moves.
+    pub fn move_browser_focus_to(&mut self, target: Option<usize>, extend: bool, keep_marks: bool) {
         self.cancel_parent_return_focus();
         self.folder_restore = None;
         self.text_paste.invalidate();
@@ -2230,12 +2243,6 @@ impl Model {
         if self.closing || self.selection_refreshing() {
             return;
         }
-        let target = if self.view == View::SpaceMap && !self.dual.enabled {
-            let indices = self.space_geometry.navigation_indices();
-            crate::keyboard_nav::target(indices, self.selected, delta).map(|p| indices[p])
-        } else {
-            crate::keyboard_nav::target(&self.order, self.selected, delta).map(|p| self.order[p])
-        };
         let Some(i) = target else {
             return;
         };

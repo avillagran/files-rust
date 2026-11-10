@@ -84,7 +84,7 @@ impl Model {
             self.cancel_parent_return_focus();
             return false;
         }
-        if !self.loaded || self.selection_refreshing() {
+        if !self.loaded || self.selection_refreshing() || !self.space_return_ready() {
             return false;
         }
         let pending = self
@@ -115,6 +115,27 @@ impl Model {
             self.preserve_empty_selection = true;
         }
         true
+    }
+    /// Espacio focuses only tiles of its painted projection: a parent return
+    /// waits for the parent's size report and its first painted geometry
+    /// (built at paint time, which applies the return right away), instead of
+    /// being consumed by a selection the empty projection would reject.
+    fn space_return_ready(&self) -> bool {
+        use crate::space_map_state::View as Map;
+        if self.view != View::SpaceMap || self.dual.enabled {
+            return true;
+        }
+        match self.space_map.view() {
+            Map::Ready(_) => self.space_geometry.current(
+                self.generation,
+                self.space_map.revision(),
+                self.entries.len(),
+                self.hidden_visible(),
+            ),
+            Map::Error(_) => true,
+            Map::Loading => false,
+            Map::Closed => !self.space_requested && self.space_map.is_drained(),
+        }
     }
 }
 
@@ -207,6 +228,25 @@ pub fn key(m: &mut Model, key: Key, ctrl: bool, shift: bool, w: i32, h: i32) -> 
     {
         m.column_step(key == Key::Right);
         return true;
+    }
+    if m.view == View::SpaceMap
+        && !m.dual.enabled
+        && matches!(key, Key::Up | Key::Down | Key::Left | Key::Right)
+    {
+        use crate::space_map_view::Arrow;
+        match crate::space_map_view::arrow_target(m, key) {
+            Arrow::Linear => {}
+            Arrow::Stay => return true,
+            Arrow::To(i, list) => {
+                m.move_browser_focus_to(Some(i), shift, ctrl);
+                if m.selected == Some(i) {
+                    m.space_geometry.list_focus = list.then_some(i);
+                }
+                let h = crate::operation_bar::browser_height(m, h);
+                crate::wheel_scroll::glide(m, h, |m| crate::view::reveal_selection(m, w, h));
+                return true;
+            }
+        }
     }
     let grid = m.view == View::Grid && !m.dual.enabled;
     let groups = m.view == View::Groups && !m.dual.enabled;

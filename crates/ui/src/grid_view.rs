@@ -7,6 +7,30 @@ use crate::{
 };
 use std::ops::Range;
 const HEADER: i32 = 36;
+/// Nerd Font type glyph and its accent colour, derived from the name only
+/// (no disk access). Shared by Grid and the Espacio treemap so both views
+/// show the same icon for the same file type.
+pub(crate) fn type_glyph(
+    browses_as_dir: bool,
+    name: &std::path::Path,
+    palette: &files_core::theme::Palette,
+) -> (&'static str, files_core::theme::Color) {
+    if browses_as_dir {
+        return ("\u{f07b}", palette.blue);
+    }
+    let mime = files_core::mime::mime(name);
+    if mime.starts_with("image/") {
+        ("\u{f03e}", palette.magenta)
+    } else if mime.starts_with("video/") {
+        ("\u{f008}", palette.magenta)
+    } else if mime.starts_with("audio/") {
+        ("\u{f001}", palette.green)
+    } else if mime == "application/pdf" {
+        ("\u{f1c1}", palette.red)
+    } else {
+        ("\u{f016}", palette.cyan)
+    }
+}
 #[derive(Clone, Copy, Debug)]
 pub struct Metrics {
     pub columns: usize,
@@ -193,20 +217,11 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
                 m.palette.accent,
             );
         }
-        let mime = files_core::mime::mime(std::path::Path::new(&e.name));
-        let (glyph, color) = if e.browses_as_dir() {
-            ("", m.palette.blue)
-        } else if mime.starts_with("image/") {
-            ("", m.palette.magenta)
-        } else if mime.starts_with("video/") {
-            ("", m.palette.magenta)
-        } else if mime.starts_with("audio/") {
-            ("", m.palette.green)
-        } else if mime == "application/pdf" {
-            ("", m.palette.red)
-        } else {
-            ("", m.palette.cyan)
-        };
+        let (glyph, color) = type_glyph(
+            e.browses_as_dir(),
+            std::path::Path::new(&e.name),
+            &m.palette,
+        );
         let icon_size = (36. * m.grid_zoom).round() as i32;
         let icon_width = p
             .text_width(crate::fonts::icon(glyph, "FILE"), icon_size, true)

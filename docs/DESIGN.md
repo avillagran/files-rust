@@ -562,8 +562,9 @@ blocked because it is incompatible with the budget, without holding back other c
 ## Motion (browser views)
 
 "No continuous animations" still holds: every transition below is a short,
-one-shot interpolation (at most 160 ms) that stops by itself, and an idle window
-schedules no redraws. The canvas asks for one more frame after a paint only
+one-shot interpolation (at most 160 ms for row transitions, 220 ms for the
+Espacio block zoom) that stops by itself, and an idle window schedules no
+redraws. The canvas asks for one more frame after a paint only
 while a transition is mid-flight (`motion::schedule`).
 
 Rules:
@@ -592,6 +593,25 @@ cursor where the reveal was heading. The ring is drawn once per frame; List
 and Spatial draw it inside their row clip so it never covers a pinned header
 or toolbar. Spatial follows the same rule as the other views: the mark is the
 fill, focus alone is only the ring.
+
+Espacio (treemap) zoom, `space_map_zoom.rs`: opening a folder block (Enter,
+double click) grows that block to the whole map while its children appear
+inside it; going up one level (Backspace, Alt+Up, Volver, the parent's
+breadcrumb, history back to the parent) shrinks the child map into the rectangle its folder occupies in the parent
+while the parent appears around it. It is one 220 ms OutCubic tween driving an
+affine map between "block rectangle" and "full map rectangle", applied to the
+painted rectangles only, because the software painter cannot blend: geometry
+moves, colours never fade. The last painted layout of up to eight folders is
+retained (at most 512 tiles each) as the zoom source. Fallbacks: a block the
+retained parent layout does not contain zooms from/to a quarter-size rectangle
+at the map centre; navigation that is neither to a child nor to the parent
+gets no zoom. The size scan is asynchronous and never awaited: when the new
+layout is not ready the block outline zooms alone, stays at the map edge while
+the scan runs, and the children then grow from their centres over 140 ms.
+Hits, keyboard targets, path, selection and focus are always final; a second
+navigation restarts the zoom from the current folder (no queue), and a parent
+return focuses the block you came from as soon as the parent's tiles exist.
+With animations disabled no zoom starts, so every frame is final.
 
 ## Explicit window decision (2026-10-26, 0.0.4)
 

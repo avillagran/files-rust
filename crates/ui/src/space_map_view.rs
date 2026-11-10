@@ -21,6 +21,12 @@ pub struct Geometry {
     map_height: i32,
     pub list_rect: Rect,
     error: Option<String>,
+    /// Entry focused through the row list (a tiny tile is both a tile and a
+    /// row): arrows keep moving within the rows while it stays focused.
+    pub list_focus: Option<usize>,
+    /// Entry and painted rectangle of every tile of the last paint.
+    #[cfg(test)]
+    pub drawn: Vec<(Option<usize>, Rect)>,
 }
 impl Geometry {
     pub fn navigation_indices(&self) -> &[usize] {
@@ -190,6 +196,109 @@ impl Geometry {
         }
         self.membership.extend_from_slice(&self.navigation);
         self.membership.sort_unstable();
+    }
+}
+/// Result of an arrow key in the treemap.
+#[derive(Debug, PartialEq)]
+pub enum Arrow {
+    /// No usable focus: the shared rank movement applies (Down starts at the
+    /// first block, Up at the last).
+    Linear,
+    /// Nothing lies in that direction.
+    Stay,
+    /// Focus this entry; `true` when it is focused as a row of the list.
+    To(usize, bool),
+}
+/// Spatial arrow navigation: the nearest block whose edge faces the focused
+/// block in the arrow's direction, preferring blocks that share its row or
+/// column span. Down from the bottom of the map enters the list of blocks
+/// without area; Up from its first row returns to the bottom of the map.
+pub fn arrow_target(m: &Model, key: fltk::enums::Key) -> Arrow {
+    use fltk::enums::Key;
+    let g = &m.space_geometry;
+    let Some(selected) = m.selected.filter(|&i| g.contains_entry(i)) else {
+        return Arrow::Linear;
+    };
+    let rows = g.excluded_entries().collect::<Vec<_>>();
+    let tiles = g
+        .areas
+        .iter()
+        .filter_map(|a| g.mapped[a.node].map(|i| (i, a)))
+        .collect::<Vec<_>>();
+    let current = tiles.iter().find(|(i, _)| *i == selected).map(|(_, a)| *a);
+    let rank = rows.iter().position(|&i| i == selected);
+    if let Some(rank) = rank
+        && (current.is_none() || g.list_focus == Some(selected))
+    {
+        return match key {
+            Key::Up if rank == 0 => tiles
+                .iter()
+                .max_by(|(_, a), (_, b)| {
+                    (a.y + a.h)
+                        .round()
+                        .total_cmp(&(b.y + b.h).round())
+                        .then(b.x.total_cmp(&a.x))
+                })
+                .map_or(Arrow::Stay, |(i, _)| Arrow::To(*i, false)),
+            Key::Up | Key::Left => rank
+                .checked_sub(1)
+                .map_or(Arrow::Stay, |r| Arrow::To(rows[r], true)),
+            _ => rows
+                .get(rank + 1)
+                .map_or(Arrow::Stay, |&i| Arrow::To(i, true)),
+        };
+    }
+    let Some(cur) = current else {
+        return Arrow::Linear;
+    };
+    // Express every rectangle so the arrow points along +main.
+    let project = |a: &Area| -> (f64, f64, f64, f64) {
+        match key {
+            Key::Right => (a.x, a.x + a.w, a.y, a.y + a.h),
+            Key::Left => (-(a.x + a.w), -a.x, a.y, a.y + a.h),
+            Key::Down => (a.y, a.y + a.h, a.x, a.x + a.w),
+            _ => (-(a.y + a.h), -a.y, a.x, a.x + a.w),
+        }
+    };
+    let (_, c_hi, c_lo_p, c_hi_p) = project(cur);
+    let centre = (c_lo_p + c_hi_p) / 2.;
+    let best = tiles
+        .iter()
+        .filter(|(i, _)| *i != selected)
+        .filter_map(|(i, a)| {
+            let (lo, _, lo_p, hi_p) = project(a);
+            let gap = lo - c_hi;
+            if gap < -0.5 {
+                return None;
+            }
+            let overlap = hi_p.min(c_hi_p) - lo_p.max(c_lo_p);
+            let score = if overlap > 0.5 {
+                // Facing blocks: nearest first, then the one on the focused
+                // block's centre line, then the widest shared span.
+                (
+                    0,
+                    gap.max(0.).round(),
+                    u8::from(!(lo_p <= centre && centre <= hi_p)),
+                    -overlap,
+                )
+            } else {
+                (1, (gap.max(0.) - overlap).round(), 0, 0.)
+            };
+            Some((score, *i))
+        })
+        .min_by(|(a, _), (b, _)| {
+            a.0.cmp(&b.0)
+                .then(a.1.total_cmp(&b.1))
+                .then(a.2.cmp(&b.2))
+                .then(a.3.total_cmp(&b.3))
+        });
+    match best {
+        Some((_, i)) => Arrow::To(i, false),
+        None if key == Key::Down => rows
+            .iter()
+            .find(|&&i| i != selected)
+            .map_or(Arrow::Stay, |&i| Arrow::To(i, true)),
+        None => Arrow::Stay,
     }
 }
 /// Shared keyboard/wheel/button scroll geometry; no filesystem work or new scan.
@@ -364,6 +473,26 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
     );
     let map_y = body.y + 108;
     let View::Ready(report) = m.space_map.view() else {
+        // The scan of a freshly opened folder is asynchronous: the zoom
+        // starts anyway, on the retained layouts, and never waits for it.
+        let full = Rect::new(
+            body.x,
+            map_y,
+            body.w.max(1),
+            (body.y + body.h - map_y - 26).max(24),
+        );
+        if let Some(plan) = m.space_zoom.plan(&m.path, full, false) {
+            if plan.moving {
+                p.clip(full);
+                m.space_zoom.paint_back(p, &c, m.radius, &plan, false);
+                m.space_zoom.paint_front(p, &c, m.radius, &plan);
+                p.unclip();
+                return;
+            }
+            if plan.outline && !matches!(m.space_map.view(), View::Error(_)) {
+                m.space_zoom.paint_outline(p, &c, m.radius, full);
+            }
+        }
         let message = match m.space_map.view() {
             View::Error(e) => e.as_str(),
             View::Loading => "Calculando tamaños…",
@@ -428,8 +557,29 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
             false,
         );
     }
+    // Retain this layout for later zooms, then apply any pending return
+    // focus now that the tiles it needs exist (Backspace / Alt+Up).
+    m.space_zoom.remember(
+        &m.path,
+        (m.space_map.revision(), m.generation),
+        map,
+        &m.space_geometry.areas,
+        report,
+    );
+    if m.pump_parent_return_focus() {
+        reveal(m);
+    }
+    let View::Ready(report) = m.space_map.view() else {
+        unreachable!("space map stayed ready during paint");
+    };
+    let plan = m.space_zoom.plan(&m.path, map, true);
+    #[cfg(test)]
+    m.space_geometry.drawn.clear();
     p.clip(map);
-    let colors = [c.blue, c.cyan, c.magenta, c.green, c.yellow];
+    if let Some(plan) = &plan {
+        m.space_zoom.paint_back(p, &c, m.radius, plan, true);
+    }
+    let mut tile_focus = false;
     for area in &m.space_geometry.areas {
         let node = &report.nodes[area.node];
         let x0 = area.x.round() as i32;
@@ -441,73 +591,50 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
             continue;
         }
         let entry = m.space_geometry.mapped[area.node];
-        let selected = entry.is_some_and(|i| m.selection.contains(&i));
-        let hovered = entry.is_some_and(|i| m.hovered == Some(i));
-        let focused = entry.is_some_and(|i| m.selected == Some(i));
-        let hash = node
-            .name
-            .iter()
-            .fold(0usize, |v, b| v.wrapping_mul(31).wrapping_add(*b as usize));
-        let fill = colors[hash % colors.len()];
-        let fg = readable(fill, &c);
-        let tile = Rect::new(r.x + 1, r.y + 1, (r.w - 2).max(0), (r.h - 2).max(0));
-        if selected || hovered || focused {
-            p.rounded_rect(tile, 7 * m.radius, fg);
-        }
-        let gap = if focused {
-            5
-        } else if selected || hovered {
-            3
-        } else {
-            1
+        let marks = Marks {
+            selected: entry.is_some_and(|i| m.selection.contains(&i)),
+            hovered: entry.is_some_and(|i| m.hovered == Some(i)),
+            focused: entry.is_some_and(|i| m.selected == Some(i)),
         };
-        let inner = Rect::new(
-            r.x + gap,
-            r.y + gap,
-            (r.w - 2 * gap).max(0),
-            (r.h - 2 * gap).max(0),
+        // Hits and keyboard targets always use the final rectangle; only the
+        // painted rectangle follows the zoom.
+        let painted = plan.as_ref().map_or(r, |plan| plan.live(r));
+        #[cfg(test)]
+        m.space_geometry.drawn.push((entry, painted));
+        draw_tile(
+            p,
+            &c,
+            m.radius,
+            painted,
+            TileInfo {
+                name: &node.name,
+                kind: node.kind,
+                bytes: node.bytes,
+                files: node.files,
+            },
+            marks,
         );
-        p.rounded_rect(inner, 6 * m.radius, fill);
-        p.clip(inner);
-        if r.w >= 65 && r.h >= 45 {
-            let name = files_core::name_label::bytes_label(&node.name);
-            let icon = if node.kind == NodeKind::Directory {
-                ""
-            } else {
-                ""
-            };
-            text(
-                p,
-                Rect::new(r.x + 10, r.y + 7, r.w - 20, 24),
-                &format!("{icon}  {name}"),
-                fg,
-                13,
-                true,
+        if marks.focused {
+            tile_focus = true;
+            let ring = Rect::new(
+                painted.x + 1,
+                painted.y + 1,
+                (painted.w - 2).max(0),
+                (painted.h - 2).max(0),
             );
-            let size = if node.kind == NodeKind::Directory && r.w > 220 {
-                format!(
-                    "{} · {} {}",
-                    format_size(node.bytes.unwrap_or(0)),
-                    node.files,
-                    if node.files == 1 {
-                        "archivo"
-                    } else {
-                        "archivos"
-                    }
-                )
+            if plan.as_ref().is_some_and(|plan| plan.transforms()) {
+                // Mid-zoom the ring rides the tile instead of gliding behind it.
+                crate::motion::outline(p, ring, 7 * m.radius, 2, c.accent);
             } else {
-                format_size(node.bytes.unwrap_or(0))
-            };
-            text(
-                p,
-                Rect::new(r.x + 10, (r.y + r.h - 32).max(r.y + 30), r.w - 20, 24),
-                &size,
-                fg,
-                12,
-                false,
-            );
+                m.motion.focus(
+                    (m.generation, crate::model::View::SpaceMap as u64),
+                    ring,
+                    (0, 0),
+                    7 * m.radius,
+                    c.accent,
+                );
+            }
         }
-        p.unclip();
         if let Some(i) = entry {
             m.hits.push(Hit {
                 rect: r,
@@ -516,6 +643,14 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
             });
             m.visible.push(i);
         }
+    }
+    if let Some(plan) = &plan {
+        m.space_zoom.paint_front(p, &c, m.radius, plan);
+    }
+    // A focused tile's ring stays inside the map clip, like List keeps it
+    // under its pinned header; a focused row queues its ring below.
+    if tile_focus {
+        m.motion.flush(p);
     }
     p.unclip();
     let list_y = map.y + map.h + 8;
@@ -576,7 +711,14 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
                 p.rect(row, c.selection);
             }
             if index.is_some_and(|i| m.selected == Some(i)) {
-                p.rect(Rect::new(row.x, row.y + 2, 3, row.h - 4), c.foreground);
+                p.rect(Rect::new(row.x + 1, row.y + 4, 2, row.h - 8), c.accent);
+                m.motion.focus(
+                    (m.generation, crate::model::View::SpaceMap as u64),
+                    row,
+                    (0, scroll),
+                    4,
+                    c.accent,
+                );
             }
             text(
                 p,
@@ -614,6 +756,167 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
         10,
         false,
     );
+}
+#[derive(Clone, Copy, Default)]
+struct Marks {
+    selected: bool,
+    hovered: bool,
+    focused: bool,
+}
+#[derive(Clone, Copy)]
+struct TileInfo<'a> {
+    name: &'a [u8],
+    kind: NodeKind,
+    bytes: Option<u64>,
+    files: u64,
+}
+/// Stable block colour of a name (the same folder keeps its colour in the
+/// parent and while it zooms).
+pub(crate) fn tile_fill(c: &files_core::theme::Palette, name: &[u8]) -> files_core::theme::Color {
+    let colors = [c.blue, c.cyan, c.magenta, c.green, c.yellow];
+    let hash = name
+        .iter()
+        .fold(0usize, |v, b| v.wrapping_mul(31).wrapping_add(*b as usize));
+    colors[hash % colors.len()]
+}
+/// Plain tile of a retained layout (no marks), drawn during a zoom.
+pub(crate) fn paint_tile(
+    p: &mut dyn Painter,
+    c: &files_core::theme::Palette,
+    radius: i32,
+    r: Rect,
+    t: &crate::space_map_zoom::Tile,
+) {
+    draw_tile(
+        p,
+        c,
+        radius,
+        r,
+        TileInfo {
+            name: &t.name,
+            kind: t.kind,
+            bytes: t.bytes,
+            files: t.files,
+        },
+        Marks::default(),
+    );
+}
+/// Rows of a labelled tile: name at the top, size at the bottom.
+const NAME_BOTTOM: i32 = 31;
+const SIZE_TOP: i32 = 32;
+/// Smallest and largest type icon drawn between the name and size rows.
+pub(crate) const ICON_MIN: i32 = 18;
+pub(crate) const ICON_MAX: i32 = 64;
+/// The type icon's rectangle and font size inside tile `r`, or `None` when
+/// the tile cannot hold it between its name and size rows (then a small
+/// glyph prefixes the name instead, when the tile is labelled at all).
+pub(crate) fn icon_layout(r: Rect) -> Option<(Rect, i32)> {
+    if r.w < 65 || r.h < 45 {
+        return None;
+    }
+    let top = r.y + NAME_BOTTOM;
+    let bottom = (r.y + r.h - SIZE_TOP).max(r.y + 30);
+    let height = bottom - top - 4;
+    let width = r.w - 20;
+    let size = ((height.min(width) as f64) * 0.8).round() as i32;
+    (size >= ICON_MIN).then(|| {
+        let size = size.min(ICON_MAX);
+        (Rect::new(r.x + 10, top + 2, width, height), size)
+    })
+}
+fn draw_tile(
+    p: &mut dyn Painter,
+    c: &files_core::theme::Palette,
+    radius: i32,
+    r: Rect,
+    t: TileInfo<'_>,
+    marks: Marks,
+) {
+    if r.w <= 0 || r.h <= 0 {
+        return;
+    }
+    let fill = tile_fill(c, t.name);
+    let fg = readable(fill, c);
+    let tile = Rect::new(r.x + 1, r.y + 1, (r.w - 2).max(0), (r.h - 2).max(0));
+    // Marks (and hover) are the light band; keyboard focus is the accent
+    // ring drawn over the outer gap, so focus alone never looks marked.
+    if marks.selected || marks.hovered {
+        p.rounded_rect(tile, 7 * radius, fg);
+    }
+    let gap = if marks.focused {
+        5
+    } else if marks.selected || marks.hovered {
+        3
+    } else {
+        1
+    };
+    let inner = Rect::new(
+        r.x + gap,
+        r.y + gap,
+        (r.w - 2 * gap).max(0),
+        (r.h - 2 * gap).max(0),
+    );
+    p.rounded_rect(inner, 6 * radius, fill);
+    p.clip(inner);
+    if r.w >= 65 && r.h >= 45 {
+        let name = files_core::name_label::bytes_label(t.name);
+        let directory = t.kind == NodeKind::Directory;
+        let (glyph, _) = crate::grid_view::type_glyph(
+            directory,
+            std::path::Path::new(&*String::from_utf8_lossy(t.name)),
+            c,
+        );
+        let icon = icon_layout(r);
+        let prefix = crate::fonts::icon(glyph, "");
+        let title = if icon.is_some() || prefix.is_empty() {
+            name.into_owned()
+        } else {
+            format!("{prefix}  {name}")
+        };
+        text(
+            p,
+            Rect::new(r.x + 10, r.y + 7, r.w - 20, 24),
+            &title,
+            fg,
+            13,
+            true,
+        );
+        if let Some((rect, size)) = icon {
+            // Same glyph as Grid, in the label colour so it keeps contrast
+            // on every block colour.
+            let glyph = crate::fonts::icon(glyph, if directory { "DIR" } else { "FILE" });
+            let width = (p.text_width(glyph, size, true).ceil() as i32)
+                .max(size)
+                .min(rect.w);
+            p.text(
+                Rect::new(rect.x + (rect.w - width) / 2, rect.y, width, rect.h),
+                glyph,
+                size,
+                fg,
+                true,
+                false,
+            );
+        }
+        let size = if directory && r.w > 220 {
+            format!(
+                "{} · {} {}",
+                format_size(t.bytes.unwrap_or(0)),
+                t.files,
+                if t.files == 1 { "archivo" } else { "archivos" }
+            )
+        } else {
+            format_size(t.bytes.unwrap_or(0))
+        };
+        text(
+            p,
+            Rect::new(r.x + 10, (r.y + r.h - SIZE_TOP).max(r.y + 30), r.w - 20, 24),
+            &size,
+            fg,
+            12,
+            false,
+        );
+    }
+    p.unclip();
 }
 fn luminance(c: files_core::theme::Color) -> f64 {
     let channel = |v: u8| {
@@ -1080,5 +1383,468 @@ mod tests {
         m.open_selected();
         assert_eq!(m.path, path);
         assert_eq!(m.generation, generation);
+    }
+    mod zoom {
+        use super::*;
+        use crate::model::View;
+        use fltk::enums::Key;
+        use fltk_omarchy::anim;
+        use std::{path::PathBuf, time::Duration};
+
+        #[derive(Default)]
+        struct Rec {
+            texts: Vec<(Rect, String, i32)>,
+            fills: usize,
+        }
+        impl Painter for Rec {
+            fn rect(&mut self, _: Rect, _: files_core::theme::Color) {
+                self.fills += 1;
+            }
+            fn rounded_rect(&mut self, _: Rect, _: i32, _: files_core::theme::Color) {
+                self.fills += 1;
+            }
+            fn text(
+                &mut self,
+                r: Rect,
+                s: &str,
+                size: i32,
+                _: files_core::theme::Color,
+                _: bool,
+                _: bool,
+            ) {
+                self.texts.push((r, s.into(), size));
+            }
+            fn image(&mut self, _: Rect, _: &crate::painter::Image<'_>) {
+                panic!("Espacio never draws images");
+            }
+            fn clip(&mut self, _: Rect) {}
+            fn unclip(&mut self) {}
+        }
+        fn body() -> Rect {
+            Rect::new(0, 0, 800, 600)
+        }
+        fn node(name: &str, kind: NodeKind, bytes: u64) -> SpaceNode {
+            SpaceNode {
+                name: name.as_bytes().into(),
+                kind,
+                bytes: Some(bytes),
+                observed_bytes: bytes,
+                files: 1,
+                directories: 0,
+                status: NodeStatus::Complete,
+                error: None,
+            }
+        }
+        fn report(nodes: Vec<SpaceNode>) -> SpaceReport {
+            let total = nodes.iter().filter_map(|n| n.bytes).sum();
+            SpaceReport {
+                visited: nodes.len() as u64,
+                nodes,
+                total_bytes: total,
+                observed_bytes: total,
+                complete: true,
+                reason: None,
+                omitted_children: Some(0),
+            }
+        }
+        fn parent_report() -> SpaceReport {
+            report(vec![
+                node("photos", NodeKind::Directory, 8),
+                node("notes.pdf", NodeKind::File, 4),
+                node("clip.mp4", NodeKind::File, 2),
+            ])
+        }
+        fn child_report() -> SpaceReport {
+            report(vec![
+                node("a.png", NodeKind::File, 5),
+                node("b.png", NodeKind::File, 3),
+                node("c.png", NodeKind::File, 2),
+            ])
+        }
+        /// Lists `report` as the current folder, ready to paint.
+        fn show(m: &mut Model, report: SpaceReport) {
+            m.entries = report
+                .nodes
+                .iter()
+                .map(|n| Entry {
+                    name: std::str::from_utf8(&n.name).unwrap().into(),
+                    kind: if n.kind == NodeKind::Directory {
+                        Kind::Directory
+                    } else {
+                        Kind::File
+                    },
+                    metadata: None,
+                    stat_attempted: true,
+                    link: None,
+                })
+                .collect();
+            m.order = (0..m.entries.len()).collect();
+            m.loaded = true;
+            m.space_requested = false;
+            m.space_map = crate::space_map_state::State::ready_for_test(m.path.clone(), report);
+        }
+        fn model() -> (Model, PathBuf) {
+            let root = crate::thumbnail_disk_cache::retained_test_directory("space-zoom");
+            std::fs::create_dir(root.join("photos")).unwrap();
+            let mut m = Model::new(root.clone());
+            let (tx, _) = std::sync::mpsc::sync_channel(4);
+            let (_, rx) = std::sync::mpsc::channel();
+            m.aux = crate::aux_io::AuxIo { tx, rx };
+            m.view = View::SpaceMap;
+            m.auto_folder_sizes = false;
+            show(&mut m, parent_report());
+            (m, root)
+        }
+        fn frame(m: &mut Model) -> Rec {
+            let mut p = Rec::default();
+            paint(&mut p, m, body());
+            p
+        }
+        /// Painted and final (hit) rectangle of every mapped tile.
+        fn tiles(m: &Model) -> Vec<(Rect, Rect)> {
+            m.space_geometry
+                .drawn
+                .iter()
+                .filter_map(|&(entry, painted)| {
+                    let i = entry?;
+                    let hit = m
+                        .hits
+                        .iter()
+                        .find(|h| matches!(h.action, Action::Entry(j) if j == i) && h.rect.w > 0)?;
+                    Some((painted, hit.rect))
+                })
+                .collect()
+        }
+        fn index(m: &Model, name: &str) -> usize {
+            m.entries.iter().position(|e| e.name == name).unwrap()
+        }
+        fn inside(r: Rect, outer: Rect) -> bool {
+            r.x >= outer.x - 1
+                && r.y >= outer.y - 1
+                && r.x + r.w <= outer.x + outer.w + 1
+                && r.y + r.h <= outer.y + outer.h + 1
+        }
+        fn area(r: Rect) -> i64 {
+            i64::from(r.w) * i64::from(r.h)
+        }
+        fn block(m: &Model, name: &str) -> Rect {
+            let i = index(m, name);
+            m.hits
+                .iter()
+                .find(|h| matches!(h.action, Action::Entry(j) if j == i))
+                .unwrap()
+                .rect
+        }
+        fn settle(m: &mut Model) {
+            frame(m);
+            anim::clock::advance(Duration::from_millis(1000));
+            frame(m);
+            assert!(!m.space_zoom.animating());
+        }
+
+        #[test]
+        fn zoom_in_updates_model_at_once_and_paints_geometry_midway_then_final() {
+            anim::set_enabled(true);
+            anim::clock::freeze();
+            let (mut m, root) = model();
+            frame(&mut m);
+            assert!(!m.space_zoom.animating(), "an idle map requests nothing");
+            let photos = block(&m, "photos");
+            m.select_entry(index(&m, "photos"), false, false);
+            m.open_selected();
+            // The model is final at t=0: path, selection and focus.
+            assert_eq!(m.path, root.join("photos"));
+            assert!(m.selection.is_empty() && m.selected.is_none());
+            show(&mut m, child_report());
+            frame(&mut m);
+            let start = tiles(&m);
+            assert_eq!(start.len(), 3);
+            assert!(m.space_zoom.animating());
+            assert!(crate::motion::wants_frame(&m));
+            for (painted, last) in &start {
+                assert!(inside(*painted, photos), "{painted:?} inside {photos:?}");
+                assert_ne!(painted, last);
+            }
+            anim::clock::advance(Duration::from_millis(110));
+            // A key during the transition acts on the new state immediately.
+            assert!(crate::keyboard_nav::key(
+                &mut m,
+                Key::End,
+                false,
+                false,
+                1000,
+                700
+            ));
+            let last = *m.space_geometry.navigation_indices().last().unwrap();
+            assert_eq!(m.selected, Some(last));
+            frame(&mut m);
+            let middle = tiles(&m);
+            for ((mid, last), (first, _)) in middle.iter().zip(&start) {
+                assert_ne!(mid, last, "still moving at 110 ms");
+                assert!(area(*mid) > area(*first) && area(*mid) < area(*last));
+            }
+            anim::clock::advance(Duration::from_millis(crate::space_map_zoom::ZOOM_MS as u64));
+            frame(&mut m);
+            for (painted, last) in tiles(&m) {
+                assert_eq!(painted, last);
+            }
+            assert!(!m.space_zoom.animating());
+            assert!(!crate::motion::wants_frame(&m), "no redraw once settled");
+            anim::clock::resume();
+            anim::set_enabled(None);
+        }
+
+        #[test]
+        fn backspace_zooms_out_and_refocuses_the_origin_block() {
+            anim::set_enabled(true);
+            anim::clock::freeze();
+            let (mut m, root) = model();
+            frame(&mut m);
+            let photos = block(&m, "photos");
+            m.select_entry(index(&m, "photos"), false, false);
+            m.open_selected();
+            show(&mut m, child_report());
+            settle(&mut m);
+            let full = tiles(&m)
+                .iter()
+                .fold(None::<(i32, i32, i32, i32)>, |acc, (_, r)| {
+                    let (x0, y0, x1, y1) = acc.unwrap_or((r.x, r.y, r.x + r.w, r.y + r.h));
+                    Some((
+                        x0.min(r.x),
+                        y0.min(r.y),
+                        x1.max(r.x + r.w),
+                        y1.max(r.y + r.h),
+                    ))
+                })
+                .unwrap();
+            crate::keyboard_nav::backspace(&mut m);
+            assert_eq!(m.path, root);
+            show(&mut m, parent_report());
+            // The parent listing alone is not enough in Espacio: focus waits
+            // for the painted projection instead of being lost.
+            assert!(!m.pump_parent_return_focus());
+            frame(&mut m);
+            let origin = index(&m, "photos");
+            assert_eq!(m.selected, Some(origin), "back re-focuses the origin");
+            assert!(m.space_zoom.animating());
+            // At t=0 the parent is zoomed so the origin block fills the map.
+            let (painted, last) = m
+                .space_geometry
+                .drawn
+                .iter()
+                .find(|(e, _)| *e == Some(origin))
+                .map(|&(_, r)| (r, photos))
+                .unwrap();
+            assert_ne!(painted, last);
+            assert!((painted.x - full.0).abs() <= 1 && (painted.y - full.1).abs() <= 1);
+            assert!((painted.x + painted.w - full.2).abs() <= 1);
+            assert!((painted.y + painted.h - full.3).abs() <= 1);
+            anim::clock::advance(Duration::from_millis(crate::space_map_zoom::ZOOM_MS as u64));
+            frame(&mut m);
+            for (painted, last) in tiles(&m) {
+                assert_eq!(painted, last);
+            }
+            assert!(!m.space_zoom.animating());
+            anim::clock::resume();
+            anim::set_enabled(None);
+        }
+
+        #[test]
+        fn asynchronous_scan_zooms_the_outline_first_then_children_grow_in() {
+            anim::set_enabled(true);
+            anim::clock::freeze();
+            let (mut m, _) = model();
+            frame(&mut m);
+            m.select_entry(index(&m, "photos"), false, false);
+            m.open_selected();
+            // Listing and scan pending: the zoom starts anyway.
+            frame(&mut m);
+            assert!(m.space_zoom.animating());
+            assert!(m.space_geometry.drawn.is_empty());
+            anim::clock::advance(Duration::from_millis(crate::space_map_zoom::ZOOM_MS as u64));
+            frame(&mut m);
+            assert!(!m.space_zoom.animating(), "waiting for the scan is idle");
+            anim::clock::advance(Duration::from_millis(500));
+            show(&mut m, child_report());
+            frame(&mut m);
+            assert!(m.space_zoom.animating());
+            for (painted, last) in tiles(&m) {
+                assert!(inside(painted, last) && area(painted) < area(last));
+            }
+            anim::clock::advance(Duration::from_millis(
+                crate::space_map_zoom::REVEAL_MS as u64,
+            ));
+            frame(&mut m);
+            for (painted, last) in tiles(&m) {
+                assert_eq!(painted, last);
+            }
+            assert!(!m.space_zoom.animating());
+            anim::clock::resume();
+            anim::set_enabled(None);
+        }
+
+        #[test]
+        fn disabled_animation_paints_the_final_layout_on_the_first_frame() {
+            anim::set_enabled(false);
+            anim::clock::freeze();
+            let (mut m, _) = model();
+            frame(&mut m);
+            m.select_entry(index(&m, "photos"), false, false);
+            m.open_selected();
+            frame(&mut m);
+            show(&mut m, child_report());
+            frame(&mut m);
+            let painted = tiles(&m);
+            assert_eq!(painted.len(), 3);
+            for (painted, last) in painted {
+                assert_eq!(painted, last);
+            }
+            assert!(!m.space_zoom.animating());
+            crate::keyboard_nav::backspace(&mut m);
+            show(&mut m, parent_report());
+            frame(&mut m);
+            assert_eq!(m.selected, Some(index(&m, "photos")));
+            for (painted, last) in tiles(&m) {
+                assert_eq!(painted, last);
+            }
+            assert!(!m.space_zoom.animating());
+            anim::clock::resume();
+            anim::set_enabled(None);
+        }
+
+        #[test]
+        fn type_icons_scale_with_blocks_and_skip_blocks_below_the_threshold() {
+            anim::set_enabled(false);
+            assert!(icon_layout(Rect::new(0, 0, 64, 300)).is_none());
+            assert!(icon_layout(Rect::new(0, 0, 300, 44)).is_none());
+            assert!(
+                icon_layout(Rect::new(0, 0, 120, 70)).is_none(),
+                "label only"
+            );
+            let (small, small_size) = icon_layout(Rect::new(0, 0, 120, 100)).unwrap();
+            let (big, big_size) = icon_layout(Rect::new(0, 0, 600, 400)).unwrap();
+            assert!(small_size >= ICON_MIN && big_size <= ICON_MAX && small_size < big_size);
+            for (rect, tile) in [
+                (small, Rect::new(0, 0, 120, 100)),
+                (big, Rect::new(0, 0, 600, 400)),
+            ] {
+                // Between the name row and the size row, never over them.
+                assert!(rect.y >= tile.y + 31 && rect.y + rect.h <= tile.y + tile.h - 32);
+            }
+            let (mut m, _) = model();
+            let mut nodes = parent_report().nodes;
+            for i in 0..6 {
+                nodes.push(node(&format!("tiny-{i}.txt"), NodeKind::File, 0));
+            }
+            nodes[0].bytes = Some(1 << 30);
+            nodes[0].observed_bytes = 1 << 30;
+            // About 1250 px² of the map: painted, but too small for a label.
+            nodes.push(node("speck.txt", NodeKind::File, 1 << 22));
+            show(&mut m, report(nodes));
+            let p = frame(&mut m);
+            let icon = |name: &str, dir: bool| {
+                let (glyph, _) =
+                    crate::grid_view::type_glyph(dir, std::path::Path::new(name), &m.palette);
+                crate::fonts::icon(glyph, if dir { "DIR" } else { "FILE" }).to_string()
+            };
+            let icons = p
+                .texts
+                .iter()
+                .filter(|(_, _, size)| *size >= ICON_MIN)
+                .collect::<Vec<_>>();
+            let photos = block(&m, "photos");
+            assert!(
+                icons
+                    .iter()
+                    .any(|(r, s, _)| *s == icon("photos", true) && inside(*r, photos)),
+                "the folder block shows the folder glyph"
+            );
+            let speck = block(&m, "speck.txt");
+            assert!(speck.w < 65 || speck.h < 45);
+            assert!(
+                p.texts.iter().all(|(r, _, _)| !inside(*r, speck)),
+                "no icon or label in a block below the threshold"
+            );
+            let expected = m
+                .space_geometry
+                .drawn
+                .iter()
+                .filter(|(_, r)| icon_layout(*r).is_some())
+                .count();
+            assert_eq!(icons.len(), expected);
+            anim::set_enabled(None);
+        }
+
+        #[test]
+        fn arrows_move_spatially_and_cross_between_map_and_rows() {
+            anim::set_enabled(false);
+            let (mut m, _) = model();
+            let mut nodes = parent_report().nodes;
+            nodes.push(node("empty.txt", NodeKind::File, 0));
+            show(&mut m, report(nodes));
+            frame(&mut m);
+            let rect = |m: &Model, i: usize| {
+                m.hits
+                    .iter()
+                    .find(|h| matches!(h.action, Action::Entry(j) if j == i))
+                    .unwrap()
+                    .rect
+            };
+            let tiles = m
+                .space_geometry
+                .drawn
+                .iter()
+                .filter_map(|(e, _)| *e)
+                .collect::<Vec<_>>();
+            assert_eq!(tiles.len(), 3);
+            let mut moves = 0;
+            for &from in &tiles {
+                for (key, ok) in [
+                    (
+                        Key::Right,
+                        (|a: Rect, b: Rect| b.x >= a.x + a.w - 1) as fn(Rect, Rect) -> bool,
+                    ),
+                    (Key::Left, |a, b| b.x + b.w <= a.x + 1),
+                    (Key::Down, |a, b| b.y >= a.y + a.h - 1),
+                    (Key::Up, |a, b| b.y + b.h <= a.y + 1),
+                ] {
+                    m.select_entry(from, false, false);
+                    m.space_geometry.list_focus = None;
+                    crate::keyboard_nav::key(&mut m, key, false, false, 1000, 700);
+                    let to = m.selected.unwrap();
+                    if to != from && tiles.contains(&to) {
+                        moves += 1;
+                        assert!(ok(rect(&m, from), rect(&m, to)), "{key:?} {from}->{to}");
+                    }
+                }
+            }
+            // Three blocks always have at least two facing pairs.
+            assert!(moves >= 4, "{moves} spatial moves");
+            // Down from the bottom of the map enters the rows; Up returns.
+            let empty = index(&m, "empty.txt");
+            let bottom = *tiles
+                .iter()
+                .max_by_key(|&&i| {
+                    let r = rect(&m, i);
+                    (r.y + r.h, -r.x)
+                })
+                .unwrap();
+            m.select_entry(bottom, false, false);
+            crate::keyboard_nav::key(&mut m, Key::Down, false, false, 1000, 700);
+            assert_eq!(m.selected, Some(empty));
+            crate::keyboard_nav::key(&mut m, Key::Down, false, false, 1000, 700);
+            assert_eq!(m.selected, Some(empty), "last row stays");
+            crate::keyboard_nav::key(&mut m, Key::Up, false, false, 1000, 700);
+            assert_eq!(m.selected, Some(bottom));
+            // Ctrl+arrow moves focus spatially and keeps the marks.
+            m.select_entry(tiles[0], false, false);
+            crate::keyboard_nav::key(&mut m, Key::Right, true, false, 1000, 700);
+            let moved = m.selected.unwrap();
+            if moved != tiles[0] {
+                assert_eq!(m.selection.len(), 1, "Ctrl keeps the single mark");
+                assert!(m.selection.contains(&tiles[0]));
+            }
+            anim::set_enabled(None);
+        }
     }
 }
