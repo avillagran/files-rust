@@ -140,6 +140,7 @@ fn run() -> io::Result<()> {
             | "search_batches"
             | "search_pages"
             | "measure_directory"
+            | "measure_contents"
             | "measure_directory_allocated"
             | "du"
             | "preview_office"
@@ -203,6 +204,7 @@ fn run() -> io::Result<()> {
             | (Request::SearchBatches { .. }, "search_batches")
             | (Request::SearchPages { .. }, "search_pages")
             | (Request::MeasureDirectory { .. }, "measure_directory")
+            | (Request::MeasureContents { .. }, "measure_contents")
             | (
                 Request::MeasureDirectoryAllocated { .. },
                 "measure_directory_allocated"
@@ -364,6 +366,28 @@ fn run() -> io::Result<()> {
                     bytes: usage.bytes,
                     entries: usage.entries,
                 },
+                Err(e) => Response::Error {
+                    id,
+                    message: e.to_string(),
+                },
+            }
+        }
+        Request::MeasureContents { id, path } => {
+            let mut out = io::stdout().lock();
+            let result = du::measure_contents(&path, du::Limits::default(), |usage| {
+                serde_json::to_writer(
+                    &mut out,
+                    &Response::UsageProgress {
+                        id,
+                        bytes: usage.bytes,
+                        entries: usage.entries,
+                    },
+                )?;
+                out.write_all(b"\n")?;
+                out.flush()
+            });
+            match result {
+                Ok(census) => Response::Contents { id, census },
                 Err(e) => Response::Error {
                     id,
                     message: e.to_string(),

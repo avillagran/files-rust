@@ -2,6 +2,7 @@
 //! channel, unbounded history or UI filesystem access is created here.
 //! A snapshot pins two FDs; the caller owns at most one active inspector snapshot.
 use files_core::file_properties::{self, ChangeReport, Properties, Snapshot};
+use files_core::properties_details::{self, Details};
 use std::{
     fmt::{self, Write},
     path::PathBuf,
@@ -14,6 +15,8 @@ pub struct Reply {
     /// A read-only observation carries no descriptor or mutation authority.
     pub observed: Option<Properties>,
     pub current_path: Option<PathBuf>,
+    /// Owner/group names, volume, MIME... gathered here, off the UI thread.
+    pub details: Option<Box<Details>>,
     pub success: bool,
     /// True means the chmod syscall succeeded, even if later diagnostics failed.
     /// The existing worker clears other undo history ONLY after this is true.
@@ -59,6 +62,7 @@ fn inspect_failure(message: String) -> Reply {
         snapshot: None,
         observed: None,
         current_path: None,
+        details: None,
         success: false,
         changed: false,
         message,
@@ -81,10 +85,12 @@ pub fn inspect(path: PathBuf, cancel: &AtomicBool) -> Reply {
         if cancelled(cancel) {
             return inspect_failure("Lectura de propiedades cancelada".into());
         }
+        let details = Some(Box::new(properties_details::gather(&path, &observed)));
         return Reply {
             snapshot: None,
             observed: Some(observed),
             current_path: Some(path),
+            details,
             success: true,
             changed: false,
             message: "Propiedades de la raíz: sólo lectura".into(),
@@ -113,10 +119,19 @@ pub fn inspect(path: PathBuf, cancel: &AtomicBool) -> Reply {
     if cancelled(cancel) {
         return inspect_failure("Lectura de propiedades cancelada".into());
     }
+    // lstat semantics: the verified path of the object itself, never its target.
+    let details = Some(Box::new(properties_details::gather(
+        &current_path,
+        &snapshot.properties,
+    )));
+    if cancelled(cancel) {
+        return inspect_failure("Lectura de propiedades cancelada".into());
+    }
     Reply {
         snapshot: Some(snapshot),
         observed: None,
         current_path: Some(current_path),
+        details,
         success: true,
         changed: false,
         message: "Propiedades leídas".into(),
@@ -153,6 +168,7 @@ pub fn apply(snapshot: Box<Snapshot>, mode: u32, cancel: &AtomicBool) -> Reply {
                 snapshot: Some(snapshot),
                 observed: None,
                 current_path,
+                details: None,
                 success: false,
                 changed: false,
                 message: diagnostic(format_args!("No se cambiaron los permisos: {error}")),
@@ -185,6 +201,7 @@ fn applied(mut snapshot: Box<Snapshot>, report: ChangeReport) -> Reply {
         snapshot: keep_snapshot.then_some(snapshot),
         observed: None,
         current_path,
+        details: None,
         success: true,
         changed: true,
         message: if keep_snapshot {

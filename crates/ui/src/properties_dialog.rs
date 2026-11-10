@@ -7,6 +7,7 @@ use crate::{
 use files_core::{
     file_properties::{Kind, Properties, Snapshot, Timestamp},
     format_size,
+    properties_details::Details,
 };
 use std::path::PathBuf;
 
@@ -29,6 +30,13 @@ pub struct Dialog {
     pub stale: bool,
     pub message: String,
     pub warnings: Vec<String>,
+    /// Owner/group names, volume, MIME, link state; gathered by the worker.
+    pub details: Option<Box<Details>>,
+    /// Whole-selection contents census (cancelled when the dialog is dropped).
+    pub census: Option<crate::properties_census::Job>,
+    pub totals: Option<crate::properties_census::Totals>,
+    pub census_error: Option<String>,
+    pub census_items: u64,
     layout: Option<Layout>,
     reveal_pending: bool,
 }
@@ -38,6 +46,9 @@ pub const BITS: [u32; 9] = [
 const PATH_LINE: i32 = 18;
 struct Layout {
     width: i32,
+    source: Vec<String>,
+    lines: Vec<String>,
+    exec: i32,
     path: PathBuf,
     current: Option<PathBuf>,
     target: Option<std::ffi::OsString>,
@@ -121,24 +132,142 @@ impl Dialog {
             stale: false,
             message: "Leyendo propiedades…".into(),
             warnings: Vec::new(),
+            details: None,
+            census: None,
+            totals: None,
+            census_error: None,
+            census_items: 0,
             layout: None,
             reveal_pending: false,
         }
+    }
+    fn contents_line(&self) -> Option<String> {
+        let selection = self.objects.len() > 1;
+        let folder = self
+            .observed
+            .is_some_and(|p| p.identity.kind == Kind::Directory);
+        if !selection && !folder {
+            return None;
+        }
+        let summary = match (&self.census_error, &self.totals) {
+            (Some(error), _) => format!("no se pudo calcular: {error}"),
+            (None, totals) => crate::properties_census::summary(totals.as_ref(), self.census_items),
+        };
+        Some(if selection {
+            format!("Selección de {} objetos: {summary}", self.objects.len())
+        } else {
+            format!("Contenido: {summary}")
+        })
+    }
+    /// Unfitted information rows (12 px, 24 px pitch); empty while unobserved.
+    fn info_lines(&self) -> Vec<String> {
+        let Some(info) = self.observed else {
+            return Vec::new();
+        };
+        let symlink = info.identity.kind == Kind::Symlink;
+        let kind = match info.identity.kind {
+            Kind::File => format!("Archivo · aparente {}", format_size(info.apparent_bytes)),
+            Kind::Directory => "Carpeta".to_owned(),
+            Kind::Symlink => "Enlace simbólico (no se sigue)".to_owned(),
+            Kind::Other => format!(
+                "Objeto especial · aparente {}",
+                format_size(info.apparent_bytes)
+            ),
+        };
+        let mut lines = vec![kind];
+        lines.extend(self.contents_line());
+        lines.push(format!(
+            "Asignado {} · enlaces duros {}",
+            format_size(info.allocated_bytes),
+            info.hardlinks
+        ));
+        let (owner, group) = self.details.as_ref().map_or_else(
+            || (info.uid.to_string(), info.gid.to_string()),
+            |d| (d.owner.clone(), d.group.clone()),
+        );
+        lines.push(format!("Propietario: {owner} · Grupo: {group}"));
+        lines.push(if symlink {
+            format!(
+                "Permisos del enlace (lstat, no los del destino): {} · modo {:04o}",
+                symbolic_mode(info.mode, 'l'),
+                info.mode
+            )
+        } else {
+            format!(
+                "Permisos: {} · modo octal {:04o}",
+                symbolic_mode(
+                    info.mode,
+                    if info.identity.kind == Kind::Directory {
+                        'd'
+                    } else {
+                        '-'
+                    }
+                ),
+                info.mode
+            )
+        });
+        if let Some(details) = &self.details {
+            if let Some(resolves) = details.link_resolves {
+                lines.push(
+                    if resolves {
+                        "Destino del enlace: existe"
+                    } else {
+                        "Destino del enlace: no existe (enlace roto)"
+                    }
+                    .into(),
+                );
+            }
+            if let Some(mime) = &details.mime {
+                lines.push(format!(
+                    "Tipo MIME: {mime} · Abrir con: {}",
+                    details.default_app.as_deref().unwrap_or("(sin aplicación)")
+                ));
+                lines.push("Cambiar la aplicación: Ctrl+Shift+O en la lista".into());
+            }
+            if let Some(volume) = &details.volume {
+                lines.push(format!(
+                    "Volumen: {} · libre {} de {}",
+                    volume
+                        .filesystem
+                        .as_deref()
+                        .unwrap_or("sistema de archivos desconocido"),
+                    format_size(volume.free_bytes),
+                    format_size(volume.total_bytes)
+                ));
+            } else {
+                lines.push("Volumen: no disponible".into());
+            }
+        }
+        lines.push(format!(
+            "Dispositivo {} · inode {}",
+            info.identity.device, info.identity.inode
+        ));
+        lines.push(format!("Modificado: {}", date(info.modified)));
+        lines.push(format!("Accedido: {}", date(info.accessed)));
+        lines.push(match self.details.as_ref().and_then(|d| d.birth) {
+            Some(birth) => format!("Creado: {}", date(birth)),
+            None => "Creado: no disponible en este sistema de archivos".into(),
+        });
+        lines.push(format!("Cambio de inode: {}", date(info.changed)));
+        lines
     }
     fn ensure_layout(&mut self, p: &mut dyn Painter, width: i32) {
         let target = self
             .snapshot
             .as_ref()
             .and_then(|s| s.symlink_target.as_ref());
+        let source = self.info_lines();
         if self.layout.as_ref().is_some_and(|l| {
             l.width == width
+                && l.source == source
                 && l.path == self.path
                 && l.current == self.current_path
                 && l.target.as_ref() == target
         }) {
             return;
         }
-        let mut measure = |text: &str| p.text_width(text, 10, true);
+        let mut measure_at = |text: &str, size: i32| p.text_width(text, size, true);
+        let mut measure = |text: &str| measure_at(text, 10);
         let requested = wrap(
             &format!(
                 "Ruta solicitada: {}",
@@ -172,8 +301,12 @@ impl Dialog {
                 )
             })
             .unwrap_or_default();
+        let lines = source
+            .iter()
+            .map(|line| fit_middle(line, width, &mut |t| measure_at(t, 12)))
+            .collect::<Vec<_>>();
         let info_top = requested.len() as i32 * PATH_LINE + 8;
-        let verified_top = info_top + 174;
+        let verified_top = info_top + lines.len() as i32 * 24 + 6;
         let link_top = verified_top + verified.len() as i32 * PATH_LINE + 8;
         let permission_label = link_top
             + if link.is_empty() {
@@ -181,11 +314,15 @@ impl Dialog {
             } else {
                 link.len() as i32 * PATH_LINE + 8
             };
-        let permissions = permission_label + 28;
+        let exec = permission_label + 28;
+        let permissions = exec + 36;
         let note = permissions + 104;
         let height = note + 36;
         self.layout = Some(Layout {
             width,
+            source,
+            lines,
+            exec,
             path: self.path.clone(),
             current: self.current_path.clone(),
             target: target.cloned(),
@@ -275,8 +412,95 @@ fn own_uid() -> Option<u32> {
 fn own_uid() -> Option<u32> {
     None
 }
+/// Local time (libc localtime_r), falling back to the raw Unix seconds.
 fn date(t: Timestamp) -> String {
-    format!("{}.{:09} Unix", t.seconds, t.nanoseconds)
+    #[cfg(unix)]
+    {
+        // time_t is 64-bit on every supported target.
+        let seconds: libc::time_t = t.seconds;
+        let mut tm = std::mem::MaybeUninit::<libc::tm>::zeroed();
+        if !unsafe { libc::localtime_r(&seconds, tm.as_mut_ptr()) }.is_null() {
+            let tm = unsafe { tm.assume_init() };
+            return format!(
+                "{:04}-{:02}-{:02} {:02}:{:02}:{:02}",
+                i64::from(tm.tm_year) + 1900,
+                tm.tm_mon + 1,
+                tm.tm_mday,
+                tm.tm_hour,
+                tm.tm_min,
+                tm.tm_sec
+            );
+        }
+    }
+    format!("{} s Unix", t.seconds)
+}
+/// `ls`-style 10-character mode string.
+fn symbolic_mode(mode: u32, kind: char) -> String {
+    let mut out = String::with_capacity(10);
+    out.push(kind);
+    for (i, (bit, ch)) in [
+        (0o400, 'r'),
+        (0o200, 'w'),
+        (0o100, 'x'),
+        (0o040, 'r'),
+        (0o020, 'w'),
+        (0o010, 'x'),
+        (0o004, 'r'),
+        (0o002, 'w'),
+        (0o001, 'x'),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let special = match i {
+            2 => mode & 0o4000 != 0,
+            5 => mode & 0o2000 != 0,
+            8 => mode & 0o1000 != 0,
+            _ => false,
+        };
+        out.push(match (mode & bit != 0, special) {
+            (true, false) => ch,
+            (false, false) => '-',
+            (exec, true) if i == 8 => {
+                if exec {
+                    't'
+                } else {
+                    'T'
+                }
+            }
+            (exec, true) => {
+                if exec {
+                    's'
+                } else {
+                    'S'
+                }
+            }
+        });
+    }
+    out
+}
+/// Shorten in the middle (head…tail) until the measured text fits `width`.
+fn fit_middle(text: &str, width: i32, measure: &mut impl FnMut(&str) -> f32) -> String {
+    let width = width.max(1) as f32;
+    if measure(text) <= width {
+        return text.to_owned();
+    }
+    let chars: Vec<char> = text.chars().collect();
+    let build = |keep: usize| {
+        let head: String = chars[..keep.div_ceil(2)].iter().collect();
+        let tail: String = chars[chars.len() - keep / 2..].iter().collect();
+        format!("{head}…{tail}")
+    };
+    let (mut low, mut high) = (0usize, chars.len().saturating_sub(1));
+    while low < high {
+        let mid = (low + high).div_ceil(2);
+        if measure(&build(mid)) <= width {
+            low = mid;
+        } else {
+            high = mid - 1;
+        }
+    }
+    build(low)
 }
 fn button(
     p: &mut dyn Painter,
@@ -389,32 +613,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
     path_lines(p, body, origin, &layout.requested, c.dark_foreground);
     let top = origin + layout.info_top;
     if let Some(info) = d.observed {
-        let kind = match info.identity.kind {
-            Kind::File => "Archivo",
-            Kind::Directory => "Carpeta (tamaño no recursivo)",
-            Kind::Symlink => "Enlace simbólico (sin seguir)",
-            Kind::Other => "Objeto especial",
-        };
-        let lines = [
-            format!("{kind} · aparente {}", format_size(info.apparent_bytes)),
-            format!(
-                "Asignado {} · enlaces duros {}",
-                format_size(info.allocated_bytes),
-                info.hardlinks
-            ),
-            format!(
-                "UID {} · GID {} · modo {:04o}",
-                info.uid, info.gid, info.mode
-            ),
-            format!(
-                "Dispositivo {} · inode {}",
-                info.identity.device, info.identity.inode
-            ),
-            format!("Modificado: {}", date(info.modified)),
-            format!("Accedido: {}", date(info.accessed)),
-            format!("Cambio de inode (no creación): {}", date(info.changed)),
-        ];
-        for (i, line) in lines.iter().enumerate() {
+        for (i, line) in layout.lines.iter().enumerate() {
             p.text(
                 Rect::new(body.x, top + i as i32 * 24, body.w, 24),
                 line,
@@ -434,15 +633,40 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
         path_lines(p, body, origin + layout.link_top, &layout.link, c.accent);
         p.text(
             Rect::new(body.x, origin + layout.permission_label, body.w, 24),
-            &format!(
-                "Permisos {:04o} → {:04o} · todos los enlaces al inode",
-                info.mode, d.requested
-            ),
+            &if info.identity.kind == Kind::Symlink {
+                format!(
+                    "Permisos del enlace {:04o} · sólo lectura, no cambia los del destino",
+                    info.mode
+                )
+            } else {
+                format!(
+                    "Permisos {:04o} → {:04o} · todos los enlaces al inode",
+                    info.mode, d.requested
+                )
+            },
             12,
             c.bright_foreground,
             true,
             false,
         );
+        {
+            // Same user-execute bit as the grid's first row, third column.
+            let r = Rect::new(body.x, origin + layout.exec, body.w, 28);
+            let on = d.requested & 0o100 != 0;
+            let whole = r.y >= body.y && r.y + r.h <= body.y + body.h;
+            button(
+                p,
+                m,
+                r,
+                &format!(
+                    "{} Permitir ejecutar como programa",
+                    if on { "[x]" } else { "[ ]" }
+                ),
+                Action::PropertyBit(2),
+                d.editable() && whole,
+                on,
+            );
+        }
         for row in 0..3 {
             let by = origin + layout.permissions + row * 32;
             p.text(
@@ -702,7 +926,10 @@ mod tests {
                 .iter()
                 .filter(|h| matches!(h.action, Action::PropertyBit(_)))
                 .collect();
-            assert_eq!(bits.len(), 9);
+            // Nine grid cells plus, when fully visible, the full-width
+            // "Permitir ejecutar como programa" toggle (same user-execute bit).
+            assert_eq!(bits.iter().filter(|h| h.rect.w < d.body.w).count(), 9);
+            assert!(bits.len() <= 10);
             for hit in bits {
                 assert!(
                     hit.rect.x >= d.body.x
@@ -854,6 +1081,119 @@ mod tests {
             !m.hits
                 .iter()
                 .any(|hit| matches!(hit.action, Action::PropertyStep(_)))
+        );
+    }
+    #[test]
+    fn middle_truncation_keeps_both_ends_and_fits() {
+        let mut measure = |t: &str| t.chars().count() as f32 * 6.0;
+        let text = "Volumen: btrfs · libre 120 GiB de 500 GiB y bastante más texto";
+        let fitted = fit_middle(text, 150, &mut measure);
+        assert!(measure(&fitted) <= 150.0 && fitted.contains('…'));
+        assert!(fitted.starts_with("Volumen") && fitted.ends_with("texto"));
+        assert_eq!(fit_middle("corto", 150, &mut measure), "corto");
+        assert_eq!(symbolic_mode(0o4755, '-'), "-rwsr-xr-x");
+        assert_eq!(symbolic_mode(0o1777, 'd'), "drwxrwxrwt");
+        assert_eq!(symbolic_mode(0o777, 'l'), "lrwxrwxrwx");
+    }
+    #[test]
+    #[cfg(target_os = "linux")]
+    fn link_rows_use_lstat_show_target_volume_names_and_exec_toggle() {
+        use std::os::unix::fs::PermissionsExt;
+        let root = std::env::temp_dir().join(format!("files-props-rows-{}", std::process::id()));
+        std::fs::create_dir(&root).unwrap();
+        let target = root.join("destino.sh");
+        std::fs::write(&target, b"#!/bin/sh\n").unwrap();
+        std::fs::set_permissions(&target, std::fs::Permissions::from_mode(0o600)).unwrap();
+        let link = root.join("enlace");
+        std::os::unix::fs::symlink(&target, &link).unwrap();
+        let mut m = Model::new(root.clone());
+        let mut p = Recorder::default();
+        let load = |path: &std::path::Path, census: bool| {
+            let snapshot = files_core::file_properties::capture(path).unwrap();
+            let mut d = Dialog::new(1, path.to_path_buf());
+            d.pending = false;
+            d.observed = Some(snapshot.properties);
+            d.requested = snapshot.properties.mode & 0o777;
+            d.current_path = Some(snapshot.current_path().unwrap());
+            d.details = Some(Box::new(files_core::properties_details::gather(
+                d.current_path.as_ref().unwrap(),
+                &snapshot.properties,
+            )));
+            d.snapshot = Some(Box::new(snapshot));
+            if census {
+                d.totals = Some(Default::default());
+            }
+            d
+        };
+        // Symlink: lstat mode (0777), raw target, resolution, no chmod on it.
+        let mut d = load(&link, false);
+        for (w, h) in [(700, 500), (440, 440)] {
+            p.text.clear();
+            paint(&mut p, &mut m, &mut d, w, h);
+            let joined = p.text.join("\n");
+            // Narrow windows shorten rows in the middle but keep their heads.
+            assert!(joined.contains("Permisos del enlace"));
+            assert!(joined.contains("Volumen:") && joined.contains("Propietario:"));
+            if w == 700 {
+                assert!(joined.contains("(lstat, no los del destino)"));
+                assert!(joined.contains("lrwxrwxrwx"), "{joined}");
+                assert!(joined.contains("Destino del enlace: existe"));
+                assert!(joined.contains("libre"));
+            }
+            assert!(!d.editable());
+            assert!(!joined.contains("Tipo MIME"), "the link itself has no MIME");
+        }
+        assert_eq!(
+            d.layout.as_ref().unwrap().link.concat(),
+            format!(
+                "Destino raw (no abierto): {}",
+                files_core::name_label::label(target.as_os_str())
+            )
+        );
+        // Regular file: octal mode, MIME + default app row, executable toggle.
+        let mut d = load(&target, false);
+        p.text.clear();
+        paint(&mut p, &mut m, &mut d, 700, 500);
+        let joined = p.text.join("\n");
+        assert!(joined.contains("modo octal 0600"), "{joined}");
+        assert!(joined.contains("Tipo MIME:") && joined.contains("Ctrl+Shift+O"));
+        assert!(joined.contains("[ ] Permitir ejecutar como programa"));
+        assert!(
+            !joined.contains("Contenido:"),
+            "plain files have no census row"
+        );
+        d.toggle(2);
+        paint(&mut p, &mut m, &mut d, 700, 500);
+        assert_eq!(d.requested, 0o700, "user execute bit only");
+        assert!(
+            p.text
+                .iter()
+                .any(|t| t == "[x] Permitir ejecutar como programa")
+        );
+        // Folder: census row honest while running and partial afterwards.
+        let mut d = load(&root, false);
+        d.census_items = 42;
+        p.text.clear();
+        paint(&mut p, &mut m, &mut d, 700, 500);
+        assert!(
+            p.text
+                .iter()
+                .any(|t| t == "Contenido: calculando… 42 elementos")
+        );
+        d.totals = Some(crate::properties_census::Totals {
+            census: files_core::folder_usage::Census {
+                files: 3,
+                unreadable: 1,
+                ..Default::default()
+            },
+            ..Default::default()
+        });
+        p.text.clear();
+        paint(&mut p, &mut m, &mut d, 700, 500);
+        assert!(
+            p.text
+                .iter()
+                .any(|t| t.contains("PARCIAL") && t.contains("1 sin permiso de lectura"))
         );
     }
 }

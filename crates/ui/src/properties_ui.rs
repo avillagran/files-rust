@@ -93,6 +93,12 @@ impl Model {
             })
             .map_err(|_| "El worker no aceptó la lectura de propiedades".to_owned())?;
         let mut d = Dialog::new(id, path);
+        // Whole-selection census on its own cancellable thread; dropping the
+        // dialog drops (and cancels) it. A failure to start is shown, not hidden.
+        match crate::properties_census::Job::start(objects.clone()) {
+            Ok(job) => d.census = Some(job),
+            Err(error) => d.census_error = Some(error),
+        }
         d.objects = objects;
         d.object_index = index;
         self.session.restore_allowed = false;
@@ -134,11 +140,49 @@ impl Model {
             return;
         };
         let objects = d.objects.clone();
-        if let Err(error) = self.start_properties(objects, index)
-            && let Some(d) = &mut self.properties_dialog
-        {
-            d.message = error;
+        // The census covers the whole selection: carry it across object steps.
+        let carried = self
+            .properties_dialog
+            .as_mut()
+            .map(|d| (d.census.take(), d.totals.take(), d.census_error.take()));
+        match self.start_properties(objects, index) {
+            Ok(()) => {
+                if let (Some(d), Some((job, totals, error))) =
+                    (&mut self.properties_dialog, carried)
+                {
+                    d.census = job;
+                    d.totals = totals;
+                    d.census_error = error;
+                }
+            }
+            Err(error) => {
+                if let Some(d) = &mut self.properties_dialog {
+                    if let Some((job, totals, census_error)) = carried {
+                        d.census = job;
+                        d.totals = totals;
+                        d.census_error = census_error;
+                    }
+                    d.message = error;
+                }
+            }
         }
+    }
+    /// Poll the dialog's census from the regular pump; true when a repaint helps.
+    pub fn pump_properties_census(&mut self) -> bool {
+        let Some(d) = self.properties_dialog.as_mut() else {
+            return false;
+        };
+        let Some(job) = d.census.as_ref() else {
+            return false;
+        };
+        if let Some(totals) = job.poll() {
+            d.totals = Some(totals);
+            d.census = None;
+            d.census_items = 0;
+            return true;
+        }
+        let items = job.items();
+        std::mem::replace(&mut d.census_items, items) != items
     }
     pub fn apply_properties(&mut self) {
         if self.mutations.busy
@@ -245,6 +289,9 @@ impl Model {
         }
         d.snapshot = reply.snapshot;
         d.current_path = reply.current_path;
+        if reply.details.is_some() {
+            d.details = reply.details;
+        }
         d.message = reply.message;
         d.warnings = reply.warnings;
         if reply.changed && !d.warnings.is_empty() {
@@ -573,6 +620,7 @@ mod batch_tests {
                 snapshot: None,
                 observed: Some(observed),
                 current_path: Some("/".into()),
+                details: None,
                 success: true,
                 changed: false,
                 message: "Propiedades de la raíz: sólo lectura".into(),

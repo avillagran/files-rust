@@ -111,6 +111,7 @@ mod places_sidebar;
 mod platform_wait;
 mod preview_link;
 mod preview_scene;
+mod properties_census;
 mod properties_dialog;
 mod properties_job;
 mod properties_scene;

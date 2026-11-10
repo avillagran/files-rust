@@ -1,5 +1,6 @@
 //! Bounded apparent-size traversal. Counts file names, including hard-link aliases;
 //! symlinks contribute no bytes and are never traversed. No partial success.
+use files_core::folder_usage::Census;
 use std::io;
 use std::path::Path;
 use std::time::{Duration, Instant};
@@ -43,7 +44,7 @@ pub fn measure_directory(path: &Path, limits: Limits) -> io::Result<Usage> {
 
 #[cfg(target_os = "linux")]
 fn measure_mode(path: &Path, limits: Limits, require_directory: bool) -> io::Result<Usage> {
-    measure_with(path, limits, require_directory, None, |_| Ok(()))
+    measure_with(path, limits, require_directory, None, None, |_| Ok(()))
 }
 #[cfg(target_os = "linux")]
 fn measure_with(
@@ -51,6 +52,7 @@ fn measure_with(
     limits: Limits,
     require_directory: bool,
     mut allocation: Option<&mut allocation::Accumulator>,
+    mut census: Option<&mut Census>,
     mut progress: impl FnMut(Usage) -> io::Result<()>,
 ) -> io::Result<Usage> {
     use std::fs::{self, File, OpenOptions, ReadDir};
@@ -119,7 +121,19 @@ fn measure_with(
             stack.pop();
             continue;
         };
-        let entry = entry?;
+        let entry = match entry {
+            Ok(entry) => entry,
+            Err(error) => {
+                // Properties census only: a failing directory read is reported
+                // as unreadable and that directory is abandoned, never as empty.
+                let Some(census) = census.as_deref_mut() else {
+                    return Err(error);
+                };
+                census.unreadable = census.unreadable.saturating_add(1);
+                stack.pop();
+                continue;
+            }
+        };
         usage.entries = usage
             .entries
             .checked_add(1)
@@ -136,17 +150,43 @@ fn measure_with(
             if stack.len() >= limits.depth {
                 return Err(io::Error::other("Límite de profundidad excedido"));
             }
-            stack.push(open(&path)?);
+            if let Some(census) = census.as_deref_mut() {
+                census.folders = census.folders.saturating_add(1);
+                match open(&path) {
+                    Ok(frame) => stack.push(frame),
+                    Err(_) => census.unreadable = census.unreadable.saturating_add(1),
+                }
+            } else {
+                stack.push(open(&path)?);
+            }
         } else if kind.is_file() {
-            let metadata = fs::symlink_metadata(&path)?;
+            let metadata = match fs::symlink_metadata(&path) {
+                Ok(metadata) => metadata,
+                Err(error) => {
+                    let Some(census) = census.as_deref_mut() else {
+                        return Err(error);
+                    };
+                    census.unreadable = census.unreadable.saturating_add(1);
+                    continue;
+                }
+            };
             if !metadata.is_file() {
                 continue;
+            }
+            if let Some(census) = census.as_deref_mut() {
+                census.files = census.files.saturating_add(1);
             }
             usage.bytes = usage
                 .bytes
                 .checked_add(metadata.len())
                 .ok_or_else(|| io::Error::other("Tamaño fuera del rango soportado"))?;
             observe_allocation(&metadata, allocation.as_deref_mut());
+        } else if let Some(census) = census.as_deref_mut() {
+            if kind.is_symlink() {
+                census.links = census.links.saturating_add(1);
+            } else {
+                census.others = census.others.saturating_add(1);
+            }
         }
     }
     use std::os::unix::fs::MetadataExt;
@@ -175,7 +215,30 @@ pub fn measure_progress(
             "El cálculo requiere una ruta absoluta de hasta4096B",
         ));
     }
-    measure_with(path, limits, true, None, progress)
+    measure_with(path, limits, true, None, None, progress)
+}
+
+/// Properties census over the same bounded traversal: symlinks are counted and
+/// never entered; unreadable directories or entries are counted, not skipped
+/// silently and not reported as empty. Errors (limits, timeout, root replaced)
+/// still abort without a partial result.
+#[cfg(target_os = "linux")]
+pub fn measure_contents(
+    path: &Path,
+    limits: Limits,
+    progress: impl FnMut(Usage) -> io::Result<()>,
+) -> io::Result<Census> {
+    let raw = path.as_os_str().as_encoded_bytes();
+    if !path.is_absolute() || raw.len() > 4096 || raw.contains(&0) {
+        return Err(io::Error::new(
+            io::ErrorKind::InvalidInput,
+            "El cálculo requiere una ruta absoluta de hasta4096B",
+        ));
+    }
+    let mut census = Census::default();
+    let usage = measure_with(path, limits, true, None, Some(&mut census), progress)?;
+    census.bytes = usage.bytes;
+    Ok(census)
 }
 
 #[cfg(target_os = "linux")]
@@ -213,7 +276,7 @@ pub fn measure_allocated_progress(
         ));
     }
     let mut allocation = allocation::Accumulator::default();
-    let usage = measure_with(path, limits, true, Some(&mut allocation), progress)?;
+    let usage = measure_with(path, limits, true, Some(&mut allocation), None, progress)?;
     Ok((usage, allocation.finish()))
 }
 #[cfg(not(target_os = "linux"))]
@@ -267,6 +330,57 @@ mod tests {
         fn drop(&mut self) {
             let _ = fs::remove_dir_all(&self.0);
         }
+    }
+    /// Retained fixture: the private tree is never deleted by this test.
+    fn retained(label: &str) -> std::path::PathBuf {
+        static NEXT: AtomicU64 = AtomicU64::new(0);
+        let root = std::env::temp_dir().join(format!(
+            "files-census-{label}-{}-{}",
+            std::process::id(),
+            NEXT.fetch_add(1, Ordering::Relaxed)
+        ));
+        fs::create_dir(&root).unwrap();
+        root
+    }
+    #[test]
+    fn census_counts_links_once_never_enters_them_and_reports_unreadable_as_partial() {
+        use std::os::unix::fs::PermissionsExt;
+        let root = retained("partial");
+        fs::write(root.join("a.txt"), b"abc").unwrap();
+        fs::create_dir_all(root.join("sub/deep")).unwrap();
+        fs::write(root.join("sub/b.txt"), b"abcd").unwrap();
+        fs::write(root.join("sub/deep/c"), b"abcde").unwrap();
+        fs::create_dir(root.join("locked")).unwrap();
+        fs::write(root.join("locked/hidden"), b"never counted").unwrap();
+        // Directory link to a sibling inside the same private root.
+        symlink(root.join("sub"), root.join("ln")).unwrap();
+        let readable = measure_contents(&root, Limits::default(), |_| Ok(())).unwrap();
+        assert_eq!(
+            (readable.files, readable.folders, readable.links, readable.bytes),
+            (4, 3, 1, 12 + 13),
+            "the link is one item and sub is visited exactly once"
+        );
+        assert_eq!(readable.unreadable, 0);
+        assert!(!readable.is_partial());
+        fs::set_permissions(root.join("locked"), fs::Permissions::from_mode(0o000)).unwrap();
+        let denied = fs::read_dir(root.join("locked")).is_err();
+        let partial = measure_contents(&root, Limits::default(), |_| Ok(()));
+        // Restore the fixture's own mode so later tooling can inspect it.
+        fs::set_permissions(root.join("locked"), fs::Permissions::from_mode(0o700)).unwrap();
+        let partial = partial.unwrap();
+        if denied {
+            assert_eq!(partial.unreadable, 1, "reported, not silently zero");
+            assert!(partial.is_partial());
+            assert_eq!(
+                (partial.files, partial.folders, partial.links, partial.bytes),
+                (3, 3, 1, 12)
+            );
+        } else {
+            // Running as root: nothing is unreadable.
+            assert_eq!(partial, readable);
+        }
+        // A symlink root is refused rather than followed.
+        assert!(measure_contents(&root.join("ln"), Limits::default(), |_| Ok(())).is_err());
     }
     #[test]
     fn optional_allocation_observes_sparse_aliases_without_changing_apparent_total() {

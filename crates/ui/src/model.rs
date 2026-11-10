@@ -1458,6 +1458,7 @@ impl Model {
         }
         let mut dirty = self.pump_mutations();
         dirty |= self.pump_search_transfer();
+        dirty |= self.pump_properties_census();
         let mut sizes_repaint = false;
         if self.closing {
             self.sftp.close();

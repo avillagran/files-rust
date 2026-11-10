@@ -13,6 +13,39 @@ pub enum Mode {
     Allocated,
 }
 
+/// Properties census of one folder tree. Symlinks are counted, never entered.
+/// `unreadable` counts directories or entries that could not be read: the
+/// totals are then a lower bound, never presented as complete.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Census {
+    pub bytes: u64,
+    pub files: u64,
+    pub folders: u64,
+    pub links: u64,
+    pub others: u64,
+    pub unreadable: u64,
+}
+impl Census {
+    pub fn add(&mut self, other: &Census) {
+        self.bytes = self.bytes.saturating_add(other.bytes);
+        self.files = self.files.saturating_add(other.files);
+        self.folders = self.folders.saturating_add(other.folders);
+        self.links = self.links.saturating_add(other.links);
+        self.others = self.others.saturating_add(other.others);
+        self.unreadable = self.unreadable.saturating_add(other.unreadable);
+    }
+    pub fn items(&self) -> u64 {
+        self.files
+            .saturating_add(self.folders)
+            .saturating_add(self.links)
+            .saturating_add(self.others)
+    }
+    pub fn is_partial(&self) -> bool {
+        self.unreadable > 0
+    }
+}
+
 /// In-process result. Allocation absence denotes an apparent-only request,
 /// while typed unavailable values remain completed allocation observations.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

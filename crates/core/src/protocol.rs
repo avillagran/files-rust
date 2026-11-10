@@ -36,6 +36,11 @@ pub enum Request {
         #[serde(with = "path_wire")]
         path: std::path::PathBuf,
     },
+    MeasureContents {
+        id: u64,
+        #[serde(with = "path_wire")]
+        path: std::path::PathBuf,
+    },
     Search {
         id: u64,
         #[serde(with = "path_wire")]
@@ -154,6 +159,10 @@ pub enum Response {
         id: u64,
         bytes: u64,
         entries: u64,
+    },
+    Contents {
+        id: u64,
+        census: crate::folder_usage::Census,
     },
     SearchProgress {
         id: u64,

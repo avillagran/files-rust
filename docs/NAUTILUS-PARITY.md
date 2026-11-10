@@ -37,7 +37,7 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 16 | New folder, with selection, `~/Templates` templates | **yes** | block 5 | — |
 | 17 | Compress/extract zip, tar.*, 7z | partial | ZIP only | P2 |
 | 18 | Create link Ctrl+M / Shift+Ctrl+M | **yes** | blocks 1 and 6 | — |
-| 19 | Properties: contents, free space, owner/group, recursive | partial | numeric UID/GID, inode metadata and apparent/allocated size exist; owner/group names, recursive contents/count and filesystem free space in properties remain missing | P2 |
+| 19 | Properties: contents, free space, owner/group, recursive | partial | owner/group resolved to `name (id)` (getpwuid_r/getgrgid_r, numeric fallback) on the properties worker; folder and multi-selection contents (apparent bytes, files, folders, links) via the cancellable helper `measure_contents` traversal that never follows symlinks, shows `calculando… N elementos` and reports unreadable subtrees/failed objects as PARCIAL; volume line (filesystem type, free/total via statvfs + mountinfo); symlink raw target, resolution state and lstat "Permisos del enlace"; octal/symbolic mode, "Permitir ejecutar como programa" toggle (user execute bit, existing chmod path); modified/accessed/created (statx btime)/inode-change times; MIME type and default application name (change via Ctrl+Shift+O). Missing: image dimensions (header parsing lives only in the helper, no cheap shared reader), checksum shortcut (row 42), on-screen layout not verified by screenshot | P2 |
 | 20 | Open with another app and set as default | **yes** | block 2: Enter opens with the default; Open with… (Ctrl+Shift+O) | — |
 | 21 | Terminal here (Ctrl+.) | **yes** | block 1 | — |
 | 22 | User scripts / actions | no | — | P2 |
@@ -103,11 +103,16 @@ Progress on each row is recorded here with commit and evidence.
   pass a drag between two Files windows in a private nested compositor,
   opening copy review on the destination row and verifying copied bytes.
   This is not a complete external-application or cross-platform DnD matrix.
-- **Properties:** `properties_dialog.rs` displays numeric UID/GID, mode,
-  inode/device, hardlink count, timestamps and apparent/allocated bytes.
-  Directory size is explicitly non-recursive. The owner/group row above
-  therefore distinguishes existing numeric metadata from missing named
-  identities and recursive summaries.
+- **Properties:** `properties_dialog.rs` shows owner/group names with ids,
+  octal and symbolic mode, a user-execute toggle, local-time modified,
+  accessed, created (statx btime when recorded) and inode-change times,
+  MIME type with the default application, the volume's filesystem type and
+  free/total space, the raw symlink target with its resolution state and the
+  link's own lstat permissions. Folder contents (and multi-selection totals)
+  come from the `files-helper` `measure_contents` census: symlinks are counted
+  and never entered, unreadable subtrees make the figures an explicit partial
+  lower bound, and closing the dialog cancels the job. Image dimensions are
+  not shown.
 - **Accessibility:** the vendored toolkit's `a11y` feature offers AccessKit
   platform adapters. Files does not enable it. Smoke-only testkit inspection
   of Sidebar elements is useful test evidence, not proof that the custom

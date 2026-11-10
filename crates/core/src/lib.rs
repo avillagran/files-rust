@@ -105,6 +105,7 @@ pub mod remove_tree;
 pub mod trash;
 
 pub mod file_properties;
+pub mod properties_details;
 
 pub mod space_map;
 
