@@ -717,6 +717,7 @@ mod tests {
                 kind: Kind::File,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             })
             .collect();
         (
@@ -741,6 +742,7 @@ mod tests {
             kind: Kind::File,
             metadata: None,
             stat_attempted: false,
+            link: None,
         });
         let mut m = Model::new(std::env::temp_dir());
         m.view = crate::model::View::SpaceMap;
@@ -948,6 +950,7 @@ mod tests {
                 kind: Kind::File,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             })
             .collect();
         (report, entries)

@@ -146,13 +146,13 @@ fn column(
         }
         p.text(
             Rect::new(r.x + 6, y, 22, ROW - 2),
-            if e.is_dir() {
+            if e.browses_as_dir() {
                 crate::fonts::icon("", "D")
             } else {
                 crate::fonts::icon("", "F")
             },
             15,
-            if e.is_dir() {
+            if e.browses_as_dir() {
                 palette.accent
             } else {
                 palette.dark_foreground
@@ -188,7 +188,7 @@ fn column(
                 true,
             );
         }
-        if e.is_dir() {
+        if e.browses_as_dir() {
             p.text(
                 Rect::new(r.x + r.w - 22, y, 16, ROW - 2),
                 crate::fonts::icon("", ">"),

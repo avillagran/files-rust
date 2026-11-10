@@ -319,6 +319,7 @@ mod tests {
             kind,
             metadata: None,
             stat_attempted: false,
+            link: None,
         }
     }
     fn model() -> Model {

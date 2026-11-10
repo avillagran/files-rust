@@ -1444,7 +1444,7 @@ fn row(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
     let mut thumbnail_palette = c.clone();
     // The thumbnail matte follows the row fill: focus alone paints none.
     thumbnail_palette.background = fill.unwrap_or(c.background);
-    if e.is_dir() {
+    if e.browses_as_dir() {
         folder(p, x + 8, y + 4, c.blue);
     } else if m
         .thumbnails
@@ -1466,6 +1466,18 @@ fn row(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
             &ext,
             9,
             c.darker_background,
+            true,
+            false,
+        );
+    }
+    if e.kind == files_core::listing::Kind::Symlink {
+        // Link emblem over the icon corner; links are never followed by
+        // recursive work even when they browse as folders.
+        p.text(
+            r(x + 26, y + 20, 14, 14),
+            "→",
+            11,
+            c.bright_foreground,
             true,
             false,
         );
@@ -1499,7 +1511,7 @@ fn row(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
         );
     }
     if let Some(meta) = &e.metadata {
-        if !e.is_dir()
+        if !e.browses_as_dir()
             && let Some(cell) = columns.size
         {
             let (n, u) = size_parts(meta.size);
@@ -1534,7 +1546,7 @@ fn row(p: &mut dyn Painter, m: &mut Model, i: usize, rect: Rect) {
     if let Some(cell) = columns.kind {
         p.text(
             r(x + cell.x, y, cell.w, 38),
-            &kind_label(e.is_dir(), &path),
+            &kind_label(e.browses_as_dir(), &path),
             11,
             c.dark_foreground,
             false,
@@ -1572,7 +1584,7 @@ fn inspector(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32, iw: i32) {
         return;
     };
     let path = m.path.join(&e.name);
-    let color = if e.is_dir() {
+    let color = if e.browses_as_dir() {
         c.blue
     } else {
         badge_color(m, &path)
@@ -1595,7 +1607,7 @@ fn inspector(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32, iw: i32) {
         &preview_palette,
     ) {
         // Shared borrowed bitmap; no second cache allocation for inspector.
-    } else if e.is_dir() {
+    } else if e.browses_as_dir() {
         folder(p, x + 100, icon_y + 10, color);
     } else {
         p.rounded_rect(r(x + 96, icon_y, 48, 48), 10, color);
@@ -1633,6 +1645,11 @@ fn inspector(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32, iw: i32) {
         false,
         false,
     );
+    let link_detail = e
+        .link
+        .as_ref()
+        .and_then(|l| l.target.as_ref())
+        .map(|t| format!("Enlace → {}", t.display()));
     let compact_directory_detail = (e.is_dir() && title_y + 94 > h - 174)
         .then(|| {
             let label = m.sizes.label(&m.path, &e.name)?;
@@ -1648,6 +1665,8 @@ fn inspector(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32, iw: i32) {
         r(x + 16, title_y + 44, iw - 32, 22),
         if let Some(detail) = compact_directory_detail.as_deref() {
             detail
+        } else if let Some(target) = link_detail.as_deref() {
+            target
         } else if e.is_dir() {
             "Carpeta"
         } else {
@@ -1671,7 +1690,7 @@ fn inspector(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32, iw: i32) {
         );
     } else {
         if let Some(meta) = &e.metadata {
-            if !e.is_dir() && title_y + 94 <= h - 174 {
+            if !e.browses_as_dir() && title_y + 94 <= h - 174 {
                 p.text(
                     r(x + 16, title_y + 72, iw - 32, 22),
                     &format!("Tamaño    {}", format_size(meta.size)),
@@ -1926,12 +1945,12 @@ pub fn reveal_selection(m: &mut Model, w: i32, h: i32) {
     if y - covered < m.scroll {
         m.scroll = (y - covered).max(0);
     } else {
-        let item_height = if m.view == View::Groups && m.entries.get(i).is_some_and(|e| e.is_dir())
-        {
-            74
-        } else {
-            38
-        };
+        let item_height =
+            if m.view == View::Groups && m.entries.get(i).is_some_and(|e| e.browses_as_dir()) {
+                74
+            } else {
+                38
+            };
         if y + item_height > m.scroll + vh {
             m.scroll = (y + item_height - vh).max(0);
         }
@@ -2006,6 +2025,7 @@ mod inspector_tabs_tests {
             kind: files_core::listing::Kind::File,
             metadata: None,
             stat_attempted: true,
+            link: None,
         }
     }
     #[test]
@@ -2017,6 +2037,7 @@ mod inspector_tabs_tests {
             kind: files_core::listing::Kind::Directory,
             metadata: None,
             stat_attempted: true,
+            link: None,
         });
         m.sizes.bind_automatic_root(&m.path);
         m.sizes.automatic.cached.insert(
@@ -2172,6 +2193,7 @@ mod inspector_tabs_tests {
             kind: files_core::listing::Kind::File,
             metadata: None,
             stat_attempted: true,
+            link: None,
         }];
         m.order = vec![0];
         m.sidebar_widget = true;
@@ -2286,6 +2308,7 @@ mod inspector_tabs_tests {
                 modified: std::time::UNIX_EPOCH,
             }),
             stat_attempted: true,
+            link: None,
         }];
         m.selected = Some(0);
         m.selection.insert(0);
@@ -2321,6 +2344,7 @@ mod inspector_tabs_tests {
             kind: files_core::listing::Kind::File,
             metadata: None,
             stat_attempted: true,
+            link: None,
         }];
         for view in [View::Groups, View::List, View::Grid] {
             m.view = view;
@@ -2399,6 +2423,7 @@ mod inspector_tabs_tests {
                 },
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             })
             .collect();
         m.rebuild();
@@ -2437,6 +2462,7 @@ mod inspector_tabs_tests {
             kind: files_core::listing::Kind::Directory,
             metadata: None,
             stat_attempted: false,
+            link: None,
         }];
         m.rebuild();
         assert_eq!(m.group_ends, [1, 1, 1, 1, 1]);
@@ -2579,6 +2605,7 @@ mod inspector_tabs_tests {
             kind: files_core::listing::Kind::File,
             metadata: None,
             stat_attempted: false,
+            link: None,
         }];
         m.rebuild();
         m.select_entry(0, false, false);
@@ -2787,6 +2814,7 @@ mod inspector_tabs_tests {
                         modified: SystemTime::now(),
                     }),
                     stat_attempted: true,
+                    link: None,
                 }];
                 m.selected = Some(0);
                 let mut p = Recorder::default();
@@ -2935,6 +2963,7 @@ mod pinned_list_header_tests {
                 kind: Kind::File,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             })
             .collect();
         m.rebuild();

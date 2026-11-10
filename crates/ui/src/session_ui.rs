@@ -210,6 +210,7 @@ mod tests {
                 kind: Kind::File,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             }];
             m.loaded = true;
             m.rebuild();
@@ -249,6 +250,7 @@ mod tests {
                 kind: Kind::File,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             })
             .collect();
         m.loaded = true;

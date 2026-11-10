@@ -68,6 +68,8 @@ mod key_commands;
 mod keyboard_nav;
 mod line_edit;
 mod line_field;
+#[cfg(test)]
+mod link_browse_tests;
 mod list_columns;
 mod listing_sync;
 mod listing_watch;

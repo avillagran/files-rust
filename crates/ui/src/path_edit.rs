@@ -509,6 +509,7 @@ mod tests {
             kind: files_core::listing::Kind::File,
             metadata: None,
             stat_attempted: false,
+            link: None,
         })
         .collect();
         m.order = vec![0, 1, 2];
@@ -580,6 +581,7 @@ mod tests {
             kind: files_core::listing::Kind::File,
             metadata: None,
             stat_attempted: false,
+            link: None,
         });
         m.order.push(0);
         m.selected = Some(0);

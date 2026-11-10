@@ -24,12 +24,25 @@ pub struct Metadata {
     pub size: u64,
     pub modified: SystemTime,
 }
+/// What a symbolic link pointed at when the listing read it. Browsing-only
+/// information: it never turns the link into a directory for code that walks,
+/// measures or mutates trees.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Link {
+    /// The raw link text (`readlink`), not canonicalized; `None` when unreadable.
+    pub target: Option<PathBuf>,
+    /// The link resolved (one `stat`) to a directory. Broken or looping links
+    /// are `false`.
+    pub target_dir: bool,
+}
 #[derive(Clone, Debug)]
 pub struct Entry {
     pub name: OsString,
     pub kind: Kind,
     pub metadata: Option<Metadata>,
     pub stat_attempted: bool,
+    /// Set only for `Kind::Symlink` entries produced by [`LocalVfs::list`].
+    pub link: Option<Box<Link>>,
 }
 impl Entry {
     pub fn load_metadata(&mut self, parent: &Path) -> io::Result<()> {
@@ -40,8 +53,29 @@ impl Entry {
         self.metadata = Some(LocalVfs.stat(&parent.join(&self.name))?);
         Ok(())
     }
+    /// A real directory. Symbolic links are never directories here, even when
+    /// they point at one: recursive and mutating code must rely on this.
     pub fn is_dir(&self) -> bool {
         self.kind == Kind::Directory
+    }
+    /// A directory, or a symbolic link that resolved to one when listed.
+    /// Use only for browsing: opening/navigating, icons, folders-first order,
+    /// column descent and tab opening. Never to decide whether to descend in
+    /// copy, move, delete, trash, size, search, compare, sync or archive work.
+    pub fn browses_as_dir(&self) -> bool {
+        self.is_dir()
+            || (self.kind == Kind::Symlink && self.link.as_ref().is_some_and(|l| l.target_dir))
+    }
+    /// A symbolic link that resolved to a directory when listed.
+    pub fn is_dir_link(&self) -> bool {
+        !self.is_dir() && self.browses_as_dir()
+    }
+}
+/// Reads a link's text and resolves it once, without walking anything.
+pub fn link_info(path: &Path) -> Link {
+    Link {
+        target: fs::read_link(path).ok(),
+        target_dir: fs::metadata(path).is_ok_and(|m| m.is_dir()),
     }
 }
 pub trait Vfs: Send + Sync {
@@ -80,6 +114,7 @@ impl Vfs for LocalVfs {
         Ok(Box::new(fs::read_dir(path)?.map(|item| {
             let item = item?;
             let t = item.file_type()?;
+            let link = t.is_symlink().then(|| Box::new(link_info(&item.path())));
             Ok(Entry {
                 name: item.file_name(),
                 kind: if t.is_dir() {
@@ -93,6 +128,7 @@ impl Vfs for LocalVfs {
                 },
                 metadata: None,
                 stat_attempted: false,
+                link,
             })
         })))
     }
@@ -219,7 +255,7 @@ pub fn sort(entries: &mut [Entry], by: Sort, descending: bool) {
             let order = match by {
                 Sort::Size => {
                     let known = |e: &Entry| {
-                        if e.is_dir() {
+                        if e.browses_as_dir() {
                             None
                         } else {
                             e.metadata.as_ref().map(|m| m.size)
@@ -240,7 +276,7 @@ pub fn sort(entries: &mut [Entry], by: Sort, descending: bool) {
     } else if descending {
         entries.reverse();
     }
-    entries.sort_by_key(|e| !e.is_dir());
+    entries.sort_by_key(|e| !e.browses_as_dir());
 }
 /// Filtro de subsecuencia Unicode; bonifica coincidencias contiguas y comienzos de palabra.
 pub fn fuzzy_score(name: &str, query: &str) -> Option<i32> {
@@ -275,6 +311,7 @@ mod tests {
                 modified: SystemTime::UNIX_EPOCH,
             }),
             stat_attempted: true,
+            link: None,
         };
         let mut rows = vec![
             row("z-dir", Kind::Directory, Some(1)),
@@ -295,6 +332,106 @@ mod tests {
                 expected
             );
         }
+    }
+
+    /// Fresh, exclusive fixture under the private test TMPDIR. Never removed.
+    #[cfg(unix)]
+    fn link_fixture(label: &str) -> PathBuf {
+        let dir = std::env::temp_dir().join(format!(
+            "files-links-{label}-{}-{}",
+            std::process::id(),
+            SystemTime::now()
+                .duration_since(SystemTime::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        fs::create_dir(&dir).unwrap();
+        dir
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn directory_links_browse_as_folders_without_becoming_directories() {
+        use std::os::unix::fs::symlink;
+        let dir = link_fixture("browse");
+        fs::create_dir(dir.join("real")).unwrap();
+        fs::write(dir.join("a-file.txt"), b"x").unwrap();
+        // Every link target is relative and stays inside the private fixture.
+        symlink("real", dir.join("dir-link")).unwrap();
+        symlink("a-file.txt", dir.join("file-link")).unwrap();
+        symlink("missing", dir.join("broken-link")).unwrap();
+        symlink("loop-link", dir.join("loop-link")).unwrap();
+        let mut entries: Vec<Entry> = LocalVfs.list(&dir).unwrap().map(Result::unwrap).collect();
+        let get = |entries: &[Entry], name: &str| {
+            entries
+                .iter()
+                .find(|e| e.name == name)
+                .cloned()
+                .unwrap_or_else(|| panic!("{name} listed"))
+        };
+        let link = get(&entries, "dir-link");
+        assert_eq!(link.kind, Kind::Symlink);
+        assert!(!link.is_dir(), "is_dir must keep meaning real directory");
+        assert!(link.browses_as_dir() && link.is_dir_link());
+        assert_eq!(
+            link.link.as_deref().unwrap().target.as_deref(),
+            Some(Path::new("real"))
+        );
+        for name in ["file-link", "broken-link", "loop-link"] {
+            let e = get(&entries, name);
+            assert_eq!(e.kind, Kind::Symlink, "{name}");
+            assert!(!e.is_dir() && !e.browses_as_dir(), "{name}");
+        }
+        let real = get(&entries, "real");
+        assert!(real.is_dir() && real.browses_as_dir() && real.link.is_none());
+        assert!(!get(&entries, "a-file.txt").browses_as_dir());
+        for by in [Sort::Name, Sort::Size, Sort::Type] {
+            sort(&mut entries, by, false);
+            let names: Vec<_> = entries.iter().map(|e| e.name.to_str().unwrap()).collect();
+            assert_eq!(&names[..2], ["dir-link", "real"], "{by:?} folders first");
+        }
+    }
+
+    #[cfg(target_os = "linux")]
+    #[test]
+    fn recursive_capture_records_directory_link_without_descending() {
+        use std::os::unix::fs::symlink;
+        let dir = link_fixture("capture");
+        fs::create_dir_all(dir.join("tree/real")).unwrap();
+        fs::write(dir.join("tree/real/inner.txt"), b"data").unwrap();
+        symlink("real", dir.join("tree/link")).unwrap();
+        let listed: Vec<Entry> = LocalVfs
+            .list(&dir.join("tree"))
+            .unwrap()
+            .map(Result::unwrap)
+            .collect();
+        assert!(
+            listed
+                .iter()
+                .any(|e| e.name == "link" && e.browses_as_dir())
+        );
+        // The copy/move source inventory is the recursive plan: it must keep
+        // the link as one link entry and never walk through it.
+        let parent = fs::File::open(&dir).unwrap();
+        let cancel = AtomicBool::new(false);
+        let inventory =
+            crate::exdev_source::capture(&parent, std::ffi::OsStr::new("tree"), &cancel).unwrap();
+        let mut relative: Vec<_> = inventory
+            .entries()
+            .iter()
+            .map(|e| String::from_utf8(e.relative.clone()).unwrap())
+            .collect();
+        relative.sort();
+        assert_eq!(
+            relative,
+            ["tree", "tree/link", "tree/real", "tree/real/inner.txt"]
+        );
+        let link = inventory
+            .entries()
+            .iter()
+            .find(|e| e.relative == b"tree/link")
+            .unwrap();
+        assert_eq!(link.identity.kind, crate::move_manifest::Kind::Symlink);
     }
 
     #[test]

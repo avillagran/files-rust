@@ -192,6 +192,8 @@ impl Browser {
                 let value = |e: &Entry| {
                     if e.is_dir() {
                         measured.get(e.name.as_os_str()).copied()
+                    } else if e.browses_as_dir() {
+                        None
                     } else {
                         e.metadata.as_ref().map(|m| m.size)
                     }
@@ -222,7 +224,8 @@ impl Browser {
                 self.order.reverse();
             }
         }
-        self.order.sort_by_key(|&i| !self.entries[i].is_dir());
+        self.order
+            .sort_by_key(|&i| !self.entries[i].browses_as_dir());
         let allowed = |i: &usize| {
             self.entries.get(*i).is_some_and(|e| {
                 files_core::visibility::accepts(&e.name, hidden) && filter.score(e).is_some()

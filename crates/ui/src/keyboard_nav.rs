@@ -92,11 +92,10 @@ impl Model {
             .pending
             .take()
             .expect("ready parent return");
-        let target = self
-            .order
-            .iter()
-            .copied()
-            .find(|&i| self.entries[i].name == pending.child && self.entries[i].is_dir());
+        let target =
+            self.order.iter().copied().find(|&i| {
+                self.entries[i].name == pending.child && self.entries[i].browses_as_dir()
+            });
         if let Some(index) = target {
             self.select_entry(index, false, false);
             if let Some(position) = pending.position
@@ -214,7 +213,7 @@ pub fn key(m: &mut Model, key: Key, ctrl: bool, shift: bool, w: i32, h: i32) -> 
     let folder = groups
         && m.selected
             .and_then(|i| m.entries.get(i))
-            .is_some_and(|e| e.is_dir());
+            .is_some_and(|e| e.browses_as_dir());
     let metrics =
         crate::grid_view::Metrics::new(crate::grid_view::width(m, w), m.grid_zoom, m.order.len());
     let columns = if grid {
@@ -250,7 +249,7 @@ pub fn key(m: &mut Model, key: Key, ctrl: bool, shift: bool, w: i32, h: i32) -> 
         _ => unreachable!(),
     };
     if folder && matches!(key, Key::Down | Key::PageDown) {
-        let count = m.order.partition_point(|&i| m.entries[i].is_dir());
+        let count = m.order.partition_point(|&i| m.entries[i].browses_as_dir());
         if let Some(rank) = m
             .selected
             .and_then(|i| m.order.iter().position(|&j| j == i))
@@ -308,6 +307,7 @@ mod tests {
                     kind: Kind::Directory,
                     metadata: None,
                     stat_attempted: true,
+                    link: None,
                 })
                 .collect();
             m.loaded = true;

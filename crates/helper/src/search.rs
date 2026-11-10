@@ -297,6 +297,7 @@ fn scan_inner(
             kind,
             metadata: None,
             stat_attempted: false,
+            link: None,
         };
         let candidate = filter.candidate_score(&entry).is_some();
         if candidate && metadata_requested && needle.is_none() {

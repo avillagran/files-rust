@@ -1177,6 +1177,8 @@ impl Model {
                         let value = |e: &Entry| {
                             if e.is_dir() {
                                 measured.get(e.name.as_os_str()).copied()
+                            } else if e.browses_as_dir() {
+                                None
                             } else {
                                 e.metadata.as_ref().map(|m| m.size)
                             }
@@ -1206,14 +1208,15 @@ impl Model {
                 std::cmp::Reverse(filter.score(&self.entries[i]).unwrap_or_default())
             });
         }
-        self.order.sort_by_key(|&i| !self.entries[i].is_dir());
+        self.order
+            .sort_by_key(|&i| !self.entries[i].browses_as_dir());
         // Groups paints date sections after folder tiles; navigation/ranges must
         // use that same order. Dual pane always paints ordinary lists.
         if self.view == View::Groups && !self.dual.enabled {
             let now = SystemTime::now();
             let bucket = |i: usize| {
                 let e = &self.entries[i];
-                if e.is_dir() {
+                if e.browses_as_dir() {
                     0
                 } else {
                     1 + e
@@ -1310,7 +1313,7 @@ impl Model {
             let Some(entry) = self.entries.get(i) else {
                 continue;
             };
-            if entry.is_dir()
+            if entry.browses_as_dir()
                 || !files_core::visibility::accepts(
                     &entry.name,
                     self.show_hidden || self.reveal_hidden,
@@ -2452,11 +2455,13 @@ impl Model {
             self.error = "Ruta de apertura demasiado larga (máximo 4096 bytes)".into();
             return;
         }
-        if entry.is_dir() && self.view == View::Columns {
+        // A link to a folder is browsed under its own path (never canonicalized)
+        // so going up returns to where it was opened.
+        if entry.browses_as_dir() && self.view == View::Columns {
             self.column_step(true);
             return;
         }
-        if entry.is_dir() {
+        if entry.browses_as_dir() {
             self.navigate(self.path.join(&entry.name));
             return;
         }

@@ -178,13 +178,13 @@ fn list(
         }
         p.text(
             Rect::new(r.x + 6, y, 22, ROW - 2),
-            if e.is_dir() {
+            if e.browses_as_dir() {
                 crate::fonts::icon("", "D")
             } else {
                 crate::fonts::icon("", "F")
             },
             15,
-            if e.is_dir() {
+            if e.browses_as_dir() {
                 palette.accent
             } else {
                 palette.dark_foreground
@@ -203,7 +203,7 @@ fn list(
         if let Some(size) = columns.size {
             p.text(
                 Rect::new(r.x + size.x, y, size.w, ROW - 2),
-                &if e.is_dir() {
+                &if e.browses_as_dir() {
                     sizes
                         .label(path, &e.name)
                         .unwrap_or_else(|| "Carpeta".into())
@@ -405,6 +405,7 @@ mod narrow_name_tests {
                     modified: std::time::UNIX_EPOCH,
                 }),
                 stat_attempted: true,
+                link: None,
             })
             .collect::<Vec<_>>();
         let palette = Palette::parse(include_str!("../../../themes/tokyo-night.toml")).unwrap();

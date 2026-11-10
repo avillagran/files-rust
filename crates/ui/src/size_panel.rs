@@ -1169,6 +1169,7 @@ mod tests {
                 kind: Kind::Directory,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             })
             .collect();
         model.order = vec![0, 1, 2, 3];

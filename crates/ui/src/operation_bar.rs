@@ -251,6 +251,7 @@ mod tests {
                 kind: Kind::File,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             })
             .collect();
         m.rebuild();
@@ -454,6 +455,7 @@ mod compact_notice_tests {
             kind: Kind::File,
             metadata: None,
             stat_attempted: true,
+            link: None,
         }];
         m.rebuild();
         m.operation_message = Some("NOTICE_LAYOUT".into());

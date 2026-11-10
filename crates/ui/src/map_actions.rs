@@ -157,6 +157,7 @@ mod tests {
                 kind: Kind::File,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             })
             .collect();
         m.order = vec![0, 1];

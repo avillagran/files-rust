@@ -495,7 +495,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, area: Rect) {
         }
         let name = files_core::name_label::label(&e.name);
         let mime = files_core::mime::mime(std::path::Path::new(&e.name));
-        let (glyph, color) = if e.is_dir() {
+        let (glyph, color) = if e.browses_as_dir() {
             (crate::fonts::icon("\u{f07b}", "DIR"), c.blue)
         } else if mime.starts_with("image/") {
             (crate::fonts::icon("\u{f03e}", "IMG"), c.magenta)
@@ -578,6 +578,7 @@ mod tests {
                 kind: Kind::File,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             })
             .collect();
         m.rebuild();

@@ -43,6 +43,7 @@ fn named(name: &str, kind: files_core::listing::Kind) -> files_core::listing::En
         kind,
         metadata: None,
         stat_attempted: false,
+        link: None,
     }
 }
 #[test]
@@ -2157,6 +2158,7 @@ fn marked_sizes_capture_visible_directory_names_only_and_busy_rejection_preserve
             kind: Kind::Directory,
             metadata: None,
             stat_attempted: false,
+            link: None,
         },
         named("file", Kind::File),
         named("link", Kind::Symlink),

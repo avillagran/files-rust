@@ -912,6 +912,7 @@ mod tests {
             kind: Kind::File,
             metadata: None,
             stat_attempted: false,
+            link: None,
         }];
         m.order = vec![0];
         m.select_entry(0, false, false);

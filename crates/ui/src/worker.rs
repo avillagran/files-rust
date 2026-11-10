@@ -489,6 +489,7 @@ mod tests {
                 kind: Kind::File,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             }))))
         }
         fn stat(&self, path: &Path) -> io::Result<Metadata> {
@@ -578,6 +579,7 @@ mod tests {
                         kind: Kind::File,
                         metadata: None,
                         stat_attempted: false,
+                        link: None,
                     })
                 })))
             }
@@ -774,6 +776,7 @@ mod tests {
             kind: Kind::Directory,
             metadata: None,
             stat_attempted: true,
+            link: None,
         }];
         m.order = vec![0];
         m.selected = Some(0);

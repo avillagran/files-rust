@@ -420,7 +420,7 @@ impl Model {
                       order: &[usize],
                       i: usize| {
             let e = entries.get(i)?;
-            (order.contains(&i) && e.is_dir()).then(|| path.join(&e.name))
+            (order.contains(&i) && e.browses_as_dir()).then(|| path.join(&e.name))
         };
         let mut inactive = false;
         let path = match action {

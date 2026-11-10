@@ -381,6 +381,7 @@ fn inactive_size_order_does_not_treat_directory_metadata_as_a_total() {
             modified: std::time::SystemTime::UNIX_EPOCH,
         }),
         stat_attempted: true,
+        link: None,
     };
     browser.entries = vec![
         entry("z-dir", Kind::Directory, Some(1)),
@@ -460,6 +461,7 @@ fn forgetting_size_reorders_both_views_without_changing_their_selection() {
         kind: files_core::listing::Kind::Directory,
         metadata: None,
         stat_attempted: false,
+        link: None,
     };
     m.entries = vec![entry("large"), entry("small")];
     m.sort = Sort::Size;
@@ -506,6 +508,7 @@ fn size_completion_reorders_quiet_inactive_browser_even_when_active_sort_is_name
         kind: files_core::listing::Kind::Directory,
         metadata: None,
         stat_attempted: true,
+        link: None,
     };
     m.entries = vec![entry("large"), entry("small")];
     m.sort = Sort::Name;
@@ -550,6 +553,7 @@ fn size_recalculation_invalidates_inactive_order_via_browser_and_manager() {
             kind: files_core::listing::Kind::Directory,
             metadata: None,
             stat_attempted: true,
+            link: None,
         };
         m.entries = vec![entry("large"), entry("small")];
         m.sort = Sort::Name;

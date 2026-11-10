@@ -122,7 +122,8 @@ impl Data {
         if self.descending {
             self.order.reverse();
         }
-        self.order.sort_by_key(|&i| !self.entries[i].is_dir());
+        self.order
+            .sort_by_key(|&i| !self.entries[i].browses_as_dir());
         let entries = &self.entries;
         let query = &self.query;
         self.selection
@@ -470,7 +471,7 @@ impl State {
                     .data
                     .entries
                     .iter()
-                    .any(|e| e.is_dir() && pair[0].path.join(&e.name) == pair[1].path)
+                    .any(|e| e.browses_as_dir() && pair[0].path.join(&e.name) == pair[1].path)
         }) {
             self.root(m);
             self.notice = Some("La rama cambió fuera de Files · ruta actual conservada");
@@ -510,7 +511,7 @@ impl State {
                 .selected
                 .filter(|i| m.selection.len() == 1 && m.selection.contains(i))
                 .and_then(|i| m.entries.get(i))
-                .filter(|e| e.is_dir() && accepts(e, m.hidden_visible(), &m.query));
+                .filter(|e| e.browses_as_dir() && accepts(e, m.hidden_visible(), &m.query));
             let path = target.and_then(|e| {
                 m.path
                     .as_os_str()

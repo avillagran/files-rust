@@ -1517,6 +1517,7 @@ mod tests {
                     kind: files_core::listing::Kind::File,
                     metadata: None,
                     stat_attempted: false,
+                    link: None,
                 })
                 .collect();
             m.loaded = true;

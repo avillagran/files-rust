@@ -194,7 +194,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
             );
         }
         let mime = files_core::mime::mime(std::path::Path::new(&e.name));
-        let (glyph, color) = if e.is_dir() {
+        let (glyph, color) = if e.browses_as_dir() {
             ("", m.palette.blue)
         } else if mime.starts_with("image/") {
             ("", m.palette.magenta)
@@ -246,7 +246,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
             true,
             false,
         );
-        let detail = if e.is_dir() {
+        let detail = if e.browses_as_dir() {
             m.sizes
                 .label(&m.path, &e.name)
                 .unwrap_or_else(|| "Carpeta".into())
@@ -361,6 +361,7 @@ mod tests {
                 kind: Kind::File,
                 metadata: None,
                 stat_attempted: false,
+                link: None,
             })
             .collect();
         m.entries.push(Entry {
@@ -368,6 +369,7 @@ mod tests {
             kind: Kind::File,
             metadata: None,
             stat_attempted: false,
+            link: None,
         });
         m.action(Action::View(View::Grid));
         let original_layout = std::sync::Arc::clone(&m.layout);
@@ -412,6 +414,7 @@ mod tests {
                     kind: Kind::File,
                     metadata: None,
                     stat_attempted: false,
+                    link: None,
                 })
                 .collect::<Vec<_>>()
         };

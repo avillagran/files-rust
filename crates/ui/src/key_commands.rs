@@ -199,7 +199,7 @@ impl Model {
     /// opens as with Enter.
     pub fn open_focused_in_tab(&mut self, foreground: bool) {
         let Some(i) = self.selected else { return };
-        if !self.entries.get(i).is_some_and(|e| e.is_dir()) {
+        if !self.entries.get(i).is_some_and(|e| e.browses_as_dir()) {
             self.open_selected();
             return;
         }
@@ -257,8 +257,9 @@ impl Model {
             );
             return true;
         }
-        let (dirs, files): (Vec<usize>, Vec<usize>) =
-            marked.into_iter().partition(|&i| self.entries[i].is_dir());
+        let (dirs, files): (Vec<usize>, Vec<usize>) = marked
+            .into_iter()
+            .partition(|&i| self.entries[i].browses_as_dir());
         let join = |m: &Model, i: usize| m.path.join(&m.entries[i].name);
         let dirs: Vec<PathBuf> = dirs.into_iter().map(|i| join(self, i)).collect();
         let files: Vec<PathBuf> = files.into_iter().map(|i| join(self, i)).collect();
@@ -402,6 +403,7 @@ mod tests {
             kind,
             metadata: None,
             stat_attempted: false,
+            link: None,
         }
     }
 

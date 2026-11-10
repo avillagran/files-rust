@@ -297,6 +297,7 @@ mod tests {
             kind,
             metadata: None,
             stat_attempted: false,
+            link: None,
         }
     }
     fn matches(name: &str, query: &str) -> bool {

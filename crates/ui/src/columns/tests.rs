@@ -230,6 +230,7 @@ fn hidden_and_budget_are_checked_before_retention_or_operation() {
         kind: files_core::listing::Kind::File,
         metadata: None,
         stat_attempted: false,
+        link: None,
     };
     e.name.reserve(DATA_LIMIT + 1);
     let before = m.columns.columns[1].data.entries.len();
