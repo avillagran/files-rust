@@ -310,10 +310,12 @@ impl Model {
             return;
         }
         let label = auto_label(&self.path);
-        if !self.bookmarks.request(Op::Add {
+        if self.bookmarks.request(Op::Add {
             path: self.path.clone(),
             label,
         }) {
+            self.share_favorite(self.path.clone(), true);
+        } else {
             self.bookmarks.notice = "Espera, reintenta u omite el intento anterior".into();
         }
     }
@@ -380,9 +382,16 @@ impl Model {
             }
             Command::Remove => {
                 if let Some(Row::Favourite(id)) = panel.selected
-                    && let Some(e) = self.bookmarks.document.rows.iter().find(|e| e.id == id)
+                    && let Some(e) = self
+                        .bookmarks
+                        .document
+                        .rows
+                        .iter()
+                        .find(|e| e.id == id)
+                        .cloned()
                     && self.bookmarks.request(Op::Remove(e.clone()))
                 {
+                    self.share_favorite(e.path, false);
                     panel.editing = None;
                     panel.input = false;
                     panel.invalidate();

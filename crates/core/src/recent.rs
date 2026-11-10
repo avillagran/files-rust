@@ -16,6 +16,8 @@ pub struct Recent {
     /// ISO 8601 UTC as written by the app (`2026-11-05T21:00:00.123456Z`);
     /// sortable as text. `modified`, else `visited`, else `added`.
     pub when: String,
+    /// A folder (Ofolder records recent folders too); the desktop list holds files.
+    pub folder: bool,
 }
 
 /// The value of attribute `name` in a tag's text, XML entities decoded.
@@ -72,7 +74,11 @@ pub fn parse(xml: &str) -> Vec<Recent> {
         match out.iter_mut().find(|r| r.path == path) {
             Some(r) if r.when < when => r.when = when,
             Some(_) => {}
-            None => out.push(Recent { path, when }),
+            None => out.push(Recent {
+                path,
+                when,
+                folder: false,
+            }),
         }
     }
     out.sort_by(|a, b| b.when.cmp(&a.when));

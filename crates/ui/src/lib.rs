@@ -89,6 +89,7 @@ mod navigation_tests;
 mod network_ui;
 mod notice_navigation;
 mod office_preview_job;
+mod ofolder_ui;
 mod omarchy_theme;
 mod omi;
 mod omnibar_input;
@@ -979,7 +980,12 @@ fn recent_loader(
                         if let Some(r) = list.get(i)
                             && let Ok(mut state) = m.try_borrow_mut()
                         {
-                            let ok = places_sidebar::locate(&mut state, &r.path);
+                            let ok = if r.folder {
+                                state.navigate(r.path.clone());
+                                state.path == r.path
+                            } else {
+                                places_sidebar::locate(&mut state, &r.path)
+                            };
                             eprintln!(
                                 "FILES_TOOLKIT_RECENT_PICK index={i} path={} located={ok}",
                                 r.path.display()
@@ -1002,7 +1008,19 @@ fn open_recent(
     let dir = files_core::apps::data_home();
     loader.request(move |ctx| {
         ctx.check()?;
-        let result = files_core::recent::read(&dir).map_err(|e| e.to_string());
+        let shared = files_core::ofolder::read_recents(
+            &files_core::ofolder::Paths::from_env().recents,
+            files_core::recent::MAX_ITEMS,
+        )
+        .into_iter()
+        .filter(|r| {
+            std::fs::metadata(&r.path)
+                .is_ok_and(|m| if r.folder { m.is_dir() } else { m.is_file() })
+        })
+        .collect();
+        let result = files_core::recent::read(&dir)
+            .map(|list| ofolder_ui::merge_recents(list, shared))
+            .map_err(|e| e.to_string());
         ctx.check()?;
         Ok(result)
     });
@@ -1195,6 +1213,7 @@ pub fn run_since(start: Instant) -> bool {
     }
     model.borrow_mut().start_devices();
     model.borrow_mut().start_network();
+    model.borrow_mut().start_ofolder();
     // Scripted media checks were written for a paused, muted first frame.
     // They keep it unless they ask for the product behaviour (autoplay and,
     // with no saved preference, sound on).
@@ -1350,7 +1369,9 @@ pub fn run_since(start: Instant) -> bool {
         let _ = sidebar
             .tree()
             .reorder(fltk_omarchy::navtree::Reorder::Siblings)
-            .accept_move(|_, parent, _| places_sidebar::ORDERED_SECTIONS.contains(&parent))
+            .accept_move(|key, parent, _| {
+                places_sidebar::ORDERED_SECTIONS.contains(&parent) && !key.starts_with("ofav:")
+            })
             .on_move(move |key, parent, index| {
                 let pick = match m5.try_borrow() {
                     Ok(state) => places_sidebar::drag_pick(&state, &r5.borrow(), key, parent, index),

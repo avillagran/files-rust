@@ -86,6 +86,8 @@ pub enum Kind {
         mount: Option<PathBuf>,
         removable: bool,
     },
+    /// A favorite kept by Ofolder that Files has no bookmark for.
+    Shared(PathBuf),
     /// A connected network location (GVfs), at its FUSE folder.
     Network(PathBuf),
     /// "Connect to server…".
@@ -127,7 +129,7 @@ impl Rail {
     /// devices; none for headers, Favorites, the trash or unmounted devices.
     pub fn drop_dir(&self, i: usize) -> Option<&Path> {
         match self.kinds.get(i)? {
-            Kind::Place(p) | Kind::Bookmark(p) | Kind::Network(p) => Some(p),
+            Kind::Place(p) | Kind::Bookmark(p) | Kind::Shared(p) | Kind::Network(p) => Some(p),
             Kind::Device { mount, .. } => mount.as_deref(),
             _ => None,
         }
@@ -178,7 +180,8 @@ pub fn rail(m: &Model, pinned: bool, order: &[String]) -> Rail {
         );
     }
     let marks: Vec<_> = m.bookmarks.document.rows.iter().collect();
-    if !marks.is_empty() {
+    let shared = m.ofolder_only_favorites();
+    if !marks.is_empty() || !shared.is_empty() {
         out.push(
             SidebarItem::header("Marcadores").key("h:marks"),
             None,
@@ -193,6 +196,18 @@ pub fn rail(m: &Model, pinned: bool, order: &[String]) -> Rail {
             Some(Action::Navigate(mark.path.clone())),
             None,
             Kind::Bookmark(mark.path.clone()),
+        );
+    }
+    // Ofolder's favorites follow Files' own: same section, marked by origin.
+    for favorite in shared {
+        activate(&mut out, m.path == favorite.path);
+        out.push(
+            SidebarItem::new(bookmark_glyph(), &favorite.label())
+                .key(&crate::sidebar_order::path_key("ofav", &favorite.path))
+                .detail("Ofolder"),
+            Some(Action::Navigate(favorite.path.clone())),
+            None,
+            Kind::Shared(favorite.path.clone()),
         );
     }
     if !m.devices.list.is_empty() {
@@ -428,6 +443,17 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
                 }
             }
         }
+        Some(Kind::Shared(p)) => {
+            out.push((PopupItem::new(folder, "Abrir"), open(p)));
+            out.push((
+                PopupItem::new(plus, "Abrir en pestaña nueva").divider(),
+                tab(p),
+            ));
+            out.push((
+                PopupItem::new(trash_glyph(), "Quitar de favoritos de Ofolder"),
+                Pick::Run(vec![Action::OfolderUnfavorite(p.clone())]),
+            ));
+        }
         Some(Kind::Network(p)) => {
             out.push((PopupItem::new(folder, "Abrir"), open(p)));
             out.push((
@@ -456,7 +482,7 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
         _ => None,
     };
     if let Some(parent) = parent {
-        let keys = rail.section_keys(parent);
+        let keys = movable_keys(rail, parent);
         if let Some(key) = rail.items.get(i).map(|item| &item.key)
             && let Some(index) = keys.iter().position(|k| k == key)
         {
@@ -485,6 +511,16 @@ pub fn menu(m: &Model, rail: &Rail, i: usize) -> Vec<(PopupItem, Pick)> {
     out
 }
 
+/// Rows of `parent` that reorder: every row, except Ofolder's favorites
+/// among the bookmarks (their order belongs to Ofolder).
+pub fn movable_keys(rail: &Rail, parent: &str) -> Vec<String> {
+    let mut keys = rail.section_keys(parent);
+    if parent == "h:marks" {
+        keys.retain(|k| k.starts_with("mark:"));
+    }
+    keys
+}
+
 /// Sections whose rows can be reordered by dragging or with the row menu.
 pub const ORDERED_SECTIONS: [&str; 3] = ["h:places", "h:devices", "h:marks"];
 
@@ -494,8 +530,11 @@ pub fn drag_pick(m: &Model, rail: &Rail, key: &str, parent: &str, index: usize) 
     if !ORDERED_SECTIONS.contains(&parent) {
         return None;
     }
-    let keys = rail.section_keys(parent);
+    let keys = movable_keys(rail, parent);
     let from = keys.iter().position(|k| k == key)?;
+    // Ofolder's rows close the bookmark section and do not move: a drop
+    // among them lands after the last own bookmark.
+    let index = index.min(keys.len().saturating_sub(1));
     if from == index {
         return None;
     }
@@ -570,7 +609,10 @@ pub fn apply(m: &mut Model, pick: Pick) {
                 .cloned();
             match entry {
                 Some(e) if m.bookmarks.can_request() => {
-                    if !m.bookmarks.request(files_core::bookmarks::Op::Remove(e)) {
+                    let path = e.path.clone();
+                    if m.bookmarks.request(files_core::bookmarks::Op::Remove(e)) {
+                        m.share_favorite(path, false);
+                    } else {
                         m.bookmarks.notice = "Espera, reintenta u omite el intento anterior".into();
                     }
                 }
@@ -622,7 +664,8 @@ pub fn recent_items(list: &[files_core::recent::Recent]) -> Vec<fltk_omarchy::ov
                     None => p.display().to_string(),
                 }
             });
-            fltk_omarchy::overlay::MenuItem::new(crate::fonts::icon("\u{f15b}", ""), &name).detail(
+            let glyph = if r.folder { "\u{f07b}" } else { "\u{f15b}" };
+            fltk_omarchy::overlay::MenuItem::new(crate::fonts::icon(glyph, ""), &name).detail(
                 &format!("{folder} · {}", files_core::recent::short_time(&r.when)),
             )
         })
@@ -766,6 +809,70 @@ mod tests {
             assert_eq!(rail.drop_dir(at(key)), None, "{key}");
         }
         assert_eq!(rail.drop_dir(datos), None);
+    }
+
+    #[test]
+    fn ofolder_favorites_close_the_bookmarks_and_never_take_their_order() {
+        let mut m = Model::new("/fixture-rail".into());
+        m.loaded = true;
+        let mut doc = files_core::bookmarks::Document::default();
+        for (id, path) in [(1, "/fixture-rail/a"), (2, "/fixture-rail/b")] {
+            doc.rows.push(files_core::bookmarks::Entry {
+                id,
+                label: path.rsplit('/').next().unwrap().into(),
+                path: path.into(),
+            });
+        }
+        m.bookmarks.document = std::sync::Arc::new(doc);
+        m.ofolder.favorites = vec![
+            files_core::ofolder::Favorite {
+                path: "/fixture-rail/a".into(),
+                name: None,
+            },
+            files_core::ofolder::Favorite {
+                path: "/fixture-rail/dialogs".into(),
+                name: Some("Diálogos".into()),
+            },
+        ];
+        let rail = rail(&m, false, &[]);
+        let keys = rail.section_keys("h:marks");
+        assert_eq!(
+            keys.len(),
+            3,
+            "the shared duplicate is listed once: {keys:?}"
+        );
+        let row = rail
+            .items
+            .iter()
+            .position(|i| i.label == "Diálogos")
+            .unwrap();
+        assert_eq!(rail.items[row].detail, "Ofolder");
+        assert_eq!(
+            rail.kinds[row],
+            Kind::Shared("/fixture-rail/dialogs".into())
+        );
+        assert_eq!(rail.drop_dir(row), Some(Path::new("/fixture-rail/dialogs")));
+        assert_eq!(
+            labels(&menu(&m, &rail, row)),
+            [
+                "Abrir",
+                "Abrir en pestaña nueva",
+                "Quitar de favoritos de Ofolder"
+            ]
+        );
+        let last_own = rail.items.iter().position(|i| i.key == "mark:2").unwrap();
+        assert_eq!(
+            labels(&menu(&m, &rail, last_own))
+                .last()
+                .map(String::as_str),
+            Some("Mover arriba"),
+            "no 'Mover abajo' into Ofolder's rows"
+        );
+        assert!(drag_pick(&m, &rail, "mark:2", "h:marks", 2).is_none());
+        assert!(matches!(
+            drag_pick(&m, &rail, "mark:1", "h:marks", 2),
+            Some(Pick::MoveBookmark(k, 1)) if k == "mark:1"
+        ));
     }
 
     #[test]

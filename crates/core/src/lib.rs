@@ -96,6 +96,8 @@ pub mod devices;
 pub mod links;
 /// Network locations (SMB, SFTP, FTP, WebDAV, NFS) through the session's GVfs.
 pub mod network;
+/// Favorites and recent places shared with Ofolder's file-dialog rails.
+pub mod ofolder;
 /// New document from templates, new folder with selection.
 pub mod quick_ops;
 /// Permanent deletion (Shift+Delete, empty trash).
