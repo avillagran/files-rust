@@ -1,4 +1,5 @@
-//! Read-only ZIP catalog over the shared cancel/timeout/reap supervisor.
+//! Read-only archive catalog over the shared cancel/timeout/reap supervisor.
+//! ZIP32 is parsed natively; other formats are listed by bsdtar in the helper.
 use crate::text_preview_job::TextPreview;
 use files_core::protocol::{Request, Response};
 use std::{
@@ -35,7 +36,7 @@ impl Job {
             Ok(v) => Some(v),
             Err(mpsc::TryRecvError::Empty) => None,
             Err(mpsc::TryRecvError::Disconnected) => {
-                Some(Err("El listado ZIP terminó sin respuesta".into()))
+                Some(Err("El listado del archivo terminó sin respuesta".into()))
             }
         }
     }
@@ -58,7 +59,8 @@ fn decode(wire: &[u8]) -> io::Result<TextPreview> {
             ..
         } if text.len() <= MAX_TEXT
             && text.lines().count() <= 2000
-            && encoding == "ZIP · directorio central" =>
+            && (encoding == "ZIP · directorio central"
+                || encoding == "Archivo · listado bsdtar") =>
         {
             Ok(TextPreview {
                 text,
@@ -80,7 +82,8 @@ fn run(path: PathBuf, cancel: &AtomicBool) -> io::Result<TextPreview> {
         "preview_archive",
         cancel,
         std::env::current_exe()?.with_file_name("files-helper"),
-        Duration::from_secs(5),
+        // Solid tar.xz/7z listings decompress the whole stream.
+        Duration::from_secs(30),
         MAX_WIRE,
         None,
     )?;

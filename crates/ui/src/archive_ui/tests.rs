@@ -409,11 +409,7 @@ fn create_archive_review_is_readonly_and_apply_uses_captured_names() {
     let o = m.copy_last.as_ref().unwrap();
     assert!(o.creating);
     assert!(o.result.is_ok());
-    assert!(
-        crate::copy_report::describe(o)
-            .text
-            .contains("creación ZIP")
-    );
+    assert!(crate::copy_report::describe(o).text.contains("compresión"));
     assert_eq!(fs::read(f.0.join("source.zip")).unwrap(), zip(1));
     assert!(destination.is_file());
     close(&mut m.copy);
@@ -439,7 +435,7 @@ fn create_archive_source_change_after_review_never_publishes() {
     assert!(
         crate::copy_report::describe(o)
             .text
-            .contains("Creación ZIP incompleta")
+            .contains("Compresión incompleta")
     );
     close(&mut m.copy);
 }

@@ -16,6 +16,7 @@ fn scope(action: &Action) -> Option<Scope> {
         | Action::Trash
         | Action::CreateArchive
         | Action::ExtractArchive
+        | Action::ExtractHere
         | Action::ClipboardCopy
         | Action::ClipboardCut => Scope::Selection,
         Action::Properties => Scope::One,

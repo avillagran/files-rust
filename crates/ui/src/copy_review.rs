@@ -3,7 +3,11 @@ use crate::model::{Action, Model};
 pub fn supported(action: &Action) -> bool {
     matches!(
         action,
-        Action::CopyFiles | Action::MoveFiles | Action::CreateArchive | Action::ExtractArchive
+        Action::CopyFiles
+            | Action::MoveFiles
+            | Action::CreateArchive
+            | Action::ExtractArchive
+            | Action::ExtractHere
     )
 }
 pub fn pending_reason(m: &Model) -> Option<&'static str> {
@@ -59,7 +63,9 @@ pub fn reason(m: &Model, action: &Action) -> Option<&'static str> {
             Some("Selecciona hasta 128 raíces para mover")
         }
         Action::CreateArchive if count > 128 => Some("Selecciona hasta 128 raíces"),
-        Action::ExtractArchive if count != 1 => Some("Selecciona un ZIP para extraer"),
+        Action::ExtractArchive | Action::ExtractHere if count != 1 => {
+            Some("Selecciona un archivo comprimido para extraer")
+        }
         _ => None,
     }
 }

@@ -192,11 +192,12 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
             ),
             (row("  SFTP · montaje", "", false), Action::Sftp),
             (
-                row("󰆧 Crear ZIP: revisar", "", false),
+                row("󰆧 Comprimir…: revisar", "", false),
                 Action::CreateArchive,
             ),
+            (row("󰇚  Extraer aquí", "", false), Action::ExtractHere),
             (
-                row("󰇚  Extraer ZIP: revisar", "", false),
+                row("󰇚  Extraer en…: revisar", "", false),
                 Action::ExtractArchive,
             ),
             (
@@ -362,6 +363,7 @@ fn toolbar_group(kind: Kind, action: &Action) -> usize {
         | Action::Rename
         | Action::Trash
         | Action::CreateArchive
+        | Action::ExtractHere
         | Action::ExtractArchive => 0,
         Action::ClipboardCopy | Action::ClipboardCut | Action::ClipboardPaste => 1,
         Action::Selection(_) => 2,

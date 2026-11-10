@@ -53,3 +53,10 @@ Office uses the shared bounded decoder; no new preview feature or installed chan
 Creation/extraction destination execution/UI remain pending; do not infer them
 from a codec or plan test. Parser additionally retains central needed-version
 for local-header agreement in the shared member reader.
+
+## 2026-11-10 — Other formats
+
+The preview now routes every recognised archive name to `preview_archive`.
+ZIP32 still uses this native catalog; ZIP64, oversized ZIPs, tar.*, 7z, RAR
+and single compressed files are listed by an ephemeral `bsdtar -tvv` child in
+the helper, with unsafe members labelled. See `ARCHIVES.md`.

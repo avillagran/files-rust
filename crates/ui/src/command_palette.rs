@@ -204,19 +204,27 @@ pub const ITEMS: &[Spec] = &[
     ),
     spec!(
         "create-zip",
-        "Crear ZIP: revisar selección y destino",
+        "Comprimir: revisar selección, formato y destino",
         "",
-        "zip crear comprimir empaquetar compress archive",
+        "zip crear comprimir empaquetar compress archive tar xz gz zst 7z",
         Selection,
         Action::CreateArchive
     ),
     spec!(
         "extract",
-        "Extraer ZIP: revisar y aplicar",
+        "Extraer en…: revisar y aplicar",
         "",
-        "zip extraer extract descomprimir archivo",
+        "zip extraer extract descomprimir archivo tar 7z rar gz xz zst",
         Selection,
         Action::ExtractArchive
+    ),
+    spec!(
+        "extract-here",
+        "Extraer aquí",
+        "",
+        "extraer aqui here extract descomprimir zip tar 7z rar",
+        Selection,
+        Action::ExtractHere
     ),
     spec!(
         "move",

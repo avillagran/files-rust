@@ -657,9 +657,9 @@ impl Model {
                             crate::archive_operation::RecoveryAction::Sync => "Guardado ZIP",
                         }
                     } else if outcome.creating {
-                        "Creación ZIP"
+                        "Compresión"
                     } else if outcome.extracting {
-                        "Extracción ZIP"
+                        "Extracción"
                     } else if outcome.moving {
                         "Movimiento"
                     } else {
@@ -876,12 +876,12 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             _ if m.copy.creating()
                 && !matches!(phase, Phase::Paused | Phase::Cancelling | Phase::Held) =>
             {
-                "Creando ZIP"
+                "Comprimiendo"
             }
             _ if m.copy.extracting()
                 && !matches!(phase, Phase::Paused | Phase::Cancelling | Phase::Held) =>
             {
-                "Extrayendo ZIP"
+                "Extrayendo"
             }
             Phase::Paused => "En pausa",
             Phase::Cancelling => "Cancelando · esperando resultado",

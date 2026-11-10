@@ -1,6 +1,12 @@
+pub mod archive_bsdtar;
+pub mod archive_bsdtar_create;
+pub mod archive_bsdtar_extract;
+#[cfg(all(test, target_os = "linux"))]
+mod archive_bsdtar_tests;
 pub mod archive_create;
 pub mod archive_extract;
 pub mod archive_extract_fs;
+pub mod archive_format;
 pub mod archive_list;
 pub mod archive_member;
 pub mod bookmarks;

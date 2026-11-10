@@ -162,9 +162,16 @@ fn run() -> io::Result<()> {
     }
     #[cfg(target_os = "linux")]
     {
+        // preview_archive may run an ephemeral bsdtar child that inherits this
+        // limit; LZMA/zstd dictionaries need more than the 96 MiB default.
+        let bytes = if command == "preview_archive" {
+            768 * 1024 * 1024
+        } else {
+            96 * 1024 * 1024
+        };
         let limit = libc::rlimit {
-            rlim_cur: 96 * 1024 * 1024,
-            rlim_max: 96 * 1024 * 1024,
+            rlim_cur: bytes,
+            rlim_max: bytes,
         };
         if unsafe { libc::setrlimit(libc::RLIMIT_AS, &limit) } != 0 {
             return Err(io::Error::last_os_error());

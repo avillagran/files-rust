@@ -1137,9 +1137,8 @@ impl State {
                     options,
                 )) as Box<dyn Task>
             } else if path
-                .extension()
-                .and_then(|e| e.to_str())
-                .is_some_and(|e| e.eq_ignore_ascii_case("zip"))
+                .file_name()
+                .is_some_and(files_core::archive_format::is_archive_name)
             {
                 Box::new(crate::archive_preview_job::Job::start(path)) as Box<dyn Task>
             } else if let Some((info, position)) = audio_play {

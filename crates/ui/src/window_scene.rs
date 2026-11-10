@@ -50,6 +50,7 @@ pub fn validate(m: &Model, w: i32, h: i32) {
                 | Action::Rename
                 | Action::CopyFiles
                 | Action::ExtractArchive
+                | Action::ExtractHere
                 | Action::CreateArchive
                 | Action::Undo(_)
                 | Action::Open

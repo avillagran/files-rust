@@ -160,6 +160,7 @@ pub enum Action {
     NativePaste,
     MoveFiles,
     ExtractArchive,
+    ExtractHere,
     CreateArchive,
     ApplyArchive(u64, Option<u64>),
     ArchiveReview(u64, crate::archive_operation::RecoveryAction),
@@ -434,8 +435,15 @@ impl Action {
             Self::ArchiveClearPending(_) => Some("Cancelar trabajos pendientes antes de recuperar"),
             Self::ArchiveCommit(_) => Some("Confirmar recuperación ZIP revisada, Ctrl+Enter"),
             Self::ApplyArchive(..) => Some("Revisar ZIP o aplicar el plan mostrado"),
-            Self::CreateArchive => Some("Crear ZIP: revisar selección y destino sin sobrescribir"),
-            Self::ExtractArchive => Some("Extraer ZIP: revisar y aplicar en carpeta nueva"),
+            Self::CreateArchive => Some(
+                "Comprimir: zip, tar.xz, tar.gz, tar.zst o 7z (F4 cambia formato); nunca sobrescribe",
+            ),
+            Self::ExtractArchive => {
+                Some("Extraer en…: revisar destino y aplicar (zip, tar.*, 7z, rar, gz/xz/zst)")
+            }
+            Self::ExtractHere => {
+                Some("Extraer aquí: revisar y extraer en esta carpeta sin sobrescribir")
+            }
             Self::MoveFiles => Some("Mover selección, F6"),
             Self::PreviewNeighbor(-1) => Some("Elemento anterior de la carpeta, Alt+Arriba"),
             Self::PreviewNeighbor(1) => Some("Elemento siguiente de la carpeta, Alt+Abajo"),
@@ -536,6 +544,8 @@ pub struct Model {
     /// Rubber-band selection in progress.
     pub marquee: Option<Marquee>,
     pub archive_preparing: Option<(u64, files_core::copy_engine::Control)>,
+    /// Review id that "Extraer aquí" enqueues as soon as it succeeds.
+    pub archive_auto_apply: Option<u64>,
     pub move_preparing: Option<(u64, Arc<std::sync::atomic::AtomicBool>)>,
     pub move_review_fds: usize,
     pub copy_sources: HashMap<u64, PathBuf>,
@@ -778,6 +788,7 @@ impl Model {
             child_watch: Default::default(),
             child_pending: Default::default(),
             archive_preparing: None,
+            archive_auto_apply: None,
             move_preparing: None,
             move_review_fds: 0,
             copy_sources: HashMap::new(),
@@ -2719,6 +2730,7 @@ impl Model {
                 | Action::CopyFiles
                 | Action::MoveFiles
                 | Action::ExtractArchive
+                | Action::ExtractHere
                 | Action::CreateArchive
                 | Action::Rename
                 | Action::Trash
@@ -2847,6 +2859,7 @@ impl Model {
             Action::CopyFiles => self.open_copy(),
             Action::MoveFiles => self.open_copy_mode(true),
             Action::ExtractArchive => self.open_extract(),
+            Action::ExtractHere => self.open_extract_here(),
             Action::CreateArchive => self.open_create_archive(),
             Action::ArchiveReview(id, action) => self.review_archive_recovery(id, action),
             Action::ArchiveBack(stamp) => self.back_archive_recovery(stamp),
@@ -2970,6 +2983,9 @@ impl Model {
                     d.error.clear();
                     self.hits.clear();
                 }
+            }
+            Action::CopySkipExisting if self.copy_form.as_ref().is_some_and(|d| d.creating) => {
+                self.cycle_archive_format();
             }
             Action::CopySkipExisting => {
                 if let Some(form) = self

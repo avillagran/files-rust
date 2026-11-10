@@ -191,3 +191,11 @@ adds `unicode-bidi 0.3.18` and `unicode-segmentation 1.12.0` to the lockfile,
 both `MIT OR Apache-2.0`, with no additional Unicode license files or terms
 (LICENSE-* and sources reviewed). `pulldown-cmark =0.13.5` still
 resolves with the toolkit's ≥0.13.5 requirement.
+
+## 2026-11-10 — System archive tools
+
+Archive formats beyond ZIP32 use the base-system `bsdtar` (libarchive,
+BSD-2-Clause) and the stock `gzip`/`bzip2`/`xz`/`zstd` as ephemeral child
+processes from `/usr/bin` or `/bin`. Nothing is linked or redistributed and no
+Cargo package was added; a missing tool is shown as an unavailable format.
+Contract in `ARCHIVES.md`.

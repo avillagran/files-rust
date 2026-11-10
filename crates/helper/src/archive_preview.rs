@@ -1,5 +1,7 @@
-//! ZIP central-directory text only. No extraction, decompression or execution.
-//! Listing metadata does not prove payload integrity or that extraction is safe.
+//! Archive listing text only. ZIP32 uses the native central-directory parser;
+//! tar.*, 7z, RAR, ZIP64 and single compressed files are listed by an
+//! ephemeral `bsdtar -tvv` child (killed with this helper). No extraction or
+//! execution. Listing metadata does not prove payload integrity or safety.
 use files_core::archive_list::{self, Entry, Listing};
 use std::{io, path::Path};
 const MAX_FILE: u64 = 8 * 1024 * 1024 * 1024;
@@ -32,16 +34,134 @@ pub fn load(path: &Path) -> io::Result<crate::text_preview::Preview> {
             .custom_flags(libc::O_NOFOLLOW | libc::O_NONBLOCK | libc::O_CLOEXEC)
             .open(path)?;
         let metadata = file.metadata()?;
-        if !metadata.is_file() || metadata.len() > MAX_FILE {
+        use files_core::archive_format::Format;
+        let format = path.file_name().and_then(Format::from_name);
+        let native = format.is_none_or(|f| f == Format::Zip)
+            && metadata.is_file()
+            && metadata.len() <= MAX_FILE;
+        if native {
+            // The same opened FD is used throughout. Parent symlinks, mounts and
+            // concurrent in-place writes remain outside a snapshot guarantee.
+            return match archive_list::read(&mut file) {
+                Ok(list) => describe(&list),
+                // ZIP64 or unsupported native features: bsdtar lists it.
+                Err(native) if format.is_some() => external(path).map_err(|e| {
+                    io::Error::new(e.kind(), format!("ZIP nativo: {native} · bsdtar: {e}"))
+                }),
+                Err(native) => Err(native),
+            };
+        }
+        if format.is_none() {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidInput,
                 "ZIP debe ser archivo regular de hasta 8GiB",
             ));
         }
-        // The same opened FD is used throughout. Parent symlinks, mounts and
-        // concurrent in-place writes remain outside a snapshot guarantee.
-        describe(&archive_list::read(&mut file)?)
+        drop(file);
+        external(path)
     }
+}
+pub const EXTERNAL_ENCODING: &str = "Archivo · listado bsdtar";
+#[cfg(target_os = "linux")]
+fn external(path: &Path) -> io::Result<crate::text_preview::Preview> {
+    let listing = files_core::archive_bsdtar::list(
+        path,
+        &files_core::copy_engine::Control::default(),
+        MAX_LINES,
+    )?;
+    describe_external(&listing)
+}
+fn external_row(row: &files_core::archive_bsdtar::Row) -> String {
+    use files_core::archive_bsdtar::{Kind, display};
+    let kind = match row.kind {
+        Kind::File => "archivo",
+        Kind::Directory => "carpeta",
+        Kind::Symlink => "enlace",
+        Kind::Hardlink => "enlace duro",
+        Kind::Special(_) => "especial",
+    };
+    let target = row
+        .target
+        .as_ref()
+        .map(|t| format!(" → {}", display(t)))
+        .unwrap_or_default();
+    let problem = row
+        .problem
+        .map(|p| format!(" · INSEGURO: {p}"))
+        .unwrap_or_default();
+    format!(
+        "{}{target} [{kind}{problem}] · {} B · {}\n",
+        display(&row.name),
+        row.size,
+        row.mode
+    )
+}
+fn describe_external(
+    list: &files_core::archive_bsdtar::Listing,
+) -> io::Result<crate::text_preview::Preview> {
+    use std::fmt::Write;
+    let mut text = String::with_capacity(4096);
+    let _ = writeln!(
+        text,
+        "{} · {}\nSin extracción; contenido y sumas NO comprobados.\nNo se ejecutan ni se abren los nombres enumerados.",
+        list.format.label(),
+        list.reported
+    );
+    let _ = writeln!(
+        text,
+        "{} entradas · {} archivos · {} carpetas · {} enlaces · {}{}\n",
+        list.entries,
+        list.files,
+        list.directories,
+        list.symlinks,
+        list.bytes.map_or_else(
+            || "tamaño desconocido".into(),
+            |b| format!("{b} B declarados")
+        ),
+        if list.unsafe_entries > 0 {
+            format!(
+                " · {} INSEGURAS: la extracción se rechazará",
+                list.unsafe_entries
+            )
+        } else {
+            String::new()
+        }
+    );
+    let lines = text.lines().count();
+    let mut shown = 0usize;
+    for (index, row) in list.rows.iter().enumerate() {
+        let row = external_row(row);
+        if lines + index + 1 > MAX_LINES - 3
+            || text
+                .len()
+                .checked_add(row.len())
+                .is_none_or(|n| n > MAX_TEXT - FOOTER_RESERVE)
+        {
+            break;
+        }
+        text.push_str(&row);
+        shown = index + 1;
+    }
+    let total = usize::try_from(list.entries).unwrap_or(usize::MAX);
+    let truncated = shown != total;
+    let _ = writeln!(
+        text,
+        "\nEnumeradas {shown} de {total} entradas{}.",
+        if truncated {
+            " · LISTADO TRUNCADO"
+        } else {
+            ""
+        }
+    );
+    if text.len() > MAX_TEXT || text.lines().count() > MAX_LINES {
+        return Err(io::Error::other("Listado fuera del límite de presentación"));
+    }
+    Ok(crate::text_preview::Preview {
+        relative_source: None,
+        text,
+        encoding: EXTERNAL_ENCODING,
+        truncated,
+    })
 }
 fn row(entry: &Entry) -> String {
     let kind = if entry.symlink {
@@ -164,6 +284,53 @@ mod tests {
             "Enumeradas 1 de 1",
         ] {
             assert!(result.text.contains(expected));
+        }
+    }
+    #[test]
+    fn external_listing_labels_unsafe_members_and_links() {
+        use files_core::archive_bsdtar::{Kind, Listing, Row, Top};
+        let row = |name: &[u8], kind, target: Option<&[u8]>, problem| Row {
+            kind,
+            name: name.to_vec(),
+            size: 3,
+            mode: "-rw-r--r--".into(),
+            target: target.map(<[u8]>::to_vec),
+            problem,
+        };
+        let list = Listing {
+            format: files_core::archive_format::Format::SevenZip,
+            reported: "Archive Format: 7-Zip,  Compression: none".into(),
+            entries: 3,
+            files: 1,
+            directories: 0,
+            symlinks: 1,
+            bytes: Some(3),
+            top: Top::Many,
+            rows: vec![
+                row(b"a\xff", Kind::File, None, None),
+                row(
+                    b"l",
+                    Kind::Symlink,
+                    Some(b"../x"),
+                    Some("enlace simbólico que sale del archivo"),
+                ),
+                row(b"/abs", Kind::File, None, Some("ruta absoluta")),
+            ],
+            unsafe_entries: 2,
+            first_problem: None,
+        };
+        let p = describe_external(&list).unwrap();
+        assert_eq!(p.encoding, EXTERNAL_ENCODING);
+        assert!(!p.truncated);
+        for expected in [
+            "7z · Archive Format: 7-Zip",
+            "2 INSEGURAS",
+            "INSEGURO: ruta absoluta",
+            "l → ../x",
+            "a\\xFF",
+            "Enumeradas 3 de 3",
+        ] {
+            assert!(p.text.contains(expected), "{expected}\n{}", p.text);
         }
     }
     #[test]

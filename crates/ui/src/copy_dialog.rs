@@ -406,9 +406,9 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
                 ""
             },
             if d.creating {
-                "󰆧 Crear ZIP"
+                "󰆧 Comprimir"
             } else if d.extracting {
-                "󰇚  Extraer ZIP"
+                "󰇚  Extraer"
             } else if d.moving {
                 "󰁔  Mover"
             } else {
@@ -443,7 +443,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
         )
     } else if d.extracting {
         format!(
-            "ZIP: {}\nCarpeta: {}",
+            "Archivo: {}\nCarpeta: {}",
             files_core::name_label::label(&d.names[0]),
             files_core::name_label::label(d.source.as_os_str())
         )
@@ -483,9 +483,9 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
             "Ruta raw · Ctrl+A para sustituir completa"
         } else {
             if d.creating {
-                "Nuevo archivo ZIP · no puede existir"
+                "Archivo nuevo · la extensión elige el formato · F4 cambia"
             } else if d.extracting {
-                "Nueva carpeta destino · no puede existir"
+                "Destino · ZIP32: carpeta nueva; otros: nombre numerado si existe"
             } else if d.moving {
                 "Destino · Ctrl+A · Ctrl+Z · Ctrl+←/→"
             } else {
@@ -578,6 +578,20 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
         },
         Action::CopyStartPaused,
     );
+    if d.creating {
+        let format = d
+            .destination_path()
+            .file_name()
+            .and_then(files_core::archive_format::CreateFormat::from_name)
+            .map_or("?", |f| f.extension());
+        button(
+            p,
+            m,
+            Rect::new(x + 258, y + 172, (width - 278).min(260), 32),
+            &format!("󰆧 Formato: {format} · F4"),
+            Action::CopySkipExisting,
+        );
+    }
     if !d.moving && !d.extracting {
         let half = (width - 48) / 2;
         button(
@@ -607,10 +621,10 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
     } else if d.creating {
         archive_summary
             .as_deref()
-            .unwrap_or("ZIP32 DEFLATE. Revisa antes de crear; nunca sobrescribe. Sin ACL/xattrs.")
+            .unwrap_or("zip (nativo ZIP32), tar.xz, tar.gz, tar.zst o 7z (bsdtar). Revisa antes de crear; nunca sobrescribe.")
     } else if d.extracting {
         archive_summary.as_deref().unwrap_or(
-            "Sólo ZIP32. Revisar no crea salida; Aplicar extrae en carpeta nueva sin sobrescribir.",
+            "zip, tar.*, 7z, rar, gz/xz/zst. Revisar no crea salida; Aplicar verifica en temporal y publica sin sobrescribir.",
         )
     } else if !d.moving {
         d.policy_summary()
@@ -655,7 +669,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
             if d.preparing {
                 "Revisando…"
             } else if d.archive.is_some() {
-                "󰄬 Crear ZIP"
+                "󰄬 Comprimir"
             } else {
                 "󰆧 Revisar creación"
             }
@@ -665,7 +679,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, d: &mut Dialog, w: i32, h: i32)
             } else if d.archive.is_some() {
                 "󰄬 Aplicar extracción"
             } else {
-                "󰇚 Revisar ZIP"
+                "󰇚 Revisar archivo"
             }
         } else if d.moving {
             if d.preparing {

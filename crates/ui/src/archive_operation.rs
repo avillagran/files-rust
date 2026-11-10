@@ -1,7 +1,16 @@
-//! ZIP execution adapter for the existing global operation worker. No thread.
+//! Archive execution adapter for the existing global operation worker. No
+//! worker thread: native ZIP32 runs in-process; tar/7z/RAR/ZIP64 and single
+//! compressed files run an ephemeral bsdtar/decompressor child per job.
 use files_core::copy_engine::{Control, CopyMethod, CopyProgress, CopyReport, CopyRequest};
 use std::{ffi::OsStr, io, path::Path};
 
+/// Retained metadata, line channel and diagnostic buffers of one external
+/// child job, charged to the existing controller budget until ACK.
+#[cfg(target_os = "linux")]
+const EXTERNAL_RESERVE: usize = 1024 * 1024;
+/// Pinned source/parent/stage descriptors, three pipes and the output file.
+#[cfg(target_os = "linux")]
+const EXTERNAL_FDS: usize = 10;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum RecoveryAction {
     Cleanup,
@@ -25,6 +34,8 @@ pub enum Fixture {
 enum Work {
     Extract(Box<files_core::archive_extract_fs::Prepared>),
     Create(Box<files_core::archive_create::Prepared>),
+    ExternalExtract(Box<files_core::archive_bsdtar_extract::Prepared>),
+    ExternalCreate(Box<files_core::archive_bsdtar_create::Prepared>),
     Recover {
         failure: Failure,
         action: RecoveryAction,
@@ -42,6 +53,67 @@ pub struct Prepared {
 }
 impl Prepared {
     pub fn capture(
+        source: &Path,
+        parent: &Path,
+        name: &OsStr,
+        control: &Control,
+    ) -> io::Result<Self> {
+        #[cfg(target_os = "linux")]
+        {
+            use files_core::archive_format::Format;
+            match source.file_name().and_then(Format::from_name) {
+                None => Self::capture_native(source, parent, name, control),
+                Some(Format::Zip) => match Self::capture_native(source, parent, name, control) {
+                    Ok(p) => Ok(p),
+                    Err(e)
+                        if matches!(
+                            e.kind(),
+                            io::ErrorKind::AlreadyExists | io::ErrorKind::Interrupted
+                        ) =>
+                    {
+                        Err(e)
+                    }
+                    // ZIP64, more than the native caps, or other unsupported
+                    // ZIP features: review again through bsdtar.
+                    Err(native) => {
+                        Self::capture_external(source, parent, name, control).map_err(|e| {
+                            io::Error::new(e.kind(), format!("ZIP nativo: {native} · bsdtar: {e}"))
+                        })
+                    }
+                },
+                Some(_) => Self::capture_external(source, parent, name, control),
+            }
+        }
+        #[cfg(not(target_os = "linux"))]
+        {
+            Self::capture_native(source, parent, name, control)
+        }
+    }
+    #[cfg(target_os = "linux")]
+    fn capture_external(
+        source: &Path,
+        parent: &Path,
+        name: &OsStr,
+        control: &Control,
+    ) -> io::Result<Self> {
+        let token =
+            files_core::archive_bsdtar_extract::Prepared::capture(source, parent, name, control)?;
+        let outcome_bytes = 64 * 1024;
+        let reservation = token.retained_bytes() + EXTERNAL_RESERVE + outcome_bytes;
+        let paths = vec![CopyRequest {
+            source: token.source().into(),
+            destination: token.destination(),
+        }];
+        Ok(Self {
+            token: Work::ExternalExtract(Box::new(token)),
+            paths,
+            reservation,
+            outcome_bytes,
+            parent: Some(parent.into()),
+            fixture: None,
+        })
+    }
+    fn capture_native(
         source: &Path,
         parent: &Path,
         name: &OsStr,
@@ -97,6 +169,26 @@ impl Prepared {
     ) -> io::Result<Self> {
         #[cfg(target_os = "linux")]
         {
+            use files_core::archive_format::CreateFormat;
+            if CreateFormat::from_name(name).is_some_and(|f| f != CreateFormat::Zip) {
+                let token = files_core::archive_bsdtar_create::Prepared::capture(
+                    source, names, parent, name, control,
+                )?;
+                let outcome_bytes = 64 * 1024;
+                let reservation = token.retained_bytes() + EXTERNAL_RESERVE + outcome_bytes;
+                let paths = vec![CopyRequest {
+                    source: source.into(),
+                    destination: token.destination(),
+                }];
+                return Ok(Self {
+                    token: Work::ExternalCreate(Box::new(token)),
+                    paths,
+                    reservation,
+                    outcome_bytes,
+                    parent: Some(parent.into()),
+                    fixture: None,
+                });
+            }
             let token = files_core::archive_create::Prepared::capture(
                 source, names, parent, name, control,
             )?;
@@ -126,7 +218,7 @@ impl Prepared {
     pub fn creating(&self) -> bool {
         #[cfg(target_os = "linux")]
         {
-            matches!(self.token, Work::Create(_))
+            matches!(self.token, Work::Create(_) | Work::ExternalCreate(_))
         }
         #[cfg(not(target_os = "linux"))]
         {
@@ -144,6 +236,16 @@ impl Prepared {
                     files_core::format_size(token.plan().bytes)
                 ),
                 Work::Recover { action, .. } => action.title().into(),
+                Work::ExternalExtract(token) => format!(
+                    "{}\nAplicar: temporal privado, verificación y publicación sin sobrescribir.",
+                    token.summary()
+                ),
+                Work::ExternalCreate(token) => format!(
+                    "{} entradas · {} de origen\n{} · enlaces guardados como enlaces · sin ACL/xattrs\nNunca sobrescribe: nombre numerado si existe.",
+                    token.entries(),
+                    files_core::format_size(token.bytes()),
+                    token.format().extension()
+                ),
                 Work::Create(token) => format!(
                     "{} entradas · {} de origen\nDEFLATE · enlaces literales\nUTC/2s · sin ACL/xattrs",
                     token.entries(),
@@ -166,6 +268,13 @@ impl Prepared {
         self.reservation
     }
     pub fn fd_count(&self) -> usize {
+        #[cfg(target_os = "linux")]
+        if matches!(
+            self.token,
+            Work::ExternalExtract(_) | Work::ExternalCreate(_)
+        ) {
+            return EXTERNAL_FDS;
+        }
         if self.creating() {
             76
         } else {
@@ -252,6 +361,52 @@ impl Prepared {
         #[cfg(target_os = "linux")]
         {
             match self.token {
+                Work::ExternalExtract(token) => {
+                    let path = &self.paths[0];
+                    let done = token
+                        .execute(control, |bytes, entries| {
+                            progress(CopyProgress {
+                                source: &path.source,
+                                destination: &path.destination,
+                                bytes_copied: bytes,
+                                entries_copied: entries,
+                                method: CopyMethod::Stream,
+                            })
+                        })
+                        .map_err(Failure::ExternalExtract)?;
+                    Ok(CopyReport {
+                        completed_count: 1,
+                        completed: vec![done.destination],
+                        renamed_count: u64::from(done.renamed),
+                        bytes_copied: done.totals.bytes,
+                        files_copied: done.totals.files,
+                        directories_copied: done.totals.directories,
+                        symlinks_copied: done.totals.symlinks,
+                        ..Default::default()
+                    })
+                }
+                Work::ExternalCreate(token) => {
+                    let path = &self.paths[0];
+                    let done = token
+                        .execute(control, |bytes, entries| {
+                            progress(CopyProgress {
+                                source: &path.source,
+                                destination: &path.destination,
+                                bytes_copied: bytes,
+                                entries_copied: entries,
+                                method: CopyMethod::Stream,
+                            })
+                        })
+                        .map_err(Failure::ExternalCreate)?;
+                    Ok(CopyReport {
+                        completed_count: 1,
+                        completed: vec![done.destination],
+                        renamed_count: u64::from(done.renamed),
+                        bytes_copied: done.bytes,
+                        files_copied: done.entries,
+                        ..Default::default()
+                    })
+                }
                 Work::Create(token) => {
                     let path = &self.paths[0];
                     let mut paused = false;
@@ -366,6 +521,10 @@ pub enum Failure {
         error: Box<files_core::archive_extract_fs::Failure>,
         cancelled: bool,
     },
+    #[cfg(target_os = "linux")]
+    ExternalExtract(Box<files_core::archive_bsdtar_extract::Failure>),
+    #[cfg(target_os = "linux")]
+    ExternalCreate(Box<files_core::archive_bsdtar_create::Failure>),
     #[cfg(not(target_os = "linux"))]
     Unavailable,
 }
@@ -374,20 +533,27 @@ impl Failure {
     fn core(&self) -> &files_core::archive_extract_fs::Failure {
         match self {
             Self::Core(e) | Self::Recovery { error: e, .. } => e,
-            Self::Create(_) => unreachable!("creation is not extraction recovery"),
+            Self::Create(_) | Self::ExternalExtract(_) | Self::ExternalCreate(_) => {
+                unreachable!("only native extraction has recovery")
+            }
         }
     }
     #[cfg(target_os = "linux")]
     fn into_core(self) -> Box<files_core::archive_extract_fs::Failure> {
         match self {
             Self::Core(e) | Self::Recovery { error: e, .. } => e,
-            Self::Create(_) => unreachable!("creation is not extraction recovery"),
+            Self::Create(_) | Self::ExternalExtract(_) | Self::ExternalCreate(_) => {
+                unreachable!("only native extraction has recovery")
+            }
         }
     }
     pub fn allows(&self, action: RecoveryAction) -> bool {
         #[cfg(target_os = "linux")]
         {
-            if matches!(self, Self::Create(_)) {
+            if matches!(
+                self,
+                Self::Create(_) | Self::ExternalExtract(_) | Self::ExternalCreate(_)
+            ) {
                 return false;
             }
             match action {
@@ -410,6 +576,10 @@ impl Failure {
             Self::Recovery { cancelled, .. } => *cancelled,
             #[cfg(target_os = "linux")]
             Self::Create(e) => e.cancelled,
+            #[cfg(target_os = "linux")]
+            Self::ExternalExtract(e) => e.cancelled,
+            #[cfg(target_os = "linux")]
+            Self::ExternalCreate(e) => e.cancelled,
             #[cfg(not(target_os = "linux"))]
             Self::Unavailable => false,
         }
@@ -418,6 +588,8 @@ impl Failure {
         match self {
             #[cfg(target_os = "linux")]
             Self::Create(e) => e.publication == files_core::archive_create::Publication::Uncertain,
+            #[cfg(target_os = "linux")]
+            Self::ExternalExtract(_) | Self::ExternalCreate(_) => false,
             #[cfg(target_os = "linux")]
             Self::Core(e) | Self::Recovery { error: e, .. } => {
                 e.publication == files_core::archive_extract_fs::Publication::Uncertain
@@ -428,6 +600,10 @@ impl Failure {
     }
     pub fn recovery_needed(&self) -> bool {
         match self {
+            #[cfg(target_os = "linux")]
+            Self::ExternalExtract(e) => e.retained.is_some(),
+            #[cfg(target_os = "linux")]
+            Self::ExternalCreate(e) => e.retained.is_some(),
             #[cfg(target_os = "linux")]
             Self::Create(e) => {
                 e.stage.is_some()
@@ -451,6 +627,10 @@ impl std::fmt::Display for Failure {
         match self {
             #[cfg(target_os = "linux")]
             Self::Create(e) => std::fmt::Display::fmt(e, f),
+            #[cfg(target_os = "linux")]
+            Self::ExternalExtract(e) => std::fmt::Display::fmt(e, f),
+            #[cfg(target_os = "linux")]
+            Self::ExternalCreate(e) => std::fmt::Display::fmt(e, f),
             #[cfg(target_os = "linux")]
             Self::Core(e) | Self::Recovery { error: e, .. } => {
                 use files_core::archive_extract_fs::{Cleanup, Publication};

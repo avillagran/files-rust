@@ -322,3 +322,15 @@ retained file. Published/unsynced/uncertain states are distinct from success.
 
 Durable crash journal and explicit creation-failure recovery UI, ZIP64/TAR,
 full metadata fidelity, other OS and process resource/startup gates remain pending.
+
+## 2026-11-10 — External formats (source only)
+
+tar.*, 7z, RAR (read-only), ZIP64/oversized ZIP and single compressed files
+are extracted, listed and (tar.xz/tar.gz/tar.zst/7z) created through an
+ephemeral `bsdtar` or decompressor child, with format-specific review,
+verified private staging, no-replace numbered publication and retained failed
+staging. The native ZIP32 path above is unchanged and remains first for ZIP;
+it falls back to bsdtar only when its own review rejects the archive for a
+reason other than an occupied destination or cancellation. Contract, budgets
+and evidence: `ARCHIVES.md`. Native recovery buttons do not apply to external
+jobs; their failures keep `.files-extract-failed-<hex>` for manual review.

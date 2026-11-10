@@ -1,4 +1,6 @@
-//! Extraction uses the existing destination modal, AuxIo and global queue.
+//! Archive create/extract use the existing destination modal, AuxIo and global
+//! queue. "Extraer aquí" reviews into the current folder and enqueues on a
+//! successful review; "Extraer en…" keeps the explicit review/Apply flow.
 use crate::{copy_dialog::Dialog, copy_job::Request, model::Model};
 use files_core::copy_engine::Control;
 
@@ -8,7 +10,7 @@ impl Model {
             || self.move_preparing.is_some()
             || self.mutation_applied
         {
-            self.error = "Espera la revisión pendiente antes de crear ZIP".into();
+            self.error = "Espera la revisión pendiente antes de comprimir".into();
             return;
         }
         self.open_copy_mode(false);
@@ -17,7 +19,7 @@ impl Model {
         };
         if form.names.is_empty() || form.names.len() > 128 || form.multi.is_some() {
             self.copy_form = None;
-            self.error = "Crear ZIP: selecciona hasta128 raíces de una carpeta".into();
+            self.error = "Comprimir: selecciona hasta 128 elementos de una carpeta".into();
             return;
         }
         let mut name = if form.names.len() == 1 {
@@ -30,6 +32,54 @@ impl Model {
         form.extracting = true;
         form.creating = true;
         form.capture_destination(destination);
+        form.touch();
+        self.hits.clear();
+    }
+    /// Nautilus-style "Extract Here": same review, destination is the current
+    /// folder, and a successful review is enqueued without a second click.
+    pub fn open_extract_here(&mut self) {
+        self.open_extract();
+        let Some(form) = self
+            .copy_form
+            .as_mut()
+            .filter(|d| d.extracting && !d.creating)
+        else {
+            return;
+        };
+        // "Here" is the archive's own folder, never the opposite pane.
+        let planned = form.destination_path();
+        let Some(name) = planned.file_name() else {
+            return;
+        };
+        let destination = form.source.join(name);
+        let mut form = self.copy_form.take().expect("extract dialog");
+        form.capture_destination(destination);
+        self.start_extract(form);
+        if let Some(id) = self.copy_form.as_ref().and_then(|d| d.prepare_id) {
+            self.archive_auto_apply = Some(id);
+        }
+    }
+    /// Cycle .zip → .tar.xz → .tar.gz → .tar.zst → .7z in the compress dialog.
+    pub fn cycle_archive_format(&mut self) {
+        let Some(form) = self
+            .copy_form
+            .as_mut()
+            .filter(|d| d.creating && !d.preparing)
+        else {
+            return;
+        };
+        let destination = form.destination_path();
+        let Some(name) = destination.file_name() else {
+            return;
+        };
+        use files_core::archive_format::CreateFormat;
+        let next = CreateFormat::from_name(name)
+            .unwrap_or(CreateFormat::Zip)
+            .next()
+            .rename(name);
+        form.capture_destination(destination.with_file_name(next));
+        form.prepare_id = None;
+        form.error.clear();
         form.touch();
         self.hits.clear();
     }
@@ -46,7 +96,7 @@ impl Model {
             .len()
             .max(usize::from(self.selected.is_some()));
         if count != 1 {
-            self.error = "Selecciona un ZIP para extraer en una carpeta nueva".into();
+            self.error = "Selecciona un archivo comprimido para extraer".into();
             return;
         }
         self.open_copy_mode(false);
@@ -57,11 +107,21 @@ impl Model {
             self.copy_form = None;
             return;
         }
-        let mut name = std::path::Path::new(&form.names[0])
-            .file_stem()
-            .unwrap_or(&form.names[0])
-            .to_os_string();
-        name.push("-extraido");
+        use files_core::archive_format::Format;
+        let name = match Format::from_name(&form.names[0]) {
+            // Native ZIP32 keeps its exclusive "-extraido" child folder.
+            Some(Format::Zip) | None => {
+                let mut name = std::path::Path::new(&form.names[0])
+                    .file_stem()
+                    .unwrap_or(&form.names[0])
+                    .to_os_string();
+                name.push("-extraido");
+                name
+            }
+            // Other formats publish their single top-level entry, or a folder
+            // named after the archive, under a numbered name if taken.
+            Some(_) => Format::stem(&form.names[0]),
+        };
         let destination = form.destination_path().join(name);
         form.extracting = true;
         form.capture_destination(destination);
@@ -97,9 +157,9 @@ impl Model {
                     self.copy_owners.insert(id, self.pane_owner());
                     self.copy_locations.insert(id, destination);
                     self.operation_message = Some(format!(
-                        "{} ZIP #{id} encolada",
+                        "{} #{id} encolada",
                         if form.creating {
-                            "Creación"
+                            "Compresión"
                         } else {
                             "Extracción"
                         }
@@ -211,10 +271,13 @@ impl Model {
             form.error = "Revisión cancelada; vuelve a revisar".into();
             return;
         }
+        let auto = self.archive_auto_apply.take() == Some(id);
+        let mut apply = false;
         match result {
             Ok(prepared) => {
                 form.archive = Some(prepared);
                 form.error.clear();
+                apply = auto;
             }
             Err(error) => {
                 form.prepare_id = None;
@@ -222,11 +285,15 @@ impl Model {
             }
         }
         self.hits.clear();
+        if apply {
+            self.start_copy();
+        }
     }
     pub fn archive_review_worker_lost(&mut self) -> bool {
         let Some((id, control)) = self.archive_preparing.take() else {
             return false;
         };
+        self.archive_auto_apply = None;
         control.cancel();
         if let Some(form) = self
             .copy_form
@@ -242,5 +309,7 @@ impl Model {
     }
 }
 
+#[cfg(all(test, target_os = "linux"))]
+mod external_tests;
 #[cfg(all(test, target_os = "linux"))]
 mod tests;

@@ -1087,8 +1087,8 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             ("  Comandos · Ctrl+Shift+P", Action::Commands),
             ("  Gestor de tamaños", Action::Sizes),
             ("  SFTP · montaje", Action::Sftp),
-            ("󰇚  Extraer ZIP: revisar", Action::ExtractArchive),
-            ("󰆧 Crear ZIP: revisar", Action::CreateArchive),
+            ("󰇚  Extraer en…: revisar", Action::ExtractArchive),
+            ("󰆧 Comprimir…: revisar", Action::CreateArchive),
             (
                 if m.sizes.paused() {
                     "  Reanudar tamaños"
@@ -1155,8 +1155,8 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                     Action::PauseSizes(true) => "  Pausar tamaños",
                     Action::PauseSizes(false) => "  Reanudar tamaños",
                     Action::RetrySizeErrors => "  Reintentar fallidos",
-                    Action::ExtractArchive => "󰇚  Extraer ZIP",
-                    Action::CreateArchive => "󰆧  Crear ZIP",
+                    Action::ExtractArchive => "󰇚  Extraer en…",
+                    Action::CreateArchive => "󰆧  Comprimir…",
                     Action::Properties => "  Propiedades",
                     Action::ClipboardCopy => "  Copiar (files)",
                     Action::ClipboardCut => "  Cortar (files)",

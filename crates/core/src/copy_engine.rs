@@ -245,6 +245,10 @@ impl Control {
     pub fn is_cancelled(&self) -> bool {
         self.state.cancelled.load(Ordering::Acquire)
     }
+    /// Observation for external child processes that must be stopped while paused.
+    pub fn is_paused(&self) -> bool {
+        *self.state.paused.lock().unwrap_or_else(|e| e.into_inner())
+    }
     #[cfg(target_os = "linux")]
     pub(crate) fn checkpoint(&self) -> io::Result<()> {
         let mut paused = self.state.paused.lock().unwrap_or_else(|e| e.into_inner());

@@ -44,9 +44,9 @@ pub fn describe(outcome: &Outcome) -> Details {
             crate::archive_operation::RecoveryAction::Sync => "confirmación de guardado ZIP",
         }
     } else if outcome.creating {
-        "creación ZIP"
+        "compresión"
     } else if outcome.extracting {
-        "extracción ZIP"
+        "extracción"
     } else if outcome.exdev.is_some() {
         "movimiento EXDEV / recuperación"
     } else if outcome.moving {
@@ -72,8 +72,14 @@ pub fn describe(outcome: &Outcome) -> Details {
         Ok(_) if outcome.archive_action == Some(crate::archive_operation::RecoveryAction::Sync) => {
             "Guardado confirmado; contenido publicado conservado sin volver a extraer"
         }
-        Ok(_) if outcome.creating => "ZIP creado y sincronizado sin sobrescribir",
-        Ok(_) if outcome.extracting => "ZIP extraído y sincronizado sin sobrescribir",
+        Ok(r) if outcome.creating && r.renamed_count > 0 => {
+            "Archivo creado y sincronizado con nombre numerado (el existente se conserva)"
+        }
+        Ok(_) if outcome.creating => "Archivo comprimido creado y sincronizado sin sobrescribir",
+        Ok(r) if outcome.extracting && r.renamed_count > 0 => {
+            "Extraído con nombre numerado; el destino existente se conserva"
+        }
+        Ok(_) if outcome.extracting => "Archivo extraído y sincronizado sin sobrescribir",
         Ok(_) if outcome.exdev.is_some() => "Movimiento EXDEV terminado con journal y verificación",
         Ok(_) if outcome.moving => "Movimiento nativo terminado (mismo filesystem)",
         Ok(r) if r.renamed_count > 0 => "Copia finalizada conservando ambos con nombres numerados",
@@ -98,10 +104,10 @@ pub fn describe(outcome: &Outcome) -> Details {
             "Guardado sin confirmar; no se volvió a extraer ni a copiar"
         }
         Err(Failure::Archive(e)) if outcome.creating && e.cancelled() => {
-            "Creación ZIP cancelada; revisa el estado de los temporales"
+            "Compresión cancelada; revisa el estado de los temporales"
         }
         Err(Failure::Archive(_)) if outcome.creating => {
-            "Creación ZIP incompleta; revisa publicación y temporales"
+            "Compresión incompleta; revisa publicación y temporales"
         }
         Err(Failure::Archive(_)) => {
             "Extracción incompleta; revisa publicación y limpieza antes de reintentar"

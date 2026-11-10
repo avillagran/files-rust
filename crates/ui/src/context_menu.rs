@@ -213,8 +213,13 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
                 !busy && !m.delete.busy(),
             ),
             header("COMPRIMIR"),
-            item("󰆧 Crear ZIP: revisar", Action::CreateArchive, !busy),
-            item("󰇚  Extraer ZIP: revisar", Action::ExtractArchive, !busy),
+            item(
+                "󰆧 Comprimir…: revisar formato",
+                Action::CreateArchive,
+                !busy,
+            ),
+            item("󰇚  Extraer aquí", Action::ExtractHere, !busy),
+            item("󰇚  Extraer en…: revisar", Action::ExtractArchive, !busy),
             header("ELIMINAR"),
             item("  Papelera · Supr", Action::Trash, !busy),
             item(
@@ -422,6 +427,7 @@ pub fn layout(target: Target) -> Option<&'static [Node]> {
             "Comprimir",
             &[
                 |a| matches!(a, Action::CreateArchive),
+                |a| matches!(a, Action::ExtractHere),
                 |a| matches!(a, Action::ExtractArchive),
             ],
         ),
