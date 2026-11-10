@@ -43,8 +43,8 @@ States: **yes** · **partial** · **no**. Priority: P1 = noticeable in daily use
 | 22 | User scripts / actions | no | — | P2 |
 | 23 | Conflicts: replace, merge, per file | partial | no replace or merge | P2 |
 | 24 | Operation progress | yes | — | — |
-| 25 | Starred | no | — | P2 |
-| 26 | Recent | partial | bounded local XBEL menu locates an existing file in its folder; no dedicated recent-files view or remote entries | P2 |
+| 25 | Starred | yes | files and folders in a Files-owned list (`$XDG_DATA_HOME/files/starred`, no Tracker): Ctrl+E / context menu / palette, row emblem in List view, rail "Destacados" virtual listing with missing items shown unavailable and removable ([RECENT-STARRED](RECENT-STARRED.md), 2026-11-10); no emblem in Grid/Columns yet | P2 |
+| 26 | Recent | yes | rail "Recientes" virtual listing (desktop XBEL + Ofolder, 200 newest existing local files and folders; name / folder / time; open, containing folder, remove entry) and the quick menu; Files records the files it opens in `recently-used.xbel` (preference `record_recent`) ([RECENT-STARRED](RECENT-STARRED.md), 2026-11-10); remote (non-`file://`) entries are not listed | P2 |
 | 27 | Sidebar: bookmarks, live devices, network | partial | toolkit Sidebar: places, bookmark reorder, row menus, device actions and reviewed folder drops; network browsing missing; motion acceptance remains separate | P3 |
 | 28 | Mount/unmount/eject, space per device | **yes** | block 4: udisksctl, free space, eject with power-off | — |
 | 29 | Network: sftp/smb/ftp/dav/nfs | partial | typed URIs mount through the session's GVfs (d636633; FTP exercised end to end, SMB/WebDAV not against a real server); no discovery or keyring | P3 |

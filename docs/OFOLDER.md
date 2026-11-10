@@ -18,7 +18,10 @@ and write nothing.
 - **Recents.** The "Recientes" menu merges Ofolder's recent files and folders
   with the desktop's `recently-used.xbel`, newest first, one entry per path.
   Picking a folder opens it; picking a file opens its folder with the file
-  selected. Files never writes Ofolder's recents.
+  selected. Files never writes Ofolder's recents. The browsable "Recientes"
+  listing merges them the same way; removing an Ofolder-only entry hides it
+  in Files until Ofolder records a newer use ([RECENT-STARRED](RECENT-STARRED.md)).
+  Stars stay separate from Ofolder's favorites.
 
 ## Files and protocol (checked against Ofolder's source on 2026-11-09)
 

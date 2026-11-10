@@ -273,6 +273,9 @@ the active profile, or its first chord, or nothing.
 | Ctrl+S, Ctrl+Shift+O, Ctrl+M, Ctrl+Shift+M | Select by pattern, open with, link to the copied items, create links |
 | Ctrl+C / Ctrl+X / Ctrl+V, Ctrl+Shift+V, Ctrl+Alt+C | Files clipboard copy / cut / paste, system paste, copy path |
 | Ctrl+D / Ctrl+Alt+D | Bookmark the folder / favorites and places |
+| Ctrl+Alt+R / Ctrl+Alt+E | Recientes / Destacados virtual listings ([RECENT-STARRED](RECENT-STARRED.md)) |
+| Ctrl+E | Star or unstar the marked items (or the focused one); in a listing, the focused row |
+| Ctrl+Alt+O | In Recientes / Destacados: open the containing folder with the item selected |
 | Ctrl+H, Ctrl+., Ctrl+Alt+I, Ctrl+Alt+B | Hidden files, terminal here, inspector, MC operation bar |
 | Ctrl+Shift+Space, Ctrl+Alt+Space | Sizes of the listed folders, size manager |
 | F2, F8 / Delete, Shift+Delete | Rename, move to trash, delete permanently (confirmed) |
@@ -313,6 +316,7 @@ has no Enter binding: it has no non-mutating default action.
 | Properties | Enter / KP Enter, Esc and Tab handled in `properties_ui.rs` (owned by the properties work, unchanged here) |
 | Operation notices | Enter / KP Enter or Esc dismiss, Ctrl+Alt+N focuses them; a ZIP recovery confirmation needs Ctrl+Enter, Esc goes back |
 | Trash browser | Esc closes, R restores, Delete purges (confirmed), Ctrl+Delete empties (confirmed), F5 reloads, arrows/PgUp/PgDn/Home/End move; no Enter (no non-mutating default) |
+| Recientes / Destacados | Enter opens (folders navigate), Ctrl+Alt+O containing folder, Delete or F8 removes the entry only (never the file), Ctrl+E star, typing filters names, Backspace edits the filter then goes back, Esc clears the filter then goes back, Alt+Left goes back, arrows/PgUp/PgDn/Home/End move, Menu/Shift+F10 row menu, F5/Ctrl+R reload; file actions (trash, delete, rename, cut, paste, copy, move, new) are refused with a status hint |
 | Favorites and places panel | Enter / KP Enter open, Esc closes, F2 label, Delete removes |
 | Saved searches | Enter / KP Enter load, Alt+Enter here, Esc closes, Delete removes |
 | SHA-256 results | Enter / KP Enter locate, Esc or Ctrl+W close, F5 start, F6 recapture, Ctrl+C copy |
