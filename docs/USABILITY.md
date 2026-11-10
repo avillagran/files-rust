@@ -202,10 +202,51 @@ See SFTP-PREPARATION.md and SFTP-MOUNT-CONTRACT.md; N01 stays open.
 
 ## Keyboard map (2026-11-10)
 
-Browser chords, as dispatched by `event()` in `crates/ui/src/lib.rs` and the
-model helpers in `crates/ui/src/key_commands.rs`. Modal panels (preview,
-search, dialogs, palette) take keys first; F5 copy, F6 move, F9 dual pane,
-Ctrl+1..5, Ctrl+I, Ctrl+N, Ctrl+Space, Alt+Down and Ctrl+F are unchanged.
+Browser chords come from one table, `crates/ui/src/shortcuts.rs`, per
+shortcut profile. The dispatcher (`event()` and `browser_chord()` in
+`crates/ui/src/lib.rs`), the help (F1), the command palette, the toolkit
+and painted menus, the context menu, the MC operation bar, toolbar hints,
+hover tooltips and status tips all print the chords of the active profile
+from that table, and unit tests check that every chord resolves to its
+command and that no two commands share a chord in a profile. Modal panels
+(preview, search, dialogs, palette) take keys first.
+
+### Shortcut profile
+
+The persisted preference `shortcuts = "files" | "nautilus"` in
+`config.toml` defaults to `files` (the historical bindings). Switch it live
+from Preferences ("Atajos: Files" / "Atajos: Nautilus") or the palette.
+Commands without a chord in a profile stay in the palette (help shows
+"Paleta (Ctrl+Shift+P)") and, where they apply, in the menus.
+
+| Command | Files | Nautilus |
+| --- | --- | --- |
+| Copy selection: review destination | F5 | palette, context menu, MC bar |
+| Move selection: review destination | F6 | palette, context menu, MC bar |
+| Reload folder | Ctrl+R | F5 / Ctrl+R |
+| Cycle focus: list → places rail → tab strip → list (other pane in dual mode) | Tab / Shift+Tab (palette) | F6 (also Tab / Shift+Tab) |
+| Dual pane | F9 | F3 |
+| Places rail wide / compact (pin) | Preferences, palette | F9 |
+| Preview | Space / F3 | Space |
+| List / Grid / Groups / Columns / Space views | Ctrl+2 / Ctrl+5 / Ctrl+1 / Ctrl+3 / Ctrl+4 | Ctrl+1 / Ctrl+2 / Ctrl+3 / Ctrl+4 / Ctrl+5 |
+| Properties | Alt+Enter | Ctrl+I / Alt+Enter |
+| Invert selection | Ctrl+I | Ctrl+Shift+I |
+| New window on the current folder | palette | Ctrl+N |
+| New file | Ctrl+N | palette, background menu |
+| New folder | F7 / Ctrl+Shift+N | Ctrl+Shift+N / F7 |
+| Toggle the focused mark without moving | Ctrl+Insert | Ctrl+Space / Ctrl+Insert |
+| Size of the focused folder | Ctrl+Space | palette, inspector |
+| Open the focused item | Enter | Enter / Alt+Down |
+| Ancestors menu (breadcrumbs) | Alt+Down | palette, `…` in the path |
+| Recursive search / local filter | Ctrl+Shift+F / Ctrl+F | Ctrl+F / Ctrl+Shift+F |
+
+Ctrl+N in the Nautilus profile (or "Nueva ventana" in the palette) starts a
+detached process of the same binary (`std::env::current_exe`, `--no-session
+-- <folder>`, its own process group) on the current folder; tests inject the
+spawner. The MC operation bar labels each button with its function key in
+the active profile, or its first chord, or nothing.
+
+### Chords shared by both profiles
 
 | Keys | Action |
 | --- | --- |
@@ -214,36 +255,75 @@ Ctrl+1..5, Ctrl+I, Ctrl+N, Ctrl+Space, Alt+Down and Ctrl+F are unchanged.
 | `/` or `~` | With no filter or edit open, start the location field seeded with that character (`~` alone goes home) |
 | Ctrl+L | Edit the location (whole field selected) |
 | Tab / Shift+Tab in the location field | Complete the last path component to the longest common prefix (folders preferred, folder links count as folders; case-insensitive only when nothing matches exactly; `~` expands; hidden entries only after a typed `.`). A unique folder gets a trailing `/`. Several candidates are listed in the notice line; Tab, Shift+Tab, Up or Down cycle them, Enter accepts the highlighted one (a second Enter navigates) and Esc closes the list before cancelling the edit. One bounded `read_dir` (at most 5000 entries) runs per Tab; the listed folder is answered from its listing; folders on network/FUSE mounts, `file://` and network URIs and the network password prompt are never completed |
-| Esc | Cancel an edit, else clear the filter (back to the top), else shrink a marked batch to the focused row; never resets scroll otherwise |
+| Typing | Type-ahead: starts or extends the local filter (in Space it switches to List, since the map cannot filter) |
+| Esc | Cancel an edit, else clear the filter (back to the top; returns to Space if typing left it), else shrink a marked batch to the focused row; never resets scroll otherwise |
 | Alt+Left / Alt+Right / Alt+Up, Backspace | History back / forward / parent |
 | Alt+Home | Home folder |
 | Ctrl+T / Ctrl+W / Ctrl+Shift+T | New / close / reopen tab |
-| Ctrl+Tab, Ctrl+PgDn / Ctrl+Shift+Tab, Ctrl+PgUp | Next / previous tab (an open PDF preview keeps Ctrl+PgUp/PgDn for pages) |
+| Ctrl+Tab, Ctrl+AvPág / Ctrl+Shift+Tab, Ctrl+RePág | Next / previous tab (an open PDF preview keeps Ctrl+PgUp/PgDn for pages) |
 | Alt+1..Alt+9 | Tab N; Alt+9 is the last tab |
-| Ctrl+Shift+PgUp/PgDn, Ctrl+Shift+F10 | Move the active tab, tab actions |
+| Ctrl+Shift+RePág/AvPág, Ctrl+Shift+F10 | Move the active tab, tab actions |
 | Ctrl+Alt+T | Keyboard focus to the tab strip (Esc returns) |
 | Ctrl+Alt+S | Keyboard focus to the places rail and back; works in dual-pane mode |
 | Tab / Shift+Tab | Single pane: list → rail → tab strip; dual pane: switch panes |
-| Ctrl+plus / Ctrl+minus / Ctrl+0 | Grid zoom in / out / reset. List, Groups, Columns and Space have no zoom concept |
+| Insert | Toggle the focused mark and advance (MC style) |
+| Ctrl+Shift+S | Sort menu: name, size, date, type (current one focused and marked with its direction) and "Invertir orden"; Up/Down/Home/End/Enter/Esc |
+| Ctrl+plus / Ctrl+minus / Ctrl+0 | Grid zoom in / out / reset; in other views the status line says zoom only exists in Grid (with the Grid chord of the profile) |
+| Ctrl+A, Ctrl+Shift+A, Ctrl+Shift+D | Select all, mark filtered and show all, clear marks |
 | Ctrl+S, Ctrl+Shift+O, Ctrl+M, Ctrl+Shift+M | Select by pattern, open with, link to the copied items, create links |
-| Shift+Delete, Delete/F8 | Delete permanently (confirmed), move to trash |
+| Ctrl+C / Ctrl+X / Ctrl+V, Ctrl+Shift+V, Ctrl+Alt+C | Files clipboard copy / cut / paste, system paste, copy path |
+| Ctrl+D / Ctrl+Alt+D | Bookmark the folder / favorites and places |
+| Ctrl+H, Ctrl+., Ctrl+Alt+I, Ctrl+Alt+B | Hidden files, terminal here, inspector, MC operation bar |
+| Ctrl+Shift+Space, Ctrl+Alt+Space | Sizes of the listed folders, size manager |
+| F2, F8 / Delete, Shift+Delete | Rename, move to trash, delete permanently (confirmed) |
+| Ctrl+Z / Ctrl+Shift+Z | Undo / redo |
 | Shift+F10 / Menu | Item menu; Up/Down/Home/End/Enter/KP Enter inside it |
-| F3 / Space | Preview; F3, Space or Esc closes it |
-| F1 / Ctrl+? | Shortcut help |
+| F1 / Ctrl+? | Shortcut help (Esc, F1 or Enter closes it) |
 | Ctrl+Shift+P, F10, Ctrl+, | Command palette, actions menu, preferences |
 
-Places rail (keyboard focus via Tab or Ctrl+Alt+S; the toolkit draws the
-focus ring on the cursor row): Up/Down/Home/End/PgUp/PgDn move, Enter or
-Space opens, Ctrl+Enter opens in a new tab, Shift+Enter in a background tab,
-Menu/Shift+F10 opens the row menu, Alt+Up/Alt+Down move a Files bookmark
-(`mark:` rows only, same rule as dragging), Delete removes a bookmark (on a
-device, network or trash row the toolkit runs that row's trailing action:
-eject, disconnect or pin), and Esc or Right returns focus to the list. Other
-keys that would act on the hidden file selection are swallowed; safe global
-chords (tabs, F1, palette, Ctrl+L, history) return focus to the list first.
+Places rail (keyboard focus via Tab, Ctrl+Alt+S or Nautilus F6; the toolkit
+draws the focus ring on the cursor row): Up/Down/Home/End/PgUp/PgDn move,
+Enter or Space opens, Ctrl+Enter opens in a new tab, Shift+Enter in a
+background tab, Menu/Shift+F10 opens the row menu, Alt+Up/Alt+Down move a
+Files bookmark (`mark:` rows only, same rule as dragging), Delete removes a
+bookmark (on a device, network or trash row the toolkit runs that row's
+trailing action: eject, disconnect or pin), Esc or Right returns focus to
+the list and Nautilus F6 moves on to the tab strip (F6 there returns to the
+list). Other keys that would act on the hidden file selection are swallowed;
+safe global chords (tabs, F1, palette, Ctrl+L, history, and the profile's
+reload, new window, dual pane, rail toggle, search and filter) return focus
+to the list first.
 
-The palette lists the same commands with their chords, including select by
-pattern, open with, create/paste link, delete permanently, edit location,
-breadcrumb menu, zoom, close other tabs, focus tab strip/rail, actions menu
-and go home. The trash browser has no Enter binding: it has no non-mutating
-default action.
+The palette lists the same commands with the chords of the active profile,
+including select by pattern, open with, create/paste link, delete
+permanently, edit location, breadcrumb menu, zoom, close other tabs, focus
+tab strip/rail/next region, rail toggle, toggle mark, reverse sort, new
+window, actions menu, go home and both shortcut profiles. The trash browser
+has no Enter binding: it has no non-mutating default action.
+
+### Dialog keys
+
+| Dialog | Keys |
+| --- | --- |
+| Permanent deletion (selection, trash item, empty trash) | Opens on Cancel: Enter / KP Enter cancel, Esc cancels, Tab / Shift+Tab or Left/Right move to "Eliminar", Enter deletes only from there, Alt+E deletes explicitly |
+| Close with pending saves | Esc keeps working; Tab / Shift+Tab move between keep working (default), retry and close without pending saves; Enter / KP Enter run the focused button |
+| Rename / new file / new folder | Enter / KP Enter apply, Esc cancels, Tab / Shift+Tab next / previous field |
+| Copy / move / extract review | Enter / KP Enter start, Esc cancels, F2 name, F3 options (Enter/Esc close them), F4 conflicts, Ctrl+L destination |
+| Open with | Enter / KP Enter open, Ctrl+Enter set as default, Esc closes, arrows/PgUp/PgDn/Home/End choose; Tab toggles all applications (list dialog, no button focus) |
+| Properties | Enter / KP Enter, Esc and Tab handled in `properties_ui.rs` (owned by the properties work, unchanged here) |
+| Operation notices | Enter / KP Enter or Esc dismiss, Ctrl+Alt+N focuses them; a ZIP recovery confirmation needs Ctrl+Enter, Esc goes back |
+| Trash browser | Esc closes, R restores, Delete purges (confirmed), Ctrl+Delete empties (confirmed), F5 reloads, arrows/PgUp/PgDn/Home/End move; no Enter (no non-mutating default) |
+| Favorites and places panel | Enter / KP Enter open, Esc closes, F2 label, Delete removes |
+| Saved searches | Enter / KP Enter load, Alt+Enter here, Esc closes, Delete removes |
+| SHA-256 results | Enter / KP Enter locate, Esc or Ctrl+W close, F5 start, F6 recapture, Ctrl+C copy |
+| Folder comparison | In a path field Enter / KP Enter start, Tab / Shift+Tab switch fields; in results Enter / KP Enter locate (Shift+Enter: the other folder); Esc closes |
+| SFTP | Enter / KP Enter review, Ctrl+Enter connect, Esc or Ctrl+W close, Ctrl+1..4 fields, F2 profiles, F5 check |
+| Command palette, help | Enter runs / closes, Esc closes |
+
+### Not changed
+
+List and Groups have no zoom: their 38 px row height is a literal in the
+painters, the hit geometry, `keyboard_nav` paging, `reveal_selection`,
+wheel scrolling and dual/columns views (more than 50 sites), so scaling rows
+is not a small contained change. Ctrl+plus/minus/0 keep explaining that zoom
+exists only in Grid.
