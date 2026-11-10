@@ -146,6 +146,7 @@ mod sftp_report_ui;
 mod sftp_state;
 mod sftp_ui;
 mod shared_thumbnail_cache;
+mod shortcuts;
 mod sidebar_motion_scene;
 mod sidebar_order;
 mod size_panel;
@@ -200,6 +201,7 @@ use fltk::{
     window::Window,
 };
 use model::{Action, Model, View};
+use shortcuts::Cmd;
 use std::{
     cell::{Cell, RefCell},
     path::PathBuf,
@@ -226,6 +228,99 @@ fn input(m: &mut Model, text: &str) {
             m.replace_edit = false;
         }
     }
+}
+
+/// Runs a browser chord from the shortcut table once path and filter fields
+/// declined the key. Returns false when the command does not apply here
+/// (for instance while the location is edited), so the key continues to the
+/// field, Enter/Backspace and navigation handlers.
+fn browser_chord(m: &mut Model, cmd: Cmd, key: Key, w: i32, h: i32) -> bool {
+    use crate::selection_tools::Command as Sel;
+    let action = match cmd {
+        Cmd::Search => Action::Search,
+        Cmd::Filter => Action::Filter,
+        Cmd::BookmarkAdd => Action::BookmarkAdd,
+        Cmd::Bookmarks => Action::Bookmarks,
+        Cmd::Back => Action::History(false),
+        Cmd::Forward => Action::History(true),
+        Cmd::Hidden => Action::ToggleHidden,
+        Cmd::Refresh => Action::Refresh,
+        Cmd::Actions => Action::Actions,
+        Cmd::Settings => Action::Settings,
+        Cmd::MoveFiles => Action::MoveFiles,
+        Cmd::CopyFiles => crate::keyboard_nav::f5_action(m),
+        Cmd::Rename => Action::Rename,
+        Cmd::NewFolder => Action::NewEntry(true),
+        Cmd::NewFile => Action::NewEntry(false),
+        Cmd::NewWindow => Action::NewWindow,
+        Cmd::Undo => Action::Undo(false),
+        Cmd::Redo => Action::Undo(true),
+        Cmd::Location => Action::Omni,
+        Cmd::ViewGroups => Action::View(View::Groups),
+        Cmd::ViewList => Action::View(View::List),
+        Cmd::ViewColumns => Action::View(View::Columns),
+        Cmd::ViewSpace => Action::View(View::SpaceMap),
+        Cmd::ViewGrid => Action::View(View::Grid),
+        Cmd::ZoomIn => Action::ZoomStep(1),
+        Cmd::ZoomOut => Action::ZoomStep(-1),
+        Cmd::ZoomReset => Action::ZoomStep(0),
+        Cmd::TabMenu => {
+            tab_context::keyboard(m);
+            return true;
+        }
+        Cmd::TabMoveLeft | Cmd::TabMoveRight => {
+            if let Some(command) =
+                tab_context::move_command(m, m.tabs.active, cmd == Cmd::TabMoveRight)
+            {
+                m.action(Action::Tab(command));
+            }
+            return true;
+        }
+        Cmd::ContextMenu => {
+            crate::context_menu::open_keyboard(m, w, h);
+            return true;
+        }
+        _ if m.editing => return false,
+        Cmd::SizeFocused => Action::CalculateSize,
+        Cmd::SizesListed => Action::CalculateListedSizes,
+        Cmd::MarkAdvance => {
+            m.mark_and_advance();
+            wheel_scroll::glide(m, h, |m| view::reveal_selection(m, w, h));
+            return true;
+        }
+        Cmd::MarkToggle => Action::MarkToggle,
+        Cmd::OpenWith => Action::OpenWith,
+        Cmd::SelectPattern => Action::SelectPattern,
+        Cmd::LinkCopied => Action::LinkCopied,
+        Cmd::CreateLinks => Action::CreateLinks,
+        Cmd::Terminal => Action::Terminal,
+        Cmd::CopyPath => Action::CopyPath,
+        Cmd::Preview => Action::Preview,
+        Cmd::Trash => Action::Trash,
+        Cmd::DeletePermanently => Action::DeletePermanently,
+        Cmd::Breadcrumbs => Action::Breadcrumbs,
+        Cmd::Properties => Action::Properties,
+        Cmd::ClipboardCopy => Action::ClipboardCopy,
+        Cmd::ClipboardCut => Action::ClipboardCut,
+        Cmd::Home => Action::GoHome,
+        Cmd::Inspector => Action::Inspector,
+        Cmd::SelectAll => Action::Selection(Sel::All),
+        Cmd::SelectFiltered => Action::Selection(Sel::Filtered),
+        Cmd::ClearSelection => Action::Selection(Sel::Clear),
+        Cmd::InvertSelection => Action::Selection(Sel::Invert),
+        Cmd::SortMenu => Action::SortMenu(w, h),
+        // Backspace and plain Enter keep their dedicated handlers below.
+        Cmd::Parent if key != Key::BackSpace => Action::Parent,
+        Cmd::Open if !matches!(key, Key::Enter | Key::KPEnter) => {
+            if !m.open_marked() {
+                m.open_selected();
+            }
+            return true;
+        }
+        _ => return false,
+    };
+    m.action(action);
+    true
 }
 
 fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
@@ -283,11 +378,12 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
     if m.size_panel.is_some() {
         return crate::size_panel::event(m, ev);
     }
-    if matches!(ev, Event::KeyDown | Event::Shortcut)
-        && app::event_key() == Key::from_char(' ')
-        && app::event_state().intersects(Shortcut::Ctrl | Shortcut::Meta)
-        && app::event_state().intersects(Shortcut::Alt)
-    {
+    let profile = m.shortcuts;
+    let chord = |cmd: Cmd| {
+        matches!(ev, Event::KeyDown | Event::Shortcut)
+            && shortcuts::is(profile, cmd, app::event_key(), app::event_state())
+    };
+    if chord(Cmd::SizesManager) {
         m.action(Action::Sizes);
         return true;
     }
@@ -300,41 +396,34 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
         return true;
     }
     if matches!(ev, Event::KeyDown | Event::Shortcut)
-        && (app::event_key() == Key::F1
-            || crate::key_commands::help_chord(
-                app::event_key(),
-                app::event_state(),
-                &app::event_text(),
-            ))
+        && crate::key_commands::help_chord(
+            profile,
+            app::event_key(),
+            app::event_state(),
+            &app::event_text(),
+        )
     {
         m.action(Action::Help);
         return true;
     }
-    if matches!(ev, Event::KeyDown | Event::Shortcut)
-        && app::event_state().intersects(Shortcut::Ctrl | Shortcut::Meta)
-    {
-        let command = match app::event_key() {
-            k if k == Key::from_char('t') => {
-                Some(if app::event_state().intersects(Shortcut::Shift) {
-                    tabs::Command::Reopen
-                } else {
-                    tabs::Command::New
-                })
-            }
-            k if k == Key::from_char('w') => Some(tabs::Command::Close(m.tabs.active)),
-            Key::Tab => Some(tabs::Command::Cycle(
-                if app::event_state().intersects(Shortcut::Shift) {
-                    -1
-                } else {
-                    1
-                },
-            )),
-            _ => None,
-        };
-        if let Some(command) = command {
-            m.action(Action::Tab(command));
-            return true;
-        }
+    // Ctrl+Tab and Ctrl+Shift+Tab here; the paging chords of a PDF preview
+    // keep priority in tab_chord below.
+    let tab_command = if chord(Cmd::TabNew) {
+        Some(tabs::Command::New)
+    } else if chord(Cmd::TabReopen) {
+        Some(tabs::Command::Reopen)
+    } else if chord(Cmd::TabClose) {
+        Some(tabs::Command::Close(m.tabs.active))
+    } else if app::event_key() == Key::Tab && chord(Cmd::TabNext) {
+        Some(tabs::Command::Cycle(1))
+    } else if app::event_key() == Key::Tab && chord(Cmd::TabPrev) {
+        Some(tabs::Command::Cycle(-1))
+    } else {
+        None
+    };
+    if let Some(command) = tab_command {
+        m.action(Action::Tab(command));
+        return true;
     }
     // Ctrl+PgUp/PgDn and Alt+1..9; an open PDF preview keeps Ctrl+PgUp/PgDn.
     if matches!(ev, Event::KeyDown | Event::Shortcut)
@@ -388,9 +477,7 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
         }
         return crate::mutations::event(m, ev);
     }
-    if matches!(ev, Event::KeyDown | Event::Shortcut)
-        && crate::key_commands::rail_chord(app::event_key(), app::event_state())
-    {
+    if chord(Cmd::FocusRail) {
         m.action(Action::FocusRail);
         return true;
     }
@@ -411,8 +498,16 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
         });
         return true;
     }
-    if !m.editing && matches!(ev, Event::KeyDown | Event::Shortcut) && app::event_key() == Key::F9 {
+    if !m.editing && chord(Cmd::DualPane) {
         m.action(Action::DualPane);
+        return true;
+    }
+    if !m.editing && chord(Cmd::RailToggle) {
+        m.action(Action::RailPin(!m.rail_pinned));
+        return true;
+    }
+    if !m.editing && !m.filter_edit.active && chord(Cmd::FocusCycle) {
+        m.action(Action::FocusCycle);
         return true;
     }
     if matches!(ev, Event::KeyDown | Event::Shortcut)
@@ -653,276 +748,9 @@ fn event(m: &mut Model, ev: Event, w: i32, h: i32) -> bool {
                 }
                 path_edit::KeyResult::Unhandled => {}
             }
-            if ctrl && key == Key::from_char('f') {
-                m.action(if app::event_state().intersects(Shortcut::Shift) {
-                    Action::Search
-                } else {
-                    Action::Filter
-                });
-                return true;
-            }
-            if ctrl && !m.editing && key == Key::from_char(' ') {
-                m.action(if app::event_state().intersects(Shortcut::Shift) {
-                    Action::CalculateListedSizes
-                } else {
-                    Action::CalculateSize
-                });
-                return true;
-            }
-            if ctrl && key == Key::from_char('d') && !app::event_state().intersects(Shortcut::Shift)
+            if let Some(cmd) = shortcuts::resolve(profile, key, app::event_state())
+                && browser_chord(m, cmd, key, w, h)
             {
-                m.action(if app::event_state().intersects(Shortcut::Alt) {
-                    Action::Bookmarks
-                } else {
-                    Action::BookmarkAdd
-                });
-                return true;
-            }
-            if key == Key::Insert && !m.editing && !ctrl {
-                m.mark_and_advance();
-                wheel_scroll::glide(m, h, |m| view::reveal_selection(m, w, h));
-                return true;
-            }
-            if ctrl
-                && !m.editing
-                && key == Key::from_char('o')
-                && app::event_state().intersects(Shortcut::Shift)
-            {
-                m.action(Action::OpenWith);
-                return true;
-            }
-            if ctrl
-                && !m.editing
-                && key == Key::from_char('s')
-                && !app::event_state().intersects(Shortcut::Shift)
-            {
-                m.action(Action::SelectPattern);
-                return true;
-            }
-            if ctrl
-                && !m.editing
-                && key == Key::from_char('m')
-                && !app::event_state().intersects(Shortcut::Shift)
-            {
-                m.action(Action::LinkCopied);
-                return true;
-            }
-            // Nautilus: Ctrl+. terminal here, Shift+Ctrl+M create link.
-            if ctrl && !m.editing && key == Key::from_char('.') {
-                m.action(Action::Terminal);
-                return true;
-            }
-            if ctrl
-                && !m.editing
-                && key == Key::from_char('m')
-                && app::event_state().intersects(Shortcut::Shift)
-            {
-                m.action(Action::CreateLinks);
-                return true;
-            }
-            if ctrl
-                && !m.editing
-                && key == Key::from_char('c')
-                && app::event_state().intersects(Shortcut::Alt)
-            {
-                m.action(Action::CopyPath);
-                return true;
-            }
-            if key == Key::F3 && !m.editing {
-                m.action(Action::Preview);
-                return true;
-            }
-            if key == Key::F8 && !m.editing {
-                m.action(Action::Trash);
-                return true;
-            }
-            if key == Key::Down && app::event_state().intersects(Shortcut::Alt) && !m.editing {
-                m.action(Action::Breadcrumbs);
-                return true;
-            }
-            if app::event_state().intersects(Shortcut::Alt)
-                && (key == Key::Left || key == Key::Right)
-            {
-                m.action(Action::History(key == Key::Right));
-                return true;
-            }
-            if key == Key::Enter && !m.editing && app::event_state().intersects(Shortcut::Alt) {
-                m.action(Action::Properties);
-                return true;
-            }
-            if key == Key::from_char(' ') && !m.editing && !ctrl {
-                m.action(Action::Preview);
-                return true;
-            }
-            if ctrl && !m.editing && (key == Key::from_char('c') || key == Key::from_char('x')) {
-                m.action(if key == Key::from_char('x') {
-                    Action::ClipboardCut
-                } else {
-                    Action::ClipboardCopy
-                });
-                return true;
-            }
-            if ctrl && key == Key::from_char('h') {
-                m.action(Action::ToggleHidden);
-                return true;
-            }
-            if ctrl && key == Key::from_char('r') {
-                m.action(Action::Refresh);
-                return true;
-            }
-            if key == Key::F10 && ctrl && app::event_state().intersects(Shortcut::Shift) {
-                tab_context::keyboard(m);
-                return true;
-            }
-            if ctrl
-                && app::event_state().intersects(Shortcut::Shift)
-                && matches!(key, Key::PageUp | Key::PageDown)
-            {
-                if let Some(command) =
-                    tab_context::move_command(m, m.tabs.active, key == Key::PageDown)
-                {
-                    m.action(Action::Tab(command));
-                }
-                return true;
-            }
-            if key == Key::Menu || key == Key::F10 && app::event_state().intersects(Shortcut::Shift)
-            {
-                crate::context_menu::open_keyboard(m, w, h);
-                return true;
-            }
-            if key == Key::Up && app::event_state().contains(Shortcut::Alt) && !m.editing {
-                m.action(Action::Parent);
-                return true;
-            }
-            if key == Key::Home && app::event_state().contains(Shortcut::Alt) && !ctrl && !m.editing
-            {
-                m.action(Action::GoHome);
-                return true;
-            }
-            if ctrl
-                && app::event_state().contains(Shortcut::Alt)
-                && key == Key::from_char('i')
-                && !m.editing
-            {
-                m.action(Action::Inspector);
-                return true;
-            }
-            if key == Key::F10 {
-                m.action(Action::Actions);
-                return true;
-            }
-            if ctrl && key == Key::from_char(',') {
-                m.action(Action::Settings);
-                return true;
-            }
-            if key == Key::F6 {
-                m.action(Action::MoveFiles);
-                return true;
-            }
-            if key == Key::F5 {
-                crate::keyboard_nav::f5(m);
-                return true;
-            }
-            if key == Key::Delete && !m.editing {
-                if app::event_state().intersects(Shortcut::Shift) {
-                    m.action(Action::DeletePermanently);
-                } else {
-                    m.action(Action::Trash);
-                }
-                return true;
-            }
-            if key == Key::F2 {
-                m.action(Action::Rename);
-                return true;
-            }
-            if key == Key::F7
-                || ctrl
-                    && app::event_state().intersects(Shortcut::Shift)
-                    && key == Key::from_char('n')
-            {
-                m.action(Action::NewEntry(true));
-                return true;
-            }
-            if ctrl && key == Key::from_char('n') {
-                m.action(Action::NewEntry(false));
-                return true;
-            }
-            if ctrl && key == Key::from_char('z') {
-                m.action(Action::Undo(app::event_state().intersects(Shortcut::Shift)));
-                return true;
-            }
-            if ctrl && key == Key::from_char('l') {
-                m.action(Action::Omni);
-                return true;
-            }
-            if ctrl && key == Key::from_char('1') {
-                m.action(Action::View(View::Groups));
-                return true;
-            }
-            if ctrl && key == Key::from_char('2') {
-                m.action(Action::View(View::List));
-                return true;
-            }
-            if ctrl && key == Key::from_char('5') {
-                m.action(Action::View(View::Grid));
-                return true;
-            }
-            if ctrl
-                && m.view == View::Grid
-                && (key == Key::from_char('+')
-                    || key == Key::from_char('=')
-                    || key == Key::from_char('-'))
-            {
-                m.action(Action::GridZoom(if key == Key::from_char('-') {
-                    1. / 1.15
-                } else {
-                    1.15
-                }));
-                return true;
-            }
-            if ctrl && key == Key::from_char('0') && matches!(m.view, View::Grid | View::Spatial) {
-                m.action(Action::ZoomStep(0));
-                return true;
-            }
-            if ctrl && key == Key::from_char('4') {
-                m.action(Action::View(View::SpaceMap));
-                return true;
-            }
-            if ctrl && key == Key::from_char('3') {
-                m.action(Action::View(View::Columns));
-                return true;
-            }
-            if ctrl && key == Key::from_char('a') && !m.editing {
-                m.action(Action::Selection(
-                    if app::event_state().intersects(Shortcut::Shift) {
-                        crate::selection_tools::Command::Filtered
-                    } else {
-                        crate::selection_tools::Command::All
-                    },
-                ));
-                return true;
-            }
-            if ctrl
-                && !m.editing
-                && app::event_state().intersects(Shortcut::Shift)
-                && key == Key::from_char('d')
-            {
-                m.action(Action::Selection(crate::selection_tools::Command::Clear));
-                return true;
-            }
-            if ctrl && key == Key::from_char('i') && !m.editing {
-                m.action(Action::Selection(crate::selection_tools::Command::Invert));
-                return true;
-            }
-            if ctrl
-                && (key == Key::from_char('+') || key == Key::from_char('='))
-                && m.view == View::Spatial
-            {
-                m.action(Action::Zoom(1.15));
-                return true;
-            }
-            if ctrl && key == Key::from_char('-') && m.view == View::Spatial {
-                m.action(Action::Zoom(1.0 / 1.15));
                 return true;
             }
             if ctrl && key == Key::from_char('a') && m.editing {
@@ -1689,10 +1517,14 @@ pub fn run_since(start: Instant) -> bool {
             return true;
         }
 
-        if matches!(e, Event::KeyDown | Event::Shortcut)
-            && app::event_key() == Key::from_char('n')
-            && app::event_state().contains(Shortcut::Ctrl | Shortcut::Alt)
-        {
+        let profile = m
+            .try_borrow()
+            .map_or(shortcuts::Profile::Files, |m| m.shortcuts);
+        let chord = |cmd: Cmd| {
+            matches!(e, Event::KeyDown | Event::Shortcut)
+                && shortcuts::is(profile, cmd, app::event_key(), app::event_state())
+        };
+        if chord(Cmd::NoticeFocus) {
             let allowed = m
                 .try_borrow()
                 .is_ok_and(|m| operation_notices::context(&m).visible);
@@ -1701,10 +1533,7 @@ pub fn run_since(start: Instant) -> bool {
             }
             return true;
         }
-        if matches!(e, Event::KeyDown | Event::Shortcut)
-            && app::event_key() == Key::from_char('t')
-            && app::event_state().contains(Shortcut::Ctrl | Shortcut::Alt)
-        {
+        if chord(Cmd::FocusTabs) {
             let key = m
                 .try_borrow_mut()
                 .ok()
@@ -1792,16 +1621,18 @@ pub fn run_since(start: Instant) -> bool {
                 .and_then(|hit| {
                     crate::copy_review::reason(&state, &hit.action)
                         .or_else(|| crate::map_actions::reason(&state, &hit.action))
-                        .or_else(|| hit.action.accessible_name())
+                        .map(std::borrow::Cow::Borrowed)
+                        .or_else(|| shortcuts::tooltip(state.shortcuts, &hit.action))
                 });
-            let tip = if view::tip_rect(f.w(), f.h()).contains(app::event_x(), app::event_y())
+            let tip: std::borrow::Cow<'_, str> = if view::tip_rect(f.w(), f.h())
+                .contains(app::event_x(), app::event_y())
                 && view::tips_available(&state, f.w())
             {
-                state.status_tips.text()
+                state.status_tips.text_for(state.shortcuts)
             } else {
-                control_name.unwrap_or_else(|| zone.map_or("", |z| z.name()))
+                control_name.unwrap_or_else(|| zone.map_or("", |z| z.name()).into())
             };
-            f.set_tooltip(if app::event_y() < 58 { "" } else { tip });
+            f.set_tooltip(if app::event_y() < 58 { "" } else { &tip });
         }
         if e == Event::Push
             && app::event_button() == 1
@@ -1902,11 +1733,12 @@ pub fn run_since(start: Instant) -> bool {
             return false;
         }
         if matches!(event, Event::KeyDown | Event::Shortcut) {
-            let mods = app::event_state();
-            if app::event_key() == Key::from_char('n')
-                && mods.contains(Shortcut::Ctrl | Shortcut::Alt)
-                && (!isolate_fixture_input || auxiliary_fixture.get())
-            {
+            let profile = native_window_model
+                .try_borrow()
+                .map_or(shortcuts::Profile::Files, |m| m.shortcuts);
+            let chord =
+                |cmd: Cmd| shortcuts::is(profile, cmd, app::event_key(), app::event_state());
+            if chord(Cmd::NoticeFocus) && (!isolate_fixture_input || auxiliary_fixture.get()) {
                 let allowed = native_window_model
                     .try_borrow()
                     .is_ok_and(|m| operation_notices::context(&m).visible);
@@ -1915,8 +1747,7 @@ pub fn run_since(start: Instant) -> bool {
                 }
                 return true;
             }
-            if app::event_key() == Key::F10
-                && mods.contains(Shortcut::Ctrl | Shortcut::Shift)
+            if chord(Cmd::TabMenu)
                 && (!isolate_fixture_input || auxiliary_fixture.get())
                 && let Ok(mut m) = native_window_model.try_borrow_mut()
             {
@@ -1924,13 +1755,23 @@ pub fn run_since(start: Instant) -> bool {
                 aux_canvas.redraw();
                 return true;
             }
-            if app::event_key() == Key::from_char('t')
-                && mods.contains(Shortcut::Ctrl | Shortcut::Alt)
+            if chord(Cmd::FocusTabs)
                 && (!isolate_fixture_input || auxiliary_fixture.get())
                 && let Ok(mut m) = native_window_model.try_borrow_mut()
                 && tab_strip::begin_intent(&mut m)
             {
                 auxiliary_tabs.widget.focus_key(&m.pane_owner());
+                return true;
+            }
+            // Nautilus F6 from the tab strip closes the focus cycle.
+            if chord(Cmd::FocusCycle)
+                && event == Event::KeyDown
+                && (!isolate_fixture_input || auxiliary_fixture.get())
+                && app::focus()
+                    .is_some_and(|w| w.as_widget_ptr() == auxiliary_tabs.widget.as_widget_ptr())
+            {
+                let _ = aux_canvas.take_focus();
+                aux_canvas.redraw();
                 return true;
             }
             if (!isolate_fixture_input || auxiliary_fixture.get())
@@ -1989,6 +1830,18 @@ pub fn run_since(start: Instant) -> bool {
                                 m.action(Action::BackgroundNavigate(path));
                             }
                             aux_canvas.redraw();
+                        }
+                        key_commands::RailKey::ToTabs => {
+                            let key =
+                                native_window_model.try_borrow_mut().ok().and_then(|mut m| {
+                                    tab_strip::begin_intent(&mut m).then(|| m.pane_owner())
+                                });
+                            match key {
+                                Some(key) => {
+                                    auxiliary_tabs.widget.focus_key(&key);
+                                }
+                                None => to_list(&mut aux_canvas),
+                            }
                         }
                         key_commands::RailKey::Pass => {
                             // The list handles the chord as a shortcut next.

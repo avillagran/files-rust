@@ -67,6 +67,14 @@ fn apply_family(family: &str) {
         Font::set_font(f, &format!("{family}{suffix}"));
     }
 }
+/// Like [`icon`] for text built at run time (a glyph plus a profile chord).
+pub fn icon_text(glyph: String, fallback: &str) -> String {
+    if NERD.load(Ordering::Relaxed) {
+        glyph
+    } else {
+        fallback.to_owned()
+    }
+}
 pub fn icon(glyph: &'static str, fallback: &'static str) -> &'static str {
     if NERD.load(Ordering::Relaxed) {
         glyph

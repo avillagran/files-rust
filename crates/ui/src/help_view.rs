@@ -1,298 +1,418 @@
 //! Static bounded shortcut help. No unimplemented action is advertised.
+use crate::shortcuts::{self, Cmd, Profile};
 use crate::{
     model::{Action, Hit, Model},
     painter::{Painter, Rect},
 };
+use Keys::{C, T};
 use fltk::enums::Key;
+use std::borrow::Cow;
 const ROW: i32 = 30;
-pub const ITEMS: &[(&str, &str)] = &[
-    ("", "NAVEGACIÓN"),
-    ("Alt+← / Alt+→", "Atrás / Adelante en el historial"),
-    ("Enter / doble clic", "Abrir elemento o entrar en carpeta"),
+/// What a help row prints in its key column.
+pub enum Keys {
+    /// Fixed text: a context chord (search, rail, preview) or a gesture.
+    T(&'static str),
+    /// Chords of these commands in the active profile, from the table.
+    C(&'static [Cmd]),
+}
+/// Shown when a command has no chord in the active profile.
+pub fn palette_only(profile: Profile) -> String {
+    format!("Paleta ({})", shortcuts::label(profile, Cmd::Commands))
+}
+impl Keys {
+    pub fn text(&self, profile: Profile) -> Cow<'static, str> {
+        match self {
+            T(text) => (*text).into(),
+            C(cmds) => {
+                let labels: Vec<String> = cmds
+                    .iter()
+                    .map(|&c| shortcuts::label(profile, c))
+                    .filter(|l| !l.is_empty())
+                    .collect();
+                if labels.is_empty() {
+                    palette_only(profile).into()
+                } else {
+                    labels.join(" / ").into()
+                }
+            }
+        }
+    }
+    fn is_header(&self) -> bool {
+        matches!(self, T(""))
+    }
+}
+pub const ITEMS: &[(Keys, &str)] = &[
+    (T(""), "NAVEGACIÓN"),
     (
-        "Enter con varias marcas",
+        C(&[Cmd::Back, Cmd::Forward]),
+        "Atrás / Adelante en el historial",
+    ),
+    (
+        C(&[Cmd::Open]),
+        "Abrir elemento o entrar en carpeta (también doble clic)",
+    ),
+    (
+        T("Enter con varias marcas"),
         "Abrir todas (máx. 20): carpetas en pestañas de fondo",
     ),
     (
-        "Ctrl+Enter / Shift+Enter",
+        C(&[Cmd::OpenInTab, Cmd::OpenInBackground]),
         "Carpeta en pestaña nueva / de fondo; archivo: abrir",
     ),
-    ("Backspace / Alt+↑", "Subir a la carpeta superior"),
-    ("Alt+Inicio", "Ir a la carpeta personal"),
-    ("Ctrl+T / Ctrl+W", "Nueva pestaña / cerrar activa"),
-    ("Ctrl+Tab / Ctrl+AvPág", "Pestaña siguiente"),
-    ("Ctrl+Shift+Tab / Ctrl+RePág", "Pestaña anterior"),
-    ("Alt+1 … Alt+9", "Ir a la pestaña N; Alt+9 la última"),
-    ("Ctrl+Shift+T", "Reabrir pestaña cerrada"),
+    (C(&[Cmd::Parent]), "Subir a la carpeta superior"),
+    (C(&[Cmd::Home]), "Ir a la carpeta personal"),
     (
-        "Ctrl+Alt+N / Escape",
+        C(&[Cmd::TabNew, Cmd::TabClose]),
+        "Nueva pestaña / cerrar activa",
+    ),
+    (C(&[Cmd::TabNext]), "Pestaña siguiente"),
+    (C(&[Cmd::TabPrev]), "Pestaña anterior"),
+    (T("Alt+1 … Alt+9"), "Ir a la pestaña N; Alt+9 la última"),
+    (C(&[Cmd::TabReopen]), "Reabrir pestaña cerrada"),
+    (
+        T("Ctrl+Alt+N / Escape"),
         "Enfocar aviso de operación / cerrar aviso",
     ),
     (
-        "← → / Enter en aviso",
+        T("← → / Enter en aviso"),
         "Elegir / ejecutar una acción del aviso",
     ),
-    ("Ctrl+Shift+F10", "Acciones de la pestaña activa"),
-    ("Arrastrar pestaña", "Reordenar sin activarla"),
+    (C(&[Cmd::TabMenu]), "Acciones de la pestaña activa"),
+    (T("Arrastrar pestaña"), "Reordenar sin activarla"),
     (
-        "Ctrl+Alt+T / Escape",
+        T("Ctrl+Alt+T / Escape"),
         "Foco en pestañas / volver al navegador",
     ),
-    ("← → en barra", "Elegir pestaña"),
-    ("Alt+← → en barra", "Mover cursor sin activar pestaña"),
-    ("Ctrl+Shift+← → en barra", "Mover la pestaña del cursor"),
+    (T("← → en barra"), "Elegir pestaña"),
+    (T("Alt+← → en barra"), "Mover cursor sin activar pestaña"),
+    (T("Ctrl+Shift+← → en barra"), "Mover la pestaña del cursor"),
     (
-        "Menú / Shift+F10 en barra",
+        T("Menú / Shift+F10 en barra"),
         "Acciones de la pestaña del cursor",
     ),
     (
-        "Ctrl+Shift+RePág/AvPág",
+        C(&[Cmd::TabMoveLeft, Cmd::TabMoveRight]),
         "Mover la pestaña activa a izquierda/derecha",
     ),
     (
-        "Clic central en carpeta",
+        T("Clic central en carpeta"),
         "Abrir en pestaña de fondo sin cambiar selección",
     ),
     (
-        "Clic central en pestaña",
+        T("Clic central en pestaña"),
         "Cerrar esa pestaña sin activarla primero",
     ),
-    ("Ctrl+L", "Editar ruta: selecciona todo el campo"),
+    (C(&[Cmd::Location]), "Editar ruta: selecciona todo el campo"),
     (
-        "Tab en ruta",
+        T("Tab en ruta"),
         "Completar carpeta; repetir o ↑ ↓ recorre opciones, Enter acepta, Esc cierra",
     ),
     (
-        "/ o ~ en la lista",
+        T("/ o ~ en la lista"),
         "Editar ruta empezando con ese carácter",
     ),
     (
-        "Alt+↓ / … en ruta",
-        "Ancestros ocultos; abrir aquí o en pestaña de fondo",
+        C(&[Cmd::Breadcrumbs]),
+        "Ancestros ocultos (… en ruta); aquí o en pestaña de fondo",
     ),
-    (">comando / :lugar", "En ruta + Enter: buscar en catálogos"),
     (
-        "←/→, Home/End, Shift",
+        T(">comando / :lugar"),
+        "En ruta + Enter: buscar en catálogos",
+    ),
+    (
+        T("←/→, Home/End, Shift"),
         "Cursor y selección: ruta, filtro o buscador",
     ),
     (
-        "Ctrl+←/→ / doble clic",
+        T("Ctrl+←/→ / doble clic"),
         "Recorrer / seleccionar componente en campo",
     ),
     (
-        "Ctrl+Z / Ctrl+Shift+Z",
+        T("Ctrl+Z / Ctrl+Shift+Z"),
         "En campos: deshacer / rehacer texto",
     ),
     (
-        "Escribir / Ctrl+F / ",
-        "Editar filtro; Enter vuelve a la lista",
+        C(&[Cmd::Filter]),
+        "Filtrar aquí (o escribir); Enter vuelve a la lista",
     ),
     (
-        "F6 en Buscar",
+        T("F6 en Buscar"),
         "Alternar nombre/texto literal (UTF8 exacto)",
     ),
     (
-        "Ctrl+D / Ctrl+Alt+D",
+        C(&[Cmd::BookmarkAdd, Cmd::Bookmarks]),
         "Guardar carpeta / abrir favoritos y lugares",
     ),
     (
-        "F2 / Supr en lugares",
+        T("F2 / Supr en lugares"),
         "Etiqueta / quitar favorito; carpeta intacta",
     ),
-    ("Ctrl+Shift+F", "Buscar nombres y contenido en subcarpetas"),
     (
-        "Ctrl+Shift+P",
+        C(&[Cmd::Search]),
+        "Buscar nombres y contenido en subcarpetas",
+    ),
+    (
+        C(&[Cmd::Commands]),
         "Buscar comandos y herramientas; Enter ejecuta",
     ),
     (
-        "F4 / Tab / Shift+Tab",
+        T("F4 / Tab / Shift+Tab"),
         "En buscador: filtros de tamaño/fecha UTC y campos",
     ),
     (
-        "Enter / Alt+Enter",
+        T("Enter / Alt+Enter"),
         "En buscador: abrir / localizar resultado",
     ),
     (
-        "report 2026 !draft",
+        T("report 2026 !draft"),
         "Combinar palabras y excluir coincidencias",
     ),
     (
-        "*.pdf / ext:pdf,md",
+        T("*.pdf / ext:pdf,md"),
         "Comodines o extensiones (sin distinguir caso)",
     ),
     (
-        "type:dir / file / link",
+        T("type:dir / file / link"),
         "Filtrar carpetas, archivos o enlaces",
     ),
-    ("\"informe anual\"", "Buscar una frase literal en el nombre"),
-    ("Esc", "Cancelar edición, quitar filtro o limpiar marcas"),
-    ("", "BARRA DE LUGARES"),
-    ("Tab / Shift+Tab", "Un panel: lista → lugares → pestañas"),
-    ("Ctrl+Alt+S", "Foco en lugares (también en doble panel)"),
-    ("↑↓ Home/End · Lugares", "Mover el cursor del lugar"),
     (
-        "Enter / Ctrl+Enter · Lugares",
+        T("\"informe anual\""),
+        "Buscar una frase literal en el nombre",
+    ),
+    (T("Esc"), "Cancelar edición, quitar filtro o limpiar marcas"),
+    (T(""), "BARRA DE LUGARES"),
+    (T("Tab / Shift+Tab"), "Un panel: lista → lugares → pestañas"),
+    (
+        C(&[Cmd::FocusRail]),
+        "Foco en lugares (también en doble panel)",
+    ),
+    (T("↑↓ Home/End · Lugares"), "Mover el cursor del lugar"),
+    (
+        T("Enter / Ctrl+Enter · Lugares"),
         "Abrir aquí / en pestaña nueva",
     ),
-    ("Shift+Enter · Lugares", "Abrir en pestaña de fondo"),
-    ("Menú / Shift+F10 · Lugares", "Menú del lugar enfocado"),
-    ("Alt+↑ / Alt+↓ · Lugares", "Mover el marcador enfocado"),
-    ("Supr · Lugares", "Quitar marcador; la carpeta no se toca"),
-    ("Esc / → · Lugares", "Volver a la lista"),
-    ("Ctrl+R", "Actualizar conservando la selección"),
-    ("Ctrl+H", "Mostrar / ocultar ocultos (global)"),
-    ("", "VISTAS"),
-    ("Ctrl+1 / Ctrl+2", "Grupos / Lista"),
+    (T("Shift+Enter · Lugares"), "Abrir en pestaña de fondo"),
+    (T("Menú / Shift+F10 · Lugares"), "Menú del lugar enfocado"),
+    (T("Alt+↑ / Alt+↓ · Lugares"), "Mover el marcador enfocado"),
     (
-        "Ctrl+3 / Ctrl+4",
-        "Columnas tipo Finder / Espacio de tamaños",
+        T("Supr · Lugares"),
+        "Quitar marcador; la carpeta no se toca",
     ),
-    ("Ctrl+5", "Grilla de iconos"),
+    (T("Esc / → · Lugares"), "Volver a la lista"),
+    (C(&[Cmd::Refresh]), "Actualizar conservando la selección"),
+    (C(&[Cmd::Hidden]), "Mostrar / ocultar ocultos (global)"),
+    (T(""), "VISTAS"),
+    (C(&[Cmd::ViewList]), "Lista"),
+    (C(&[Cmd::ViewGrid]), "Grilla de iconos"),
+    (C(&[Cmd::ViewGroups]), "Grupos"),
+    (C(&[Cmd::ViewColumns]), "Columnas tipo Finder"),
+    (C(&[Cmd::ViewSpace]), "Espacio de tamaños"),
     (
-        "Ctrl+Shift+P → ordenar",
-        "Nombre/tamaño/fecha; repetir invierte el panel activo",
+        C(&[Cmd::SortMenu]),
+        "Menú de orden: nombre/tamaño/fecha/tipo o invertir",
     ),
     (
-        "Cabeceras del listado",
+        T("Cabeceras del listado"),
         "Orden del panel pulsado; flecha muestra dirección",
     ),
     (
-        "Ctrl+Shift+P → terminal",
+        T("Ctrl+Shift+P → terminal"),
         "Abrir terminal del sistema en la carpeta actual",
     ),
-    ("F9 / Tab", "Doble panel / cambiar foco fuera de inputs"),
-    ("Ctrl+rueda / Ctrl+±", "Zoom en Grilla"),
-    ("Ctrl+0", "Restablecer zoom de la Grilla"),
-    ("Flechas", "Elemento; ←/→ columna en Columnas"),
-    ("Shift+flechas", "Extender o reducir un rango visible"),
-    ("Ctrl+flechas", "Mover foco conservando las marcas"),
-    ("Ctrl+Shift+flechas", "Añadir rango a las marcas existentes"),
-    ("Home / End", "Primero / último del listado visible"),
-    ("Shift+Home / Shift+End", "Extender rango hasta un extremo"),
-    ("PageUp / PageDown", "Recorrer páginas de elementos"),
-    ("", "SELECCIÓN Y OPERACIONES"),
-    ("Insert", "Marcar / desmarcar y avanzar (estilo MC)"),
-    ("Ctrl+clic", "Añadir / quitar de la selección"),
-    ("Shift+clic", "Seleccionar un rango"),
-    ("Ctrl+A / Ctrl+I", "Seleccionar todo / invertir selección"),
-    ("Ctrl+Shift+A", "Marcar filtrados y mostrar todo"),
-    ("Ctrl+Shift+D", "Limpiar marcas y foco operativo"),
-    ("Botón derecho", "Menú de elemento, lote o fondo"),
-    ("Shift+F10 / Menú", "Menú del elemento enfocado"),
-    ("↑↓ Home/End Enter", "Elegir y ejecutar en un menú abierto"),
-    ("Ctrl+S", "Seleccionar por patrón"),
-    ("Ctrl+Shift+O", "Abrir con otra aplicación"),
+    (C(&[Cmd::DualPane]), "Doble panel; Tab cambia de panel"),
+    (C(&[Cmd::RailToggle]), "Barra de lugares ancha / compacta"),
     (
-        "Ctrl+M / Ctrl+Shift+M",
+        C(&[Cmd::FocusCycle]),
+        "Foco: lista → lugares → pestañas; otro panel en doble",
+    ),
+    (
+        C(&[Cmd::ZoomIn, Cmd::ZoomOut]),
+        "Zoom en Grilla (también Ctrl+rueda)",
+    ),
+    (C(&[Cmd::ZoomReset]), "Restablecer zoom de la Grilla"),
+    (T("Flechas"), "Elemento; ←/→ columna en Columnas"),
+    (T("Shift+flechas"), "Extender o reducir un rango visible"),
+    (T("Ctrl+flechas"), "Mover foco conservando las marcas"),
+    (
+        T("Ctrl+Shift+flechas"),
+        "Añadir rango a las marcas existentes",
+    ),
+    (T("Home / End"), "Primero / último del listado visible"),
+    (
+        T("Shift+Home / Shift+End"),
+        "Extender rango hasta un extremo",
+    ),
+    (T("PageUp / PageDown"), "Recorrer páginas de elementos"),
+    (T(""), "SELECCIÓN Y OPERACIONES"),
+    (
+        C(&[Cmd::MarkAdvance]),
+        "Marcar / desmarcar y avanzar (estilo MC)",
+    ),
+    (
+        C(&[Cmd::MarkToggle]),
+        "Marcar / desmarcar sin mover el foco",
+    ),
+    (T("Ctrl+clic"), "Añadir / quitar de la selección"),
+    (T("Shift+clic"), "Seleccionar un rango"),
+    (
+        C(&[Cmd::SelectAll, Cmd::InvertSelection]),
+        "Seleccionar todo / invertir selección",
+    ),
+    (C(&[Cmd::SelectFiltered]), "Marcar filtrados y mostrar todo"),
+    (C(&[Cmd::ClearSelection]), "Limpiar marcas y foco operativo"),
+    (T("Botón derecho"), "Menú de elemento, lote o fondo"),
+    (C(&[Cmd::ContextMenu]), "Menú del elemento enfocado"),
+    (
+        T("↑↓ Home/End Enter"),
+        "Elegir y ejecutar en un menú abierto",
+    ),
+    (C(&[Cmd::SelectPattern]), "Seleccionar por patrón"),
+    (C(&[Cmd::OpenWith]), "Abrir con otra aplicación"),
+    (
+        C(&[Cmd::LinkCopied, Cmd::CreateLinks]),
         "Enlace a lo copiado / crear enlaces",
     ),
-    ("Ctrl+Alt+C", "Copiar la ruta del elemento"),
-    ("Ctrl+.", "Terminal en la carpeta actual"),
-    ("Ctrl+Alt+I", "Mostrar / ocultar inspector"),
-    ("F2", "Renombrar con vista previa"),
-    ("Ctrl+C / Ctrl+X", "Copiar / cortar en files (esta ventana)"),
-    ("Ctrl+V", "Pegar en files; texto en campos editables"),
-    ("Ctrl+Shift+V", "Pegar MIME del sistema (con foco real)"),
-    ("Ctrl+Alt+B", "Mostrar / ocultar barra de operaciones MC"),
-    ("F5", "Copiar en listados; Espacio: recalcular"),
+    (C(&[Cmd::CopyPath]), "Copiar la ruta del elemento"),
+    (C(&[Cmd::Terminal]), "Terminal en la carpeta actual"),
+    (C(&[Cmd::Inspector]), "Mostrar / ocultar inspector"),
+    (C(&[Cmd::Rename]), "Renombrar con vista previa"),
     (
-        "↑↓ PgUp/PgDn · Informe",
+        C(&[Cmd::ClipboardCopy, Cmd::ClipboardCut]),
+        "Copiar / cortar en files (esta ventana)",
+    ),
+    (
+        C(&[Cmd::ClipboardPaste]),
+        "Pegar en files; texto en campos editables",
+    ),
+    (
+        C(&[Cmd::NativePaste]),
+        "Pegar MIME del sistema (con foco real)",
+    ),
+    (
+        C(&[Cmd::OperationBar]),
+        "Mostrar / ocultar barra de operaciones MC",
+    ),
+    (
+        C(&[Cmd::CopyFiles]),
+        "Copiar la selección: revisar y confirmar; Espacio: recalcular",
+    ),
+    (
+        T("↑↓ PgUp/PgDn · Informe"),
         "Leer líneas/páginas; Home/End inicio/fin",
     ),
     (
-        "Ctrl+R · Informe",
+        T("Ctrl+R · Informe"),
         "Reintentar sólo pendientes de Move multipadre revisado",
     ),
-    ("F6", "Mover la selección: revisar y confirmar"),
-    ("Supr / F8", "Enviar a Papelera"),
-    ("Shift+Supr", "Eliminar definitivamente, con confirmación"),
-    ("F3 / Espacio", "Vista previa del elemento"),
-    ("Ctrl+Alt+Espacio", "Gestor de tamaños por carpeta"),
     (
-        "Paleta → SHA-256",
+        C(&[Cmd::MoveFiles]),
+        "Mover la selección: revisar y confirmar",
+    ),
+    (C(&[Cmd::Trash]), "Enviar a Papelera"),
+    (
+        C(&[Cmd::DeletePermanently]),
+        "Eliminar definitivamente, con confirmación",
+    ),
+    (C(&[Cmd::Preview]), "Vista previa del elemento"),
+    (C(&[Cmd::SizesManager]), "Gestor de tamaños por carpeta"),
+    (
+        T("Paleta → SHA-256"),
         "Calcular archivos elegidos, comparar y copiar informe",
     ),
     (
-        "Comandos → sftp",
+        T("Comandos → sftp"),
         "Montaje SFTP; F2 perfiles, F4 informe, CtrlEnter conectar",
     ),
     (
-        "Espacio / Insert · Buscar",
+        T("Espacio / Insert · Buscar"),
         "Marcar; Insert avanza, Shift extiende rango",
     ),
     (
-        "Ctrl+A / Ctrl+D · Buscar",
+        T("Ctrl+A / Ctrl+D · Buscar"),
         "Marcar todos / vaciar marcas (en resultados)",
     ),
     (
-        "F5 / Shift+F6 · Buscar",
+        T("F5 / Shift+F6 · Buscar"),
         "Copiar / mover resultados: capturar y revisar",
     ),
     (
-        "Ctrl+Enter · Buscar",
+        T("Ctrl+Enter · Buscar"),
         "Ubicaciones marcadas en pestañas de fondo",
     ),
     (
-        "F2 / Ctrl+S · Buscar",
+        T("F2 / Ctrl+S · Buscar"),
         "Búsquedas guardadas / guardar criterios actuales",
     ),
     (
-        "Alt+↑/→/← · Buscar",
+        T("Alt+↑/→/← · Buscar"),
         "Subir / carpeta del resultado / raíz anterior; Enter busca",
     ),
-    ("F7 · Buscar", "Ordenar resultados: ruta, nombre o tipo"),
+    (T("F7 · Buscar"), "Ordenar resultados: ruta, nombre o tipo"),
     (
-        "F9 · Buscar",
+        T("F9 · Buscar"),
         "Nuevo recorrido por páginas; Enter repite ese modo",
     ),
     (
-        "Ctrl+PgUp / PgDn · Buscar",
+        T("Ctrl+PgUp / PgDn · Buscar"),
         "Página anterior conservada / siguiente; marcas por página",
     ),
-    ("F8 · Buscar", "Fechas locales o últimas1/24/168horas"),
+    (T("F8 · Buscar"), "Fechas locales o últimas1/24/168horas"),
     (
-        "O / Shift+O · Tamaños",
+        T("O / Shift+O · Tamaños"),
         "Olvidar fila / revisar y olvidar medidas; no borra archivos",
     ),
-    ("Alt+Enter · Tamaños", "Abrir carpeta seleccionada"),
+    (T("Alt+Enter · Tamaños"), "Abrir carpeta seleccionada"),
     (
-        "F5 · Tamaños",
+        T("F5 · Tamaños"),
         "Recalcular sólo la carpeta medida seleccionada",
     ),
     (
-        "I · Tamaños",
+        T("I · Tamaños"),
         "Informe; F5 actualiza, Ctrl+C solicita copia",
     ),
-    ("Ctrl+Espacio", "Calcular / cancelar tamaño de carpeta"),
     (
-        "Ctrl+Shift+Espacio",
+        C(&[Cmd::SizeFocused]),
+        "Calcular / cancelar tamaño de carpeta",
+    ),
+    (
+        C(&[Cmd::SizesListed]),
         "Calcular / parar carpetas del listado",
     ),
     (
-        "≈ / ≥ en Tamaño",
+        T("≈ / ≥ en Tamaño"),
         "Valor previo / avance parcial; Ctrl+R invalida",
     ),
-    ("Ctrl+N", "Crear archivo"),
-    ("F7 / Ctrl+Shift+N", "Crear carpeta"),
-    ("Ctrl+Z", "Deshacer cuando esté disponible"),
-    ("Ctrl+Shift+Z", "Rehacer renombrado disponible"),
-    ("Alt+Enter", "Propiedades y permisos"),
-    ("", "PREVIEW Y CONFIGURACIÓN"),
-    ("Space / F3 / Esc", "Abrir / cerrar vista previa"),
-    ("Ctrl+A / Ctrl+C", "Seleccionar / copiar texto en preview"),
-    ("Alt+↑ / Alt+↓", "Elemento anterior / siguiente en preview"),
+    (C(&[Cmd::NewFile]), "Crear archivo"),
+    (C(&[Cmd::NewWindow]), "Nueva ventana en la carpeta actual"),
+    (C(&[Cmd::NewFolder]), "Crear carpeta"),
+    (C(&[Cmd::Undo]), "Deshacer cuando esté disponible"),
+    (C(&[Cmd::Redo]), "Rehacer renombrado disponible"),
+    (C(&[Cmd::Properties]), "Propiedades y permisos"),
+    (T(""), "PREVIEW Y CONFIGURACIÓN"),
+    (T("Space / F3 / Esc"), "Abrir / cerrar vista previa"),
     (
-        "Ctrl+rueda / +/- / 0",
+        T("Ctrl+A / Ctrl+C"),
+        "Seleccionar / copiar texto en preview",
+    ),
+    (
+        T("Alt+↑ / Alt+↓"),
+        "Elemento anterior / siguiente en preview",
+    ),
+    (
+        T("Ctrl+rueda / +/- / 0"),
         "Zoom / ajustar imagen, PDF, vídeo o GIF",
     ),
-    ("R / Shift+R", "Girar sólo la vista a derecha / izquierda"),
-    ("P", "Reproducir / pausar audio, vídeo o GIF"),
-    ("M", "Activar / silenciar audio de vídeo"),
-    ("T", "Alternar página / texto extraído del PDF"),
-    ("Ctrl+PgUp / PgDn", "Página PDF anterior / siguiente"),
-    ("Ctrl+,", "Preferencias"),
-    ("F10", "Acciones sobre archivos"),
-    ("F1 / Ctrl+? / Esc", "Abrir / cerrar esta ayuda"),
+    (
+        T("R / Shift+R"),
+        "Girar sólo la vista a derecha / izquierda",
+    ),
+    (T("P"), "Reproducir / pausar audio, vídeo o GIF"),
+    (T("M"), "Activar / silenciar audio de vídeo"),
+    (T("T"), "Alternar página / texto extraído del PDF"),
+    (T("Ctrl+PgUp / PgDn"), "Página PDF anterior / siguiente"),
+    (C(&[Cmd::Settings]), "Preferencias"),
+    (C(&[Cmd::Actions]), "Acciones sobre archivos"),
+    (C(&[Cmd::Help]), "Abrir / cerrar esta ayuda (Esc cierra)"),
 ];
 #[derive(Default)]
 pub struct State {
@@ -380,7 +500,10 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     );
     p.text(
         Rect::new(r.x + 20, r.y + 45, r.w - 40, 24),
-        "Flechas o rueda para desplazar · PageUp / PageDown",
+        &format!(
+            "Atajos: {} · Flechas o rueda para desplazar · PageUp / PageDown",
+            m.shortcuts.label()
+        ),
         11,
         c.foreground,
         true,
@@ -393,9 +516,10 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     state.scroll(0);
     let top = state.top;
     p.clip(body);
+    let profile = m.shortcuts;
     for (rank, (keys, description)) in ITEMS.iter().enumerate().skip(top).take(page) {
         let y = body.y + (rank - top) as i32 * ROW;
-        if keys.is_empty() {
+        if keys.is_header() {
             p.text(
                 Rect::new(body.x + 4, y, body.w - 8, ROW),
                 description,
@@ -407,7 +531,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         } else {
             p.text(
                 Rect::new(body.x + 4, y, 182, ROW),
-                keys,
+                &keys.text(profile),
                 11,
                 c.bright_foreground,
                 true,
@@ -457,6 +581,62 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
 mod tests {
     use super::*;
     #[test]
+    fn help_keys_follow_the_shortcut_table_of_each_profile() {
+        for profile in [Profile::Files, Profile::Nautilus] {
+            for (keys, description) in ITEMS {
+                if let C(cmds) = keys {
+                    let expected: Vec<String> = cmds
+                        .iter()
+                        .map(|&c| shortcuts::label(profile, c))
+                        .filter(|l| !l.is_empty())
+                        .collect();
+                    let text = keys.text(profile);
+                    if expected.is_empty() {
+                        assert_eq!(text, palette_only(profile), "{description}");
+                    } else {
+                        assert_eq!(text, expected.join(" / "), "{description}");
+                    }
+                }
+            }
+        }
+        let row = |profile, description: &str| {
+            ITEMS
+                .iter()
+                .find(|(_, d)| *d == description)
+                .map(|(k, _)| k.text(profile).into_owned())
+                .unwrap()
+        };
+        assert_eq!(row(Profile::Files, "Lista"), "Ctrl+2");
+        assert_eq!(row(Profile::Nautilus, "Lista"), "Ctrl+1");
+        assert_eq!(row(Profile::Nautilus, "Grilla de iconos"), "Ctrl+2");
+        assert_eq!(
+            row(Profile::Nautilus, "Propiedades y permisos"),
+            "Ctrl+I / Alt+Enter"
+        );
+        assert_eq!(
+            row(Profile::Nautilus, "Crear archivo"),
+            palette_only(Profile::Nautilus)
+        );
+        assert_eq!(
+            row(Profile::Nautilus, "Nueva ventana en la carpeta actual"),
+            "Ctrl+N"
+        );
+        // Every command with a chord in some profile has a help row.
+        for cmd in shortcuts::commands() {
+            let bound = [Profile::Files, Profile::Nautilus]
+                .iter()
+                .any(|&p| !shortcuts::chords(p, cmd).is_empty());
+            let listed = ITEMS
+                .iter()
+                .any(|(k, _)| matches!(k, C(cmds) if cmds.contains(&cmd)));
+            let fixed = matches!(
+                cmd,
+                Cmd::NoticeFocus | Cmd::FocusTabs | Cmd::Open | Cmd::OpenInTab
+            );
+            assert!(!bound || listed || fixed, "{cmd:?} has no help row");
+        }
+    }
+    #[test]
     fn scrolling_is_bounded_and_resize_reclamps() {
         let mut s = State { top: 0, page: 10 };
         s.scroll(i32::MAX);
@@ -474,7 +654,11 @@ mod tests {
             assert!(r.x >= 0 && r.y >= 0 && r.x + r.w <= w && r.y + r.h <= h);
             assert!((r.h - 136) / ROW >= 8);
         }
-        assert!(ITEMS.iter().any(|(k, _)| *k == "Ctrl+5"));
+        assert!(
+            ITEMS
+                .iter()
+                .any(|(k, _)| k.text(Profile::Files) == "Ctrl+5")
+        );
         assert!(!ITEMS.iter().any(|(_, d)| d.contains("F6")));
         assert!(
             ITEMS

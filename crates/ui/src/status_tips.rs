@@ -7,17 +7,43 @@ const EDGE_PAUSE: Duration = Duration::from_secs(2);
 const PIXELS_PER_SECOND: f64 = 35.0;
 const MIN_VIEWPORT: i32 = 80;
 
+/// Tip templates: `{Command}` is replaced by that command's first chord in
+/// the active shortcut profile (see [`crate::shortcuts`]).
 const TIPS: [&str; 9] = [
-    "Ctrl+L: escribe >comando o :lugar y pulsa Enter para abrir el catálogo filtrado; elige después una acción o destino.",
+    "{Location}: escribe >comando o :lugar y pulsa Enter para abrir el catálogo filtrado; elige después una acción o destino.",
     "Home/End van a los extremos. Shift extiende el rango; Ctrl mueve el foco sin reemplazar marcas y Ctrl+Shift añade un rango.",
-    "Filtra con *.rs o ext:pdf,md y pulsa Ctrl+Shift+A para marcar coincidencias y mostrar todo. Ctrl+Shift+D limpia la selección.",
-    "Ctrl+Shift+Espacio calcula o para carpetas listadas. Sin símbolo es tamaño medido; ≈ es valor previo y ≥ avance parcial. Ctrl+R invalida los cálculos.",
-    "Ctrl+F filtra nombres: *.pdf, ext:rs,md, type:dir, !draft. Insert marca y avanza; Ctrl+Espacio calcula una carpeta.",
-    "Navegador de archivos · Preferencias (Ctrl+,) · Acciones (F10). Ctrl+H muestra u oculta archivos ocultos.",
-    "Ctrl+1 Grupos, Ctrl+2 Lista, Ctrl+3 Columnas, Ctrl+4 Espacio y Ctrl+5 Grilla. Ctrl+rueda cambia el zoom de Grilla.",
-    "F2 abre el renombrador para la selección. Revisa los nombres de origen y destino en la vista previa antes de aplicar cualquier cambio.",
-    "Space abre la vista previa del archivo seleccionado; Esc vuelve a la carpeta. Shift+F10 o la tecla Menú abren las acciones del elemento enfocado.",
+    "Filtra con *.rs o ext:pdf,md y pulsa {SelectFiltered} para marcar coincidencias y mostrar todo. {ClearSelection} limpia la selección.",
+    "{SizesListed} calcula o para carpetas listadas. Sin símbolo es tamaño medido; ≈ es valor previo y ≥ avance parcial. {Refresh} invalida los cálculos.",
+    "{Filter} filtra nombres: *.pdf, ext:rs,md, type:dir, !draft. {MarkAdvance} marca y avanza; {MarkToggle} marca sin mover el foco.",
+    "Navegador de archivos · Preferencias ({Settings}) · Acciones ({Actions}). {Hidden} muestra u oculta archivos ocultos.",
+    "{ViewGroups} Grupos, {ViewList} Lista, {ViewColumns} Columnas, {ViewSpace} Espacio y {ViewGrid} Grilla. Ctrl+rueda cambia el zoom de Grilla.",
+    "{Rename} abre el renombrador para la selección. Revisa los nombres de origen y destino en la vista previa antes de aplicar cualquier cambio.",
+    "{Preview} abre la vista previa del archivo seleccionado; Esc vuelve a la carpeta. {ContextMenu} abre las acciones del elemento enfocado.",
 ];
+
+/// Replaces each `{Command}` of a tip template with its chord.
+pub fn render(template: &str, profile: crate::shortcuts::Profile) -> String {
+    let mut out = String::with_capacity(template.len());
+    let mut rest = template;
+    while let Some(start) = rest.find('{') {
+        out.push_str(&rest[..start]);
+        let tail = &rest[start + 1..];
+        let Some(end) = tail.find('}') else {
+            out.push_str(&rest[start..]);
+            return out;
+        };
+        let name = &tail[..end];
+        let chord = crate::shortcuts::commands()
+            .find(|cmd| format!("{cmd:?}") == name)
+            .map(|cmd| crate::shortcuts::primary(profile, cmd))
+            .filter(|chord| !chord.is_empty())
+            .unwrap_or("la paleta de comandos");
+        out.push_str(chord);
+        rest = &tail[end + 1..];
+    }
+    out.push_str(rest);
+    out
+}
 
 #[derive(Clone, Copy, Debug)]
 enum Phase {
@@ -53,6 +79,11 @@ impl Default for State {
 impl State {
     pub fn text(&self) -> &'static str {
         TIPS[self.tip]
+    }
+
+    /// The current tip with the chords of the active profile.
+    pub fn text_for(&self, profile: crate::shortcuts::Profile) -> std::borrow::Cow<'static, str> {
+        render(TIPS[self.tip], profile).into()
     }
 
     /// Nonnegative distance to subtract from the clipped text's initial x.
@@ -271,5 +302,19 @@ mod tests {
         state.configure(i32::MAX, f64::MAX);
         assert!(!state.tick(now + Duration::from_secs(100), true));
         assert_eq!(state.offset(), 0);
+    }
+
+    #[test]
+    fn tips_print_the_chords_of_the_active_profile() {
+        use crate::shortcuts::Profile;
+        for profile in [Profile::Files, Profile::Nautilus] {
+            for tip in TIPS {
+                let text = render(tip, profile);
+                assert!(!text.contains('{') && !text.contains('}'), "{text}");
+            }
+        }
+        assert!(render(TIPS[6], Profile::Files).starts_with("Ctrl+1 Grupos, Ctrl+2 Lista"));
+        assert!(render(TIPS[6], Profile::Nautilus).starts_with("Ctrl+3 Grupos, Ctrl+1 Lista"));
+        assert!(render(TIPS[4], Profile::Nautilus).contains("Ctrl+Espacio marca sin mover"));
     }
 }

@@ -3,6 +3,7 @@
 use crate::{
     model::{Action, Model, View},
     places_sidebar::{Kind, Pick, Rail},
+    shortcuts::{self, Cmd},
     tabs::Command,
 };
 use fltk::enums::{Key, Shortcut};
@@ -24,8 +25,13 @@ pub fn tab_chord(m: &Model, key: Key, mods: Shortcut) -> Option<Command> {
     let ctrl = mods.intersects(Shortcut::Ctrl | Shortcut::Meta);
     let alt = mods.intersects(Shortcut::Alt);
     let shift = mods.intersects(Shortcut::Shift);
-    if ctrl && !alt && !shift && matches!(key, Key::PageUp | Key::PageDown) {
-        return Some(Command::Cycle(if key == Key::PageDown { 1 } else { -1 }));
+    if key != Key::Tab {
+        if shortcuts::is(m.shortcuts, Cmd::TabNext, key, mods) {
+            return Some(Command::Cycle(1));
+        }
+        if shortcuts::is(m.shortcuts, Cmd::TabPrev, key, mods) {
+            return Some(Command::Cycle(-1));
+        }
     }
     if alt && !ctrl && !shift {
         let n = (1..=9u8).find(|n| key == Key::from_char((b'0' + n) as char))?;
@@ -40,21 +46,16 @@ pub fn tab_chord(m: &Model, key: Key, mods: Shortcut) -> Option<Command> {
     None
 }
 
-/// Ctrl+? (Ctrl+Shift+/ on US layouts) opens the shortcut help like F1.
-pub fn help_chord(key: Key, mods: Shortcut, text: &str) -> bool {
-    mods.intersects(Shortcut::Ctrl | Shortcut::Meta)
-        && (key == Key::from_char('?')
-            || text == "?"
-            || (key == Key::from_char('/') && mods.intersects(Shortcut::Shift)))
+/// F1 or Ctrl+? (Ctrl+Shift+/ on US layouts, or whatever key types "?").
+pub fn help_chord(profile: shortcuts::Profile, key: Key, mods: Shortcut, text: &str) -> bool {
+    shortcuts::is(profile, Cmd::Help, key, mods)
+        || (mods.intersects(Shortcut::Ctrl | Shortcut::Meta) && text == "?")
 }
 
 /// The dedicated chord that moves keyboard focus between the list and the
 /// places rail from anywhere, dual-pane mode included.
-pub fn rail_chord(key: Key, mods: Shortcut) -> bool {
-    key == Key::from_char('s')
-        && mods.intersects(Shortcut::Ctrl | Shortcut::Meta)
-        && mods.intersects(Shortcut::Alt)
-        && !mods.intersects(Shortcut::Shift)
+pub fn rail_chord(profile: shortcuts::Profile, key: Key, mods: Shortcut) -> bool {
+    shortcuts::is(profile, Cmd::FocusRail, key, mods)
 }
 
 /// What a key does while the places rail holds keyboard focus. The toolkit
@@ -71,6 +72,8 @@ pub enum RailKey {
     Background(PathBuf),
     /// Give focus back to the list and let the list handle the chord.
     Pass,
+    /// Hand keyboard focus on to the tab strip (Nautilus F6 cycle).
+    ToTabs,
     /// Swallow the key: it would act on the file list behind the rail.
     Consume,
 }
@@ -78,7 +81,25 @@ pub enum RailKey {
 /// Chords that keep working while the rail has focus. Everything else that
 /// the rail does not use is swallowed so a key such as Delete or F2 never
 /// reaches the file selection the user is not looking at.
-pub fn rail_passthrough(key: Key, mods: Shortcut) -> bool {
+pub fn rail_passthrough(profile: shortcuts::Profile, key: Key, mods: Shortcut) -> bool {
+    // Non-destructive window commands of the active profile (Nautilus F5
+    // reload, Ctrl+N new window, F3 dual pane...) also reach the list.
+    if matches!(
+        shortcuts::resolve(profile, key, mods),
+        Some(
+            Cmd::Refresh
+                | Cmd::NewWindow
+                | Cmd::RailToggle
+                | Cmd::DualPane
+                | Cmd::Search
+                | Cmd::Filter
+                | Cmd::Hidden
+                | Cmd::Location
+                | Cmd::Commands
+        )
+    ) {
+        return true;
+    }
     let ctrl = mods.intersects(Shortcut::Ctrl | Shortcut::Meta);
     let alt = mods.intersects(Shortcut::Alt);
     let shift = mods.intersects(Shortcut::Shift);
@@ -114,8 +135,11 @@ pub fn rail_key(m: &Model, rail: &Rail, cursor: usize, key: Key, mods: Shortcut)
     let ctrl = mods.intersects(Shortcut::Ctrl | Shortcut::Meta);
     let alt = mods.intersects(Shortcut::Alt);
     let shift = mods.intersects(Shortcut::Shift);
-    if (key == Key::Escape && !ctrl && !alt) || rail_chord(key, mods) {
+    if (key == Key::Escape && !ctrl && !alt) || rail_chord(m.shortcuts, key, mods) {
         return RailKey::ReturnToList;
+    }
+    if shortcuts::is(m.shortcuts, Cmd::FocusCycle, key, mods) {
+        return RailKey::ToTabs;
     }
     if matches!(key, Key::Enter | Key::KPEnter) && !alt && (ctrl || shift) {
         return match rail_folder(rail, cursor) {
@@ -156,7 +180,7 @@ pub fn rail_key(m: &Model, rail: &Rail, cursor: usize, key: Key, mods: Shortcut)
             _ => RailKey::Consume,
         };
     }
-    if rail_passthrough(key, mods) {
+    if rail_passthrough(m.shortcuts, key, mods) {
         return RailKey::Pass;
     }
     RailKey::Consume
@@ -332,6 +356,48 @@ impl Model {
         self.preserve_empty_selection = self.selection.is_empty();
     }
 
+    /// Nautilus F6: list → places rail → tab strip → list. The rail and the
+    /// tab strip hand focus on with the same chord; dual mode switches panes.
+    pub fn focus_cycle(&mut self) {
+        if self.dual.enabled {
+            self.switch_dual();
+            return;
+        }
+        self.focus_request = Some(if self.sidebar_widget {
+            FocusTarget::Rail
+        } else {
+            FocusTarget::Tabs
+        });
+    }
+
+    /// A new Files window on the current folder, through the injected
+    /// spawner (a detached process of this binary in the real window).
+    pub fn new_window(&mut self) {
+        let path = self.path.clone();
+        if !path.is_absolute() {
+            self.error = "Nueva ventana: la carpeta actual no es una ruta absoluta".into();
+            return;
+        }
+        if let Err(error) = (self.window_spawner)(&path) {
+            self.error = error;
+        }
+    }
+
+    /// Applies a shortcut profile live and persists it with the other
+    /// preferences.
+    pub fn set_shortcut_profile(&mut self, profile: crate::shortcuts::Profile) {
+        if self.shortcuts == profile {
+            return;
+        }
+        self.shortcuts = profile;
+        self.settings = false;
+        self.hits.clear();
+        self.config_revision += 1;
+        self.config_dirty = true;
+        self.config_error = None;
+        self.dispatch_config();
+    }
+
     pub fn go_home(&mut self) {
         self.go_home_at(files_core::theme::home());
     }
@@ -365,7 +431,14 @@ impl Model {
                 }
             }
             View::Spatial => self.action(Action::Zoom(factor)),
-            _ => self.error = "El zoom sólo existe en la vista Grilla (Ctrl+5)".into(),
+            _ => {
+                let chord = shortcuts::primary(self.shortcuts, Cmd::ViewGrid);
+                self.error = if chord.is_empty() {
+                    "El zoom sólo existe en la vista Grilla".into()
+                } else {
+                    format!("El zoom sólo existe en la vista Grilla ({chord})")
+                };
+            }
         }
     }
 }
@@ -480,18 +553,22 @@ mod tests {
 
     #[test]
     fn help_and_rail_chords() {
+        let p = shortcuts::Profile::Files;
         assert!(help_chord(
+            p,
             Key::from_char('/'),
             Shortcut::Ctrl | Shortcut::Shift,
             ""
         ));
-        assert!(help_chord(Key::from_char('\''), Shortcut::Ctrl, "?"));
-        assert!(!help_chord(Key::from_char('/'), Shortcut::Ctrl, "/"));
+        assert!(help_chord(p, Key::from_char('\''), Shortcut::Ctrl, "?"));
+        assert!(!help_chord(p, Key::from_char('/'), Shortcut::Ctrl, "/"));
+        assert!(help_chord(p, Key::F1, Shortcut::None, ""));
         assert!(rail_chord(
+            p,
             Key::from_char('s'),
             Shortcut::Ctrl | Shortcut::Alt
         ));
-        assert!(!rail_chord(Key::from_char('s'), Shortcut::Ctrl));
+        assert!(!rail_chord(p, Key::from_char('s'), Shortcut::Ctrl));
     }
 
     #[test]
@@ -712,6 +789,10 @@ mod tests {
             RailKey::Consume
         ));
         assert!(matches!(
+            rail_key(&m, &rail, 1, Key::F6, none),
+            RailKey::Consume
+        ));
+        assert!(matches!(
             rail_key(&m, &rail, 1, Key::Delete, Shortcut::Shift),
             RailKey::Consume
         ));
@@ -784,5 +865,91 @@ mod tests {
         assert!(marked.is_empty());
         assert!(ring);
         fltk_omarchy::anim::set_enabled(None);
+    }
+
+    #[test]
+    fn nautilus_profile_rail_keys_cycle_focus_and_pass_reload() {
+        let mut m = model();
+        m.shortcuts = shortcuts::Profile::Nautilus;
+        let rail = Rail::default();
+        let none = Shortcut::None;
+        assert!(matches!(
+            rail_key(&m, &rail, 0, Key::F6, none),
+            RailKey::ToTabs
+        ));
+        assert!(matches!(
+            rail_key(&m, &rail, 0, Key::F5, none),
+            RailKey::Pass
+        ));
+        assert!(matches!(
+            rail_key(&m, &rail, 0, Key::from_char('n'), Shortcut::Ctrl),
+            RailKey::Pass
+        ));
+        assert!(matches!(
+            rail_key(&m, &rail, 0, Key::F2, none),
+            RailKey::Consume
+        ));
+        // List focus: F6 asks for the rail when it exists, else the tabs;
+        // dual mode switches panes instead.
+        m.sidebar_widget = true;
+        m.action(Action::FocusCycle);
+        assert_eq!(m.focus_request.take(), Some(FocusTarget::Rail));
+        m.sidebar_widget = false;
+        m.action(Action::FocusCycle);
+        assert_eq!(m.focus_request.take(), Some(FocusTarget::Tabs));
+    }
+
+    #[test]
+    fn mark_toggle_keeps_focus_and_insert_advances() {
+        let mut m = model();
+        listed(&mut m);
+        m.selected = Some(1);
+        m.selection.clear();
+        m.action(Action::MarkToggle);
+        assert_eq!(m.selected, Some(1));
+        assert!(m.selection.contains(&1));
+        m.action(Action::MarkToggle);
+        assert_eq!(m.selected, Some(1));
+        assert!(!m.selection.contains(&1));
+        m.mark_and_advance();
+        assert!(m.selection.contains(&1));
+        assert_eq!(m.selected, Some(2));
+    }
+
+    #[test]
+    fn new_window_uses_the_injected_spawner_on_the_current_folder() {
+        use std::sync::Mutex;
+        static SEEN: Mutex<Vec<PathBuf>> = Mutex::new(Vec::new());
+        fn record(path: &std::path::Path) -> Result<(), String> {
+            SEEN.lock().unwrap().push(path.to_path_buf());
+            Ok(())
+        }
+        fn fail(_: &std::path::Path) -> Result<(), String> {
+            Err("Nueva ventana: sin ejecutable".into())
+        }
+        let mut m = model();
+        m.window_spawner = record;
+        m.action(Action::NewWindow);
+        assert_eq!(SEEN.lock().unwrap().as_slice(), [m.path.clone()]);
+        m.window_spawner = fail;
+        m.action(Action::NewWindow);
+        assert!(m.error.contains("sin ejecutable"));
+    }
+
+    #[test]
+    fn profile_switch_is_live_and_persisted_with_the_preferences() {
+        let mut m = model();
+        let (tx, rx) = mpsc::sync_channel(4);
+        m.aux.tx = tx;
+        m.action(Action::ShortcutProfile(shortcuts::Profile::Nautilus));
+        assert_eq!(m.shortcuts, shortcuts::Profile::Nautilus);
+        let crate::aux_io::Request::Preferences(.., profile) = rx.try_recv().unwrap() else {
+            panic!("preferences request");
+        };
+        assert_eq!(profile, shortcuts::Profile::Nautilus);
+        // Zoom outside the grid names the grid chord of the active profile.
+        m.view = View::List;
+        m.action(Action::ZoomStep(1));
+        assert!(m.error.contains("(Ctrl+2)"), "{}", m.error);
     }
 }

@@ -112,7 +112,7 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
                 Action::DiscardFolderView,
             ),
             (
-                row("  Barra de operaciones MC", "Ctrl+Alt+B", m.operation_bar),
+                row("  Barra de operaciones MC", "", m.operation_bar),
                 Action::ToggleOperationBar,
             ),
             (
@@ -128,13 +128,10 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
                 Action::WindowMode(WindowMode::Fullscreen),
             ),
             (
-                row("  Mostrar ocultos", "Ctrl+H", m.show_hidden),
+                row("  Mostrar ocultos", "", m.show_hidden),
                 Action::ToggleHidden,
             ),
-            (
-                row("  Doble panel", "F9", m.dual.enabled),
-                Action::DualPane,
-            ),
+            (row("  Doble panel", "", m.dual.enabled), Action::DualPane),
             (
                 row("Bordes: Omarchy", "", m.corners == Corners::Omarchy),
                 Action::Corner(Corners::Omarchy),
@@ -167,7 +164,23 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
                 ),
                 Action::SaveSession,
             ),
-            (row("  Ayuda de atajos", "F1", false), Action::Help),
+            (
+                row(
+                    "Atajos: Files",
+                    "",
+                    m.shortcuts == crate::shortcuts::Profile::Files,
+                ),
+                Action::ShortcutProfile(crate::shortcuts::Profile::Files),
+            ),
+            (
+                row(
+                    "Atajos: Nautilus",
+                    "",
+                    m.shortcuts == crate::shortcuts::Profile::Nautilus,
+                ),
+                Action::ShortcutProfile(crate::shortcuts::Profile::Nautilus),
+            ),
+            (row("  Ayuda de atajos", "", false), Action::Help),
         ],
         Kind::Actions => vec![
             (
@@ -178,18 +191,12 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
                 row(" Duplicados en esta carpeta", "", false),
                 Action::Duplicates,
             ),
+            (row(" Favoritos y lugares", "", false), Action::Bookmarks),
             (
-                row(" Favoritos y lugares", "Ctrl+Alt+D", false),
-                Action::Bookmarks,
-            ),
-            (
-                row(" Añadir carpeta a favoritos", "Ctrl+D", false),
+                row(" Añadir carpeta a favoritos", "", false),
                 Action::BookmarkAdd,
             ),
-            (
-                row("  Gestor de tamaños", "Ctrl+Alt+Space", false),
-                Action::Sizes,
-            ),
+            (row("  Gestor de tamaños", "", false), Action::Sizes),
             (row("  SFTP · montaje", "", false), Action::Sftp),
             (
                 row("󰆧 Comprimir…: revisar", "", false),
@@ -200,24 +207,21 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
                 row("󰇚  Extraer en…: revisar", "", false),
                 Action::ExtractArchive,
             ),
+            (row("  Buscar comandos", "", false), Action::Commands),
             (
-                row("  Buscar comandos", "Ctrl+Shift+P", false),
-                Action::Commands,
-            ),
-            (
-                row("󰄬  Marcar filtrados y mostrar todo", "Ctrl+Shift+A", false),
+                row("󰄬  Marcar filtrados y mostrar todo", "", false),
                 Action::Selection(crate::selection_tools::Command::Filtered),
             ),
             (
-                row("󰄲  Seleccionar todo", "Ctrl+A", false),
+                row("󰄲  Seleccionar todo", "", false),
                 Action::Selection(crate::selection_tools::Command::All),
             ),
             (
-                row("󰒟  Invertir selección", "Ctrl+I", false),
+                row("󰒟  Invertir selección", "", false),
                 Action::Selection(crate::selection_tools::Command::Invert),
             ),
             (
-                row("󰅖  Limpiar selección", "Ctrl+Shift+D", false),
+                row("󰅖  Limpiar selección", "", false),
                 Action::Selection(crate::selection_tools::Command::Clear),
             ),
             (
@@ -227,7 +231,7 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
                     } else {
                         "  Carpetas listadas"
                     },
-                    "Ctrl+Shift+Space",
+                    "",
                     false,
                 ),
                 if m.sizes.has_work() {
@@ -252,41 +256,23 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
                 row("  Reintentar tamaños fallidos", "", false),
                 Action::RetrySizeErrors,
             ),
-            (
-                row("  Buscar en subcarpetas", "Ctrl+Shift+F", false),
-                Action::Search,
-            ),
-            (row("  Filtrar carpeta", "Ctrl+F", false), Action::Filter),
-            (
-                row("  Calcular tamaño", "Ctrl+Space", false),
-                Action::CalculateSize,
-            ),
-            (row("  Vista previa", "Space", false), Action::Preview),
-            (
-                row("  Propiedades", "Alt+Enter", false),
-                Action::Properties,
-            ),
-            (
-                row("  Copiar en files", "Ctrl+C", false),
-                Action::ClipboardCopy,
-            ),
+            (row("  Buscar en subcarpetas", "", false), Action::Search),
+            (row("  Filtrar carpeta", "", false), Action::Filter),
+            (row("  Calcular tamaño", "", false), Action::CalculateSize),
+            (row("  Vista previa", "", false), Action::Preview),
+            (row("  Propiedades", "", false), Action::Properties),
+            (row("  Copiar en files", "", false), Action::ClipboardCopy),
             (
                 row("  Movimientos interrumpidos", "", false),
                 Action::RecoveryCatalog,
             ),
-            (
-                row("  Cortar en files", "Ctrl+X", false),
-                Action::ClipboardCut,
-            ),
-            (row("  Renombrar", "F2", false), Action::Rename),
-            (row("  Enviar a Papelera", "Supr", false), Action::Trash),
-            (
-                row("  Crear archivo", "Ctrl+N", false),
-                Action::NewEntry(false),
-            ),
-            (row("  Crear carpeta", "F7", false), Action::NewEntry(true)),
-            (row("  Deshacer", "Ctrl+Z", false), Action::Undo(false)),
-            (row("  Rehacer", "Ctrl+Shift+Z", false), Action::Undo(true)),
+            (row("  Cortar en files", "", false), Action::ClipboardCut),
+            (row("  Renombrar", "", false), Action::Rename),
+            (row("  Enviar a Papelera", "", false), Action::Trash),
+            (row("  Crear archivo", "", false), Action::NewEntry(false)),
+            (row("  Crear carpeta", "", false), Action::NewEntry(true)),
+            (row("  Deshacer", "", false), Action::Undo(false)),
+            (row("  Rehacer", "", false), Action::Undo(true)),
             (
                 {
                     let item = row("  Último resultado de operación", "", false);
@@ -298,10 +284,7 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
                 },
                 Action::CopyDetails,
             ),
-            (
-                row("  Pegar en files", "Ctrl+V", false),
-                Action::ClipboardPaste,
-            ),
+            (row("  Pegar en files", "", false), Action::ClipboardPaste),
         ],
         Kind::Context | Kind::Breadcrumbs | Kind::Tabs => unreachable!(),
     };
@@ -328,6 +311,14 @@ fn toolbar(m: &Model, kind: Kind) -> (Vec<PopupItem>, Vec<Option<Action>>) {
     let mut actions = Vec::new();
     for (index, (item, action)) in entries.into_iter().enumerate() {
         let group = toolbar_group(kind, &action);
+        // Accelerator labels come from the shortcut table of the profile.
+        let chord = crate::shortcuts::cmd_for_action(&action)
+            .map_or("", |cmd| crate::shortcuts::primary(m.shortcuts, cmd));
+        let item = if chord.is_empty() {
+            item
+        } else {
+            item.shortcut(chord)
+        };
         children[group].push(item.id(&index.to_string()));
         actions.push(Some(action));
     }
@@ -684,11 +675,24 @@ mod tests {
     }
     #[test]
     fn toolbar_keeps_preferences_and_file_actions_separate() {
-        let m = Model::new("/fixture-only".into());
+        // Rows live inside group submenus; search the leaves, not the roots.
+        fn leaves(items: &[PopupItem]) -> Vec<&PopupItem> {
+            items
+                .iter()
+                .flat_map(|i| {
+                    if i.is_submenu() {
+                        leaves(&i.children)
+                    } else {
+                        vec![i]
+                    }
+                })
+                .collect()
+        }
+        let mut m = Model::new(std::env::temp_dir().join("files-toolkit-menu-fixture"));
         let (preferences, preference_actions) = toolbar(&m, Kind::Settings);
         let (actions, file_actions) = toolbar(&m, Kind::Actions);
         assert!(
-            preferences
+            leaves(&preferences)
                 .iter()
                 .any(|item| item.label.contains("Mostrar ocultos") && item.shortcut == "Ctrl+H")
         );
@@ -703,7 +707,7 @@ mod tests {
                 .any(|a| matches!(a, Some(Action::Trash)))
         );
         assert!(
-            actions
+            leaves(&actions)
                 .iter()
                 .any(|item| item.label.contains("Renombrar") && item.shortcut == "F2")
         );
@@ -717,5 +721,28 @@ mod tests {
                 .iter()
                 .any(|a| matches!(a, Some(Action::WindowMode(_))))
         );
+        // Accelerators follow the active profile, and both profiles are
+        // offered in the preferences menu with the active one checked.
+        let accel = |m: &Model, kind, label: &str| {
+            let (items, _) = toolbar(m, kind);
+            leaves(&items)
+                .iter()
+                .find(|i| i.label.contains(label))
+                .map(|i| (i.shortcut.clone(), i.checked))
+                .unwrap()
+        };
+        assert_eq!(accel(&m, Kind::Settings, "Doble panel").0, "F9");
+        assert_eq!(accel(&m, Kind::Actions, "Crear archivo").0, "Ctrl+N");
+        assert!(accel(&m, Kind::Settings, "Atajos: Files").1);
+        m.shortcuts = crate::shortcuts::Profile::Nautilus;
+        assert_eq!(accel(&m, Kind::Settings, "Doble panel").0, "F3");
+        assert_eq!(accel(&m, Kind::Actions, "Crear archivo").0, "");
+        assert_eq!(
+            accel(&m, Kind::Actions, "Invertir selección").0,
+            "Ctrl+Shift+I"
+        );
+        assert_eq!(accel(&m, Kind::Actions, "Propiedades").0, "Ctrl+I");
+        assert!(accel(&m, Kind::Settings, "Atajos: Nautilus").1);
+        assert!(!accel(&m, Kind::Settings, "Atajos: Files").1);
     }
 }

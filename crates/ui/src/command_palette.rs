@@ -1,4 +1,5 @@
 //! Bounded discovery/dispatch of existing Actions. Never parses shell commands or does I/O.
+use crate::shortcuts::Cmd;
 use crate::{
     model::{Action, Hit, Model, View},
     painter::{Painter, Rect},
@@ -25,7 +26,7 @@ use fltk::{
 };
 const ROW: i32 = 44;
 pub const QUERY_LIMIT: usize = 256;
-pub const MAX_COMMANDS: usize = 96;
+pub const MAX_COMMANDS: usize = 112;
 const PROOF_LIMIT: usize = 64 * 1024;
 #[derive(Clone, Copy)]
 enum Gate {
@@ -38,6 +39,10 @@ enum Dispatch {
     Existing(Action),
     Parent,
     CloseTab,
+    /// Wide/collapsed places rail, from the current pin state.
+    RailToggle,
+    /// Reverse the current sort criterion.
+    SortReverse,
 }
 pub struct Spec {
     pub id: &'static str,
@@ -67,13 +72,42 @@ impl Spec {
             self.label
         }
     }
-    fn shortcut_for(&self, m: &Model) -> &'static str {
+    fn shortcut_for(&self, m: &Model) -> std::borrow::Cow<'static, str> {
+        let profile = m.shortcuts;
         if self.id == "copy" && crate::selection_tools::is_map(m) {
-            ""
+            "".into()
         } else if self.id == "refresh" && crate::selection_tools::is_map(m) {
-            "F5 / Ctrl+R"
+            // F5 recalculates the map where it is the copy chord.
+            let copy = crate::shortcuts::chords(profile, Cmd::CopyFiles);
+            let refresh = crate::shortcuts::chords(profile, Cmd::Refresh);
+            copy.iter()
+                .chain(refresh.iter().filter(|c| !copy.contains(c)))
+                .copied()
+                .collect::<Vec<_>>()
+                .join(" / ")
+                .into()
         } else {
-            self.shortcut
+            shortcut_text(profile, self)
+        }
+    }
+}
+/// A palette entry's chord text: from the shortcut table when the entry runs
+/// a table command, otherwise its fixed hint (such as "Alt+1…9").
+fn shortcut_text(
+    profile: crate::shortcuts::Profile,
+    spec: &Spec,
+) -> std::borrow::Cow<'static, str> {
+    match crate::shortcuts::palette_cmd(spec.id) {
+        Some(cmd) => crate::shortcuts::label(profile, cmd).into(),
+        None => spec.shortcut.into(),
+    }
+}
+impl Spec {
+    #[cfg(test)]
+    fn dispatch_action(&self) -> Option<&Action> {
+        match &self.dispatch {
+            Dispatch::Existing(a) => Some(a),
+            _ => None,
         }
     }
 }
@@ -93,7 +127,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "search",
         "Buscar archivos en subcarpetas",
-        "Ctrl+Shift+F",
+        "",
         "find search recursive buscar grep contenido texto",
         Root,
         Action::Search
@@ -101,7 +135,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "filter",
         "Filtrar en esta carpeta",
-        "Ctrl+F",
+        "",
         "filter fuzzy buscar local",
         Root,
         Action::Filter
@@ -109,7 +143,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "sizes-manager",
         "Gestor de tamaños por carpeta",
-        "Ctrl+Alt+Espacio",
+        "",
         "tamano size du cola queue manager errores",
         Root,
         Action::Sizes
@@ -125,7 +159,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "sizes-one",
         "Calcular tamaño de carpeta enfocada",
-        "Ctrl+Espacio",
+        "",
         "tamano size du folder calcular",
         Focus,
         Action::CalculateSize
@@ -157,7 +191,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "sizes-list",
         "Calcular carpetas del listado",
-        "Ctrl+Shift+Espacio",
+        "",
         "tamanos size du batch calcular",
         Listing,
         Action::CalculateListedSizes
@@ -197,7 +231,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "copy",
         "Copiar selección: revisar destino",
-        "F5",
+        "",
         "copy copiar duplicate",
         Selection,
         Action::CopyFiles
@@ -229,7 +263,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "move",
         "Mover selección: revisar destino",
-        "F6",
+        "",
         "move mover transferir",
         Selection,
         Action::MoveFiles
@@ -237,7 +271,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "rename",
         "Renombrar selección: vista previa",
-        "F2",
+        "",
         "rename batch patrones regex renombrar",
         Selection,
         Action::Rename
@@ -245,7 +279,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "trash",
         "Enviar selección a Papelera",
-        "F8 / Supr",
+        "",
         "trash delete borrar papelera",
         Selection,
         Action::Trash
@@ -261,7 +295,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "properties",
         "Propiedades y permisos",
-        "Alt+Enter",
+        "",
         "properties chmod permisos",
         Selection,
         Action::Properties
@@ -269,7 +303,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "new-dir",
         "Crear carpeta",
-        "F7",
+        "",
         "mkdir new folder carpeta crear",
         Listing,
         Action::NewEntry(true)
@@ -277,7 +311,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "new-file",
         "Crear archivo",
-        "Ctrl+N",
+        "",
         "touch new file archivo crear",
         Listing,
         Action::NewEntry(false)
@@ -285,7 +319,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "clipboard-copy",
         "Copiar al buffer de files",
-        "Ctrl+C",
+        "",
         "clipboard copy portapapeles copiar",
         Selection,
         Action::ClipboardCopy
@@ -293,7 +327,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "clipboard-cut",
         "Cortar al buffer de files",
-        "Ctrl+X",
+        "",
         "clipboard cut portapapeles cortar",
         Selection,
         Action::ClipboardCut
@@ -301,7 +335,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "clipboard-paste",
         "Pegar desde el buffer de files",
-        "Ctrl+V",
+        "",
         "clipboard paste portapapeles pegar",
         Listing,
         Action::ClipboardPaste
@@ -309,7 +343,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "open",
         "Abrir elemento enfocado",
-        "Enter",
+        "",
         "open abrir",
         Focus,
         Action::Open
@@ -317,7 +351,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "preview",
         "Vista previa del elemento enfocado",
-        "Espacio / F3",
+        "",
         "preview previa previsualizar ver leer",
         Focus,
         Action::Preview
@@ -325,7 +359,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "copy-path",
         "Copiar ruta del elemento",
-        "Ctrl+Alt+C",
+        "",
         "path ruta copiar",
         Focus,
         Action::CopyPath
@@ -333,7 +367,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "undo",
         "Deshacer operación disponible",
-        "Ctrl+Z",
+        "",
         "undo deshacer",
         Listing,
         Action::Undo(false)
@@ -349,7 +383,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "redo",
         "Rehacer renombrado disponible",
-        "Ctrl+Shift+Z",
+        "",
         "redo rehacer",
         Listing,
         Action::Undo(true)
@@ -357,7 +391,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "history-back",
         "Atrás en el historial",
-        "Alt+Izquierda",
+        "",
         "back history atras",
         Root,
         Action::History(false)
@@ -365,7 +399,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "history-forward",
         "Adelante en el historial",
-        "Alt+Derecha",
+        "",
         "forward history adelante",
         Root,
         Action::History(true)
@@ -373,7 +407,7 @@ pub const ITEMS: &[Spec] = &[
     Spec {
         id: "parent",
         label: "Subir a la carpeta superior",
-        shortcut: "Backspace",
+        shortcut: "",
         aliases: "parent up subir",
         gate: Gate::Root,
         dispatch: Dispatch::Parent,
@@ -381,7 +415,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "tab-new",
         "Nueva pestaña",
-        "Ctrl+T",
+        "",
         "tab nueva pestana",
         Root,
         Action::Tab(crate::tabs::Command::New)
@@ -389,7 +423,7 @@ pub const ITEMS: &[Spec] = &[
     Spec {
         id: "tab-close",
         label: "Cerrar pestaña activa",
-        shortcut: "Ctrl+W",
+        shortcut: "",
         aliases: "close tab cerrar pestana",
         gate: Gate::Root,
         dispatch: Dispatch::CloseTab,
@@ -397,7 +431,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "tab-reopen",
         "Reabrir pestaña cerrada",
-        "Ctrl+Shift+T",
+        "",
         "reopen tab pestana",
         Root,
         Action::Tab(crate::tabs::Command::Reopen)
@@ -405,7 +439,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "tab-next",
         "Pestaña siguiente",
-        "Ctrl+Tab / Ctrl+PgDn",
+        "",
         "next tab pestana",
         Root,
         Action::Tab(crate::tabs::Command::Cycle(1))
@@ -413,7 +447,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "tab-prev",
         "Pestaña anterior",
-        "Ctrl+Shift+Tab / Ctrl+PgUp",
+        "",
         "previous tab pestana",
         Root,
         Action::Tab(crate::tabs::Command::Cycle(-1))
@@ -421,7 +455,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "select-pattern",
         "Seleccionar por patrón",
-        "Ctrl+S",
+        "",
         "select pattern patron glob marcar seleccionar",
         Listing,
         Action::SelectPattern
@@ -429,7 +463,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "open-with",
         "Abrir con otra aplicación",
-        "Ctrl+Shift+O",
+        "",
         "open with abrir con aplicacion app",
         Focus,
         Action::OpenWith
@@ -437,7 +471,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "create-link",
         "Crear enlaces simbólicos de la selección",
-        "Ctrl+Shift+M",
+        "",
         "symlink link enlace simbolico crear",
         Selection,
         Action::CreateLinks
@@ -445,7 +479,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "paste-link",
         "Enlace a lo copiado en el buffer de files",
-        "Ctrl+M",
+        "",
         "paste link pegar enlace simbolico",
         Root,
         Action::LinkCopied
@@ -453,7 +487,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "delete-permanently",
         "Eliminar definitivamente",
-        "Shift+Supr",
+        "",
         "delete permanently eliminar borrar definitivo",
         Selection,
         Action::DeletePermanently
@@ -461,7 +495,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "edit-location",
         "Editar ubicación",
-        "Ctrl+L / ~ / /",
+        "",
         "location path ruta ubicacion omnibar",
         Root,
         Action::Omni
@@ -469,7 +503,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "breadcrumbs",
         "Menú de carpetas superiores",
-        "Alt+Abajo",
+        "",
         "breadcrumbs ancestros ruta migas",
         Root,
         Action::Breadcrumbs
@@ -477,7 +511,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "go-home",
         "Ir a la carpeta personal",
-        "Alt+Inicio",
+        "",
         "home inicio carpeta personal",
         Root,
         Action::GoHome
@@ -485,7 +519,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "zoom-in",
         "Acercar Grilla",
-        "Ctrl++",
+        "",
         "zoom in acercar iconos grilla",
         Root,
         Action::ZoomStep(1)
@@ -493,7 +527,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "zoom-out",
         "Alejar Grilla",
-        "Ctrl+-",
+        "",
         "zoom out alejar iconos grilla",
         Root,
         Action::ZoomStep(-1)
@@ -501,7 +535,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "zoom-reset",
         "Restablecer zoom de la Grilla",
-        "Ctrl+0",
+        "",
         "zoom reset restablecer grilla",
         Root,
         Action::ZoomStep(0)
@@ -517,7 +551,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "focus-tabs",
         "Foco en la barra de pestañas",
-        "Ctrl+Alt+T",
+        "",
         "focus tabs foco pestanas teclado",
         Root,
         Action::FocusTabs
@@ -525,7 +559,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "focus-rail",
         "Foco en la barra de lugares",
-        "Ctrl+Alt+S",
+        "",
         "focus sidebar rail lugares foco teclado",
         Root,
         Action::FocusRail
@@ -533,7 +567,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "actions-menu",
         "Menú Acciones",
-        "F10",
+        "",
         "actions menu acciones",
         Root,
         Action::Actions
@@ -573,7 +607,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "view-list",
         "Vista Lista",
-        "Ctrl+2",
+        "",
         "list lista",
         Root,
         Action::View(View::List)
@@ -581,7 +615,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "view-groups",
         "Vista Grupos",
-        "Ctrl+1",
+        "",
         "groups grupos",
         Root,
         Action::View(View::Groups)
@@ -589,7 +623,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "view-grid",
         "Vista Grilla",
-        "Ctrl+5",
+        "",
         "grid icons iconos grilla",
         Root,
         Action::View(View::Grid)
@@ -597,7 +631,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "view-columns",
         "Vista Columnas",
-        "Ctrl+3",
+        "",
         "finder columns columnas",
         Root,
         Action::View(View::Columns)
@@ -605,7 +639,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "view-space",
         "Vista Espacio (treemap)",
-        "Ctrl+4",
+        "",
         "treemap size tamano espacio",
         Root,
         Action::View(View::SpaceMap)
@@ -613,7 +647,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "dual",
         "Alternar doble panel",
-        "F9",
+        "",
         "mc commander dual panel",
         Root,
         Action::DualPane
@@ -621,7 +655,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "hidden",
         "Alternar archivos ocultos",
-        "Ctrl+H",
+        "",
         "hidden dotfiles ocultos",
         Root,
         Action::ToggleHidden
@@ -629,7 +663,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "refresh",
         "Actualizar carpeta",
-        "Ctrl+R",
+        "",
         "reload refresh actualizar recalcular espacio mapa",
         Root,
         Action::Refresh
@@ -637,7 +671,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "select-all",
         "Seleccionar todo",
-        "Ctrl+A",
+        "",
         "select all seleccionar",
         Listing,
         Action::Selection(crate::selection_tools::Command::All)
@@ -645,7 +679,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "invert",
         "Invertir selección",
-        "Ctrl+I",
+        "",
         "invert selection marcas",
         Listing,
         Action::Selection(crate::selection_tools::Command::Invert)
@@ -653,7 +687,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "filtered",
         "Marcar filtrados y mostrar todo",
-        "Ctrl+Shift+A",
+        "",
         "filtered select filtro marcar",
         Listing,
         Action::Selection(crate::selection_tools::Command::Filtered)
@@ -661,7 +695,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "clear",
         "Limpiar marcas y foco",
-        "Ctrl+Shift+D",
+        "",
         "clear selection limpiar",
         Listing,
         Action::Selection(crate::selection_tools::Command::Clear)
@@ -701,7 +735,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "terminal",
         "Terminal en esta carpeta",
-        "Ctrl+.",
+        "",
         "terminal shell consola here aqui carpeta",
         Root,
         Action::Terminal
@@ -709,7 +743,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "inspector",
         "Alternar inspector (un panel)",
-        "Ctrl+Alt+I",
+        "",
         "inspector information informacion",
         Root,
         Action::Inspector
@@ -717,7 +751,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "operation-bar",
         "Barra de operaciones MC",
-        "Ctrl+Alt+B",
+        "",
         "mc teclado keyboard botones herramientas barra",
         Root,
         Action::ToggleOperationBar
@@ -725,7 +759,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "bookmarks",
         "Favoritos, lugares e historial",
-        "Ctrl+Alt+D",
+        "",
         "bookmark favorites favoritos lugares jump salto",
         Root,
         Action::Bookmarks
@@ -733,7 +767,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "bookmark-add",
         "Añadir carpeta actual a favoritos",
-        "Ctrl+D",
+        "",
         "bookmark favorite guardar lugar",
         Root,
         Action::BookmarkAdd
@@ -741,7 +775,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "settings",
         "Preferencias",
-        "Ctrl+,",
+        "",
         "settings preferences configuracion",
         Root,
         Action::Settings
@@ -749,7 +783,7 @@ pub const ITEMS: &[Spec] = &[
     spec!(
         "help",
         "Ayuda y atajos",
-        "F1 / Ctrl+?",
+        "",
         "help keyboard ayuda atajos",
         Root,
         Action::Help
@@ -801,6 +835,62 @@ pub const ITEMS: &[Spec] = &[
         "recovery journal recuperar rescate",
         Root,
         Action::RecoveryCatalog
+    ),
+    spec!(
+        "new-window",
+        "Nueva ventana en esta carpeta",
+        "",
+        "window ventana nueva new instancia",
+        Root,
+        Action::NewWindow
+    ),
+    spec!(
+        "mark-toggle",
+        "Marcar o desmarcar el elemento enfocado",
+        "",
+        "mark toggle marcar desmarcar seleccion foco",
+        Focus,
+        Action::MarkToggle
+    ),
+    spec!(
+        "focus-cycle",
+        "Foco en la siguiente región",
+        "",
+        "focus cycle foco region panel lugares pestanas",
+        Root,
+        Action::FocusCycle
+    ),
+    Spec {
+        id: "rail-toggle",
+        label: "Alternar barra de lugares ancha/compacta",
+        shortcut: "",
+        aliases: "sidebar rail lugares barra lateral fijar pin",
+        gate: Gate::Root,
+        dispatch: Dispatch::RailToggle,
+    },
+    Spec {
+        id: "sort-reverse",
+        label: "Invertir el orden actual",
+        shortcut: "",
+        aliases: "sort reverse invertir orden ascendente descendente",
+        gate: Gate::Listing,
+        dispatch: Dispatch::SortReverse,
+    },
+    spec!(
+        "shortcuts-files",
+        "Atajos: Files",
+        "",
+        "atajos teclado perfil shortcuts keyboard profile files mc",
+        Root,
+        Action::ShortcutProfile(crate::shortcuts::Profile::Files)
+    ),
+    spec!(
+        "shortcuts-nautilus",
+        "Atajos: Nautilus",
+        "",
+        "atajos teclado perfil shortcuts keyboard profile nautilus gnome",
+        Root,
+        Action::ShortcutProfile(crate::shortcuts::Profile::Nautilus)
     ),
 ];
 const _: () = assert!(ITEMS.len() <= MAX_COMMANDS);
@@ -899,6 +989,7 @@ pub struct State {
     pub error: String,
     pub replace: bool,
     pub epoch: u64,
+    profile: crate::shortcuts::Profile,
     context: Context,
 }
 impl State {
@@ -912,6 +1003,7 @@ impl State {
             error: String::new(),
             replace: true,
             epoch: next_epoch(),
+            profile: m.shortcuts,
             context: Context::capture(m),
         };
         s.rebuild();
@@ -954,8 +1046,9 @@ impl State {
         self.error.clear();
         self.matches.clear();
         for (i, s) in ITEMS.iter().enumerate() {
+            let shortcut = shortcut_text(self.profile, s);
             let score = self.query.split_whitespace().try_fold(0i32, |sum, term| {
-                let n = [s.id, s.label, s.aliases, s.shortcut]
+                let n = [s.id, s.label, s.aliases, &shortcut]
                     .iter()
                     .filter_map(|s| files_core::listing::fuzzy_score(s, term))
                     .max()?;
@@ -1180,6 +1273,8 @@ impl Model {
             Dispatch::Existing(a) => a.clone(),
             Dispatch::Parent => Action::Navigate(self.path.parent().unwrap().to_path_buf()),
             Dispatch::CloseTab => Action::Tab(crate::tabs::Command::Close(self.tabs.active)),
+            Dispatch::RailToggle => Action::RailPin(!self.rail_pinned),
+            Dispatch::SortReverse => Action::Sort(self.sort),
         };
         self.commands = None;
         self.hits.clear();
@@ -1321,8 +1416,8 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         );
         p.text(
             Rect::new(body.x + 6, y + 22, body.w - 12, 20),
-            reason.unwrap_or(if ITEMS[i].shortcut_for(m).is_empty() {
-                "Enter / doble clic"
+            reason.unwrap_or(&if ITEMS[i].shortcut_for(m).is_empty() {
+                "Enter / doble clic".into()
             } else {
                 ITEMS[i].shortcut_for(m)
             }),
@@ -1397,11 +1492,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     p.unclip();
 }
 pub fn key(m: &mut Model, key: Key, mods: Shortcut, text: &str) {
-    if key == Key::Escape
-        || (key == Key::from_char('p')
-            && mods.intersects(Shortcut::Ctrl | Shortcut::Meta)
-            && mods.intersects(Shortcut::Shift))
-    {
+    if key == Key::Escape || crate::shortcuts::is(m.shortcuts, Cmd::Commands, key, mods) {
         m.action(Action::CommandClose);
         return;
     }
@@ -1471,10 +1562,7 @@ pub fn event(m: &mut Model, e: Event) -> bool {
 
 /// The same invocation predicate is used by the canvas and owned fixture.
 pub fn shortcut(m: &mut Model, key: Key, mods: Shortcut) -> bool {
-    if key == Key::from_char('p')
-        && mods.intersects(Shortcut::Ctrl | Shortcut::Meta)
-        && mods.intersects(Shortcut::Shift)
-    {
+    if crate::shortcuts::is(m.shortcuts, Cmd::Commands, key, mods) {
         m.action(Action::Commands);
         true
     } else {
@@ -1493,28 +1581,24 @@ pub fn fixture_state(m: &Model) -> serde_json::Value {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::{
-        path::PathBuf,
-        sync::{
-            atomic::{AtomicU64, Ordering},
-            mpsc,
-        },
+    use std::sync::{
+        atomic::{AtomicU64, Ordering},
+        mpsc,
     };
     struct Fixture {
-        root: PathBuf,
         m: Model,
     }
     impl Fixture {
         fn new() -> Self {
             static NEXT: AtomicU64 = AtomicU64::new(1);
-            let root = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!(
-                    "commands-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
-            std::fs::create_dir_all(&root).unwrap();
+            // A private, retained directory under the test TMPDIR; never the
+            // real home and never deleted afterwards.
+            let root = std::env::temp_dir().join(format!(
+                "files-commands-{}-{}",
+                std::process::id(),
+                NEXT.fetch_add(1, Ordering::Relaxed)
+            ));
+            std::fs::create_dir(&root).unwrap();
             let mut m = Model::new(root.clone());
             let (tx, _) = mpsc::sync_channel(4);
             let (_, rx) = mpsc::channel();
@@ -1532,12 +1616,7 @@ mod tests {
             m.order = vec![0, 1, 2];
             m.selected = Some(0);
             m.selection.extend([0, 1]);
-            Self { root, m }
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = std::fs::remove_dir_all(&self.root);
+            Self { m }
         }
     }
     fn choose(m: &mut Model, id: &str) {
@@ -1624,6 +1703,71 @@ mod tests {
         choose(&mut f.m, "sizes-resume");
         f.m.action(Action::CommandRun);
         assert_eq!(f.m.sizes.dispatch().unwrap(), f.m.path.join("bad"));
+    }
+    #[test]
+    fn palette_chords_come_from_the_shortcut_table_of_the_active_profile() {
+        use crate::shortcuts::{self, Profile};
+        let mut f = Fixture::new();
+        for profile in [Profile::Files, Profile::Nautilus] {
+            f.m.shortcuts = profile;
+            for item in ITEMS {
+                let Some(cmd) = shortcuts::palette_cmd(item.id) else {
+                    continue;
+                };
+                assert!(item.shortcut.is_empty(), "{} keeps a fixed chord", item.id);
+                assert_eq!(
+                    item.shortcut_for(&f.m),
+                    shortcuts::label(profile, cmd),
+                    "{}",
+                    item.id
+                );
+                if let Some(action) = item.dispatch_action() {
+                    assert_eq!(shortcuts::cmd_for_action(action), Some(cmd), "{}", item.id);
+                }
+            }
+        }
+        // Every table command with a palette id has its palette entry.
+        for cmd in shortcuts::commands() {
+            if let Some(id) = shortcuts::palette_id(cmd) {
+                assert!(ITEMS.iter().any(|i| i.id == id), "{id}");
+            }
+        }
+        // Searching a profile chord finds the command it runs there.
+        f.m.shortcuts = Profile::Nautilus;
+        let mut s = State::new(&f.m);
+        s.input("Ctrl+I");
+        assert_eq!(ITEMS[s.matches[0].0].id, "properties");
+        f.m.shortcuts = Profile::Files;
+        let mut s = State::new(&f.m);
+        s.input("F6");
+        assert!(s.matches.iter().any(|&(i, _)| ITEMS[i].id == "move"));
+    }
+    #[test]
+    fn profile_new_window_and_mark_commands_dispatch() {
+        use std::sync::atomic::{AtomicUsize, Ordering};
+        static SPAWNED: AtomicUsize = AtomicUsize::new(0);
+        fn record(path: &std::path::Path) -> Result<(), String> {
+            assert!(path.is_absolute());
+            SPAWNED.fetch_add(1, Ordering::SeqCst);
+            Ok(())
+        }
+        let mut f = Fixture::new();
+        f.m.window_spawner = record;
+        f.m.action(Action::Commands);
+        choose(&mut f.m, "new-window");
+        f.m.action(Action::CommandRun);
+        assert_eq!(SPAWNED.load(Ordering::SeqCst), 1);
+        f.m.action(Action::Commands);
+        choose(&mut f.m, "shortcuts-nautilus");
+        f.m.action(Action::CommandRun);
+        assert_eq!(f.m.shortcuts, crate::shortcuts::Profile::Nautilus);
+        let focus = f.m.selected;
+        let marked = f.m.selection.contains(&focus.unwrap());
+        f.m.action(Action::Commands);
+        choose(&mut f.m, "mark-toggle");
+        f.m.action(Action::CommandRun);
+        assert_eq!(f.m.selected, focus);
+        assert_ne!(f.m.selection.contains(&focus.unwrap()), marked);
     }
     #[test]
     fn registry_is_unique_bounded_and_matches_aliases_shortcuts_and_unicode() {

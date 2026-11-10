@@ -2,6 +2,7 @@
 use crate::{
     model::{Action, Hit, Model, View},
     painter::{Painter, Rect},
+    shortcuts::Cmd,
 };
 use fltk_omarchy::anim::{Anim, Ease};
 use std::time::{Duration, Instant};
@@ -69,20 +70,17 @@ impl State {
         }
     }
 }
-fn shortcut(action: &Action) -> &'static str {
+/// The hover hint of a toolbar control: its chord in the active profile.
+fn shortcut(profile: crate::shortcuts::Profile, action: &Action) -> String {
     match action {
-        Action::Filter => "Ctrl+F",
-        Action::ClearFilter => "Esc",
-        Action::Omni => "Ctrl+L",
-        Action::View(View::Groups) => "Ctrl+1",
-        Action::View(View::List) => "Ctrl+2",
-        Action::View(View::Grid) => "Ctrl+5",
-        Action::View(View::SpaceMap) => "Ctrl+4",
-        Action::View(View::Columns) => "Ctrl+3",
-        Action::Inspector => "Ctrl+Alt+I",
-        Action::Settings => "Ctrl+,",
-        Action::Actions => "F10",
-        _ => "",
+        Action::ClearFilter => "Esc".into(),
+        Action::Filter
+        | Action::Omni
+        | Action::View(_)
+        | Action::Inspector
+        | Action::Settings
+        | Action::Actions => crate::shortcuts::action_label(profile, action),
+        _ => String::new(),
     }
 }
 struct Item {
@@ -200,7 +198,7 @@ pub fn marker(m: &Model, w: i32, h: i32) -> serde_json::Value {
         "tooltip":if m.toolbar.visible {m.toolbar.tooltip.as_ref().map(|(text,r)|serde_json::json!({"text":text,"rect":[r.x,r.y,r.w,r.h]}))}else{None},
         "items":items(m,w,h).iter().enumerate().map(|(i,item)|serde_json::json!({
             "index":i,"label":item.label,"on":item.on,
-            "shortcut":shortcut(&item.action),
+            "shortcut":shortcut(m.shortcuts,&item.action),
             "rect":m.toolbar.rows.get(i).map(|r|[r.x,r.y,r.w,r.h]),
         })).collect::<Vec<_>>()
     })
@@ -265,17 +263,19 @@ pub fn paint_tooltip(p: &mut dyn Painter, m: &mut Model, w: i32) {
         let Some(anchor) = m.toolbar.navigation.get(i) else {
             return;
         };
-        (["Alt+Izquierda", "Alt+Derecha", "Alt+Arriba"][i], *anchor)
+        let cmd = [Cmd::Back, Cmd::Forward, Cmd::Parent][i];
+        (crate::shortcuts::label(m.shortcuts, cmd), *anchor)
     } else {
         let controls = items(m, w, 0);
         let Some(item) = controls.get(index) else {
             return;
         };
-        (shortcut(&item.action), m.toolbar.rows[index])
+        (shortcut(m.shortcuts, &item.action), m.toolbar.rows[index])
     };
     if text.is_empty() {
         return;
     }
+    let text = text.as_str();
     let width = (p.text_width(text, 12, true).ceil() as i32 + 24).min(w - 16);
     let rect = Rect::new(
         (anchor.x + anchor.w / 2 - width / 2).clamp(8, (w - width - 8).max(8)),

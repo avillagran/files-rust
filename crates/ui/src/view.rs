@@ -342,7 +342,8 @@ pub fn status(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         p.text(tip, &text, 11, c.foreground, true, false);
         p.unclip();
     } else if tips {
-        let label = m.status_tips.text();
+        let label = m.status_tips.text_for(m.shortcuts);
+        let label = label.as_ref();
         let width = p.text_width(label, 11, true);
         m.status_tips.configure(tip.w, f64::from(width));
         let resting = if m.status_tips.offset() == 0 && width > tip.w as f32 {
@@ -968,19 +969,25 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                 Action::WindowMode(mode),
             );
         }
+        let hidden_label =
+            crate::shortcuts::with_chord(m.shortcuts, "  Mostrar ocultos", &Action::ToggleHidden);
         button(
             p,
             m,
             r(sx + 12, sy + 100, 276, 28),
-            "  Mostrar ocultos · Ctrl+H",
+            &hidden_label,
             m.show_hidden,
             Action::ToggleHidden,
+        );
+        let dual_label = crate::fonts::icon_text(
+            crate::shortcuts::with_chord(m.shortcuts, " Doble", &Action::DualPane).into_owned(),
+            &crate::shortcuts::with_chord(m.shortcuts, "Doble", &Action::DualPane),
         );
         button(
             p,
             m,
             r(sx + 12, sy + 132, 134, 28),
-            crate::fonts::icon(" Doble · F9", "Doble · F9"),
+            &dual_label,
             m.dual.enabled,
             Action::DualPane,
         );
@@ -1070,11 +1077,13 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             Action::ForgetFolderView,
         );
         if !compact {
+            let help_label =
+                crate::shortcuts::with_chord(m.shortcuts, "  Ayuda de atajos", &Action::Help);
             button(
                 p,
                 m,
                 r(sx + 12, sy + 376, 276, 28),
-                "  Ayuda de atajos · F1",
+                &help_label,
                 false,
                 Action::Help,
             );
@@ -1084,7 +1093,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         let sy = 58;
         let items = [
             ("  Terminal aquí", Action::Terminal),
-            ("  Comandos · Ctrl+Shift+P", Action::Commands),
+            ("  Comandos", Action::Commands),
             ("  Gestor de tamaños", Action::Sizes),
             ("  SFTP · montaje", Action::Sftp),
             ("󰇚  Extraer en…: revisar", Action::ExtractArchive),
@@ -1101,19 +1110,19 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
             ("  Duplicados en esta carpeta", Action::Duplicates),
             ("  Reintentar tamaños fallidos", Action::RetrySizeErrors),
             ("󰄬  Selección…", Action::SelectionMenu(w, h)),
-            ("  Vista previa · Space", Action::Preview),
-            ("  Propiedades · Alt+Enter", Action::Properties),
-            ("  Copiar · Ctrl+C (files)", Action::ClipboardCopy),
+            ("  Vista previa", Action::Preview),
+            ("  Propiedades", Action::Properties),
+            ("  Copiar (files)", Action::ClipboardCopy),
             ("  Movimientos interrumpidos", Action::RecoveryCatalog),
-            ("  Cortar · Ctrl+X (files)", Action::ClipboardCut),
-            ("  Renombrar · F2", Action::Rename),
-            ("  Enviar a Papelera · Supr", Action::Trash),
-            ("  Crear archivo · Ctrl+N", Action::NewEntry(false)),
-            ("  Crear carpeta · F7", Action::NewEntry(true)),
-            ("  Deshacer · Ctrl+Z", Action::Undo(false)),
-            ("  Rehacer · Ctrl+Shift+Z", Action::Undo(true)),
+            ("  Cortar (files)", Action::ClipboardCut),
+            ("  Renombrar", Action::Rename),
+            ("  Enviar a Papelera", Action::Trash),
+            ("  Crear archivo", Action::NewEntry(false)),
+            ("  Crear carpeta", Action::NewEntry(true)),
+            ("  Deshacer", Action::Undo(false)),
+            ("  Rehacer", Action::Undo(true)),
             ("  Último resultado de operación", Action::CopyDetails),
-            ("  Pegar en files · Ctrl+V", Action::ClipboardPaste),
+            ("  Pegar en files", Action::ClipboardPaste),
         ];
         let available = (h - sy - 40).max(1);
         let columns = if (available - 46) / (items.len() as i32) < 22 && w >= 400 {
@@ -1163,7 +1172,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                     Action::ClipboardPaste => "  Pegar (files)",
                     Action::RecoveryCatalog => "  Recuperar mov.",
                     Action::CopyDetails => "  Último informe",
-                    Action::Trash => "  Papelera · Supr",
+                    Action::Trash => "  Papelera",
                     Action::NewEntry(false) => "  Crear archivo",
                     Action::NewEntry(true) => "  Crear carpeta",
                     Action::Undo(true) => "  Rehacer",
@@ -1171,6 +1180,12 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                 }
             } else {
                 label
+            };
+            // Wide menus print the chord of the active shortcut profile.
+            let label = if column_width < 260 {
+                label.into()
+            } else {
+                crate::shortcuts::with_chord(m.shortcuts, label, &action)
             };
             button(
                 p,
@@ -1181,7 +1196,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
                     column_width - 24,
                     step - 2,
                 ),
-                label,
+                &label,
                 false,
                 action,
             );
@@ -1762,15 +1777,16 @@ fn inspector(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32, iw: i32) {
                 )
             }
             Some(crate::size_queue::Status::Measured { .. }) => {
-                (" Recalcular · Ctrl+Espacio", Action::CalculateSize)
+                (" Recalcular", Action::CalculateSize)
             }
-            _ => (" Calcular · Ctrl+Espacio", Action::CalculateSize),
+            _ => (" Calcular", Action::CalculateSize),
         };
+        let label = crate::shortcuts::with_chord(m.shortcuts, label, &action);
         button(
             p,
             m,
             r(x + 16, title_y + 130, iw - 32, 30),
-            label,
+            &label,
             false,
             action,
         );
@@ -1789,11 +1805,12 @@ fn inspector(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32, iw: i32) {
         );
     }
     p.unclip();
+    let rename_label = crate::shortcuts::with_chord(m.shortcuts, "󰑕  Renombrar", &Action::Rename);
     button(
         p,
         m,
         r(x + 16, h - 168, iw - 32, 30),
-        "󰑕  Renombrar · F2",
+        &rename_label,
         false,
         Action::Rename,
     );
@@ -1821,15 +1838,27 @@ fn inspector(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32, iw: i32) {
         false,
         Action::CopyPath,
     );
+    // Function-key hints follow the active shortcut profile.
+    let keyed = |glyph: &str, cmd: crate::shortcuts::Cmd, fallback: &str| {
+        let chord = crate::shortcuts::primary(m.shortcuts, cmd);
+        let nerd = if chord.is_empty() {
+            glyph.to_owned()
+        } else {
+            format!("{glyph} {chord}")
+        };
+        crate::fonts::icon_text(nerd, fallback)
+    };
+    let copy_label = if crate::selection_tools::is_map(m) {
+        crate::fonts::icon("", "Copiar").to_owned()
+    } else {
+        keyed("", crate::shortcuts::Cmd::CopyFiles, "Copiar")
+    };
+    let move_label = keyed("", crate::shortcuts::Cmd::MoveFiles, "Mover");
     button(
         p,
         m,
         r(x + 80, h - 84, 68, 34),
-        if crate::selection_tools::is_map(m) {
-            crate::fonts::icon("", "Copiar")
-        } else {
-            crate::fonts::icon(" F5", "Copiar")
-        },
+        &copy_label,
         false,
         Action::CopyFiles,
     );
@@ -1837,7 +1866,7 @@ fn inspector(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32, iw: i32) {
         p,
         m,
         r(x + 152, h - 84, 72, 34),
-        crate::fonts::icon(" F6", "Mover"),
+        &move_label,
         false,
         Action::MoveFiles,
     );

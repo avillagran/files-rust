@@ -1,28 +1,64 @@
 //! Optional MC-style controls. No captured file payload, I/O or operation engine.
 #[cfg(test)]
 use crate::model::View;
+use crate::shortcuts::Cmd;
 use crate::{
     model::{Action, Hit, Model},
     painter::{Painter, Rect},
 };
-use fltk::enums::Key;
+use fltk::enums::{Key, Shortcut};
 
 pub const HEIGHT: i32 = 36;
-const ITEMS: [(&str, &str, &str, &str); 8] = [
-    ("F1", "", "Ayuda", "Ayuda y atajos, F1"),
-    ("F2", "󰑕", "Renombrar", "Renombrar selección, F2"),
-    ("F3", "", "Previa", "Previsualizar elemento enfocado, F3"),
-    ("F5", "", "Copiar", "Copiar selección: revisar destino, F5"),
-    ("F6", "", "Mover", "Mover selección: revisar destino, F6"),
-    ("F7", "", "Carpeta", "Crear carpeta, F7"),
-    ("F8", "", "Papelera", "Enviar selección a Papelera, F8"),
-    ("F10", "", "Acciones", "Acciones sobre archivos, F10"),
+/// Command, icon, short text and accessible name of each MC button. The key
+/// printed on a button comes from the shortcut table of the active profile.
+const ITEMS: [(Cmd, &str, &str, &str); 8] = [
+    (Cmd::Help, "", "Ayuda", "Ayuda y atajos"),
+    (Cmd::Rename, "󰑕", "Renombrar", "Renombrar selección"),
+    (
+        Cmd::Preview,
+        "",
+        "Previa",
+        "Previsualizar elemento enfocado",
+    ),
+    (
+        Cmd::CopyFiles,
+        "",
+        "Copiar",
+        "Copiar selección: revisar destino",
+    ),
+    (
+        Cmd::MoveFiles,
+        "",
+        "Mover",
+        "Mover selección: revisar destino",
+    ),
+    (Cmd::NewFolder, "", "Carpeta", "Crear carpeta"),
+    (Cmd::Trash, "", "Papelera", "Enviar selección a Papelera"),
+    (Cmd::Actions, "", "Acciones", "Acciones sobre archivos"),
 ];
 pub fn label(index: usize) -> Option<&'static str> {
     if index == 3 {
-        return Some("F5: copiar; en Espacio, recalcular");
+        return Some("Copiar; en Espacio, recalcular");
     }
     ITEMS.get(index).map(|v| v.3)
+}
+/// The table command a button runs, so its key label follows the profile.
+pub fn command(index: usize) -> Option<Cmd> {
+    ITEMS.get(index).map(|v| v.0)
+}
+/// The key printed on a button: its function-key chord when the profile
+/// has one (MC style), otherwise its first chord, otherwise nothing.
+pub fn key_label(profile: crate::shortcuts::Profile, index: usize) -> &'static str {
+    let Some(cmd) = command(index) else {
+        return "";
+    };
+    let chords = crate::shortcuts::chords(profile, cmd);
+    chords
+        .iter()
+        .find(|c| c.starts_with('F'))
+        .or(chords.first())
+        .copied()
+        .unwrap_or("")
 }
 fn action_for(m: &Model, index: usize) -> Option<Action> {
     if index == 3 {
@@ -148,7 +184,14 @@ impl Model {
     }
 }
 pub fn shortcut(m: &mut Model, key: Key, ctrl: bool, alt: bool) -> bool {
-    if ctrl && alt && key == Key::from_char('b') {
+    let mut mods = Shortcut::None;
+    if ctrl {
+        mods |= Shortcut::Ctrl;
+    }
+    if alt {
+        mods |= Shortcut::Alt;
+    }
+    if crate::shortcuts::is(m.shortcuts, Cmd::OperationBar, key, mods) {
         m.toggle_operation_bar();
         true
     } else {
@@ -181,7 +224,8 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     let c = m.palette.clone();
     p.rect(Rect::new(0, y, w, HEIGHT), c.darker_background);
     p.rect(Rect::new(0, y, w, 1), c.lighter_background);
-    for (i, (key, icon, text, _)) in ITEMS.iter().enumerate() {
+    for (i, (_, icon, text, _)) in ITEMS.iter().enumerate() {
+        let key = key_label(m.shortcuts, i);
         let x = i as i32 * w / 8;
         let end = (i as i32 + 1) * w / 8;
         let area = Rect::new(x + 2, y + 3, end - x - 4, 30);
@@ -226,7 +270,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
     }
 }
 pub fn fixture(m: &Model) -> serde_json::Value {
-    serde_json::json!({"enabled":m.operation_bar,"buttons":m.hits.iter().filter_map(|h|if let Action::OperationBar(owner,generation,index)=h.action {Some(serde_json::json!({"index":index,"owner":owner,"generation":generation,"label":label(index),"reason":reason(m,index),"rect":[h.rect.x,h.rect.y,h.rect.w,h.rect.h]}))}else{None}).collect::<Vec<_>>()})
+    serde_json::json!({"enabled":m.operation_bar,"buttons":m.hits.iter().filter_map(|h|if let Action::OperationBar(owner,generation,index)=h.action {Some(serde_json::json!({"index":index,"owner":owner,"generation":generation,"label":crate::shortcuts::tooltip(m.shortcuts,&h.action),"reason":reason(m,index),"rect":[h.rect.x,h.rect.y,h.rect.w,h.rect.h]}))}else{None}).collect::<Vec<_>>()})
 }
 
 #[cfg(test)]

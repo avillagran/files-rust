@@ -246,6 +246,17 @@ pub enum Action {
     FocusTabs,
     /// Close every tab of the pane except the active one.
     CloseOtherTabs,
+    /// Move keyboard focus to the next region: list, places rail, tab strip
+    /// (the other pane in dual mode).
+    FocusCycle,
+    /// Toggle the mark of the focused item without moving the focus.
+    MarkToggle,
+    /// Open a new Files window on the current folder.
+    NewWindow,
+    /// Keyboard sort menu (name, size, date, type, reverse) at this size.
+    SortMenu(i32, i32),
+    /// Switch the keyboard shortcut profile (persisted).
+    ShortcutProfile(crate::shortcuts::Profile),
 }
 impl Action {
     pub fn accessible_name(&self) -> Option<&'static str> {
@@ -263,15 +274,15 @@ impl Action {
             Self::CopySkipExisting => {
                 Some("Cambiar conflictos de copia: detener, omitir o conservar ambos; F4")
             }
-            Self::ToggleOperationBar => Some("Barra de operaciones MC, Ctrl+Alt+B"),
+            Self::ToggleOperationBar => Some("Barra de operaciones MC"),
             Self::OperationBar(_, _, index) => crate::operation_bar::label(*index),
             Self::Sftp => Some("Conectar y controlar montajes SFTP"),
             Self::NetworkConnect => Some("Conectar a servidor: smb, sftp, ftp, dav, nfs"),
             Self::NetworkDisconnect(_) => Some("Desconectar ubicación de red"),
             Self::OfolderUnfavorite(_) => Some("Quitar de los favoritos de Ofolder"),
             Self::SftpCommand(_, cmd) => Some(cmd.name()),
-            Self::Bookmarks => Some("Favoritos y lugares, Ctrl+Alt+D"),
-            Self::BookmarkAdd => Some("Añadir carpeta actual a favoritos, Ctrl+D"),
+            Self::Bookmarks => Some("Favoritos y lugares"),
+            Self::BookmarkAdd => Some("Añadir carpeta actual a favoritos"),
             Self::SaveFolderView => Some("Guardar vista de esta carpeta"),
             Self::ForgetFolderView => Some("Olvidar vista de esta carpeta"),
             Self::RetryFolderView => Some("Recargar o reintentar vista de carpeta"),
@@ -280,37 +291,35 @@ impl Action {
             Self::Duplicates => Some("Buscar duplicados en la carpeta actual"),
             Self::Checksums => Some("Calcular y comparar SHA-256 de archivos elegidos"),
             Self::Checksum(_, cmd) => Some(cmd.name()),
-            Self::Commands => Some("Buscar comandos y herramientas, Ctrl+Shift+P"),
+            Self::Commands => Some("Buscar comandos y herramientas"),
             Self::CommandSelect(_, _) => Some("Seleccionar comando"),
             Self::CommandActivate(_) => Some("Ejecutar comando visible"),
             Self::CommandRun => Some("Ejecutar comando seleccionado"),
             Self::CommandClose => Some("Cerrar comandos, Esc"),
             Self::CommandFocus => Some("Buscar comando, Ctrl+A reemplaza"),
             Self::CommandRecapture => Some("Usar selección, panel y carpeta actuales"),
-            Self::DualPane => Some("Doble panel, F9; Tab cambia foco"),
-            Self::View(View::Groups) => Some("Vista Grupos, Ctrl+1"),
-            Self::View(View::List) => Some("Vista Lista, Ctrl+2"),
-            Self::View(View::Grid) => Some("Vista Grilla, Ctrl+5"),
-            Self::View(View::Spatial | View::Columns) => Some("Vista Columnas tipo Finder, Ctrl+3"),
-            Self::View(View::SpaceMap) => Some("Vista Espacio, tamaños proporcionales, Ctrl+4"),
-            Self::ToggleHidden => Some("Mostrar ocultos, Ctrl+H"),
-            Self::Refresh => Some("Actualizar carpeta, Ctrl+R"),
-            Self::Filter => Some("Filtrar aquí, Ctrl+F; subcarpetas, Ctrl+Shift+F"),
-            Self::ClipboardCopy => Some("Copiar archivos al portapapeles privado de files, Ctrl+C"),
-            Self::ClipboardCut => {
-                Some("Cortar archivos en el portapapeles privado de files, Ctrl+X")
-            }
-            Self::ClipboardPaste => Some("Pegar desde el portapapeles privado de files, Ctrl+V"),
+            Self::DualPane => Some("Doble panel; Tab cambia foco"),
+            Self::View(View::Groups) => Some("Vista Grupos"),
+            Self::View(View::List) => Some("Vista Lista"),
+            Self::View(View::Grid) => Some("Vista Grilla"),
+            Self::View(View::Spatial | View::Columns) => Some("Vista Columnas tipo Finder"),
+            Self::View(View::SpaceMap) => Some("Vista Espacio, tamaños proporcionales"),
+            Self::ToggleHidden => Some("Mostrar ocultos"),
+            Self::Refresh => Some("Actualizar carpeta"),
+            Self::Filter => Some("Filtrar aquí"),
+            Self::ClipboardCopy => Some("Copiar archivos al portapapeles privado de files"),
+            Self::ClipboardCut => Some("Cortar archivos en el portapapeles privado de files"),
+            Self::ClipboardPaste => Some("Pegar desde el portapapeles privado de files"),
             Self::RecoveryCatalog => Some("Recuperar movimientos interrumpidos"),
-            Self::NewEntry(false) => Some("Crear archivo, Ctrl+N"),
-            Self::NewEntry(true) => Some("Crear carpeta, F7"),
-            Self::Undo(false) => Some("Deshacer, Ctrl+Z"),
-            Self::Undo(true) => Some("Rehacer, Ctrl+Shift+Z"),
-            Self::Terminal => Some("Terminal en la carpeta actual, Ctrl+."),
+            Self::NewEntry(false) => Some("Crear archivo"),
+            Self::NewEntry(true) => Some("Crear carpeta"),
+            Self::Undo(false) => Some("Deshacer"),
+            Self::Undo(true) => Some("Rehacer"),
+            Self::Terminal => Some("Terminal en la carpeta actual"),
             Self::CompareFolders => Some("Comparar dos carpetas, sólo lectura"),
             Self::ReviewSyncFolders => Some("Preparar sincronización, sólo revisión sin cambios"),
             Self::Comparison(_, command) => Some(command.name()),
-            Self::Search => Some("Buscar nombres y contenido, Ctrl+Shift+F"),
+            Self::Search => Some("Buscar nombres y contenido"),
             Self::SearchStart => Some("Iniciar búsqueda de nombres, Enter"),
             Self::SearchPages => {
                 Some("F9: reiniciar recorrido paginado desde la primera página; mismos criterios")
@@ -382,8 +391,8 @@ impl Action {
             Self::SearchMarkAll(true) => Some("Vaciar marcas; Ctrl+D"),
             Self::SearchSelect(..) => Some("Seleccionar resultado de búsqueda"),
             Self::ViewMenu(_, _) => Some("Cambiar vista"),
-            Self::Omni => Some("Editar ruta, Ctrl+L"),
-            Self::Breadcrumbs => Some("Ancestros de la ruta, Alt+↓"),
+            Self::Omni => Some("Editar ruta"),
+            Self::Breadcrumbs => Some("Ancestros de la ruta"),
             Self::BackgroundNavigate(_) => Some("Abrir en pestaña de fondo; clic central"),
             Self::PathCommit => Some("Confirmar ruta, Enter"),
             Self::PathCancel => Some("Cancelar edición de ruta, Esc"),
@@ -416,19 +425,17 @@ impl Action {
             Self::CalculateMarkedSizes => Some(
                 "Calcular sólo carpetas marcadas visibles; sin foco implícito ni cancelar otro lote",
             ),
-            Self::CalculateListedSizes => {
-                Some("Calcular o cancelar carpetas listadas, Ctrl+Shift+Espacio")
-            }
-            Self::Sizes => Some("Gestor de tamaños, Ctrl+Alt+Espacio"),
+            Self::CalculateListedSizes => Some("Calcular o cancelar carpetas listadas"),
+            Self::Sizes => Some("Gestor de tamaños"),
             Self::SizePanel(_, command) => Some(command.name()),
-            Self::CalculateSize => Some("Calcular o cancelar tamaño de carpeta, Ctrl+Espacio"),
+            Self::CalculateSize => Some("Calcular o cancelar tamaño de carpeta"),
             Self::CalculateAllocatedSize => {
                 Some("Medir bloques de archivos regulares de la carpeta enfocada")
             }
             Self::CalculateMarkedAllocatedSizes => {
                 Some("Medir bloques de carpetas marcadas visibles")
             }
-            Self::Preview => Some("Vista previa, Espacio"),
+            Self::Preview => Some("Vista previa"),
             Self::ArchiveReview(_, action) => Some(action.title()),
             Self::ArchiveBack(_) => Some("Volver al resultado ZIP sin modificar archivos"),
             Self::ArchivePause(_) => Some("Iniciar recuperación en pausa, Ctrl+P"),
@@ -444,36 +451,42 @@ impl Action {
             Self::ExtractHere => {
                 Some("Extraer aquí: revisar y extraer en esta carpeta sin sobrescribir")
             }
-            Self::MoveFiles => Some("Mover selección, F6"),
+            Self::MoveFiles => Some("Mover selección: revisar destino"),
             Self::PreviewNeighbor(-1) => Some("Elemento anterior de la carpeta, Alt+Arriba"),
             Self::PreviewNeighbor(1) => Some("Elemento siguiente de la carpeta, Alt+Abajo"),
-            Self::Tab(crate::tabs::Command::New) => Some("Nueva pestaña, Ctrl+T"),
-            Self::Tab(crate::tabs::Command::Close(_)) => Some("Cerrar pestaña, Ctrl+W"),
-            Self::Tab(_) => Some("Cambiar pestaña, Ctrl+Tab o Alt+1…9; reabrir Ctrl+Shift+T"),
+            Self::Tab(crate::tabs::Command::New) => Some("Nueva pestaña"),
+            Self::Tab(crate::tabs::Command::Close(_)) => Some("Cerrar pestaña"),
+            Self::Tab(_) => Some("Cambiar pestaña (Alt+1…9 salta a una)"),
             Self::SpaceRefresh => Some("Actualizar cálculo de Espacio"),
             Self::SpaceCancel => Some("Cancelar cálculo de Espacio"),
             Self::SpaceListScroll(_) => Some("Desplazar lista sin área de Espacio"),
-            Self::Settings => Some("Preferencias, Ctrl+,"),
-            Self::Help => Some("Ayuda de atajos, F1 o Ctrl+?"),
-            Self::GoHome => Some("Ir a la carpeta personal, Alt+Inicio"),
-            Self::ZoomStep(0) => Some("Restablecer zoom de la Grilla, Ctrl+0"),
-            Self::ZoomStep(1) => Some("Acercar Grilla, Ctrl++"),
-            Self::ZoomStep(_) => Some("Alejar Grilla, Ctrl+-"),
-            Self::FocusRail => Some("Foco en la barra de lugares, Ctrl+Alt+S"),
-            Self::FocusTabs => Some("Foco en las pestañas, Ctrl+Alt+T"),
+            Self::Settings => Some("Preferencias"),
+            Self::Help => Some("Ayuda de atajos"),
+            Self::GoHome => Some("Ir a la carpeta personal"),
+            Self::ZoomStep(0) => Some("Restablecer zoom de la Grilla"),
+            Self::ZoomStep(1) => Some("Acercar Grilla"),
+            Self::ZoomStep(_) => Some("Alejar Grilla"),
+            Self::FocusRail => Some("Foco en la barra de lugares"),
+            Self::FocusTabs => Some("Foco en las pestañas"),
             Self::CloseOtherTabs => Some("Cerrar las demás pestañas"),
+            Self::FocusCycle => Some("Foco en la siguiente región"),
+            Self::MarkToggle => Some("Marcar o desmarcar el elemento enfocado"),
+            Self::NewWindow => Some("Nueva ventana en esta carpeta"),
+            Self::SortMenu(..) => Some("Menú de orden"),
+            Self::ShortcutProfile(crate::shortcuts::Profile::Files) => Some("Atajos: Files"),
+            Self::ShortcutProfile(crate::shortcuts::Profile::Nautilus) => Some("Atajos: Nautilus"),
             Self::HelpClose => Some("Cerrar ayuda, Esc"),
-            Self::Parent => Some("Arriba, Alt+Arriba"),
-            Self::History(false) => Some("Atrás, Alt+Izquierda"),
-            Self::History(true) => Some("Adelante, Alt+Derecha"),
-            Self::Actions => Some("Acciones, F10"),
+            Self::Parent => Some("Arriba"),
+            Self::History(false) => Some("Atrás"),
+            Self::History(true) => Some("Adelante"),
+            Self::Actions => Some("Acciones"),
             Self::RenameRegex => Some("Alternar reemplazo literal o regex"),
             Self::PreviewRotate(-1) => {
                 Some("Girar vista a la izquierda, Shift+R; no modifica el archivo")
             }
             Self::PreviewRotate(1) => Some("Girar vista a la derecha, R; no modifica el archivo"),
             Self::PreviewPdfText => Some("Alternar página o texto PDF, T"),
-            Self::Properties => Some("Propiedades y permisos, Alt+Enter"),
+            Self::Properties => Some("Propiedades y permisos"),
             Self::PropertyApply => Some("Confirmar y aplicar permisos"),
             Self::PropertyReload => Some("Recargar propiedades"),
             Self::NativePaste => Some("Pegar archivos MIME del sistema"),
@@ -678,6 +691,11 @@ pub struct Model {
     pub external_reveal: Option<crate::file_manager_ui::Reveal>,
     pub(crate) parent_return: crate::keyboard_nav::ParentReturn,
     pub operation_bar: bool,
+    /// Active keyboard shortcut profile (persisted as `shortcuts`).
+    pub shortcuts: files_core::theme::ShortcutProfile,
+    /// Starts a new Files window on a folder. Tests inject a recorder; the
+    /// real window spawns a detached process of the same binary.
+    pub window_spawner: fn(&std::path::Path) -> Result<(), String>,
     /// True when config.toml says whether previews start muted.
     pub preview_muted_configured: bool,
     pub grid_zoom: f32,
@@ -910,6 +928,8 @@ impl Model {
             external_reveal: None,
             parent_return: Default::default(),
             operation_bar: prefs.operation_bar,
+            shortcuts: prefs.shortcuts,
+            window_spawner: crate::shortcuts::spawn_window,
             preview_muted_configured: prefs.preview_muted.is_some(),
             grid_zoom: 1.0,
             status_tips: Default::default(),
@@ -2400,6 +2420,14 @@ impl Model {
         }
     }
     pub fn mark_and_advance(&mut self) {
+        self.mark_focused(true);
+    }
+    /// Ctrl+Insert (and Ctrl+Space in the Nautilus profile): toggle the mark
+    /// of the focused item and keep the focus where it is.
+    pub fn toggle_focused_mark(&mut self) {
+        self.mark_focused(false);
+    }
+    fn mark_focused(&mut self, advance: bool) {
         self.cancel_parent_return_focus();
         self.folder_restore = None;
         if self.selection_refreshing() {
@@ -2431,7 +2459,7 @@ impl Model {
         if !self.selection.insert(i) {
             self.selection.remove(&i);
         }
-        if let Some(rank) = order.iter().position(|&index| index == i) {
+        if advance && let Some(rank) = order.iter().position(|&index| index == i) {
             self.selected = order.get(rank + 1).copied().or(Some(i));
         }
         self.anchor = self.selected;
@@ -2527,6 +2555,7 @@ impl Model {
                     self.rail_pinned,
                     self.rail_order.clone(),
                     self.show_thumbnails,
+                    self.shortcuts,
                 ))
                 .is_ok()
         {
@@ -3244,6 +3273,11 @@ impl Model {
             Action::CloseOtherTabs => {
                 self.tab_command(crate::tabs::Command::CloseOthers(self.tabs.active))
             }
+            Action::FocusCycle => self.focus_cycle(),
+            Action::MarkToggle => self.toggle_focused_mark(),
+            Action::NewWindow => self.new_window(),
+            Action::SortMenu(w, h) => crate::context_menu::open_sort(self, w, h),
+            Action::ShortcutProfile(profile) => self.set_shortcut_profile(profile),
             Action::BackgroundNavigate(p) => {
                 crate::tab_gestures::middle(self, Some(Action::Navigate(p)))
             }

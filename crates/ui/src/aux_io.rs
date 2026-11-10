@@ -87,6 +87,7 @@ pub enum Request {
         bool,
         Vec<String>,
         bool,
+        files_core::theme::ShortcutProfile,
     ),
 }
 pub enum Response {
@@ -304,6 +305,7 @@ impl AuxIo {
                         pinned,
                         order,
                         thumbnails,
+                        shortcuts,
                     ) => Response::Config(
                         revision,
                         files_core::persistence::update_config_values(
@@ -326,6 +328,7 @@ impl AuxIo {
                                 ("rail_pinned", pinned.into()),
                                 ("rail_order", order.into()),
                                 ("show_thumbnails", thumbnails.into()),
+                                ("shortcuts", shortcuts.key().into()),
                             ],
                         ),
                     ),

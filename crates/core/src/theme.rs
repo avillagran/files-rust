@@ -112,6 +112,29 @@ impl WindowMode {
         }
     }
 }
+/// Keyboard shortcut profile. `Files` keeps the historical bindings;
+/// `Nautilus` remaps the chords GNOME Files users expect.
+#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[serde(rename_all = "lowercase")]
+pub enum ShortcutProfile {
+    #[default]
+    Files,
+    Nautilus,
+}
+impl ShortcutProfile {
+    pub fn key(self) -> &'static str {
+        match self {
+            Self::Files => "files",
+            Self::Nautilus => "nautilus",
+        }
+    }
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::Files => "Files",
+            Self::Nautilus => "Nautilus",
+        }
+    }
+}
 fn enabled() -> bool {
     true
 }
@@ -140,6 +163,9 @@ pub struct Preferences {
     /// Global mute of media previews; absent means sound on.
     #[serde(default)]
     pub preview_muted: Option<bool>,
+    /// Keyboard shortcut profile; absent means the Files profile.
+    #[serde(default)]
+    pub shortcuts: ShortcutProfile,
 }
 impl Default for Preferences {
     fn default() -> Self {
@@ -153,6 +179,7 @@ impl Default for Preferences {
             show_hidden: false,
             operation_bar: false,
             preview_muted: None,
+            shortcuts: ShortcutProfile::default(),
         }
     }
 }
@@ -232,6 +259,22 @@ pub fn parse_preferences(s: &str) -> Result<Preferences, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn shortcut_profile_defaults_to_files_and_rejects_unknown_names() {
+        assert_eq!(Preferences::default().shortcuts, ShortcutProfile::Files);
+        assert_eq!(
+            parse_preferences("").unwrap().shortcuts,
+            ShortcutProfile::Files
+        );
+        assert_eq!(
+            parse_preferences("shortcuts = \"nautilus\"")
+                .unwrap()
+                .shortcuts,
+            ShortcutProfile::Nautilus
+        );
+        assert!(parse_preferences("shortcuts = \"emacs\"").is_err());
+        assert_eq!(ShortcutProfile::Nautilus.key(), "nautilus");
+    }
     #[test]
     fn thumbnails_default_on_but_an_explicit_disabled_preference_survives() {
         assert!(Preferences::default().show_thumbnails);

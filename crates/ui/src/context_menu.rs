@@ -10,6 +10,7 @@ pub enum Target {
     Background,
     Selection,
     Views,
+    Sort,
 }
 pub struct Item {
     pub label: std::borrow::Cow<'static, str>,
@@ -76,22 +77,27 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
                     if reason.is_some() {
                         "Espera la proyección de Espacio"
                     } else {
-                        "Marcar objetos del mapa · Ctrl+A"
+                        "Marcar objetos del mapa"
                     }
                 }
                 crate::selection_tools::Command::Invert => {
                     if reason.is_some() {
                         "Espera la proyección de Espacio"
                     } else {
-                        "Invertir marcas del mapa · Ctrl+I"
+                        "Invertir marcas del mapa"
                     }
                 }
                 _ => label,
             };
             enabled &= reason.is_none();
         }
+        let label = if label.starts_with("Espera") || label.starts_with("Filtro no") {
+            label.into()
+        } else {
+            crate::shortcuts::with_chord(m.shortcuts, label, &action)
+        };
         Item {
-            label: label.into(),
+            label,
             action: if enabled { Some(action.clone()) } else { None },
             section: false,
             intent: Some(action),
@@ -104,33 +110,53 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
         intent: None,
     };
     let items = match target {
+        Target::Sort => {
+            use files_core::listing::Sort;
+            let arrow = if m.descending { " ↓" } else { " ↑" };
+            let mut rows: Vec<Item> = [
+                (Sort::Name, "  Nombre"),
+                (Sort::Size, "  Tamaño"),
+                (Sort::Modified, "  Fecha de modificación"),
+                (Sort::Type, "\u{f15b}  Tipo"),
+            ]
+            .into_iter()
+            .map(|(sort, label)| {
+                let label = if m.sort == sort {
+                    format!("{label}{arrow} (actual)")
+                } else {
+                    label.to_owned()
+                };
+                Item {
+                    label: label.into(),
+                    action: Some(Action::Sort(sort)),
+                    section: false,
+                    intent: Some(Action::Sort(sort)),
+                }
+            })
+            .collect();
+            rows.push(Item {
+                label: "  Invertir orden".into(),
+                action: Some(Action::Sort(m.sort)),
+                section: false,
+                intent: Some(Action::Sort(m.sort)),
+            });
+            rows
+        }
         Target::Views => vec![
+            item("  Grupos", Action::View(crate::model::View::Groups), true),
+            item("  Lista", Action::View(crate::model::View::List), true),
             item(
-                "  Grupos · Ctrl+1",
-                Action::View(crate::model::View::Groups),
-                true,
-            ),
-            item(
-                "  Lista · Ctrl+2",
-                Action::View(crate::model::View::List),
-                true,
-            ),
-            item(
-                "  Columnas · Ctrl+3",
+                "  Columnas",
                 Action::View(crate::model::View::Columns),
                 true,
             ),
             item(
-                "  Espacio · Ctrl+4",
+                "  Espacio",
                 Action::View(crate::model::View::SpaceMap),
                 true,
             ),
-            item(
-                "  Grilla · Ctrl+5",
-                Action::View(crate::model::View::Grid),
-                true,
-            ),
-            item("  Doble panel · F9", Action::DualPane, true),
+            item("  Grilla", Action::View(crate::model::View::Grid), true),
+            item("  Doble panel", Action::DualPane, true),
         ],
         Target::Selection => vec![
             item(
@@ -139,17 +165,17 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
                 !m.query.trim().is_empty() && !m.selection_refreshing(),
             ),
             item(
-                "󰄲  Seleccionar todo · Ctrl+A",
+                "󰄲  Seleccionar todo",
                 Action::Selection(crate::selection_tools::Command::All),
                 !m.selection_refreshing(),
             ),
             item(
-                "󰒟  Invertir selección · Ctrl+I",
+                "󰒟  Invertir selección",
                 Action::Selection(crate::selection_tools::Command::Invert),
                 !m.selection_refreshing(),
             ),
             item(
-                "󰅖  Limpiar · Ctrl+Shift+D",
+                "󰅖  Limpiar",
                 Action::Selection(crate::selection_tools::Command::Clear),
                 !m.selection_refreshing(),
             ),
@@ -157,35 +183,27 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
         Target::Entries => vec![
             header("ABRIR"),
             item("  Abrir elemento enfocado", Action::Open, true),
+            item("󰘔  Abrir con…", Action::OpenWith, m.open_job.is_none()),
+            item("  Vista previa", Action::Preview, true),
             item(
-                "󰘔  Abrir con… · Ctrl+Shift+O",
-                Action::OpenWith,
-                m.open_job.is_none(),
-            ),
-            item("  Vista previa · Space", Action::Preview, true),
-            item(
-                "  Propiedades · Alt+Enter",
+                "  Propiedades",
                 Action::Properties,
                 !busy && m.selection.len() <= 1,
             ),
-            item(
-                "  Terminal aquí · Ctrl+.",
-                Action::Terminal,
-                m.open_job.is_none(),
-            ),
+            item("  Terminal aquí", Action::Terminal, m.open_job.is_none()),
             header("EDITAR"),
             item(
-                "  Copiar · Ctrl+C (files)",
+                "  Copiar",
                 Action::ClipboardCopy,
                 !m.mutations.busy && !m.mutation_applied,
             ),
             item(
-                "  Cortar · Ctrl+X (files)",
+                "  Cortar",
                 Action::ClipboardCut,
                 !m.mutations.busy && !m.mutation_applied,
             ),
             item(
-                "  Pegar · Ctrl+V (lo último copiado)",
+                "  Pegar",
                 Action::ClipboardPaste,
                 !m.mutations.busy
                     && !m.mutation_applied
@@ -193,22 +211,22 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
                     && !m.clipboard_state.busy(),
             ),
             item(
-                "  Pegar del sistema · Ctrl+Shift+V",
+                "  Pegar del sistema",
                 Action::NativePaste,
                 !m.mutations.busy && !m.mutation_applied,
             ),
-            item("  Copiar ruta · Ctrl+Alt+C", Action::CopyPath, true),
+            item("  Copiar ruta", Action::CopyPath, true),
             header("ORGANIZAR"),
-            item("  Renombrar · F2", Action::Rename, !busy),
-            item("  Copiar selección · F5", Action::CopyFiles, !busy),
-            item("  Mover selección · F6", Action::MoveFiles, !busy),
+            item("  Renombrar", Action::Rename, !busy),
+            item("  Copiar selección", Action::CopyFiles, !busy),
+            item("  Mover selección", Action::MoveFiles, !busy),
             item(
                 "\u{f07b}  Nueva carpeta con la selección",
                 Action::FolderWithSelection,
                 !busy && !m.delete.busy() && !m.selection.is_empty(),
             ),
             item(
-                "  Crear enlace · Ctrl+Shift+M",
+                "  Crear enlace",
                 Action::CreateLinks,
                 !busy && !m.delete.busy(),
             ),
@@ -221,15 +239,15 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
             item("󰇚  Extraer aquí", Action::ExtractHere, !busy),
             item("󰇚  Extraer en…: revisar", Action::ExtractArchive, !busy),
             header("ELIMINAR"),
-            item("  Papelera · Supr", Action::Trash, !busy),
+            item("  Papelera", Action::Trash, !busy),
             item(
-                "󰆴  Eliminar permanentemente · Shift+Supr",
+                "󰆴  Eliminar permanentemente",
                 Action::DeletePermanently,
                 !busy && !m.delete.busy(),
             ),
             header("SELECCIÓN"),
             item(
-                "󰒟  Invertir selección · Ctrl+I",
+                "󰒟  Invertir selección",
                 Action::Selection(crate::selection_tools::Command::Invert),
                 !m.selection_refreshing(),
             ),
@@ -241,11 +259,11 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
         ],
         Target::Background => vec![
             header("CREAR"),
-            item("  Crear carpeta · F7", Action::NewEntry(true), !busy),
-            item("  Crear archivo · Ctrl+N", Action::NewEntry(false), !busy),
+            item("  Crear carpeta", Action::NewEntry(true), !busy),
+            item("  Crear archivo", Action::NewEntry(false), !busy),
             header("PEGAR"),
             item(
-                "  Pegar · Ctrl+V (lo último copiado)",
+                "  Pegar",
                 Action::ClipboardPaste,
                 !m.mutations.busy
                     && !m.mutation_applied
@@ -253,26 +271,26 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
                     && !m.clipboard_state.busy(),
             ),
             item(
-                "  Pegar del sistema · Ctrl+Shift+V",
+                "  Pegar del sistema",
                 Action::NativePaste,
                 !m.mutations.busy && !m.mutation_applied,
             ),
             item(
-                "\u{f0c1}  Enlace a lo copiado · Ctrl+M",
+                "\u{f0c1}  Enlace a lo copiado",
                 Action::LinkCopied,
                 !busy && !m.delete.busy() && m.clipboard_state.count() > 0,
             ),
             header("VER"),
             item(
                 if m.show_hidden {
-                    "  Ocultar ocultos · Ctrl+H"
+                    "  Ocultar ocultos"
                 } else {
-                    "  Mostrar ocultos · Ctrl+H"
+                    "  Mostrar ocultos"
                 },
                 Action::ToggleHidden,
                 !busy,
             ),
-            item("  Actualizar · Ctrl+R", Action::Refresh, true),
+            item("  Actualizar", Action::Refresh, true),
             item(
                 if m.sizes.has_work() {
                     "  Parar tamaños"
@@ -293,17 +311,17 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
                 !m.query.trim().is_empty() && !m.selection_refreshing(),
             ),
             item(
-                "󰄲  Seleccionar todo · Ctrl+A",
+                "󰄲  Seleccionar todo",
                 Action::Selection(crate::selection_tools::Command::All),
                 !m.selection_refreshing(),
             ),
             item(
-                "\u{f0b0}  Seleccionar por patrón · Ctrl+S",
+                "\u{f0b0}  Seleccionar por patrón",
                 Action::SelectPattern,
                 !m.selection_refreshing(),
             ),
             item(
-                "󰒟  Invertir selección · Ctrl+I",
+                "󰒟  Invertir selección",
                 Action::Selection(crate::selection_tools::Command::Invert),
                 !m.selection_refreshing(),
             ),
@@ -316,11 +334,7 @@ fn build(m: &Model, target: Target, x: i32, y: i32, w: i32, h: i32) -> Menu {
             item("  Buscar en subcarpetas", Action::Search, true),
             item("Comparar esta carpeta…", Action::CompareFolders, true),
             item("Preparar sincronización…", Action::ReviewSyncFolders, true),
-            item(
-                "  Terminal aquí · Ctrl+.",
-                Action::Terminal,
-                m.open_job.is_none(),
-            ),
+            item("  Terminal aquí", Action::Terminal, m.open_job.is_none()),
         ],
     };
     let mut items = items;
@@ -491,7 +505,7 @@ pub fn layout(target: Target) -> Option<&'static [Node]> {
     match target {
         Target::Entries => Some(ENTRIES),
         Target::Background => Some(BACKGROUND),
-        Target::Views | Target::Selection => None,
+        Target::Views | Target::Selection | Target::Sort => None,
     }
 }
 /// A placed layout row: a flat item index, or a titled group of indices.
@@ -732,6 +746,27 @@ pub fn open_views(m: &mut Model, w: i32, h: i32) {
     m.hits.clear();
     m.context_menu = Some(build(m, Target::Views, (w - 330).max(0), 58, w, h));
 }
+/// Keyboard sort menu: name, size, date, type and reverse, focused on the
+/// current criterion so Enter keeps it and Up/Down pick another.
+pub fn open_sort(m: &mut Model, w: i32, h: i32) {
+    if !available(m) {
+        return;
+    }
+    m.settings = false;
+    m.actions_menu = false;
+    m.hits.clear();
+    let mut menu = build(m, Target::Sort, (w - 330).max(0), 58, w, h);
+    menu.focused = [
+        files_core::listing::Sort::Name,
+        files_core::listing::Sort::Size,
+        files_core::listing::Sort::Modified,
+        files_core::listing::Sort::Type,
+    ]
+    .iter()
+    .position(|s| *s == m.sort)
+    .unwrap_or(0);
+    m.context_menu = Some(menu);
+}
 pub fn open_selection(m: &mut Model, w: i32, h: i32) {
     if !available(m) {
         return;
@@ -899,6 +934,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         Rect::new(r.x + 12, r.y + 4, (r.w - 24).max(0), 22),
         &match menu.target {
             Target::Views => "VISTAS".into(),
+            Target::Sort => "ORDENAR".into(),
             Target::Selection => "SELECCIÓN · VISIBLES".into(),
             Target::Background => "CARPETA · FONDO".into(),
             Target::Entries => format!("{} SELECCIONADOS", m.selection.len()),
