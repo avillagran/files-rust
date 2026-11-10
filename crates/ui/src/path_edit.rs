@@ -39,7 +39,8 @@ impl Completion {
         let (name, dir) = &self.items[i];
         format!("{}{name}{}", self.base, if *dir { "/" } else { "" })
     }
-    fn render(&self) -> String {
+    /// One line listing the candidates, the current one in brackets.
+    pub(crate) fn render(&self) -> String {
         let mut out = String::from("Tab ·");
         for (i, (name, dir)) in self.items.iter().enumerate() {
             if out.len() > 400 {

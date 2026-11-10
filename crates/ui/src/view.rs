@@ -333,7 +333,15 @@ pub fn status(p: &mut dyn Painter, m: &mut Model, w: i32, h: i32) {
         false,
     );
     let tip = tip_rect(w, h);
-    if tips {
+    // Open Tab suggestions take the tip line: they must stay readable while
+    // the location field is being typed in.
+    let suggestions = m.path_edit.completion.as_ref().map(|c| c.render());
+    if let Some(text) = suggestions.filter(|_| tip.w > 0) {
+        m.status_tips.configure(0, 0.);
+        p.clip(tip);
+        p.text(tip, &text, 11, c.foreground, true, false);
+        p.unclip();
+    } else if tips {
         let label = m.status_tips.text();
         let width = p.text_width(label, 11, true);
         m.status_tips.configure(tip.w, f64::from(width));
