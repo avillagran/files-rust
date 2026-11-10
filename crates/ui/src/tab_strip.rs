@@ -231,16 +231,9 @@ impl Strip {
         });
         self.inbox.syncing.set(true);
         fltk_omarchy::batch(|| {
-            self.rows.sync_from(m.tabs.rows.iter().map(|tab| {
-                Row {
-                    key: (m.dual.active_id, tab.id),
-                    title: files_core::name_label::label(
-                        tab.path
-                            .file_name()
-                            .unwrap_or_else(|| std::ffi::OsStr::new("/")),
-                    )
-                    .into_owned(),
-                }
+            self.rows.sync_from(m.tabs.rows.iter().map(|tab| Row {
+                key: (m.dual.active_id, tab.id),
+                title: crate::network_ui::tab_title(m, &tab.path),
             }));
             self.selected.set_if_changed(Some(m.pane_owner()));
         });

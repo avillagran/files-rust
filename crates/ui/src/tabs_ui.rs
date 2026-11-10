@@ -919,11 +919,7 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, w: i32) {
                 c.accent,
             );
         }
-        let label = tab
-            .path
-            .file_name()
-            .unwrap_or_else(|| std::ffi::OsStr::new("/"));
-        let text = files_core::name_label::label(label);
+        let text = crate::network_ui::tab_title(m, &tab.path);
         p.clip(Rect::new(x + 8, y + 3, width - 38, 26));
         p.text(
             Rect::new(x + 8, y + 3, width - 38, 26),

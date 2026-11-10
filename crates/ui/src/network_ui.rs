@@ -41,6 +41,26 @@ impl State {
     pub fn busy(&self) -> bool {
         self.job.is_some()
     }
+    /// Rail name of the location whose root is exactly `path`.
+    pub fn root_title(&self, path: &std::path::Path) -> Option<&str> {
+        self.list
+            .iter()
+            .find(|s| s.path == path)
+            .map(|s| s.title.as_str())
+    }
+}
+
+/// Tab title of `path`: a network location's rail name at its root, else
+/// the folder name.
+pub fn tab_title(m: &Model, path: &std::path::Path) -> String {
+    match m.network.root_title(path) {
+        Some(title) => title.to_string(),
+        None => files_core::name_label::label(
+            path.file_name()
+                .unwrap_or_else(|| std::ffi::OsStr::new("/")),
+        )
+        .into_owned(),
+    }
 }
 
 /// Text the location field starts with for "Connect to server".
@@ -270,6 +290,18 @@ mod tests {
         m.path_key(Key::Escape, false, false, false);
         assert!(!m.editing && m.network.prompt.is_none());
         assert!(m.edit.is_empty());
+    }
+
+    #[test]
+    fn tabs_name_a_location_root_like_the_rail() {
+        let mut m = Model::new("/fixture-network".into());
+        let root = std::path::Path::new("/fixture-network/gvfs/smb-share:server=nas,share=fotos");
+        m.network.list = vec![files_core::network::share(
+            root,
+            "smb-share:server=nas,share=fotos",
+        )];
+        assert_eq!(super::tab_title(&m, root), "fotos en nas");
+        assert_eq!(super::tab_title(&m, &root.join("2024")), "2024");
     }
 
     #[test]
