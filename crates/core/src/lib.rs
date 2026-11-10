@@ -34,6 +34,7 @@ pub mod sftp_target;
 pub mod spatial;
 pub mod system;
 pub mod theme;
+pub mod thumbnail_standard;
 
 pub fn size_parts(bytes: u64) -> (String, &'static str) {
     let units = ["B", "kB", "MB", "GB", "TB"];

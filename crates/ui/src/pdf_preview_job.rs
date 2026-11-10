@@ -428,7 +428,10 @@ fn supervised(
         })
 }
 #[cfg(target_os = "linux")]
-fn command(program: &str, fd: std::os::fd::RawFd) -> io::Result<std::process::Command> {
+fn command(
+    program: impl AsRef<std::ffi::OsStr>,
+    fd: std::os::fd::RawFd,
+) -> io::Result<std::process::Command> {
     use std::{os::unix::process::CommandExt, process::Command};
     if !(3..256).contains(&fd) {
         return Err(io::Error::other(
@@ -467,6 +470,67 @@ fn command(program: &str, fd: std::os::fd::RawFd) -> io::Result<std::process::Co
         });
     }
     Ok(command)
+}
+/// First-page thumbnail: one direct pdftoppm (no pdfinfo), the same pinned
+/// FD and rlimits as the preview, output bounded to a 160 px PPM.
+/// A missing tool is reported as [`crate::thumbnail_job::tool_missing`].
+#[cfg(target_os = "linux")]
+pub(crate) fn thumbnail(
+    path: &Path,
+    expected: Revision,
+    cancel: &AtomicBool,
+    program: &std::ffi::OsStr,
+) -> io::Result<Bitmap> {
+    use std::os::fd::AsRawFd;
+    const SIDE: usize = crate::image_preview_job::THUMBNAIL_DIMENSION as usize;
+    if expected.bytes == 0 || expected.bytes > MAX_SOURCE {
+        return Err(io::Error::other(
+            "PDF debe ser archivo no vacío de hasta256MiB",
+        ));
+    }
+    let (source, revision) = checked_source(path, expected)?;
+    let fd = source.as_raw_fd();
+    let pinned = format!("/proc/self/fd/{fd}");
+    let mut render = command(program, fd)?;
+    render.args([
+        "-f",
+        "1",
+        "-l",
+        "1",
+        "-singlefile",
+        "-scale-to",
+        "160",
+        &pinned,
+    ]);
+    let output = crate::text_preview_job::run_command_program(
+        render,
+        &[],
+        "thumbnail_pdf",
+        cancel,
+        TIMEOUT,
+        SIDE * SIDE * 3 + MAX_HEADER,
+        None,
+    )
+    .map_err(crate::thumbnail_job::tool_error)?;
+    if cancel.load(Ordering::Acquire) {
+        return Err(io::Error::new(io::ErrorKind::Interrupted, "PDF cancelado"));
+    }
+    let mut bitmap = decode(output)?;
+    if bitmap.width as usize > SIDE || bitmap.height as usize > SIDE {
+        return Err(io::Error::other("Miniatura PDF fuera de 160px"));
+    }
+    revision.revalidate(&source, path)?;
+    bitmap.source = Some(revision);
+    Ok(bitmap)
+}
+#[cfg(not(target_os = "linux"))]
+pub(crate) fn thumbnail(
+    _: &Path,
+    _: Revision,
+    _: &AtomicBool,
+    _: &std::ffi::OsStr,
+) -> io::Result<Bitmap> {
+    Err(crate::thumbnail_job::tool_missing())
 }
 #[cfg(not(target_os = "linux"))]
 fn run(
@@ -691,5 +755,78 @@ mod tests {
             assert!(!flag.load(Ordering::Acquire));
             assert!(gate.lock().unwrap().phase == Phase::ReadOnly);
         }
+    }
+    #[cfg(target_os = "linux")]
+    fn tiny_pdf() -> Vec<u8> {
+        // One 200x100 pt page filled red; offsets computed for a valid xref.
+        let content = b"1 0 0 rg 0 0 200 100 re f";
+        let objects = [
+            "<< /Type /Catalog /Pages 2 0 R >>".to_string(),
+            "<< /Type /Pages /Kids [3 0 R] /Count 1 >>".to_string(),
+            "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 200 100] /Contents 4 0 R >>".to_string(),
+            format!(
+                "<< /Length {} >>\nstream\n{}\nendstream",
+                content.len(),
+                std::str::from_utf8(content).unwrap()
+            ),
+        ];
+        let mut pdf = b"%PDF-1.4\n".to_vec();
+        let mut offsets = Vec::new();
+        for (i, object) in objects.iter().enumerate() {
+            offsets.push(pdf.len());
+            pdf.extend_from_slice(format!("{} 0 obj\n{object}\nendobj\n", i + 1).as_bytes());
+        }
+        let xref = pdf.len();
+        pdf.extend_from_slice(
+            format!("xref\n0 {}\n0000000000 65535 f \n", objects.len() + 1).as_bytes(),
+        );
+        for offset in offsets {
+            pdf.extend_from_slice(format!("{offset:010} 00000 n \n").as_bytes());
+        }
+        pdf.extend_from_slice(
+            format!(
+                "trailer\n<< /Size {} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n",
+                objects.len() + 1
+            )
+            .as_bytes(),
+        );
+        pdf
+    }
+    #[cfg(target_os = "linux")]
+    #[test]
+    fn first_page_thumbnail_is_bounded_and_missing_tool_is_typed() {
+        let dir = crate::thumbnail_disk_cache::retained_test_directory("pdf-thumbnail");
+        let path = dir.join("page.pdf");
+        std::fs::write(&path, tiny_pdf()).unwrap();
+        let (_, revision) = files_core::media_source::open(&path).unwrap();
+        let cancel = AtomicBool::new(false);
+        let missing = thumbnail(
+            &path,
+            revision,
+            &cancel,
+            "files-test-no-such-pdftoppm".as_ref(),
+        )
+        .unwrap_err();
+        assert!(
+            missing
+                .get_ref()
+                .is_some_and(|e| e.to_string().contains("no instalada"))
+        );
+        match thumbnail(&path, revision, &cancel, "pdftoppm".as_ref()) {
+            Ok(bitmap) => {
+                assert_eq!((bitmap.width, bitmap.height), (160, 80));
+                assert_eq!(bitmap.source, Some(revision));
+                assert_eq!(&bitmap.rgb[..3], &[255, 0, 0]);
+            }
+            Err(error)
+                if error
+                    .get_ref()
+                    .is_some_and(|e| e.to_string().contains("no instalada")) =>
+            {
+                eprintln!("pdftoppm not installed; skipped");
+            }
+            Err(error) => panic!("{error}"),
+        }
+        assert!(path.is_file(), "Retain fixture data");
     }
 }

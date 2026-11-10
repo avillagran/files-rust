@@ -200,6 +200,13 @@ impl State {
                         d.checked = None;
                     }
                 }
+                Ok(Value::NoThumbnail(revision)) => {
+                    // Quiet degradation to the type icon, memoized per revision.
+                    self.cache.remove(&d.path);
+                    d.verified = None;
+                    d.failed = Some(revision);
+                    d.error = None;
+                }
                 Ok(Value::Unavailable(revision, error)) => {
                     self.cache.remove(&d.path);
                     d.verified = None;

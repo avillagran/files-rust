@@ -1,5 +1,7 @@
 //! Disposable thumbnail records, bounded independently of the RAM LRU.
-//! Each of 256 fixed slots is at most 80 KiB. A hash collision is a cache miss,
+//! Fast private tier in front of the freedesktop shared cache: a hit is raw
+//! 160 px RGB and needs no helper decode. Each of 1024 fixed slots is at most
+//! 80 KiB (about 80 MiB of disk at worst, no RAM). A hash collision is a cache miss,
 //! never identity proof: every read compares the full raw path and revision.
 #![cfg_attr(not(unix), allow(dead_code, unused_imports))]
 use crate::image_preview_job::{Bitmap, THUMBNAIL_DIMENSION};
@@ -12,7 +14,7 @@ use std::{
 
 const MAGIC: &[u8; 8] = b"FILESTH3";
 const MAX_ENTRY: usize = 80 * 1024;
-const SLOTS: u64 = 256;
+const SLOTS: u64 = 1024;
 const TTL: u64 = 30 * 24 * 3600;
 // Bump the namespace when decoder recipe, sampling or color conversion changes.
 const RECIPE: u32 = 3;
@@ -75,6 +77,8 @@ fn encode(path: &Path, bitmap: Option<&Bitmap>) -> io::Result<Vec<u8>> {
             "jpeg" => 2,
             "webp" => 3,
             "video" => 4,
+            "pdf" => 5,
+            "svg" => 6,
             _ => return Err(invalid()),
         };
         for n in [
@@ -182,6 +186,8 @@ fn decode(bytes: &[u8], path: &Path, expected: Option<Revision>) -> io::Result<O
         2 => "jpeg",
         3 => "webp",
         4 => "video",
+        5 => "pdf",
+        6 => "svg",
         _ => return Err(invalid()),
     };
     if width == 0
@@ -391,6 +397,63 @@ mod storage {
         // No fsync: records are disposable, checksummed and atomically replaced.
         // A failed/abandoned write retains at most one bounded pending file.
         Ok(())
+    }
+    /// Hand bounded tool output (an rsvg-convert PNG) to the helper decoder
+    /// through one owned 0600 file in the private directory, removed after.
+    pub fn with_scratch<T>(
+        root: &Path,
+        bytes: &[u8],
+        decode: impl FnOnce(&Path, Revision) -> io::Result<T>,
+    ) -> io::Result<T> {
+        if bytes.len() > SCRATCH_MAX {
+            return Err(invalid());
+        }
+        let dir = directory(root, true)?;
+        let file_name = format!("render-{}.png", std::process::id());
+        let c = name(&file_name);
+        let mut file = wrap(unsafe {
+            libc::openat(
+                dir.as_raw_fd(),
+                c.as_ptr(),
+                libc::O_RDWR
+                    | libc::O_CREAT
+                    | libc::O_TRUNC
+                    | libc::O_NOFOLLOW
+                    | libc::O_NONBLOCK
+                    | libc::O_CLOEXEC,
+                0o600,
+            )
+        })?;
+        let m = file.metadata()?;
+        if m.uid() != unsafe { libc::geteuid() } || m.mode() & 0o077 != 0 || m.nlink() != 1 {
+            return Err(invalid());
+        }
+        let result = (|| {
+            file.write_all(bytes)?;
+            let revision = Revision::from_file(&file)?;
+            decode(&root.join(&file_name), revision)
+        })();
+        drop(file);
+        // Only this process's own scratch file; never a directory.
+        unsafe { libc::unlinkat(dir.as_raw_fd(), c.as_ptr(), 0) };
+        result
+    }
+}
+/// Largest tool output accepted for helper decoding.
+pub const SCRATCH_MAX: usize = 512 * 1024;
+/// See [`storage::with_scratch`].
+pub fn with_scratch<T>(
+    bytes: &[u8],
+    decode: impl FnOnce(&Path, Revision) -> io::Result<T>,
+) -> io::Result<T> {
+    #[cfg(unix)]
+    {
+        storage::with_scratch(&directory(), bytes, decode)
+    }
+    #[cfg(not(unix))]
+    {
+        let _ = (bytes, decode);
+        Err(io::Error::from(io::ErrorKind::Unsupported))
     }
 }
 pub fn load(path: &Path, revision: Revision) -> io::Result<Option<Bitmap>> {
