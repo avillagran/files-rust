@@ -378,7 +378,6 @@ mod tests {
 
     fn base(name: &str) -> PathBuf {
         let d = crate::persistence::test_dir(name);
-        let _ = fs::remove_dir_all(&d);
         fs::create_dir_all(&d).unwrap();
         d
     }
@@ -412,7 +411,6 @@ mod tests {
         // 300 dirs + tree + leaf + link + single
         assert_eq!(report.removed, 304);
         assert_eq!(progress.entries.load(Ordering::Relaxed), 304);
-        let _ = fs::remove_dir_all(&d);
     }
 
     #[test]
@@ -447,6 +445,5 @@ mod tests {
             assert!(d.join("ro/locked/f").exists() && !d.join("ro/free").exists());
             fs::set_permissions(d.join("ro/locked"), fs::Permissions::from_mode(0o700)).unwrap();
         }
-        let _ = fs::remove_dir_all(&d);
     }
 }

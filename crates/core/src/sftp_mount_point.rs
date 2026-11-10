@@ -296,31 +296,11 @@ mod tests {
     use std::{
         fs,
         os::unix::fs::{DirBuilderExt, PermissionsExt},
-        sync::atomic::{AtomicU64, Ordering},
     };
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let base = PathBuf::from(std::env::var_os("HOME").unwrap()).join(".cache/files-test");
-            fs::create_dir_all(&base).unwrap();
-            loop {
-                let path = base.join(format!(
-                    "sftp-point-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
-                match fs::DirBuilder::new().mode(0o700).create(&path) {
-                    Ok(()) => return Self(path),
-                    Err(e) if e.kind() == io::ErrorKind::AlreadyExists => {}
-                    Err(e) => panic!("{e}"),
-                }
-            }
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
+            Self(crate::test_support::private_dir("sftp-point"))
         }
     }
     fn table() -> Vec<Mount> {

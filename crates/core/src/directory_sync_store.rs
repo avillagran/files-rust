@@ -928,11 +928,6 @@ mod linux {
                     .join(OsString::from_vec(name(job).unwrap().as_bytes().to_vec()))
             }
         }
-        impl Drop for Fixture {
-            fn drop(&mut self) {
-                let _ = fs::remove_dir_all(&self.base);
-            }
-        }
         fn create(f: &Fixture, p: &Physical<'_, '_>, prepared: &Prepared, job: [u8; 16]) -> Store {
             Store::create(
                 &f.store,
@@ -6126,9 +6121,6 @@ mod linux {
                 let f = Fixture::new();
                 let status=Command::new(std::env::current_exe().unwrap()).args(["--exact","directory_sync_store::linux::tests::abrupt_process_exit_preserves_history_or_partial_record_without_auto_resume","--nocapture"]).env("FILES_SYNC_STORE_CRASH_ROOT",&f.base).env("FILES_SYNC_STORE_CRASH_PHASE",phase).status().unwrap();
                 assert_eq!(status.code(), Some(91));
-                for path in &f.paths {
-                    fs::remove_dir_all(path).unwrap();
-                }
                 let reopened = Store::open_saved(&f.store, [19; 16]);
                 if phase == "partial" {
                     assert!(reopened.is_err());
@@ -6168,9 +6160,6 @@ mod linux {
             drop(p);
             drop(record);
             drop(prepared);
-            for path in &f.paths {
-                fs::remove_dir_all(path).unwrap();
-            }
             let (mut history, saved) = Store::open_saved(&f.store, [23; 16]).unwrap();
             assert_eq!(saved.stage_limit(), 7);
             let plan = saved.plan().unwrap();
@@ -6491,9 +6480,6 @@ mod linux {
             drop(plan);
             drop(record);
             drop(prepared);
-            for path in &f.paths {
-                fs::remove_dir_all(path).unwrap();
-            }
             let (history, saved) = Store::open_saved(&f.store, [39; 16]).unwrap();
             assert!(saved.plan().is_ok());
             assert_eq!(

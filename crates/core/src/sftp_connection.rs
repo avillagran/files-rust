@@ -527,15 +527,7 @@ mod tests {
     }
     #[test]
     fn failed_exec_retains_the_created_point_without_network_or_cleanup() {
-        use std::os::unix::fs::DirBuilderExt;
-        let root =
-            std::path::PathBuf::from(std::env::var_os("HOME").unwrap()).join(".cache/files-test");
-        std::fs::create_dir_all(&root).unwrap();
-        let base = root.join(format!("sftp-failed-exec-{}", std::process::id()));
-        std::fs::DirBuilder::new()
-            .mode(0o700)
-            .create(&base)
-            .unwrap();
+        let base = crate::test_support::private_dir("sftp-failed-exec");
         let point = crate::sftp_mount_point::Parent::open(&base)
             .unwrap()
             .create()
@@ -550,7 +542,6 @@ mod tests {
         assert!(result.is_err());
         assert!(path.is_dir());
         assert!(std::fs::read_dir(&path).unwrap().next().is_none());
-        std::fs::remove_dir_all(base).unwrap();
     }
     #[test]
     fn remote_root_proof_rejects_an_fd_from_a_different_mount_before_readdir() {

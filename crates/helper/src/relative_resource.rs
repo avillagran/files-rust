@@ -31,11 +31,6 @@ mod tests {
             File::open(&self.0).unwrap()
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = std::fs::remove_dir_all(&self.0);
-        }
-    }
 
     #[test]
     fn nested_unicode_file_is_read_with_exact_budget() {

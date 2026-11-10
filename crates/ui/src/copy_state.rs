@@ -616,7 +616,6 @@ mod tests {
     use std::{
         fs,
         path::PathBuf,
-        sync::atomic::{AtomicU64, Ordering},
         thread,
         time::{Duration, Instant},
     };
@@ -699,22 +698,7 @@ mod tests {
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static SERIAL: AtomicU64 = AtomicU64::new(0);
-            let root = PathBuf::from(std::env::var_os("HOME").expect("Cache fixture needs HOME"))
-                .join(".cache/files-test");
-            fs::create_dir_all(&root).unwrap();
-            loop {
-                let path = root.join(format!(
-                    "copy-state-{}-{}",
-                    std::process::id(),
-                    SERIAL.fetch_add(1, Ordering::Relaxed)
-                ));
-                match fs::create_dir(&path) {
-                    Ok(()) => return Self(path),
-                    Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => continue,
-                    Err(error) => panic!("Create fixture: {error}"),
-                }
-            }
+            Self(crate::test_support::private_dir("copy-state"))
         }
         fn request(&self, id: u64, to: &str) -> Request {
             Request::new(
@@ -725,11 +709,6 @@ mod tests {
                 }],
                 options(),
             )
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
         }
     }
     fn completion(controller: &mut Controller) -> Completion {
@@ -1232,15 +1211,7 @@ mod tests {
     fn move_descriptor_budget_includes_active_unread_and_pending_tokens() {
         use files_core::move_engine::PreparedMove;
         use std::sync::atomic::AtomicBool;
-        static MOVE_SERIAL: AtomicU64 = AtomicU64::new(0);
-        let root = std::env::var_os("HOME")
-            .map(PathBuf::from)
-            .unwrap()
-            .join(format!(
-                ".cache/files-test/move-fd-{}-{}",
-                std::process::id(),
-                MOVE_SERIAL.fetch_add(1, Ordering::Relaxed)
-            ));
+        let root = crate::test_support::private_dir("move-fd");
         fs::create_dir_all(root.join("src")).unwrap();
         fs::create_dir(root.join("dst")).unwrap();
         for i in 0..126 {
@@ -1288,6 +1259,5 @@ mod tests {
             std::thread::yield_now();
         }
         drop(c);
-        fs::remove_dir_all(root).unwrap();
     }
 }

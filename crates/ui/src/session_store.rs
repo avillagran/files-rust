@@ -246,11 +246,7 @@ fn read_session(path: &Path) -> Result<Option<Vec<u8>>, String> {
 mod tests {
     use super::*;
     fn dir() -> PathBuf {
-        let p = files_core::theme::home().join(format!(
-            ".cache/files-test/session-store-{}-{}",
-            std::process::id(),
-            NEXT.fetch_add(1, Ordering::Relaxed)
-        ));
+        let p = crate::test_support::private_dir("session-store");
         fs::create_dir_all(&p).unwrap();
         p
     }
@@ -270,7 +266,6 @@ mod tests {
         assert!(s.save(b"x").is_err());
         assert_eq!(fs::read(p.join("session.bin")).unwrap(), b"future-invalid");
         drop(s);
-        fs::remove_dir_all(p).unwrap();
     }
     #[cfg(unix)]
     #[test]
@@ -282,7 +277,6 @@ mod tests {
         fs::write(p.join("session.lock"), b"").unwrap();
         assert!(s.check_lock().is_err());
         drop(s);
-        fs::remove_dir_all(p).unwrap();
     }
     #[cfg(unix)]
     #[test]
@@ -305,7 +299,6 @@ mod tests {
         assert!(!o.writable && o.notice.is_some());
         assert_eq!(fs::read(p.join("other")).unwrap(), b"keep");
         drop(_s);
-        fs::remove_dir_all(p).unwrap();
     }
     #[test]
     fn directory_sync_failure_reports_publication_and_retry_uses_effective_file() {
@@ -339,7 +332,6 @@ mod tests {
         assert!(matches!(store.save(&bytes).unwrap(), Published::Durable));
         assert_eq!(fs::read(p.join("session.bin")).unwrap(), bytes);
         drop(store);
-        fs::remove_dir_all(p).unwrap();
     }
 }
 
@@ -356,13 +348,7 @@ mod fork_tests {
     // The child executes only inherited File drop and libc read/write/_exit; no
     // allocator, logging, test assertions or other post-fork runtime locks.
     fn fork_case(child_drops: bool) {
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "session-owner-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
+        let root = crate::test_support::private_dir("session-owner");
         let guard = lock(&root).unwrap();
         let mut ready = [0; 2];
         let mut go = [0; 2];
@@ -417,7 +403,6 @@ mod fork_tests {
         let mut status = 0;
         let reaped = unsafe { libc::waitpid(pid, &mut status, 0) };
         drop(attempt);
-        fs::remove_dir_all(&root).unwrap();
         assert_eq!(ready_n, 1);
         assert!(child_still_live);
         assert_eq!(reaped, pid);

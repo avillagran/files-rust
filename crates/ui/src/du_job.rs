@@ -391,7 +391,7 @@ mod allocated_worker_tests {
     use super::*;
     use crate::space_map_job::TestScriptRegistration;
     use files_core::folder_usage::{Observation, Report, VERSION, Value};
-    use std::{fs, sync::atomic::AtomicU64};
+    use std::fs;
 
     struct Script {
         path: PathBuf,
@@ -399,14 +399,8 @@ mod allocated_worker_tests {
     }
     impl Script {
         fn new(frames: &[serde_json::Value], tail: &str) -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let base = files_core::theme::home().join(".cache/files-test");
-            fs::create_dir_all(&base).unwrap();
-            let path = base.join(format!(
-                "allocation-worker-{}-{}.py",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
+            let path =
+                crate::test_support::private_dir("allocation-worker").join("allocation-worker.py");
             let payload = serde_json::to_string(&serde_json::to_string(frames).unwrap()).unwrap();
             let body = format!(
                 "import os,sys,json,time\nfrom pathlib import Path\nrequest=json.loads(sys.stdin.buffer.readline())\nassert request['command']==sys.argv[1]\nassert request['id']==1\nif sys.argv[1]=='measure_directory_allocated': assert request['version']==1\nfor frame in json.loads({payload}): print(json.dumps(frame),flush=True)\n{tail}\n"

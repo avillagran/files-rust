@@ -349,19 +349,7 @@ mod tests {
     }
     #[test]
     fn checked_source_rejects_verified_a_replaced_before_open() {
-        let root = std::env::var_os("HOME")
-            .map(std::path::PathBuf::from)
-            .unwrap()
-            .join(".cache/files-test");
-        std::fs::create_dir_all(&root).unwrap();
-        let path = root.join(format!(
-            "docx-source-{}-{}.docx",
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        ));
+        let path = crate::test_support::private_dir("docx-source").join("docx-source.docx");
         let bytes =
             crate::zip_member::tests::fixture(&doc("<w:p><w:r><w:t>A</w:t></w:r></w:p>"), 8, false);
         std::fs::write(&path, &bytes).unwrap();

@@ -599,7 +599,6 @@ mod tests {
                 & 0o777,
             0o600
         );
-        fs::remove_dir_all(parent).unwrap();
     }
     #[test]
     fn busy_invalid_future_symlink_and_lock_replacement_preserve_data() {
@@ -627,7 +626,6 @@ mod tests {
         fs::remove_file(dir.join("sftp-profiles.lock")).unwrap();
         symlink(dir.join("other"), dir.join("sftp-profiles.lock")).unwrap();
         assert!(apply(&dir, &add("b")).is_err());
-        fs::remove_dir_all(dir).unwrap();
     }
     #[test]
     fn fifo_and_oversize_are_rejected_without_mutation() {
@@ -644,7 +642,6 @@ mod tests {
         assert!(apply(&dir, &Op::Read).is_err());
         assert!(apply(&dir, &add("a")).is_err());
         assert_eq!(fs::metadata(&file).unwrap().len(), (MAX_BYTES + 1) as u64);
-        fs::remove_dir_all(dir).unwrap();
     }
 }
 #[cfg(all(test, target_os = "linux"))]
@@ -712,7 +709,6 @@ mod fork_tests {
         let mut status = 0;
         let reaped = unsafe { libc::waitpid(pid, &mut status, 0) };
         drop(attempt);
-        fs::remove_dir_all(&root).unwrap();
         assert_eq!(ready_n, 1);
         assert!(child_still_live);
         assert_eq!(reaped, pid);

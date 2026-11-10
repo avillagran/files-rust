@@ -715,7 +715,6 @@ mod tests {
             0o600
         );
         assert!(!apply(&root, &Op::Sync).unwrap().unsynced);
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn busy_lock_invalid_future_and_symlink_preserve_existing_bytes() {
@@ -738,7 +737,6 @@ mod tests {
         assert!(apply(&root, &Op::Read).is_err());
         assert!(apply(&root, &add("/two")).is_err());
         assert_eq!(fs::read(root.join("target")).unwrap(), bytes);
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn fifo_and_oversize_rejected_without_publication() {
@@ -755,7 +753,6 @@ mod tests {
         assert!(apply(&root, &Op::Read).is_err());
         assert!(apply(&root, &add("/two")).is_err());
         assert_eq!(fs::metadata(&file).unwrap().len(), too_big.len() as u64);
-        fs::remove_dir_all(root).unwrap();
     }
 }
 #[cfg(all(test, target_os = "linux"))]
@@ -823,7 +820,6 @@ mod fork_tests {
         let mut status = 0;
         let reaped = unsafe { libc::waitpid(pid, &mut status, 0) };
         drop(attempt);
-        fs::remove_dir_all(&root).unwrap();
         assert_eq!(ready_n, 1);
         assert!(child_still_live);
         assert_eq!(reaped, pid);

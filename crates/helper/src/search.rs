@@ -539,11 +539,6 @@ mod tests {
             Self(p)
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
-        }
-    }
     #[test]
     fn recursive_regex_reports_empty_eof_and_partial_limits_with_original_paths() {
         let f = Fixture::new();
@@ -704,7 +699,6 @@ mod tests {
                 Ok(())
             },
         );
-        fs::remove_dir_all(old).unwrap();
         assert!(result.is_err());
         assert_eq!(calls, 1);
     }
@@ -1027,7 +1021,6 @@ mod tests {
         });
         assert!(result.is_err());
         assert!(saved.join("0.txt").is_file());
-        fs::remove_dir_all(saved).unwrap();
     }
     #[test]
     fn metadata_facets_are_lazy_nofollow_and_preserve_sources() {

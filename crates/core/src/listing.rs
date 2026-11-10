@@ -436,27 +436,7 @@ mod tests {
 
     #[test]
     fn ten_thousand_streaming_lazy_sort_filter() {
-        let base = std::env::var_os("HOME")
-            .map(PathBuf::from)
-            .unwrap()
-            .join(".cache/files-test");
-        fs::create_dir_all(&base).unwrap();
-        let dir = base.join(format!(
-            "core-{}-{}",
-            std::process::id(),
-            SystemTime::now()
-                .duration_since(SystemTime::UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        ));
-        fs::create_dir(&dir).unwrap();
-        struct Cleanup(PathBuf);
-        impl Drop for Cleanup {
-            fn drop(&mut self) {
-                let _ = fs::remove_dir_all(&self.0);
-            }
-        }
-        let _cleanup = Cleanup(dir.clone());
+        let dir = crate::test_support::private_dir("core-listing");
         for i in 0..10_000 {
             fs::write(dir.join(format!("file-{i:05}.txt")), b"test").unwrap();
         }

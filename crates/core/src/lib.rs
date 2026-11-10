@@ -41,6 +41,8 @@ pub mod sftp_target;
 pub mod spatial;
 pub mod starred;
 pub mod system;
+#[cfg(test)]
+pub(crate) mod test_support;
 pub mod theme;
 pub mod thumbnail_standard;
 

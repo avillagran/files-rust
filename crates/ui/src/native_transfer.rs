@@ -1307,29 +1307,21 @@ impl Model {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
-    use std::{fs, sync::atomic::AtomicU64};
+    use std::fs;
     struct Fixture {
-        root: PathBuf,
         a: PathBuf,
         b: PathBuf,
     }
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let root = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!(
-                    "native-state-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
+            let root = crate::test_support::private_dir("native-state");
             let a = root.join("A");
             let b = root.join("B");
             fs::create_dir_all(&a).unwrap();
             fs::create_dir(&b).unwrap();
             fs::write(a.join("same"), b"A").unwrap();
             fs::write(b.join("same"), b"B").unwrap();
-            Self { root, a, b }
+            Self { a, b }
         }
         fn source(&self, path: &std::path::Path) -> files_core::selection_source::Source {
             files_core::selection_source::Source::capture(
@@ -1364,11 +1356,6 @@ mod tests {
                     kind: crate::file_clipboard::Kind::Cut,
                 }),
             )
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.root).unwrap();
         }
     }
     #[test]

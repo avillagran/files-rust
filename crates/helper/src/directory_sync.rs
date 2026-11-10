@@ -172,11 +172,6 @@ mod tests {
             c.finish().unwrap()
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
-        }
-    }
     #[test]
     fn fresh_helper_modes_and_raw_paged_namespace_roundtrip_without_modification() {
         use std::os::unix::ffi::OsStringExt;

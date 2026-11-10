@@ -596,7 +596,6 @@ mod tests {
             )
             .is_err()
         );
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn lock_busy_nonregular_invalid_future_and_symlink_do_not_overwrite() {
@@ -619,7 +618,6 @@ mod tests {
         fs::remove_file(root.join("bookmarks.bin")).unwrap();
         fs::create_dir(root.join("bookmarks.bin")).unwrap();
         assert!(apply(&root, &Op::Read).is_err());
-        fs::remove_dir_all(root).unwrap();
     }
 }
 
@@ -688,7 +686,6 @@ mod fork_tests {
         let mut status = 0;
         let reaped = unsafe { libc::waitpid(pid, &mut status, 0) };
         drop(attempt);
-        fs::remove_dir_all(&root).unwrap();
         assert_eq!(ready_n, 1);
         assert!(child_still_live);
         assert_eq!(reaped, pid);

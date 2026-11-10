@@ -244,19 +244,11 @@ mod tests {
     #[cfg(target_os = "linux")]
     mod linux {
         use super::*;
-        use std::{fs, os::unix::fs::PermissionsExt, sync::atomic::AtomicU64};
+        use std::{fs, os::unix::fs::PermissionsExt};
         struct Fixture(PathBuf);
         impl Fixture {
             fn new() -> Self {
-                static NEXT: AtomicU64 = AtomicU64::new(0);
-                let base = files_core::theme::home().join(".cache/files-test");
-                fs::create_dir_all(&base).unwrap();
-                let path = base.join(format!(
-                    "properties-adapter-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
-                fs::create_dir(&path).unwrap();
+                let path = crate::test_support::private_dir("properties-adapter");
                 Self(path)
             }
             fn file(&self) -> PathBuf {
@@ -264,11 +256,6 @@ mod tests {
                 fs::write(&path, b"unchanged").unwrap();
                 fs::set_permissions(&path, fs::Permissions::from_mode(0o600)).unwrap();
                 path
-            }
-        }
-        impl Drop for Fixture {
-            fn drop(&mut self) {
-                let _ = fs::remove_dir_all(&self.0);
             }
         }
         fn flag() -> AtomicBool {

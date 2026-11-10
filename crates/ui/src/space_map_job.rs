@@ -668,7 +668,7 @@ mod tests {
     #[cfg(target_os = "linux")]
     mod linux {
         use super::*;
-        use std::{fs, os::unix::fs::PermissionsExt, sync::atomic::AtomicU64};
+        use std::{fs, os::unix::fs::PermissionsExt};
         static PROCESS_TEST: std::sync::Mutex<()> = std::sync::Mutex::new(());
         struct Script(PathBuf);
         impl Script {
@@ -676,14 +676,7 @@ mod tests {
                 Self::with_prelude(body, "")
             }
             fn with_prelude(body: &str, prelude: &str) -> Self {
-                static NEXT: AtomicU64 = AtomicU64::new(0);
-                let base = files_core::theme::home().join(".cache/files-test");
-                fs::create_dir_all(&base).unwrap();
-                let path = base.join(format!(
-                    "space-job-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
+                let path = crate::test_support::private_dir("space-job").join("space-job");
                 fs::write(&path, format!("#!/usr/bin/python3\nimport os,sys,time\nfrom pathlib import Path\n{prelude}\nPath(__file__+'.pid').write_text(str(os.getpid()))\nassert sys.argv[1]=='space_map'\nsys.stdin.buffer.readline()\n{body}\n")).unwrap();
                 fs::set_permissions(&path, fs::Permissions::from_mode(0o700)).unwrap();
                 TEST_SCRIPT_PATHS.lock().unwrap().insert(path.clone());

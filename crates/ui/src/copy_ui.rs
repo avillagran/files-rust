@@ -1278,27 +1278,14 @@ mod tests {
     use files_core::listing::{Entry, Kind};
     use std::{
         fs,
-        sync::atomic::{AtomicU64, Ordering},
         time::{Duration, Instant},
     };
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let dir = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!(
-                    "copy-ui-unit-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
+            let dir = crate::test_support::private_dir("copy-ui-unit");
             fs::create_dir_all(&dir).unwrap();
             Self(dir)
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
         }
     }
     fn entry(name: &str) -> Entry {

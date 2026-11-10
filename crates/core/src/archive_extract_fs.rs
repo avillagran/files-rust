@@ -1422,11 +1422,6 @@ mod linux {
                     .collect()
             }
         }
-        impl Drop for Case {
-            fn drop(&mut self) {
-                let _ = fs::remove_dir_all(&self.base);
-            }
-        }
         fn archive(data: &[u8]) -> Vec<u8> {
             zip(&[
                 Spec::file(b"a/one", data),

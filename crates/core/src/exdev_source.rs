@@ -1238,7 +1238,6 @@ mod linux {
                 .unwrap();
             inv.verify(&old_parent, OsStr::new("z"), &flag).unwrap();
             assert_eq!(inv.payload_read(), 4);
-            fs::remove_dir_all(base).unwrap();
         }
         #[test]
         fn sync_rebase_root_hardlink_and_symlink_preserve_full_evidence() {
@@ -1266,7 +1265,6 @@ mod linux {
                     assert!(alias.verify(&parent, OsStr::new("data"), &flag).is_err());
                 }
                 assert_eq!(fs::read(base.join("data")).unwrap(), b"data");
-                fs::remove_dir_all(base).unwrap();
             }
         }
         #[test]
@@ -1340,7 +1338,6 @@ mod linux {
                 );
                 assert_eq!(format!("{:?}", inv.entries), before, "{case}");
                 assert_eq!(inv.sync.unwrap().prefix, prefix);
-                fs::remove_dir_all(base).unwrap();
             }
         }
         #[test]
@@ -1369,7 +1366,6 @@ mod linux {
             );
             inv.verify_for_sync(&parent, OsStr::new("different-prefix"), 0, &flag)
                 .unwrap();
-            fs::remove_dir_all(base).unwrap();
         }
         #[test]
         fn sync_rebase_is_opt_in_and_cannot_weaken_legacy_tree_policy() {
@@ -1389,7 +1385,6 @@ mod linux {
                     .is_err()
             );
             assert!(inv.mounts.is_none());
-            fs::remove_dir_all(base).unwrap();
         }
         #[test]
         fn opt_in_mount_proof_is_checked_but_legacy_capture_has_no_mount_dependency() {
@@ -1405,7 +1400,6 @@ mod linux {
             pinned.verify(&parent, OsStr::new("file"), &flag).unwrap();
             pinned.mounts.as_mut().unwrap()[0] ^= 1;
             assert!(pinned.verify(&parent, OsStr::new("file"), &flag).is_err());
-            let _ = fs::remove_dir_all(base);
         }
         #[test]
         fn controlled_hash_pauses_between_chunks_and_cancel_wakes_waiter() {
@@ -1528,7 +1522,6 @@ mod linux {
                 entries,
             )
             .unwrap();
-            fs::remove_dir_all(d).unwrap();
         }
         #[test]
         fn atime_observation_is_stable_for_noatime_directory_and_explicit_for_symlink() {
@@ -1599,7 +1592,6 @@ mod linux {
                 )
             );
             assert!(after.atime() >= before.atime()); // kernel may use noatime; no promise of unchanged symlink access time
-            fs::remove_dir_all(d).unwrap();
         }
         #[test]
         fn replacement_content_attribute_and_child_changes_are_rejected() {
@@ -1635,7 +1627,6 @@ mod linux {
             fs::create_dir(d.join("tree")).unwrap();
             assert!(inventory.verify(&p, OsStr::new("tree"), &flag).is_err());
             assert_eq!(fs::read(d.join("preserved/file")).unwrap(), b"abd");
-            fs::remove_dir_all(d).unwrap();
         }
         #[test]
         fn depth_limit_on_real_worker_and_special_types_cancelled_before_data_open() {
@@ -1666,7 +1657,6 @@ mod linux {
             assert_eq!(unsafe { libc::mkfifo(fifo.as_ptr(), 0o600) }, 0);
             assert!(capture(&parent(&d), OsStr::new("fifo"), &AtomicBool::new(false)).is_err());
             assert!(capture(&parent(&d), OsStr::new("tree"), &AtomicBool::new(true)).is_err());
-            fs::remove_dir_all(d).unwrap();
         }
         #[test]
         fn hash_reads_are_bounded_and_cancel_between_actual_chunks() {

@@ -795,7 +795,6 @@ mod tests {
             .unwrap();
         assert!(!d.join("stage/tree").exists());
         assert_eq!(fs::read(d.join("source/tree/a/z")).unwrap(), b"abc");
-        fs::remove_dir_all(d).unwrap();
     }
     #[test]
     fn cancel_after_transferred_chunk_preserves_source_and_cleans_only_own_nodes() {
@@ -817,7 +816,6 @@ mod tests {
         assert_eq!(fs::read(d.join("source/file")).unwrap(), bytes);
         failed.partial.cleanup().map_err(|e| e.cause).unwrap();
         assert!(!d.join("stage/file").exists());
-        fs::remove_dir_all(d).unwrap();
     }
     #[test]
     fn parent_replacement_with_hardlink_to_owned_inode_never_redirects_cleanup_or_metadata() {
@@ -842,7 +840,6 @@ mod tests {
         assert_eq!(fs::read(d.join("stage/tree/file")).unwrap(), b"own");
         assert_eq!(fs::read(d.join("stage/rescue/file")).unwrap(), b"own");
         drop(failed);
-        fs::remove_dir_all(d).unwrap();
     }
     #[test]
     fn unlink_success_sync_failure_retries_only_sync_and_preserves_new_name() {
@@ -864,7 +861,6 @@ mod tests {
         assert_eq!(fs::read(d.join("source/file")).unwrap(), b"source");
         fs::remove_file(d.join("stage/file")).unwrap();
         failed.partial.cleanup().map_err(|e| e.cause).unwrap();
-        fs::remove_dir_all(d).unwrap();
     }
     #[test]
     fn preflight_node_cap_external_hardlinks_nonempty_stage_and_corruption_keep_source() {
@@ -921,7 +917,6 @@ mod tests {
         assert!(!copy.verified());
         assert_eq!(fs::read(d.join("source/file")).unwrap(), b"source");
         drop(copy);
-        fs::remove_dir_all(d).unwrap();
     }
     #[test]
     fn publication_uses_final_parent_for_verification_and_blocks_cleanup() {
@@ -941,6 +936,5 @@ mod tests {
         assert_eq!(fs::read(d.join("published/file")).unwrap(), b"payload");
         assert_eq!(fs::read(d.join("source/file")).unwrap(), b"payload");
         drop(failed);
-        fs::remove_dir_all(d).unwrap();
     }
 }

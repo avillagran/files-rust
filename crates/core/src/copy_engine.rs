@@ -1906,21 +1906,7 @@ mod linux {
         use super::*;
         #[test]
         fn registry_budget_fails_before_capacity_or_name_allocation() {
-            static ID: AtomicU64 = AtomicU64::new(0);
-            let root = PathBuf::from(std::env::var_os("HOME").unwrap()).join(".cache/files-test");
-            std::fs::create_dir_all(&root).unwrap();
-            let fixture = loop {
-                let path = root.join(format!(
-                    "copy-budget-{}-{}",
-                    std::process::id(),
-                    ID.fetch_add(1, Ordering::Relaxed)
-                ));
-                match std::fs::create_dir(&path) {
-                    Ok(()) => break path,
-                    Err(e) if e.kind() == io::ErrorKind::AlreadyExists => continue,
-                    Err(e) => panic!("Fixture: {e}"),
-                }
-            };
+            let fixture = crate::test_support::private_dir("copy-budget");
             let parent = open_directory(&fixture).unwrap();
             let mut stage = Stage::create(&parent, OsStr::new("destination")).unwrap();
             let mut budget = AuxiliaryBudget {
@@ -1972,28 +1958,11 @@ mod tests {
     use std::io::{Read, Write};
     use std::os::unix::ffi::OsStringExt;
     use std::os::unix::fs::{MetadataExt, PermissionsExt};
-    use std::sync::atomic::AtomicU64;
 
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static ID: AtomicU64 = AtomicU64::new(0);
-            let root =
-                PathBuf::from(std::env::var_os("HOME").expect("Cache fixture requires HOME"))
-                    .join(".cache/files-test");
-            fs::create_dir_all(&root).unwrap();
-            loop {
-                let path = root.join(format!(
-                    "copy-{}-{}",
-                    std::process::id(),
-                    ID.fetch_add(1, Ordering::Relaxed)
-                ));
-                match fs::create_dir(&path) {
-                    Ok(()) => return Self(path),
-                    Err(e) if e.kind() == io::ErrorKind::AlreadyExists => continue,
-                    Err(e) => panic!("Create fixture: {e}"),
-                }
-            }
+            Self(crate::test_support::private_dir("copy"))
         }
         fn request(&self, from: &str, to: &str) -> CopyRequest {
             CopyRequest {
@@ -2012,11 +1981,6 @@ mod tests {
                     .as_encoded_bytes()
                     .starts_with(b".files-copy-")
             })
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
         }
     }
     fn stream() -> CopyOptions {
@@ -3416,11 +3380,6 @@ mod captured_multi_tests {
                 &AtomicBool::new(false),
             )
             .unwrap()
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
         }
     }
     #[test]

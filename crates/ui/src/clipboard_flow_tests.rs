@@ -8,26 +8,15 @@ use std::{
     ffi::{OsStr, OsString},
     fs,
     path::PathBuf,
-    sync::atomic::{AtomicU64, Ordering},
     time::{Duration, Instant},
 };
 struct Fixture {
-    root: PathBuf,
     a: PathBuf,
     b: PathBuf,
 }
 impl Fixture {
     fn new() -> Self {
-        static N: AtomicU64 = AtomicU64::new(0);
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "clipboard-flow-{}-{}",
-                std::process::id(),
-                N.fetch_add(1, Ordering::Relaxed)
-            ));
-        fs::create_dir_all(root.parent().unwrap()).unwrap();
-        fs::create_dir(&root).unwrap();
+        let root = crate::test_support::private_dir("clipboard-flow");
         let a = root.join("A");
         let b = root.join(OsString::from_vec(b"B-\xfe".to_vec()));
         fs::create_dir(&a).unwrap();
@@ -36,18 +25,13 @@ impl Fixture {
             fs::write(a.join(n), format!("A-{n}")).unwrap();
         }
         fs::write(b.join("same.txt"), b"B distinct").unwrap();
-        Self { root, a, b }
+        Self { a, b }
     }
     fn model(&self) -> Model {
         let mut m = Model::new(self.a.clone());
         m.view = View::List;
         wait(&mut m, |m| m.loaded);
         m
-    }
-}
-impl Drop for Fixture {
-    fn drop(&mut self) {
-        fs::remove_dir_all(&self.root).unwrap();
     }
 }
 fn wait(m: &mut Model, p: impl Fn(&Model) -> bool) {

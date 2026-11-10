@@ -714,10 +714,11 @@ mod tests {
 
     #[test]
     fn job_deletes_paths_and_reports() {
-        let d = std::env::temp_dir().join(format!("files-delete-ui-{}", std::process::id()));
-        let _ = std::fs::remove_dir_all(&d);
+        let d = crate::test_support::private_dir("delete-ui");
         std::fs::create_dir_all(d.join("t/x")).unwrap();
         std::fs::write(d.join("t/x/f"), b"1234").unwrap();
+        // The delete job under test removes this tree: prove it is inside the private root.
+        crate::test_support::assert_inside(&d, &d.join("t"));
         let job = Job::start(Target::Paths(vec![d.join("t")]), None).unwrap();
         let out = job
             .result
@@ -734,6 +735,5 @@ mod tests {
                 .unwrap()
                 .is_err()
         );
-        let _ = std::fs::remove_dir_all(&d);
     }
 }

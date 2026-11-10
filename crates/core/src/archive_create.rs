@@ -792,17 +792,11 @@ mod linux {
                 ffi::OsStringExt,
                 fs::{PermissionsExt, symlink},
             },
-            sync::atomic::AtomicU64,
         };
         struct Case(PathBuf);
         impl Case {
             fn new() -> Self {
-                static N: AtomicU64 = AtomicU64::new(0);
-                let p = crate::theme::home().join(".cache/files-test").join(format!(
-                    "create-zip-{}-{}",
-                    std::process::id(),
-                    N.fetch_add(1, Ordering::Relaxed)
-                ));
+                let p = crate::test_support::private_dir("create-zip");
                 fs::create_dir_all(p.join("source/tree/empty")).unwrap();
                 fs::create_dir(p.join("target")).unwrap();
                 fs::write(p.join("source/tree/a"), b"contents").unwrap();
@@ -829,11 +823,6 @@ mod linux {
                             .starts_with(b".files-zip-")
                     })
                     .collect()
-            }
-        }
-        impl Drop for Case {
-            fn drop(&mut self) {
-                fs::remove_dir_all(&self.0).unwrap();
             }
         }
         #[test]

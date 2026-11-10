@@ -825,30 +825,12 @@ fn run(shared: Arc<Shared>) {
 mod tests {
     use super::*;
     use files_core::copy_engine::CopyStrategy;
-    use std::{
-        fs,
-        sync::atomic::{AtomicU64, Ordering},
-    };
+    use std::fs;
 
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static SERIAL: AtomicU64 = AtomicU64::new(0);
-            let root = PathBuf::from(std::env::var_os("HOME").expect("Cache fixture needs HOME"))
-                .join(".cache/files-test");
-            fs::create_dir_all(&root).unwrap();
-            loop {
-                let path = root.join(format!(
-                    "copy-job-{}-{}",
-                    std::process::id(),
-                    SERIAL.fetch_add(1, Ordering::Relaxed)
-                ));
-                match fs::create_dir(&path) {
-                    Ok(()) => return Self(path),
-                    Err(error) if error.kind() == io::ErrorKind::AlreadyExists => continue,
-                    Err(error) => panic!("Create fixture: {error}"),
-                }
-            }
+            Self(crate::test_support::private_dir("copy-job"))
         }
         fn request(&self, id: u64, to: &str) -> Request {
             Request::new(
@@ -859,11 +841,6 @@ mod tests {
                 }],
                 options(),
             )
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
         }
     }
     fn options() -> CopyOptions {

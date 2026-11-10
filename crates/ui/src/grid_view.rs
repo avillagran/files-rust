@@ -359,9 +359,7 @@ mod tests {
     fn paint_selection_range_hidden_and_zoom_share_real_model_without_layout_writes() {
         use crate::{aux_io::AuxIo, model::View};
         use files_core::listing::{Entry, Kind};
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!("grid-model-{}", std::process::id()));
+        let root = crate::test_support::private_dir("grid-model");
         std::fs::create_dir_all(&root).unwrap();
         let mut m = Model::new(root.clone());
         let (tx, _) = std::sync::mpsc::sync_channel(4);
@@ -416,7 +414,6 @@ mod tests {
         assert!(std::sync::Arc::ptr_eq(&m.layout, &original_layout) && !m.layout_dirty);
         m.action(Action::View(View::List));
         assert!(m.hits.is_empty() && m.visible.is_empty());
-        std::fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn painting_between_tab_restore_and_done_or_layout_keeps_scroll() {

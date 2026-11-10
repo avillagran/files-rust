@@ -78,28 +78,9 @@ mod tests {
     }
     #[test]
     fn launcher_resolution_ignores_relative_entries_and_non_executable_files() {
-        use std::{
-            fs,
-            os::unix::fs::PermissionsExt,
-            sync::atomic::{AtomicU64, Ordering},
-        };
-        static NEXT: AtomicU64 = AtomicU64::new(0);
+        use std::{fs, os::unix::fs::PermissionsExt};
         struct Owned(std::path::PathBuf);
-        impl Drop for Owned {
-            fn drop(&mut self) {
-                let _ = fs::remove_dir_all(&self.0);
-            }
-        }
-        let root = Owned(
-            files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!(
-                    "terminal-lookup-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                )),
-        );
-        fs::create_dir_all(&root.0).unwrap();
+        let root = Owned(crate::test_support::private_dir("terminal-lookup"));
         let executable = root.0.join("xdg-terminal-exec");
         fs::write(&executable, b"fixture").unwrap();
         fs::set_permissions(&executable, fs::Permissions::from_mode(0o700)).unwrap();

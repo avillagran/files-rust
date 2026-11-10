@@ -17,6 +17,21 @@ each run, keep fixtures and evidence, and reject symlink traversal. Do not
 delete directory trees or replace a prior run's output. Namespace-removal
 cases can move their owned entries aside while preserving the original data.
 
+Every crate's tests obtain fixtures from `test_support::private_dir(label)`
+(`crates/core/src/test_support.rs`, shared by the other crates): a fresh
+exclusive 0700 directory under `std::env::temp_dir()` that is never deleted,
+plus `assert_inside` to call before any destructive product call under test.
+A guard test (`sources_have_no_home_fixtures_or_recursive_deletion`) fails when
+any source file of the crate mentions the old home-based fixture root,
+`remove_dir_all(` or `tempfile::` outside its justified allowlist.
+
+Run tests with a private 0700 `TMPDIR` that contains `FILES_CONFIG_DIR` and
+`XDG_DATA_HOME`, for example `TMPDIR=$R/tmp FILES_CONFIG_DIR=$R/tmp/config
+XDG_DATA_HOME=$R/tmp/data cargo test --workspace`. Tests no longer write below
+`$HOME`, so a private `HOME` is optional.
+Put that `TMPDIR` on a persistent filesystem (not tmpfs): the exdev namespace/alias
+tests compare inode timestamps and are only stable there.
+
 If an unexpected deletion occurs, stop and inform the user. Do not retry the
 command or use another runner. Check the current project journal and incident
 record before resuming; fixing source does not by itself lift an existing stop.

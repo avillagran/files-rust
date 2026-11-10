@@ -326,11 +326,6 @@ mod tests {
             Self(root)
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
-        }
-    }
     /// Retained fixture: the private tree is never deleted by this test.
     fn retained(label: &str) -> std::path::PathBuf {
         static NEXT: AtomicU64 = AtomicU64::new(0);

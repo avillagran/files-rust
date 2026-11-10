@@ -375,41 +375,17 @@ impl Controller {
 mod tests {
     use super::*;
     use crate::{mount_table::Mount, sftp_mount_point::Parent, sftp_target::Target};
-    use std::{
-        fs,
-        os::unix::fs::DirBuilderExt,
-        process::Stdio,
-        sync::atomic::{AtomicU64, Ordering},
-    };
+    use std::{fs, process::Stdio};
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let root = PathBuf::from(std::env::var_os("HOME").unwrap()).join(".cache/files-test");
-            fs::create_dir_all(&root).unwrap();
-            loop {
-                let path = root.join(format!(
-                    "sftp-recovered-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
-                match fs::DirBuilder::new().mode(0o700).create(&path) {
-                    Ok(()) => return Self(path),
-                    Err(e) if e.kind() == io::ErrorKind::AlreadyExists => {}
-                    Err(e) => panic!("{e}"),
-                }
-            }
+            Self(crate::test_support::private_dir("sftp-recovered"))
         }
         fn record(&self) -> Record {
             Record::prepared(
                 Target::parse("host", "", "2222", "/").unwrap(),
                 &Parent::open(&self.0).unwrap().create().unwrap(),
             )
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
         }
     }
     fn mounted(record: &mut Record) {

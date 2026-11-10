@@ -194,7 +194,6 @@ mod tests {
     #[test]
     fn templates_and_folder_with_selection() {
         let d = crate::persistence::test_dir("quick-ops");
-        let _ = fs::remove_dir_all(&d);
         let (t, w) = (d.join("Templates"), d.join("work"));
         fs::create_dir_all(&t).unwrap();
         fs::create_dir_all(&w).unwrap();
@@ -220,6 +219,5 @@ mod tests {
             numbered(OsStr::new(".bashrc"), 2),
             OsString::from(".bashrc (2)")
         );
-        let _ = fs::remove_dir_all(&d);
     }
 }

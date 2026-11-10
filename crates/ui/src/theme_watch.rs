@@ -131,18 +131,8 @@ mod tests {
     }
     #[test]
     fn atomic_symlink_and_palette_replacement() {
-        let base = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!("watch-{}", std::process::id()));
-        let _ = fs::remove_dir_all(&base);
+        let base = crate::test_support::private_dir("watch");
         fs::create_dir_all(&base).unwrap();
-        struct Cleanup(PathBuf);
-        impl Drop for Cleanup {
-            fn drop(&mut self) {
-                let _ = fs::remove_dir_all(&self.0);
-            }
-        }
-        let _cleanup = Cleanup(base.clone());
         for name in ["one", "two"] {
             fs::create_dir(base.join(name)).unwrap();
             fs::write(

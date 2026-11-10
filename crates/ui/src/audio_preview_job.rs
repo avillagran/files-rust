@@ -860,14 +860,7 @@ mod tests {
     #[test]
     #[cfg(target_os = "linux")]
     fn expected_fd_rejects_replace_before_probe_and_effective_name_after_probe() {
-        static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "audio-source-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
+        let root = crate::test_support::private_dir("audio-source");
         std::fs::create_dir_all(&root).unwrap();
         let path = root.join("source.flac");
         std::fs::write(&path, b"audio-a").unwrap();
@@ -884,7 +877,6 @@ mod tests {
         std::fs::write(root.join("next"), b"audio-c").unwrap();
         std::fs::rename(root.join("next"), &path).unwrap();
         assert!(finish_metadata(&file, &path, b, &wire, "flac").is_err());
-        std::fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn forced_containers_reject_playlists_urls_and_bad_paths() {

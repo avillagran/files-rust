@@ -544,11 +544,6 @@ mod tests {
                 .unwrap_or_else(|e| panic!("capture: {e}"))
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.base);
-        }
-    }
     fn find(p: &Prepared, side: usize, path: &[u8]) -> usize {
         (0..p.entries(side).unwrap().len())
             .find(|&i| p.relative(side, i) == Some(path))
@@ -749,9 +744,7 @@ mod tests {
                 fs::create_dir(&f.paths[0]).unwrap();
             }
             assert!(p.verify(&AtomicBool::new(false)).is_err());
-            if parent {
-                fs::remove_dir_all(f.base.with_extension("old")).unwrap();
-            }
+            if parent {}
         }
         let f = Fixture::new();
         let mut i = f.intent(0);
@@ -851,7 +844,6 @@ mod tests {
         let mut i = f.intent(8);
         i.right = other.clone();
         let result = capture(i, &AtomicBool::new(false), |_| Ok(()));
-        fs::remove_dir_all(&other).unwrap();
         let p = result.unwrap_or_else(|e| panic!("independent cross-filesystem capture: {e}"));
         assert_ne!(p.mount_ids(0).unwrap()[0], p.mount_ids(1).unwrap()[0]);
         assert_eq!(p.payload_read(), 8);

@@ -849,11 +849,6 @@ mod tests {
             .unwrap()
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.base);
-        }
-    }
     fn choose(p: &mut Plan<'_>, name: &[u8]) {
         let i = (0..p.lines().len())
             .find(|&i| p.name(i) == Some(name))
@@ -1006,8 +1001,8 @@ mod tests {
         assert_eq!(seen, 1);
         assert!(stored.matches(&live));
         assert_eq!(live.bytes(), bytes.len() as u64);
-        fs::remove_dir_all(&f.paths[0]).unwrap();
-        fs::remove_dir_all(&f.paths[1]).unwrap();
+        fs::rename(&f.paths[0], f.base.join("moved-0")).unwrap();
+        fs::rename(&f.paths[1], f.base.join("moved-1")).unwrap();
         assert!(inspect(&physical, &mut Cursor::new(&bytes), |_, _, _| Ok(())).is_ok());
     }
     #[test]

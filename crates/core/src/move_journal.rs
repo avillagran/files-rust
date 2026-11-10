@@ -879,7 +879,6 @@ mod linux {
             assert!(Journal::open(&root, [1; 16]).is_err());
             drop(fresh);
             assert!(Journal::open(&root, [1; 16]).is_ok());
-            std::fs::remove_dir_all(root).unwrap();
         }
     }
 }
@@ -1150,7 +1149,6 @@ mod store_tests {
             fs::metadata(path(&d)).unwrap().len(),
             MAX_JOURNAL as u64 + 1
         );
-        fs::remove_dir_all(d).unwrap();
     }
     #[test]
     fn replacement_and_live_same_length_edit_are_not_overwritten() {
@@ -1169,7 +1167,6 @@ mod store_tests {
         fs::write(path(&d), &bytes).unwrap();
         assert!(j.record(super::tests::staged(j.manifest())).is_err());
         assert_eq!(fs::read(path(&d)).unwrap(), bytes);
-        fs::remove_dir_all(d).unwrap();
     }
     #[test]
     fn readable_synced_event_after_failed_ack_requires_new_barriers_and_entry_checks() {
@@ -1227,7 +1224,6 @@ mod store_tests {
         assert_eq!(j.state().phase(), Phase::Completed);
         assert!(!j.state().barriers_current());
         drop(j);
-        fs::remove_dir_all(d).unwrap();
     }
     #[test]
     fn every_persistence_failure_stops_live_mutations_and_preserves_visible_bytes() {
@@ -1259,7 +1255,6 @@ mod store_tests {
             );
             assert_eq!(fs::read(path(&d)).unwrap(), bytes);
             drop(recovered);
-            fs::remove_dir_all(d).unwrap();
         }
     }
     #[test]
@@ -1273,7 +1268,6 @@ mod store_tests {
         fs::write(path(&d), &bytes).unwrap();
         assert!(Journal::open(&d, [1; 16]).is_err());
         assert_eq!(fs::read(path(&d)).unwrap(), bytes);
-        fs::remove_dir_all(d).unwrap();
     }
     #[test]
     fn replacement_during_write_sync_create_or_renew_never_receives_ack() {
@@ -1293,7 +1287,6 @@ mod store_tests {
             assert_eq!(j.state().phase(), Phase::Prepared);
             assert_eq!(fs::read(path(&d)).unwrap(), b"foreign");
             drop(j);
-            fs::remove_dir_all(d).unwrap();
         }
         let d = directory("move-journal-create-postcheck");
         assert!(
@@ -1304,7 +1297,6 @@ mod store_tests {
             .is_err()
         );
         assert_eq!(fs::read(path(&d)).unwrap(), b"foreign");
-        fs::remove_dir_all(d).unwrap();
         let d = directory("move-journal-renew-postcheck");
         let mut j = Journal::create(&d, crate::move_manifest::tests::manifest()).unwrap();
         ready(&mut j);
@@ -1322,7 +1314,6 @@ mod store_tests {
         assert!(!j.state().barriers_current());
         assert_eq!(fs::read(path(&d)).unwrap(), b"foreign");
         drop(j);
-        fs::remove_dir_all(d).unwrap();
     }
     #[test]
     fn multiroot_valid_crc_wire_cannot_create_open_or_construct_state() {
@@ -1364,6 +1355,5 @@ mod store_tests {
         assert!(Journal::open(&d, [1; 16]).is_err());
         assert_eq!(fs::read(path(&d)).unwrap(), bytes);
         assert!(replay(&bytes).is_err());
-        fs::remove_dir_all(d).unwrap();
     }
 }

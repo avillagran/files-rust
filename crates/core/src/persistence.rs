@@ -192,14 +192,7 @@ pub fn update_config_values(path: &Path, values: &[(&str, toml::Value)]) -> Resu
 
 #[cfg(test)]
 pub(crate) fn test_dir(label: &str) -> std::path::PathBuf {
-    let root = crate::theme::home().join(".cache/files-test");
-    let path = root.join(format!(
-        "{label}-{}-{}",
-        std::process::id(),
-        NEXT_TEMP.fetch_add(1, Ordering::Relaxed)
-    ));
-    fs::create_dir_all(&path).unwrap();
-    path
+    crate::test_support::private_dir(label)
 }
 
 #[cfg(test)]
@@ -230,7 +223,6 @@ mod tests {
         assert!(matches!(result, Publication::Unsynced(_)));
         assert_eq!(fs::read(&path).unwrap(), b"new");
         assert_eq!(fs::read_dir(&root).unwrap().count(), 1);
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn config_preserves_unknown_fields_and_rejects_corruption() {
@@ -249,7 +241,6 @@ mod tests {
         fs::write(&path, "[broken").unwrap();
         assert!(update_config(&path, "corners", "square".into()).is_err());
         assert_eq!(fs::read_to_string(&path).unwrap(), "[broken");
-        fs::remove_dir_all(dir).unwrap();
     }
 
     #[test]
@@ -268,6 +259,5 @@ mod tests {
         assert_eq!(fs::read(&path).unwrap(), b"original");
         atomic_write(&path, b"complete").unwrap();
         assert_eq!(fs::read(&path).unwrap(), b"complete");
-        fs::remove_dir_all(dir).unwrap();
     }
 }

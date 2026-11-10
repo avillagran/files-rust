@@ -416,28 +416,14 @@ impl Model {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
-    use std::{
-        fs,
-        path::PathBuf,
-        sync::{
-            atomic::{AtomicU64, Ordering},
-            mpsc,
-        },
-    };
+    use std::{fs, path::PathBuf, sync::mpsc};
     struct Fixture {
         root: PathBuf,
         m: Model,
     }
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let root = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!(
-                    "listing-model-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
+            let root = crate::test_support::private_dir("listing-model");
             fs::create_dir_all(&root).unwrap();
             for name in ["a.txt", "b.txt", "c.txt"] {
                 fs::write(root.join(name), b"owned").unwrap();
@@ -488,7 +474,6 @@ mod tests {
                 self.m.listing_sync.stopped(),
                 "watch must stop before fixture cleanup"
             );
-            let _ = fs::remove_dir_all(&self.root);
         }
     }
     #[test]

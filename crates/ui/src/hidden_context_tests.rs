@@ -6,28 +6,13 @@ use crate::{
     painter::Rect,
 };
 use files_core::listing::{Entry, Kind};
-use std::{
-    ffi::OsString,
-    path::PathBuf,
-    sync::{
-        atomic::{AtomicU64, Ordering},
-        mpsc,
-    },
-};
+use std::{ffi::OsString, sync::mpsc};
 struct Fixture {
     model: Model,
-    path: PathBuf,
 }
 impl Fixture {
     fn new() -> Self {
-        static NEXT: AtomicU64 = AtomicU64::new(0);
-        let path = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "hidden-context-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
+        let path = crate::test_support::private_dir("hidden-context");
         std::fs::create_dir_all(&path).unwrap();
         let mut model = Model::new(path.clone());
         let (tx, _) = mpsc::sync_channel(32);
@@ -64,7 +49,7 @@ impl Fixture {
             }
         }
         model.rebuild();
-        Self { model, path }
+        Self { model }
     }
     fn hits(&mut self) {
         self.model.hits = [(0, 100), (1, 140), (2, 180)]
@@ -75,11 +60,6 @@ impl Fixture {
                 action: Action::Entry(i),
             })
             .collect();
-    }
-}
-impl Drop for Fixture {
-    fn drop(&mut self) {
-        let _ = std::fs::remove_dir_all(&self.path);
     }
 }
 #[test]

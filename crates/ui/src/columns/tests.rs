@@ -10,21 +10,7 @@ use std::{
 struct Fixture(PathBuf);
 impl Fixture {
     fn new() -> Self {
-        static ID: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
-        let serial = ID.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-        let path = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "columns-{}-{}-{}",
-                serial,
-                std::process::id(),
-                std::time::SystemTime::now()
-                    .duration_since(std::time::UNIX_EPOCH)
-                    .unwrap()
-                    .as_nanos()
-            ));
-        fs::create_dir_all(path.parent().unwrap()).unwrap();
-        fs::create_dir(&path).unwrap();
+        let path = crate::test_support::private_dir("columns");
         for n in ["A", "B"] {
             fs::create_dir_all(path.join(n).join("nested")).unwrap();
             for f in ["same.txt", "alpha.txt", "last.txt", ".hidden"] {
@@ -39,11 +25,6 @@ impl Fixture {
         m.show_hidden = false;
         wait(&mut m, |m| m.loaded);
         m
-    }
-}
-impl Drop for Fixture {
-    fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
     }
 }
 fn wait(m: &mut Model, check: impl Fn(&Model) -> bool) {

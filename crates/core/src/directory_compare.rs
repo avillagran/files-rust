@@ -608,7 +608,6 @@ mod tests {
     use std::{
         fs,
         os::unix::{ffi::OsStringExt, fs::symlink},
-        sync::atomic::AtomicU64,
     };
     struct Fixture {
         base: PathBuf,
@@ -617,12 +616,7 @@ mod tests {
     }
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let base = crate::theme::home().join(".cache/files-test").join(format!(
-                "directory-compare-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
+            let base = crate::test_support::private_dir("directory-compare");
             let left = base.join("left");
             let right = base.join("right");
             fs::create_dir_all(&left).unwrap();
@@ -639,11 +633,6 @@ mod tests {
                 |_| Ok(()),
             )
             .unwrap()
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.base);
         }
     }
     fn row<'a>(report: &'a Report, path: &Path) -> &'a Row {

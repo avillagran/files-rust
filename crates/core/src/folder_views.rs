@@ -520,7 +520,6 @@ mod tests {
         assert_eq!(reduced.document.get(&b.path).unwrap().settings, b.settings);
         apply(&root, &Op::Sync).unwrap();
         assert!(!root.join("not-created").exists());
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn full_document_allows_update_but_never_silently_evicts() {
@@ -542,7 +541,6 @@ mod tests {
         let before = fs::read(root.join("folder-views.bin")).unwrap();
         assert!(apply(&root, &Op::Save(entry("/extra"))).is_err());
         assert_eq!(before, fs::read(root.join("folder-views.bin")).unwrap());
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn readonly_missing_does_not_create_config_or_folder() {
@@ -550,7 +548,6 @@ mod tests {
         let missing = root.join("missing");
         assert!(apply(&missing, &Op::Read).unwrap().document.rows.is_empty());
         assert!(!missing.exists());
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn final_check_rejects_target_or_lock_replacement() {
@@ -570,7 +567,6 @@ mod tests {
         fs::write(&lock_path, b"").unwrap();
         assert!(check_snapshot(&root, &guard.file, &current, &file).is_err());
         drop(guard);
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn final_check_rejects_creation_after_absent_snapshot() {
@@ -581,7 +577,6 @@ mod tests {
         check_snapshot(&root, &guard.file, &absent, &file).unwrap();
         fs::write(&file, encode(&Document::default()).unwrap()).unwrap();
         assert!(check_snapshot(&root, &guard.file, &absent, &file).is_err());
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn wire_rejects_noncanonical_order_and_invalid_flags_before_materialization() {
@@ -639,7 +634,6 @@ mod tests {
         symlink(&target, root.join("folder-views.lock")).unwrap();
         assert!(apply(&root, &Op::Save(entry("/a"))).is_err());
         assert_eq!(fs::read(&target).unwrap(), b"original");
-        fs::remove_dir_all(root).unwrap();
     }
 }
 
@@ -708,7 +702,6 @@ mod fork_tests {
         let mut status = 0;
         let reaped = unsafe { libc::waitpid(pid, &mut status, 0) };
         drop(attempt);
-        fs::remove_dir_all(&root).unwrap();
         assert_eq!(ready_n, 1);
         assert!(child_still_live);
         assert_eq!(reaped, pid);

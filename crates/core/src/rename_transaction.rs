@@ -802,7 +802,7 @@ mod tests {
     use super::*;
     use std::fs;
     use std::os::unix::ffi::OsStringExt;
-    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::sync::atomic::Ordering;
 
     #[test]
     fn transaction_budget_bounds_count_before_copying_names() {
@@ -897,24 +897,7 @@ mod tests {
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static ID: AtomicU64 = AtomicU64::new(0);
-            let root = PathBuf::from(
-                std::env::var_os("HOME").expect("HOME needed for safe cache fixtures"),
-            )
-            .join(".cache/files-test");
-            fs::create_dir_all(&root).unwrap();
-            loop {
-                let path = root.join(format!(
-                    "rename-{}-{}",
-                    std::process::id(),
-                    ID.fetch_add(1, Ordering::Relaxed)
-                ));
-                match fs::create_dir(&path) {
-                    Ok(()) => return Self(path),
-                    Err(e) if e.kind() == io::ErrorKind::AlreadyExists => continue,
-                    Err(e) => panic!("Create fixture: {e}"),
-                }
-            }
+            Self(crate::test_support::private_dir("rename"))
         }
         fn write(&self, name: impl AsRef<Path>, value: &[u8]) {
             fs::write(self.0.join(name), value).unwrap();
@@ -940,11 +923,6 @@ mod tests {
                     .as_encoded_bytes()
                     .starts_with(b".files-rename-")
             })
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
         }
     }
 

@@ -16,7 +16,6 @@ use std::{
         ffi::OsStrExt,
         fs::{MetadataExt, PermissionsExt},
     },
-    sync::atomic::{AtomicU64, Ordering},
     time::{Duration, Instant},
 };
 struct Fixture {
@@ -25,12 +24,7 @@ struct Fixture {
 }
 impl Fixture {
     fn new() -> Self {
-        static SERIAL: AtomicU64 = AtomicU64::new(0);
-        let root = PathBuf::from(std::env::var_os("HOME").unwrap()).join(format!(
-            ".cache/files-test/exdev-ui-{}-{}",
-            std::process::id(),
-            SERIAL.fetch_add(1, Ordering::Relaxed)
-        ));
+        let root = crate::test_support::private_dir("exdev-ui");
         for part in ["source", "destination", "journals"] {
             fs::create_dir_all(root.join(part)).unwrap();
             fs::set_permissions(root.join(part), fs::Permissions::from_mode(0o700)).unwrap();
@@ -96,11 +90,6 @@ impl Fixture {
             io::Error::other("interrupted fixture"),
             Some(Retained::Recovery(Box::new(recovery))),
         )
-    }
-}
-impl Drop for Fixture {
-    fn drop(&mut self) {
-        fs::remove_dir_all(&self.root).unwrap();
     }
 }
 #[test]

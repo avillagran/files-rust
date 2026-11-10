@@ -101,14 +101,7 @@ pub fn publish(path: &Path, width: i32, height: i32, rgb: &[u8]) -> io::Result<(
 mod tests {
     use super::*;
     fn fixture() -> PathBuf {
-        static ID: AtomicU64 = AtomicU64::new(0);
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "capture-frame-{}-{}",
-                std::process::id(),
-                ID.fetch_add(1, Ordering::Relaxed)
-            ));
+        let root = crate::test_support::private_dir("capture-frame");
         fs::create_dir_all(&root).unwrap();
         root
     }
@@ -122,7 +115,6 @@ mod tests {
         publish(&target, 1, 1, &[1, 2, 3]).unwrap();
         assert_eq!(fs::read(&target).unwrap(), b"P6\n1 1\n255\n\x01\x02\x03");
         assert_eq!(fs::read_dir(&root).unwrap().count(), 1);
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     #[cfg(unix)]
@@ -162,7 +154,6 @@ mod tests {
         reader.join().unwrap();
         observed.unwrap();
         result.unwrap();
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn legacy_and_explicit_request_are_bounded_and_redraw_is_opt_in() {
@@ -185,6 +176,5 @@ mod tests {
             fs::write(&path, bytes).unwrap();
             assert!(request(&path).is_err());
         }
-        fs::remove_dir_all(root).unwrap();
     }
 }

@@ -745,11 +745,6 @@ mod tests {
             scopes
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.base);
-        }
-    }
     fn path(scope: usize, relative: &[u8]) -> NamespacePath<'_> {
         NamespacePath { scope, relative }
     }
@@ -769,6 +764,10 @@ mod tests {
             for alias in ["b/alias2", "c/alias", "d/alias"] {
                 fs::hard_link(f.base.join("a/file"), f.base.join(alias)).unwrap();
             }
+            // Reading a file may move its atime on relatime/strictatime mounts, which the
+            // inventories compare. Pin a far-future atime so the result does not depend on
+            // the mount options of the private TMPDIR.
+            crate::test_support::pin_future_atime(&f.base.join("a/file"));
             let names = ["a", "b", "c", "d"];
             let mut inventories: Vec<_> = names
                 .iter()
@@ -1303,7 +1302,6 @@ mod tests {
         );
         assert!(base.join("a/extra").exists());
         assert_eq!(b.entries.len(), MAX_NAMESPACE_ENTRIES);
-        fs::remove_dir_all(base).unwrap();
     }
     #[test]
     fn namespace_resulting_name_and_depth_budgets_are_checked_before_rename() {
@@ -1333,7 +1331,6 @@ mod tests {
             .is_err()
         );
         assert!(base.join("a/item").exists());
-        fs::remove_dir_all(base).unwrap();
         let base = crate::persistence::test_dir("sync-namespace-depth");
         fs::create_dir_all(base.join("a/item")).unwrap();
         fs::write(base.join("a/item/leaf"), b"").unwrap();
@@ -1365,7 +1362,6 @@ mod tests {
             )
             .is_err()
         );
-        fs::remove_dir_all(base).unwrap();
     }
     #[test]
     fn namespace_control_pause_resume_and_cancel_keep_recorded_state_atomic() {

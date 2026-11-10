@@ -584,25 +584,12 @@ mod tests {
     #[cfg(target_os = "linux")]
     mod linux {
         use super::*;
-        use std::{fs, sync::atomic::AtomicU64};
+        use std::fs;
         struct Fixture(PathBuf);
         impl Fixture {
             fn new() -> Self {
-                static NEXT: AtomicU64 = AtomicU64::new(0);
-                let base = files_core::theme::home().join(".cache/files-test");
-                fs::create_dir_all(&base).unwrap();
-                let path = base.join(format!(
-                    "listing-watch-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
-                fs::create_dir(&path).unwrap();
+                let path = crate::test_support::private_dir("listing-watch");
                 Self(path)
-            }
-        }
-        impl Drop for Fixture {
-            fn drop(&mut self) {
-                let _ = fs::remove_dir_all(&self.0);
             }
         }
         fn wait(w: &ListingWatch, condition: impl Fn(&[Notice]) -> bool) {

@@ -1059,11 +1059,6 @@ mod tests {
             Self(path)
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
-        }
-    }
     fn receive(worker: &mut Worker) -> Response {
         let deadline = Instant::now() + Duration::from_secs(5);
         loop {

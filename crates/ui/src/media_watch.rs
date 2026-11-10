@@ -390,14 +390,7 @@ mod tests {
     #[cfg(target_os = "linux")]
     #[test]
     fn real_directory_watch_reconciles_replace_delete_and_parent_replacement() {
-        static NEXT: AtomicU64 = AtomicU64::new(0);
-        let base = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "media-watch-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
+        let base = crate::test_support::private_dir("media-watch");
         let parent = base.join("current");
         std::fs::create_dir_all(&parent).unwrap();
         let path = parent.join("image");
@@ -439,7 +432,6 @@ mod tests {
             assert!(Instant::now() < end);
             std::thread::sleep(Duration::from_millis(5));
         }
-        std::fs::remove_dir_all(base).unwrap();
     }
 }
 
@@ -461,14 +453,7 @@ mod document_tests {
     }
     #[test]
     fn lost_events_reconcile_nested_resource_deletion_replacement_and_root_recovery() {
-        static NEXT: AtomicU64 = AtomicU64::new(0);
-        let base = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "document-watch-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
+        let base = crate::test_support::private_dir("document-watch");
         let root = base.join("root");
         std::fs::create_dir_all(root.join("sub/nested")).unwrap();
         std::fs::write(root.join("document.md"), b"doc").unwrap();
@@ -509,6 +494,5 @@ mod document_tests {
             assert!(Instant::now() < end);
             std::thread::sleep(Duration::from_millis(5));
         }
-        std::fs::remove_dir_all(base).unwrap();
     }
 }

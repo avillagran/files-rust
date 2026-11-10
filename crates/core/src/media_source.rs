@@ -100,24 +100,13 @@ mod tests {
     use std::{
         ffi::OsString,
         os::unix::{ffi::OsStringExt, fs::symlink},
-        sync::atomic::{AtomicU64, Ordering},
     };
     struct Fixture(std::path::PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let p = crate::theme::home().join(".cache/files-test").join(format!(
-                "media-source-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
+            let p = crate::test_support::private_dir("media-source");
             std::fs::create_dir_all(&p).unwrap();
             Self(p)
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = std::fs::remove_dir_all(&self.0);
         }
     }
     #[test]

@@ -16,6 +16,9 @@ mod search;
 mod search_content;
 mod space_scan;
 mod terminal_launch;
+#[cfg(test)]
+#[path = "../../core/src/test_support.rs"]
+mod test_support;
 mod text_preview;
 mod zip_member;
 use files_core::protocol::{MAX_LINE_BYTES, Request, Response};

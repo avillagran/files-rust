@@ -525,25 +525,12 @@ mod tests {
     use std::{
         fs,
         os::unix::{ffi::OsStringExt, fs::symlink},
-        sync::atomic::AtomicU64,
     };
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static ID: AtomicU64 = AtomicU64::new(0);
-            let p = crate::theme::home().join(".cache/files-test").join(format!(
-                "selection-source-{}-{}",
-                std::process::id(),
-                ID.fetch_add(1, Ordering::Relaxed)
-            ));
-            fs::create_dir_all(p.parent().unwrap()).unwrap();
-            fs::create_dir(&p).unwrap();
+            let p = crate::test_support::private_dir("selection-source");
             Self(p)
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
         }
     }
     fn flag() -> AtomicBool {

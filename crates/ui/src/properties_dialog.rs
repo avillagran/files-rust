@@ -876,18 +876,8 @@ mod tests {
     #[test]
     #[cfg(target_os = "linux")]
     fn raw_paths_are_complete_cached_and_minimum_permission_targets_do_not_overlap() {
-        use std::{
-            os::unix::{ffi::OsStringExt, fs::PermissionsExt},
-            sync::atomic::{AtomicU64, Ordering},
-        };
-        static ID: AtomicU64 = AtomicU64::new(0);
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "properties-layout-{}-{}",
-                std::process::id(),
-                ID.fetch_add(1, Ordering::Relaxed)
-            ));
+        use std::os::unix::{ffi::OsStringExt, fs::PermissionsExt};
+        let root = crate::test_support::private_dir("properties-layout");
         std::fs::create_dir_all(&root).unwrap();
         let mut raw = b"long-".to_vec();
         raw.extend(vec![b'a'; 180]);
@@ -981,7 +971,6 @@ mod tests {
         );
         drop(d);
         drop(m);
-        std::fs::remove_dir_all(moved).unwrap();
     }
     #[test]
     fn loading_cannot_apply_and_tab_reveals_last_permission_at_small_height() {

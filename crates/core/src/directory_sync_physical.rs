@@ -785,11 +785,6 @@ mod tests {
             .unwrap()
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.base);
-        }
-    }
     fn row(p: &Plan<'_>, name: &[u8]) -> usize {
         (0..p.lines().len())
             .find(|&i| p.name(i) == Some(name))

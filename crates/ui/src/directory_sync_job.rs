@@ -188,21 +188,14 @@ impl Drop for Job {
 #[cfg(all(test, target_os = "linux"))]
 mod lifecycle_tests {
     use super::*;
-    use std::{fs, sync::atomic::AtomicU64};
+    use std::fs;
     struct Program {
         path: PathBuf,
         _registration: crate::space_map_job::TestScriptRegistration,
     }
     impl Program {
         fn new(tail: &str) -> Self {
-            static N: AtomicU64 = AtomicU64::new(0);
-            let base = files_core::theme::home().join(".cache/files-test");
-            fs::create_dir_all(&base).unwrap();
-            let path = base.join(format!(
-                "sync-job-{}-{}.py",
-                std::process::id(),
-                N.fetch_add(1, Ordering::Relaxed)
-            ));
+            let path = crate::test_support::private_dir("sync-job").join("sync-job.py");
             let bytes = super::tests::frames();
             fs::write(&path,format!("import os,sys,time\nfrom pathlib import Path\nassert sys.argv[1]=='prepare_directory_sync'\nsys.stdin.buffer.readline()\nPath(__file__+'.pid').write_text(str(os.getpid())+' '+Path('/proc/self/stat').read_text().rsplit(')',1)[1].split()[19])\nsys.stdout.buffer.write(bytes({bytes:?}))\nsys.stdout.buffer.flush()\nPath(__file__+'.sent').write_text('sent')\n{tail}\n")).unwrap();
             let registration = crate::space_map_job::TestScriptRegistration::new(path.clone());

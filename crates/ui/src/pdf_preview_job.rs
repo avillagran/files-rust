@@ -642,9 +642,7 @@ mod tests {
     #[test]
     #[cfg(target_os = "linux")]
     fn verified_a_cannot_open_b_and_finished_a_cannot_publish_after_replace() {
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!("pdf-source-{}", std::process::id()));
+        let root = crate::test_support::private_dir("pdf-source");
         std::fs::create_dir_all(&root).unwrap();
         let path = root.join("source.pdf");
         std::fs::write(&path, b"AAAA").unwrap();
@@ -685,7 +683,6 @@ mod tests {
             .set_times(std::fs::FileTimes::new().set_modified(old_modified))
             .unwrap();
         assert!(finish_render(&file, &path, b, wire, 1, 1, &invalid).is_err());
-        std::fs::remove_dir_all(root).unwrap();
     }
     #[test]
     #[cfg(target_os = "linux")]

@@ -538,27 +538,13 @@ pub fn capture_provisional(
 #[cfg(all(test, target_os = "linux"))]
 mod capture_tests {
     use super::*;
-    use std::{
-        fs,
-        os::unix::fs::symlink,
-        sync::atomic::{AtomicBool, AtomicU64, Ordering},
-    };
+    use std::{fs, os::unix::fs::symlink, sync::atomic::AtomicBool};
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let p = crate::theme::home().join(".cache/files-test").join(format!(
-                "multi-origin-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
+            let p = crate::test_support::private_dir("multi-origin");
             fs::create_dir_all(&p).unwrap();
             Self(p)
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
         }
     }
     #[test]

@@ -309,11 +309,6 @@ mod tests {
             )
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.base);
-        }
-    }
     #[test]
     fn alias_batch_reconciles_every_known_name_and_keeps_other_entries_exact() {
         let mut f = Fixture::new();
@@ -530,7 +525,6 @@ mod tests {
         );
         a.verify(&parent, &raw, &cancel).unwrap();
         b.verify(&parent, literal, &cancel).unwrap();
-        fs::remove_dir_all(base).unwrap();
     }
     #[test]
     fn alias_batch_symlink_inode_transition_uses_captured_atime_policy() {
@@ -543,6 +537,9 @@ mod tests {
         // scopes different original access values. Actual atime-only changes
         // after capture remain excluded by the documented symlink policy.
         fs::read_link(base.join("source")).unwrap();
+        // Later renames bump ctime, which makes relatime refresh atime on the next read; pin a
+        // far-future atime so the scopes never observe different access values.
+        crate::test_support::pin_future_atime(&base.join("source"));
         let parent = File::open(&base).unwrap();
         let cancel = AtomicBool::new(false);
         let mut source = capture_for_sync(&parent, OsStr::new("source"), 0, &cancel).unwrap();
@@ -578,7 +575,6 @@ mod tests {
         );
         a.verify(&parent, OsStr::new("a"), &cancel).unwrap();
         b.verify(&parent, OsStr::new("b"), &cancel).unwrap();
-        fs::remove_dir_all(base).unwrap();
     }
     #[test]
     fn alias_batch_cooperative_pause_resume_and_cancel_preserve_atomicity() {
@@ -696,6 +692,5 @@ mod tests {
                 .unwrap();
         }
         assert!(extra.verify(&parent, OsStr::new("extra"), &cancel).is_err());
-        fs::remove_dir_all(base).unwrap();
     }
 }

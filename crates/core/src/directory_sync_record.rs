@@ -656,11 +656,6 @@ mod tests {
                 .unwrap_or_else(|e| panic!("capture: {e}"))
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.base);
-        }
-    }
     fn seal(bytes: &mut Vec<u8>) {
         bytes.truncate(bytes.len() - 32);
         let hash = digest(bytes);
@@ -1015,7 +1010,6 @@ mod tests {
             view.roots[1].ancestors.last()
         );
         p.bind_record(&decoded, &AtomicBool::new(false)).unwrap();
-        fs::remove_dir_all(other).unwrap();
     }
     #[test]
     fn deep_absolute_root_paths_do_not_consume_descendant_depth_budget() {
@@ -1071,8 +1065,8 @@ mod tests {
         let f = Fixture::new();
         let p = f.prepare(Mode::Merge);
         let record = p.record().unwrap();
-        fs::remove_dir_all(&f.paths[0]).unwrap();
-        fs::remove_dir_all(&f.paths[1]).unwrap();
+        fs::rename(&f.paths[0], f.base.join("moved-0")).unwrap();
+        fs::rename(&f.paths[1], f.base.join("moved-1")).unwrap();
         let history = Record::decode(record.bytes()).unwrap();
         assert_eq!(history.view().unwrap().roots[0].entries.len(), 1);
         assert!(p.bind_record(&history, &AtomicBool::new(false)).is_err());

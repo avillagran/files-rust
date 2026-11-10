@@ -456,14 +456,7 @@ mod tests {
     #[cfg(unix)]
     #[test]
     fn checked_decoder_rejects_verified_a_replaced_before_open_and_returns_b() {
-        static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "image-checked-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
-            ));
+        let root = crate::test_support::private_dir("image-checked");
         std::fs::create_dir_all(&root).unwrap();
         let path = root.join("source.png");
         std::fs::write(&path, png(&[255, 0, 0, 255], 1, 1)).unwrap();
@@ -476,7 +469,6 @@ mod tests {
         let ready = load_checked(&path, b).unwrap();
         assert_eq!(ready.source, Some(b));
         assert_eq!(ready.rgb, [0, 0, 255]);
-        std::fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn png_rgb_alpha_and_no_upscaling() {
@@ -639,17 +631,7 @@ mod tests {
     #[test]
     fn opened_file_rejects_symlinks_fifo_directory_and_large_sparse_input() {
         use std::os::unix::{ffi::OsStrExt, fs::symlink};
-        static NEXT: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
-        let root = std::env::var_os("HOME")
-            .map(std::path::PathBuf::from)
-            .unwrap()
-            .join(".cache/files-test")
-            .join(format!(
-                "image-helper-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
-            ));
-        std::fs::create_dir_all(&root).unwrap();
+        let root = crate::test_support::private_dir("image-helper");
         let file = root.join("image.png");
         std::fs::write(&file, png(&[1, 2, 3, 255], 1, 1)).unwrap();
         assert_eq!(load(&file).unwrap().rgb, [1, 2, 3]);
@@ -667,7 +649,6 @@ mod tests {
             .set_len(MAX_INPUT_BYTES as u64 + 1)
             .unwrap();
         assert!(load(&huge).is_err());
-        std::fs::remove_dir_all(root).unwrap();
     }
 }
 
@@ -692,11 +673,6 @@ mod relative_tests {
         }
         fn write(&self, name: &str, data: &[u8]) {
             std::fs::write(self.0.join(name), data).unwrap();
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = std::fs::remove_dir_all(&self.0);
         }
     }
     fn png() -> Vec<u8> {

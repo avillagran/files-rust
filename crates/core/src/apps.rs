@@ -417,7 +417,6 @@ mod tests {
     #[test]
     fn scan_prefers_user_entries_and_subdirectory_ids() {
         let d = crate::persistence::test_dir("apps-scan");
-        let _ = fs::remove_dir_all(&d);
         let (user, sys) = (d.join("user"), d.join("sys"));
         fs::create_dir_all(user.join("kde")).unwrap();
         fs::create_dir_all(&sys).unwrap();
@@ -440,13 +439,11 @@ mod tests {
         assert_eq!(c.apps.len(), 2);
         assert_eq!(find(&c, "ed.desktop").unwrap().name, "Mine");
         assert!(find(&c, "kde-view.desktop").is_some());
-        let _ = fs::remove_dir_all(&d);
     }
 
     #[test]
     fn set_default_keeps_other_lines_and_adds_association() {
         let d = crate::persistence::test_dir("apps-default");
-        let _ = fs::remove_dir_all(&d);
         fs::create_dir_all(&d).unwrap();
         let f = d.join("mimeapps.list");
         fs::write(&f, "# mine\n[Default Applications]\ntext/html=chromium.desktop\nimage/png=old.desktop\n\n[Added Associations]\nimage/png=old.desktop;\n").unwrap();
@@ -476,13 +473,11 @@ mod tests {
         );
         assert!(set_default_in(&f, "a/b", "bad").is_err());
         assert!(set_default_in(&f, "a\nb", "x.desktop").is_err());
-        let _ = fs::remove_dir_all(&d);
     }
 
     #[test]
     fn content_detection_for_unknown_names() {
         let d = crate::persistence::test_dir("apps-mime");
-        let _ = fs::remove_dir_all(&d);
         fs::create_dir_all(&d).unwrap();
         fs::write(d.join("README"), b"hola\n").unwrap();
         fs::write(d.join("blob"), [0u8, 1, 2, 3]).unwrap();
@@ -497,6 +492,5 @@ mod tests {
                 && launch_id("-x.desktop").is_none()
                 && launch_id("a/b.desktop").is_none()
         );
-        let _ = fs::remove_dir_all(&d);
     }
 }

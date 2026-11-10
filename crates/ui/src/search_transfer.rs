@@ -414,18 +414,11 @@ mod tests {
         listing::Kind,
         search::{Hit, Report},
     };
-    use std::{fs, sync::atomic::AtomicU64};
+    use std::fs;
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static ID: AtomicU64 = AtomicU64::new(0);
-            let p = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!(
-                    "search-source-{}-{}",
-                    std::process::id(),
-                    ID.fetch_add(1, Ordering::Relaxed)
-                ));
+            let p = crate::test_support::private_dir("search-source");
             for d in ["a", "b", "out"] {
                 fs::create_dir_all(p.join(d)).unwrap();
             }
@@ -452,11 +445,6 @@ mod tests {
             m.search.results_focus();
             m.search.mark_all();
             m
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
         }
     }
     #[test]

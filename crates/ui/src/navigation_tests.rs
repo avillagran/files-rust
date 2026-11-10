@@ -3,38 +3,20 @@ use crate::{
     model::{Action, Hit, Model},
     painter::Rect,
 };
-use std::{
-    path::PathBuf,
-    sync::{
-        atomic::{AtomicU64, Ordering},
-        mpsc,
-    },
-};
+use std::{path::PathBuf, sync::mpsc};
 struct Fixture {
     root: PathBuf,
     m: Model,
 }
 impl Fixture {
     fn new() -> Self {
-        static ID: AtomicU64 = AtomicU64::new(0);
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "nav-model-{}-{}",
-                std::process::id(),
-                ID.fetch_add(1, Ordering::Relaxed)
-            ));
+        let root = crate::test_support::private_dir("nav-model");
         std::fs::create_dir_all(&root).unwrap();
         let mut m = Model::new(root.clone());
         let (tx, _) = mpsc::sync_channel(4);
         let (_, rx) = mpsc::channel();
         m.aux = AuxIo { tx, rx };
         Self { root, m }
-    }
-}
-impl Drop for Fixture {
-    fn drop(&mut self) {
-        let _ = std::fs::remove_dir_all(&self.root);
     }
 }
 fn named(name: &str, kind: files_core::listing::Kind) -> files_core::listing::Entry {

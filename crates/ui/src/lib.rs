@@ -171,6 +171,9 @@ mod tab_strip;
 mod tabs;
 mod tabs_scene;
 mod tabs_ui;
+#[cfg(test)]
+#[path = "../../core/src/test_support.rs"]
+mod test_support;
 mod text_document;
 mod text_paste_gate;
 mod text_preview;

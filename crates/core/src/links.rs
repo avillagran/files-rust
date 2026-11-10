@@ -74,7 +74,6 @@ mod tests {
     #[test]
     fn links_get_free_names_and_point_to_the_target() {
         let d = crate::persistence::test_dir("links-create");
-        let _ = fs::remove_dir_all(&d);
         fs::create_dir_all(&d).unwrap();
         fs::write(d.join("a.txt"), b"x").unwrap();
         fs::write(d.join("Enlace a a.txt"), b"occupied").unwrap();
@@ -90,6 +89,5 @@ mod tests {
             d.join("a.txt")
         );
         assert_eq!(fs::read(d.join("Enlace a a.txt")).unwrap(), b"occupied");
-        let _ = fs::remove_dir_all(&d);
     }
 }

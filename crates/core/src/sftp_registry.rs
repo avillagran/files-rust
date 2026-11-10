@@ -851,20 +851,7 @@ mod tests {
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            let base = PathBuf::from(std::env::var_os("HOME").unwrap()).join(".cache/files-test");
-            fs::create_dir_all(&base).unwrap();
-            loop {
-                let path = base.join(format!(
-                    "sftp-registry-{}-{}",
-                    std::process::id(),
-                    next_temp().unwrap()
-                ));
-                match fs::DirBuilder::new().mode(0o700).create(&path) {
-                    Ok(()) => return Self(path),
-                    Err(e) if e.kind() == io::ErrorKind::AlreadyExists => {}
-                    Err(e) => panic!("{e}"),
-                }
-            }
+            Self(crate::test_support::private_dir("sftp-registry"))
         }
         fn record(&self) -> Record {
             Record::prepared(
@@ -880,11 +867,6 @@ mod tests {
                 .open(self.0.join(name))
                 .unwrap();
             f.write_all(bytes).unwrap();
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
         }
     }
     fn verified(mut r: Record) -> Record {

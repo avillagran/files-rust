@@ -351,7 +351,6 @@ mod tests {
             assert_eq!(prefs.window_mode, WindowMode::Fullscreen);
             assert!(text.contains("value = 42"));
         }
-        std::fs::remove_dir_all(dir).unwrap();
     }
     #[test]
     fn hidden_files_default_and_explicit_boolean_values() {
@@ -398,7 +397,6 @@ mod tests {
             assert_eq!(table["effects"].as_bool(), Some(false));
             assert_eq!(table["future"]["value"].as_integer(), Some(42));
         }
-        std::fs::remove_dir_all(directory).unwrap();
     }
 
     #[test]

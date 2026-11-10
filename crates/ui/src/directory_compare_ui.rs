@@ -1423,9 +1423,7 @@ mod tests {
     }
     impl Fixture {
         fn new() -> Self {
-            let root = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!("compare-ui-{}-{}", std::process::id(), epoch()));
+            let root = crate::test_support::private_dir("compare-ui");
             fs::create_dir_all(root.join("other")).unwrap();
             let mut m = Model::new(root.clone());
             let (tx, _) = mpsc::sync_channel(4);
@@ -1445,11 +1443,6 @@ mod tests {
         fn cmd(&mut self, c: Command) {
             let stamp = self.m.comparison.as_ref().unwrap().stamp;
             self.m.comparison_command(stamp, c);
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.root);
         }
     }
     fn sync_observed(f: &mut Fixture, mode: Mode, partial: bool) {

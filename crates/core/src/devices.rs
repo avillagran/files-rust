@@ -398,7 +398,6 @@ mod tests {
     fn operations_call_udisksctl_and_parse_the_mount_point() {
         use std::os::unix::fs::PermissionsExt;
         let d = crate::persistence::test_dir("devices-udisks");
-        let _ = std::fs::remove_dir_all(&d);
         std::fs::create_dir_all(&d).unwrap();
         let log = d.join("calls");
         let tool = d.join("udisksctl");
@@ -420,6 +419,5 @@ mod tests {
             calls,
             "mount -b /dev/sdb1 --no-user-interaction\nunmount -b /dev/sdb1 --no-user-interaction\npower-off -b /dev/sdb --no-user-interaction\n"
         );
-        let _ = std::fs::remove_dir_all(&d);
     }
 }

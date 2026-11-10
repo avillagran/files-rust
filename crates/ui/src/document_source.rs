@@ -207,18 +207,11 @@ impl Plan {
 mod tests {
     use super::*;
     use files_core::{media_source::Revision, relative_source::DirectoryIdentity};
-    use std::sync::atomic::{AtomicU64, Ordering};
+
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let root = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!(
-                    "document-source-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
+            let root = crate::test_support::private_dir("document-source");
             std::fs::create_dir_all(root.join("root/sub/nested")).unwrap();
             std::fs::write(root.join("root/document.md"), b"# document").unwrap();
             std::fs::write(root.join("root/sub/nested/image"), b"red").unwrap();
@@ -238,11 +231,6 @@ mod tests {
                 true,
             )
             .unwrap()
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = std::fs::remove_dir_all(&self.0);
         }
     }
     #[test]

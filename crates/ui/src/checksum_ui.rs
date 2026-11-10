@@ -1062,9 +1062,7 @@ mod tests {
     }
     impl Fixture {
         fn new() -> Self {
-            let root = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!("checksum-ui-{}-{}", std::process::id(), epoch()));
+            let root = crate::test_support::private_dir("checksum-ui");
             std::fs::create_dir_all(&root).unwrap();
             let mut m = Model::new(root.clone());
             let (tx, _) = mpsc::sync_channel(4);
@@ -1088,11 +1086,6 @@ mod tests {
             m.selection.clear();
             m.selected = None;
             Self { root, m }
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = std::fs::remove_dir_all(&self.root);
         }
     }
     #[test]

@@ -432,7 +432,7 @@ pub(crate) fn run(_: PathBuf, _: &AtomicBool) -> io::Result<TextPreview> {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
-    use std::{fs, os::unix::fs::PermissionsExt, sync::atomic::AtomicU64};
+    use std::{fs, os::unix::fs::PermissionsExt};
     // Serializing script creation/spawn avoids another test forking while a
     // fixture executable is briefly open for writing (ETXTBSY).
     static PROCESS_TEST: std::sync::Mutex<()> = std::sync::Mutex::new(());
@@ -442,15 +442,7 @@ mod tests {
     }
     impl Fixture {
         fn new(body: &str) -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let base = files_core::theme::home().join(".cache/files-test");
-            fs::create_dir_all(&base).unwrap();
-            let root = base.join(format!(
-                "files-text-job-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
-            fs::create_dir(&root).unwrap();
+            let root = crate::test_support::private_dir("files-text-job");
             let script = root.join("helper");
             fs::write(&script, format!("#!/usr/bin/python3\nimport sys, os, json, time\nfrom pathlib import Path\nPath(__file__).with_name('pid').write_text(str(os.getpid()))\nrequest=json.loads(sys.stdin.readline())\nassert sys.argv[1] == 'preview_text'\nassert request['command'] == 'preview_text'\n{body}\n")).unwrap();
             fs::set_permissions(&script, fs::Permissions::from_mode(0o700)).unwrap();
@@ -470,11 +462,6 @@ mod tests {
                 self.script.clone(),
                 timeout,
             )
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.root).unwrap();
         }
     }
     #[test]

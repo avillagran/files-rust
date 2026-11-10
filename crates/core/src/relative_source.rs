@@ -213,27 +213,17 @@ pub fn read_prefix(file: &mut File, limit: usize) -> io::Result<Vec<u8>> {
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
-    use std::sync::atomic::{AtomicU64, Ordering};
+
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let root = crate::theme::home().join(".cache/files-test").join(format!(
-                "relative-source-{}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
+            let root = crate::test_support::private_dir("relative-source");
             std::fs::create_dir_all(root.join("root/sub")).unwrap();
             std::fs::write(root.join("root/sub/image"), b"red").unwrap();
             Self(root)
         }
         fn open(&self) -> Opened {
             Opened::open(&self.0.join("root"), Path::new("sub/image")).unwrap()
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = std::fs::remove_dir_all(&self.0);
         }
     }
     #[test]

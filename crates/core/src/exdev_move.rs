@@ -957,11 +957,6 @@ mod linux {
                 }
             }
         }
-        impl Drop for Fixture {
-            fn drop(&mut self) {
-                fs::remove_dir_all(&self.path).unwrap();
-            }
-        }
         #[test]
         fn clipboard_proof_compares_effective_exdev_token_not_path_probe() {
             let f = Fixture::new();
@@ -1214,7 +1209,6 @@ mod linux {
             assert!(!f.source.join("item").exists());
             assert_eq!(read_without_atime(target.join("item")), original);
             drop(transfer);
-            fs::remove_dir_all(target).unwrap();
         }
 
         #[test]
@@ -1511,7 +1505,6 @@ mod linux {
                 eprintln!(
                     "REAL_EXDEV_PROCESS_RECOVERY gap={gap} source_st_dev={source_device} destination_st_dev={destination_device} first_exit=73 recovery_exit=0"
                 );
-                fs::remove_dir_all(target).unwrap();
             }
         }
 

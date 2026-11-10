@@ -7,22 +7,12 @@ use crate::{
 use std::{
     ffi::OsStr,
     fs,
-    sync::atomic::{AtomicU64, Ordering},
     time::{Duration, Instant},
 };
 struct Fixture(PathBuf);
 impl Fixture {
     fn new() -> Self {
-        static ID: AtomicU64 = AtomicU64::new(0);
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "dual-{}-{}",
-                std::process::id(),
-                ID.fetch_add(1, Ordering::Relaxed)
-            ));
-        fs::create_dir_all(root.parent().unwrap()).unwrap();
-        fs::create_dir(&root).unwrap();
+        let root = crate::test_support::private_dir("dual");
         for name in ["A", "B"] {
             fs::create_dir(root.join(name)).unwrap();
             for n in ["same.txt", "other.txt", ".hidden"] {
@@ -38,11 +28,6 @@ impl Fixture {
         m.show_hidden = false;
         wait(&mut m, |m| m.loaded);
         m
-    }
-}
-impl Drop for Fixture {
-    fn drop(&mut self) {
-        fs::remove_dir_all(&self.0).unwrap();
     }
 }
 fn wait(m: &mut Model, f: impl Fn(&Model) -> bool) {

@@ -466,20 +466,11 @@ mod platform {
                 ffi::OsStringExt,
                 fs::{PermissionsExt, symlink},
             },
-            sync::atomic::{AtomicU64, Ordering},
         };
         struct Fixture(PathBuf);
         impl Fixture {
             fn new() -> Self {
-                static NEXT: AtomicU64 = AtomicU64::new(0);
-                let base = crate::theme::home().join(".cache/files-test");
-                fs::create_dir_all(&base).unwrap();
-                let root = base.join(format!(
-                    "properties-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
-                fs::create_dir(&root).unwrap();
+                let root = crate::test_support::private_dir("properties");
                 Self(root)
             }
             fn file(&self, name: &OsStr) -> PathBuf {
@@ -491,7 +482,6 @@ mod platform {
         impl Drop for Fixture {
             fn drop(&mut self) {
                 let _ = fs::set_permissions(&self.0, fs::Permissions::from_mode(0o700));
-                let _ = fs::remove_dir_all(&self.0);
             }
         }
         fn change(snapshot: &Snapshot, mode: u32) -> ChangeReport {

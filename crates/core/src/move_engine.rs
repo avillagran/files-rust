@@ -583,19 +583,11 @@ mod linux {
     #[cfg(test)]
     mod tests {
         use super::*;
-        use std::{
-            fs,
-            sync::atomic::{AtomicU64, Ordering},
-        };
-        static NEXT: AtomicU64 = AtomicU64::new(0);
+        use std::fs;
         struct Fixture(PathBuf);
         impl Fixture {
             fn new() -> Self {
-                let p = crate::theme::home().join(format!(
-                    ".cache/files-test/native-move-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
+                let p = crate::test_support::private_dir("native-move");
                 fs::create_dir_all(p.join("src")).unwrap();
                 fs::create_dir(p.join("dst")).unwrap();
                 Self(p)
@@ -608,11 +600,6 @@ mod linux {
                         destination: self.0.join("dst").join(n),
                     })
                     .collect()
-            }
-        }
-        impl Drop for Fixture {
-            fn drop(&mut self) {
-                let _ = fs::remove_dir_all(&self.0);
             }
         }
         #[test]

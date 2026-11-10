@@ -580,7 +580,6 @@ mod tests {
         sync::atomic::AtomicBool,
     };
     struct Fixture {
-        base: PathBuf,
         paths: [PathBuf; 2],
     }
     impl Fixture {
@@ -595,7 +594,7 @@ mod tests {
             for p in &paths {
                 fs::create_dir_all(p).unwrap();
             }
-            Self { base, paths }
+            Self { paths }
         }
         fn prepare(&self, mode: Mode) -> Prepared {
             directory_sync_manifest::capture(
@@ -615,11 +614,6 @@ mod tests {
         }
         fn file(&self, side: usize, name: &str, data: &[u8]) {
             fs::write(self.paths[side].join(name), data).unwrap();
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.base);
         }
     }
     fn ignored() -> Options {

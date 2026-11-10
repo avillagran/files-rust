@@ -1878,16 +1878,7 @@ mod lifecycle_tests {
     };
     #[test]
     fn copy_b_finishes_while_a_active_without_refreshing_a_then_b_reloads_and_last_close_drains() {
-        let base = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!(
-                "tab-copy-{}-{}",
-                std::process::id(),
-                std::time::SystemTime::now()
-                    .duration_since(std::time::UNIX_EPOCH)
-                    .unwrap()
-                    .as_nanos()
-            ));
+        let base = crate::test_support::private_dir("tab-copy");
         let a = base.join("A");
         let b = base.join("B");
         let src = base.join("source");
@@ -1955,6 +1946,5 @@ mod lifecycle_tests {
         assert!(m.copy.is_closed());
         assert!(!b.join("second.txt").exists());
         drop(m);
-        fs::remove_dir_all(base).unwrap();
     }
 }

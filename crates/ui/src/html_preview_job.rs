@@ -241,9 +241,7 @@ mod tests {
     }
     #[test]
     fn source_expected_a_rejects_open_b_and_late_a_render_after_replacement() {
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!("html-source-{}", std::process::id()));
+        let root = crate::test_support::private_dir("html-source");
         std::fs::create_dir_all(&root).unwrap();
         let path = root.join("source.html");
         std::fs::write(&path, b"<p>A</p>").unwrap();
@@ -276,13 +274,10 @@ mod tests {
         assert!(finish_render(&file, &path, b, &wire(), (641, 480), &invalid).is_err());
         std::fs::remove_file(&path).unwrap();
         assert!(finish_render(&file, &path, b, &wire(), (640, 480), &invalid).is_err());
-        std::fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn size_cap_precedes_child_and_readonly_close_denies_admission() {
-        let root = files_core::theme::home()
-            .join(".cache/files-test")
-            .join(format!("html-source-cap-{}", std::process::id()));
+        let root = crate::test_support::private_dir("html-source-cap");
         std::fs::create_dir_all(&root).unwrap();
         let path = root.join("source.htm");
         std::fs::write(&path, vec![b' '; 32769]).unwrap();
@@ -293,7 +288,6 @@ mod tests {
             closing: true,
         });
         assert!(admit_helper(&gate).is_err());
-        std::fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn stable_unsupported_html_size_is_terminal_without_reprobe_flag() {

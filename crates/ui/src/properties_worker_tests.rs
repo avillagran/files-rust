@@ -4,7 +4,6 @@ use files_core::rename_transaction::PreparedRename;
 use std::{
     fs,
     os::unix::fs::PermissionsExt,
-    path::PathBuf,
     time::{Duration, Instant},
 };
 fn response(w: &mut Worker) -> Response {
@@ -19,17 +18,7 @@ fn response(w: &mut Worker) -> Response {
 }
 #[test]
 fn property_reads_and_failed_changes_preserve_history_but_confirmed_chmod_clears_it() {
-    let base = files_core::theme::home()
-        .join(".cache/files-test")
-        .join(format!("property-worker-{}", std::process::id()));
-    fs::create_dir(&base).unwrap();
-    struct Cleanup(PathBuf);
-    impl Drop for Cleanup {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
-        }
-    }
-    let _cleanup = Cleanup(base.clone());
+    let base = crate::test_support::private_dir("property-worker");
     fs::write(base.join("original"), b"original").unwrap();
     fs::set_permissions(base.join("original"), fs::Permissions::from_mode(0o600)).unwrap();
     let mut worker = Worker::new();

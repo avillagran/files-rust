@@ -338,8 +338,7 @@ mod tests {
     use std::{
         fs,
         os::unix::{ffi::OsStringExt, fs::PermissionsExt},
-        sync::atomic::{AtomicU64, Ordering},
-        time::{Duration, Instant, SystemTime, UNIX_EPOCH},
+        time::{Duration, Instant},
     };
     #[test]
     fn terminal_arguments_and_cwd_preserve_raw_paths_without_shell() {
@@ -414,21 +413,7 @@ mod tests {
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let parent =
-                PathBuf::from(std::env::var_os("HOME").expect("HOME required for fixtures"))
-                    .join(".cache/files-test/open-job");
-            fs::create_dir_all(&parent).unwrap();
-            let nanos = SystemTime::now()
-                .duration_since(UNIX_EPOCH)
-                .unwrap()
-                .as_nanos();
-            let root = parent.join(format!(
-                "{}-{nanos}-{}",
-                std::process::id(),
-                NEXT.fetch_add(1, Ordering::Relaxed)
-            ));
-            fs::create_dir(&root).unwrap();
+            let root = crate::test_support::private_dir("open-job");
             Self(root)
         }
         fn program(&self, name: &str, source: &str) -> PathBuf {
@@ -436,11 +421,6 @@ mod tests {
             fs::write(&path, format!("#!/usr/bin/python3\n{source}\n")).unwrap();
             fs::set_permissions(&path, fs::Permissions::from_mode(0o700)).unwrap();
             path
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
         }
     }
     fn result(job: &Job) -> Outcome {

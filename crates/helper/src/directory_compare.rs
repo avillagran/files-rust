@@ -120,30 +120,14 @@ pub fn run(
 #[cfg(all(test, target_os = "linux"))]
 mod tests {
     use super::*;
-    use std::{
-        fs,
-        path::PathBuf,
-        sync::atomic::{AtomicU64, Ordering},
-    };
+    use std::{fs, path::PathBuf};
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static N: AtomicU64 = AtomicU64::new(0);
-            let p = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!(
-                    "compare-helper-{}-{}",
-                    std::process::id(),
-                    N.fetch_add(1, Ordering::Relaxed)
-                ));
+            let p = crate::test_support::private_dir("compare-helper");
             fs::create_dir_all(p.join("left")).unwrap();
             fs::create_dir(p.join("right")).unwrap();
             Self(p)
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.0);
         }
     }
     #[test]

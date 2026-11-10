@@ -386,7 +386,6 @@ mod tests {
                 )
                 .is_err()
         );
-        fs::remove_dir_all(root).unwrap();
     }
 
     #[cfg(unix)]
@@ -410,7 +409,6 @@ mod tests {
         layout.save_at(&directory, &layouts).unwrap();
         let loaded = SpatialLayout::load_at(&root.join("alias"), &layouts).unwrap();
         assert_ne!(loaded.position(&a), loaded.position(&b));
-        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
@@ -453,7 +451,6 @@ mod tests {
             fs::metadata(&path).unwrap().len(),
             (MAX_LAYOUT_BYTES + 1) as u64
         );
-        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
@@ -498,7 +495,6 @@ mod tests {
             );
             assert_eq!(fs::read(&path).unwrap(), bytes.as_bytes());
         }
-        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
@@ -522,7 +518,6 @@ mod tests {
             );
             assert_eq!(fs::read_to_string(&path).unwrap(), bad);
         }
-        fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn multi_icon_update_is_unchanged_if_any_candidate_is_invalid() {

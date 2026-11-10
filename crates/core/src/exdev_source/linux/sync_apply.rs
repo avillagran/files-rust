@@ -366,11 +366,6 @@ mod tests {
             set_attr(&self.root.join(path), name, value);
         }
     }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            let _ = fs::remove_dir_all(&self.root);
-        }
-    }
     fn set_attr(path: &Path, name: &[u8], value: &[u8]) {
         assert_eq!(
             unsafe {

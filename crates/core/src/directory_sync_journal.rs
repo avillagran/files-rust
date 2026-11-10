@@ -1492,7 +1492,6 @@ mod tests {
         .unwrap();
         let s = Schema::derive(&store, &physical).unwrap();
         drop(store);
-        fs::remove_dir_all(base).unwrap();
         s
     }
     fn observation(

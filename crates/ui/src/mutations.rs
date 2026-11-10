@@ -905,30 +905,13 @@ mod tests {
         listing::{Entry, Kind},
         rename_transaction::PreparedRename,
     };
-    use std::{
-        fs,
-        path::PathBuf,
-        sync::atomic::{AtomicU64, Ordering},
-        time::Instant,
-    };
+    use std::{fs, path::PathBuf, time::Instant};
     struct Fixture(PathBuf);
     impl Fixture {
         fn new() -> Self {
-            static NEXT: AtomicU64 = AtomicU64::new(0);
-            let path = files_core::theme::home()
-                .join(".cache/files-test")
-                .join(format!(
-                    "mutation-ui-{}-{}",
-                    std::process::id(),
-                    NEXT.fetch_add(1, Ordering::Relaxed)
-                ));
+            let path = crate::test_support::private_dir("mutation-ui");
             fs::create_dir_all(&path).unwrap();
             Self(path)
-        }
-    }
-    impl Drop for Fixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.0).unwrap();
         }
     }
     fn model(dir: &Fixture) -> Model {

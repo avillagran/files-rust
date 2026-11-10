@@ -7,21 +7,12 @@ use crate::{
 use std::{
     fs,
     path::PathBuf,
-    sync::atomic::{AtomicU64, Ordering},
     time::{Duration, Instant},
 };
 struct Fixture(PathBuf);
 impl Fixture {
     fn new() -> Self {
-        static NEXT: AtomicU64 = AtomicU64::new(0);
-        let root = files_core::theme::home().join(".cache/files-test");
-        fs::create_dir_all(&root).unwrap();
-        let path = root.join(format!(
-            "archive-ui-{}-{}",
-            std::process::id(),
-            NEXT.fetch_add(1, Ordering::Relaxed)
-        ));
-        fs::create_dir(&path).unwrap();
+        let path = crate::test_support::private_dir("archive-ui");
         fs::write(path.join("source.zip"), zip(1)).unwrap();
         Self(path)
     }
@@ -44,11 +35,6 @@ impl Fixture {
             .unwrap();
         m.select_entry(i, false, false);
         m
-    }
-}
-impl Drop for Fixture {
-    fn drop(&mut self) {
-        fs::remove_dir_all(&self.0).unwrap();
     }
 }
 fn wait_model(m: &mut Model, check: impl Fn(&Model) -> bool) {
