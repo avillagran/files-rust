@@ -44,7 +44,7 @@ Install every new validated Files version on M2, not only on NODE. This is
 already authorized; do not ask for permission again for each update.
 
 - Authoritative development remains on NODE. Build native ARM artifacts on M2
-  (`avillagran@192.168.1.31`); never copy the NODE x86_64 binary there.
+  (`avillagran@<m2-lan-host>`); never copy the NODE x86_64 binary there.
 - Validate the new M2 artifact with private fixture data before installing.
 - Back up and hash all five installed artifacts before atomic replacement:
   files, files-helper, files-html-helper, its LICENSES and build.json.
