@@ -147,7 +147,9 @@ impl Painter for FadePainter<'_> {
 /// window requests nothing.
 pub fn schedule(m: &crate::model::Model, canvas: &fltk::frame::Frame) {
     if wants_frame(m) {
-        anim::request_redraw(canvas);
+        // Transitions follow the monitor (120 Hz panels get 120 fps);
+        // the toolkit caps this at 60 where the rate is unknown.
+        anim::request_redraw_at(canvas, anim::Pace::Display);
     }
 }
 

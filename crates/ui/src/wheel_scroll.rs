@@ -155,7 +155,9 @@ pub fn wheel(m: &mut Model, x: i32, delta: i32, horizontal: bool, h: i32) {
 
 pub fn advance(m: &mut Model, canvas: &Frame) {
     if advance_offsets(m, canvas.h()) {
-        anim::request_redraw(canvas);
+        // Transitions follow the monitor (120 Hz panels get 120 fps);
+        // the toolkit caps this at 60 where the rate is unknown.
+        anim::request_redraw_at(canvas, anim::Pace::Display);
     }
 }
 

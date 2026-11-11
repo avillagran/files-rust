@@ -757,3 +757,6 @@ by hash, without editing the registry; a COPY receiver and a pinned raw destinat
 review before the queue. 642 tests and a private fixture/visual verification passed
 within scope; there is no compositor test nor DnD between apps. Sender/KDE/several
 parents/complete O06 are still pending. See NATIVE-TRANSFER-CONTRACT.md.
+
+
+2026-11-11 — Frame pace. Scroll glides, the focus ring, fades and the Space zoom request frames at the toolkit's `Pace::Display`, which follows the monitor's refresh rate as Hyprland reports it (120 fps on a 120 Hz panel, 60 where the rate is unknown); they previously used the 60 fps default. A full browser paint measured 2.2 ms at 1200×800 and 4.4 ms at 3456×2160 (median, Xvfb, NODE), inside the 8.3 ms budget of 120 Hz. `FILES_FRAME_TRACE=1` logs `FILES_FRAME_US` per paint for diagnosis.

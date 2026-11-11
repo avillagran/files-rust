@@ -222,7 +222,7 @@ pub fn advance(m: &mut Model, frame: &Frame) {
     if let Some(p) = m.trash_browser.as_mut() {
         p.scroll = p.motion.position(p.scroll as i64, p.max() as i64) as i32;
         if p.motion.running() {
-            fltk_omarchy::anim::request_redraw(frame);
+            fltk_omarchy::anim::request_redraw_at(frame, fltk_omarchy::anim::Pace::Display);
         }
     }
 }

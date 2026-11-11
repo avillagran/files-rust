@@ -1335,6 +1335,8 @@ pub fn run_since(start: Instant) -> bool {
     let drawn_size = painted_size.clone();
     let m = model.clone();
     let mut painted = false;
+    // FILES_FRAME_TRACE=1 logs each browser paint's duration (diagnostics).
+    let frame_trace = std::env::var_os("FILES_FRAME_TRACE").is_some();
     let scale_window = win.clone();
     let rail_window = win.clone();
     let mut rail_sidebar = sidebar.clone();
@@ -1388,6 +1390,7 @@ pub fn run_since(start: Instant) -> bool {
             let previous_scroll = m.scroll;
             m.motion.elsewhere =
                 app::focus().is_some_and(|w| w.as_widget_ptr() == rail_sidebar.as_widget_ptr());
+            let frame_start = frame_trace.then(Instant::now);
             view::paint(&mut p, &mut m, f.w(), f.h());
             m.toolbar.schedule(f);
             m.clamp_scroll(f.h() - 134);
@@ -1459,6 +1462,14 @@ pub fn run_since(start: Instant) -> bool {
             drawn_size.set((f.w(), f.h()));
             drawn_revision.set(drawn_revision.get().wrapping_add(1));
             motion::schedule(&m, f);
+            if let Some(start) = frame_start {
+                eprintln!(
+                    "FILES_FRAME_US={} size={}x{}",
+                    start.elapsed().as_micros(),
+                    f.w(),
+                    f.h()
+                );
+            }
         }
         if !painted {
             eprintln!("FILES_FIRST_PAINT_US={}", start.elapsed().as_micros());
