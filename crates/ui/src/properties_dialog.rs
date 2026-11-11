@@ -480,7 +480,7 @@ fn symbolic_mode(mode: u32, kind: char) -> String {
     out
 }
 /// Shorten in the middle (head…tail) until the measured text fits `width`.
-fn fit_middle(text: &str, width: i32, measure: &mut impl FnMut(&str) -> f32) -> String {
+pub(crate) fn fit_middle(text: &str, width: i32, measure: &mut impl FnMut(&str) -> f32) -> String {
     let width = width.max(1) as f32;
     if measure(text) <= width {
         return text.to_owned();

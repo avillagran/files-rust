@@ -580,6 +580,9 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
         m.space_zoom.paint_back(p, &c, m.radius, plan, true);
     }
     let mut tile_focus = false;
+    // Tiles a tooltip may describe: (node, final rect).
+    let mut hover_tip: Option<(usize, Rect)> = None;
+    let mut focus_tip: Option<(usize, Rect)> = None;
     for area in &m.space_geometry.areas {
         let node = &report.nodes[area.node];
         let x0 = area.x.round() as i32;
@@ -596,6 +599,12 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
             hovered: entry.is_some_and(|i| m.hovered == Some(i)),
             focused: entry.is_some_and(|i| m.selected == Some(i)),
         };
+        if marks.hovered {
+            hover_tip = Some((area.node, r));
+        }
+        if marks.focused {
+            focus_tip = Some((area.node, r));
+        }
         // Hits and keyboard targets always use the final rectangle; only the
         // painted rectangle follows the zoom.
         let painted = plan.as_ref().map_or(r, |plan| plan.live(r));
@@ -756,6 +765,154 @@ pub fn paint(p: &mut dyn Painter, m: &mut Model, body: Rect) {
         10,
         false,
     );
+    // Pointer hover always explains its block; keyboard focus does so only
+    // when the block is too small to show its own name and size, and never
+    // while a zoom is still moving the tiles.
+    let zooming = plan.as_ref().is_some_and(|plan| plan.transforms());
+    let tip = hover_tip.map(|t| (t, m.pointer)).or_else(|| {
+        focus_tip
+            .filter(|&(node, r)| !zooming && !label_fits(p, r, &report.nodes[node].name))
+            .map(|t| (t, None))
+    });
+    if let Some(((node, r), pointer)) = tip {
+        let lines = tip_lines(&report.nodes[node], report.total_bytes);
+        let bounds = Rect::new(body.x, body.y, body.w, body.h);
+        paint_tip(p, &c, m.radius, &lines, r, pointer, bounds);
+    }
+}
+/// Whether tile `r` shows the whole name and its size row (see `draw_tile`).
+fn label_fits(p: &mut dyn Painter, r: Rect, name: &[u8]) -> bool {
+    if r.w < 65 || r.h < 45 {
+        return false;
+    }
+    let label = files_core::name_label::bytes_label(name);
+    // Leave room for the small glyph prefix drawn when no icon fits.
+    let room = r.w - 20 - if icon_layout(r).is_some() { 0 } else { 26 };
+    p.text_width(&label, 13, true).ceil() as i32 <= room
+}
+/// Tooltip rows of a block: full name, kind and size, share of the folder.
+pub(crate) fn tip_lines(n: &space_map::SpaceNode, total: u64) -> Vec<String> {
+    let name = files_core::name_label::bytes_label(&n.name).into_owned();
+    let kind: std::borrow::Cow<'_, str> = match n.kind {
+        NodeKind::Directory => "Carpeta".into(),
+        NodeKind::Symlink => "Enlace".into(),
+        NodeKind::Other => "Especial".into(),
+        NodeKind::File => crate::view::kind_label(
+            false,
+            std::path::Path::new(&*String::from_utf8_lossy(&n.name)),
+        ),
+    };
+    let size = match (n.status, n.bytes) {
+        (NodeStatus::Complete, Some(b)) => format_size(b),
+        (NodeStatus::Partial, _) => format!("parcial ≥{}", format_size(n.observed_bytes)),
+        (NodeStatus::Error, _) => "tamaño desconocido (error)".into(),
+        _ => "tamaño desconocido".into(),
+    };
+    let mut detail = format!("{kind} · {size}");
+    if n.kind == NodeKind::Directory {
+        detail.push_str(&format!(
+            " · {} archivo{} · {} carpeta{}",
+            n.files,
+            if n.files == 1 { "" } else { "s" },
+            n.directories,
+            if n.directories == 1 { "" } else { "s" }
+        ));
+    }
+    let mut lines = vec![name, detail];
+    if let (Some(b), true) = (n.bytes, total > 0) {
+        let share = b as f64 * 100.0 / total as f64;
+        lines.push(format!(
+            "{} de esta carpeta{}",
+            if share < 0.1 {
+                "<0,1 %".to_string()
+            } else {
+                format!("{:.1} %", share).replace('.', ",")
+            },
+            if n.kind == NodeKind::Directory {
+                " · Enter entra"
+            } else {
+                " · Enter abre"
+            }
+        ));
+    }
+    if let Some(error) = &n.error {
+        lines.push(error.clone());
+    }
+    lines
+}
+/// Canvas tooltip next to the pointer (hover) or below/above the block
+/// (keyboard), kept inside `bounds`. It has no hit target.
+fn paint_tip(
+    p: &mut dyn Painter,
+    c: &files_core::theme::Palette,
+    radius: i32,
+    lines: &[String],
+    tile: Rect,
+    pointer: Option<(i32, i32)>,
+    bounds: Rect,
+) {
+    let max = (bounds.w - 16).clamp(120, 420);
+    let fitted: Vec<String> = lines
+        .iter()
+        .map(|l| {
+            crate::properties_dialog::fit_middle(l, max - 24, &mut |t| p.text_width(t, 12, true))
+        })
+        .collect();
+    let width = fitted
+        .iter()
+        .map(|l| p.text_width(l, 12, true).ceil() as i32)
+        .max()
+        .unwrap_or(0)
+        .saturating_add(24)
+        .min(max);
+    let height = fitted.len() as i32 * 20 + 12;
+    let (ax, ay, below) = match pointer.filter(|&(x, y)| tile.contains(x, y)) {
+        Some((x, y)) => (x + 14, y + 20, y + 20 + height <= bounds.y + bounds.h),
+        None => (
+            tile.x + tile.w / 2 - width / 2,
+            tile.y + tile.h + 6,
+            tile.y + tile.h + 6 + height <= bounds.y + bounds.h,
+        ),
+    };
+    let y = if below {
+        ay
+    } else if pointer.is_some_and(|(x, y)| tile.contains(x, y)) {
+        ay - 40 - height
+    } else {
+        tile.y - 6 - height
+    };
+    let rect = Rect::new(
+        ax.clamp(
+            bounds.x + 8,
+            (bounds.x + bounds.w - width - 8).max(bounds.x + 8),
+        ),
+        y.clamp(
+            bounds.y + 8,
+            (bounds.y + bounds.h - height - 8).max(bounds.y + 8),
+        ),
+        width,
+        height,
+    );
+    p.rounded_rect(rect, 5 * radius, c.lighter_background);
+    p.rounded_rect(
+        Rect::new(rect.x + 1, rect.y + 1, rect.w - 2, rect.h - 2),
+        5 * radius,
+        c.darker_background,
+    );
+    for (i, line) in fitted.iter().enumerate() {
+        p.text(
+            Rect::new(rect.x + 12, rect.y + 6 + i as i32 * 20, rect.w - 24, 20),
+            line,
+            12,
+            if i == 0 {
+                c.foreground
+            } else {
+                c.dark_foreground
+            },
+            true,
+            false,
+        );
+    }
 }
 #[derive(Clone, Copy, Default)]
 struct Marks {
@@ -1772,6 +1929,48 @@ mod tests {
                 .filter(|(_, r)| icon_layout(*r).is_some())
                 .count();
             assert_eq!(icons.len(), expected);
+            anim::set_enabled(None);
+        }
+
+        #[test]
+        fn tooltips_explain_hovered_blocks_and_focused_blocks_too_small_to_read() {
+            anim::set_enabled(false);
+            let (mut m, _) = model();
+            let mut nodes = parent_report().nodes;
+            nodes[0].bytes = Some(1 << 30);
+            nodes[0].observed_bytes = 1 << 30;
+            nodes.push(node("speck.txt", NodeKind::File, 1 << 22));
+            show(&mut m, report(nodes));
+            frame(&mut m);
+            let tip =
+                |p: &Rec, name: &str| p.texts.iter().any(|(_, s, size)| *size == 12 && s == name);
+            // A readable focused block needs no tooltip.
+            m.selected = Some(index(&m, "photos"));
+            m.hovered = None;
+            assert!(!tip(&frame(&mut m), "photos"));
+            // A focused block too small for its label gets one, with details.
+            m.selected = Some(index(&m, "speck.txt"));
+            let p = frame(&mut m);
+            assert!(tip(&p, "speck.txt"), "keyboard focus explains a tiny block");
+            assert!(
+                p.texts
+                    .iter()
+                    .any(|(_, s, size)| *size == 12 && s.contains("de esta carpeta")),
+                "share of the folder is shown"
+            );
+            // Pointer hover always explains its block, even a readable one.
+            m.selected = None;
+            m.hovered = Some(index(&m, "photos"));
+            let photos = block(&m, "photos");
+            m.pointer = Some((photos.x + 5, photos.y + 5));
+            let p = frame(&mut m);
+            assert!(tip(&p, "photos"));
+            assert!(
+                p.texts
+                    .iter()
+                    .any(|(_, s, size)| *size == 12 && s.starts_with("Carpeta · ")),
+                "folders list kind, size and counts"
+            );
             anim::set_enabled(None);
         }
 

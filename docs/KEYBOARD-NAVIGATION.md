@@ -96,3 +96,8 @@ or new preview expansion.
 Source checkpoint `1c6ee2b` installed, with five independently rehashed installed
 artifacts and five backups: evidence/0.0.4/installed-checkpoint-1793398741936931963.json.
 Appa4a596d8a8cdac81…; helper9df14eb603083eba… and HTML85ea1b8009ef… unchanged.
+
+
+## Space map tooltips (2026-11-11)
+
+Pointing at any block of the Space map shows a tooltip with its full name, kind, size, file and folder counts (folders) and share of the current folder. Keyboard focus shows the same tooltip only for a block too small to display its own name and size, so moving with the arrows through tiny blocks stays readable; it is hidden while a zoom is still moving the tiles.
