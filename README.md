@@ -1,9 +1,11 @@
 # files 0.0.4 — in development
 
 > **Moved to C++.** This Rust version is no longer developed. Its successor
-> is [Flo](https://github.com/avillagran/flo), a C++ rewrite on FLTK 1.4 that
-> follows Omarchy's [Folio](https://github.com/omacom/folio). This repository
-> stays as the original project and reference.
+> is [Flo](https://github.com/avillagran/flo), a C++ rewrite on FLTK 1.4 with
+> the same look, layout, keys and features as Files. Omarchy's
+> [Folio](https://github.com/omacom/folio) is only its reference for desktop
+> standards (thumbnails, trash, bookmarks, recents). This repository stays as
+> the original project and reference.
 
 A lightweight file browser in Rust + FLTK: its own UI behind `Painter`, software
 rendering, Groups/List/Grid/Columns views and a Space treemap, with Omarchy's Nerd Fonts. MIT.
